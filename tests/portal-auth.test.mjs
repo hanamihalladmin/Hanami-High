@@ -32,7 +32,18 @@ test("portal does not expose privileged keys or render an email field",()=>{
   assert.match(authPanel,/never displays your Discord email address/);
 });
 
-test("sign out is explicitly scoped to this browser device",()=>{
-  assert.match(authPanel,/Sign out on this device/);
+test("logout ends both account and active character sessions",()=>{
+  assert.match(authPanel,/hanami\.portal\.character\.v1/);
+  assert.match(authPanel,/is_active=eq\.true/);
+  assert.match(authPanel,/is_active:false/);
   assert.match(authPanel,/localStorage\.removeItem\(SESSION_KEY\)/);
+  assert.match(authPanel,/localStorage\.removeItem\(CHARACTER_SESSION_KEY\)/);
+  assert.match(authPanel,/>Logout</);
+});
+
+test("active character hands off into a dedicated role portal",()=>{
+  assert.match(authPanel,/\.\/student\//);
+  assert.match(authPanel,/\.\/faculty\//);
+  assert.match(authPanel,/Enter Student Portal/);
+  assert.match(authPanel,/Enter Faculty Portal/);
 });
