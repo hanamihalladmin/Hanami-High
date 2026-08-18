@@ -13,6 +13,10 @@ test("course catalog supports search and useful filters",()=>{
   assert.match(catalog,/type="search"/); assert.match(catalog,/Department/); assert.match(catalog,/Level/); assert.match(catalog,/aria-live="polite"/);
 });
 
+test("development course records are clearly identified as test data",()=>{
+  assert.match(catalog,/DEVELOPMENT DATA/); assert.match(catalog,/not official roleplay enrollments or academic records/);
+});
+
 test("academics uses Tokyo dates and documents 32-credit graduation",()=>{
   assert.match(academics,/timeZone:"Asia\/Tokyo"/); assert.match(academics,/32 CREDITS TOTAL/);
 });
