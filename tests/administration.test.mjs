@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 
 const adminClient=await readFile(new URL("../app/portal/admin/AdminPortalClient.tsx",import.meta.url),"utf8");
+const privilegedLogin=await readFile(new URL("../app/portal/PrivilegedPortalLogin.tsx",import.meta.url),"utf8");
 const statusManager=await readFile(new URL("../app/portal/admin/AdminSchoolStatusManager.tsx",import.meta.url),"utf8");
 const manager=await readFile(new URL("../app/portal/admin/AdminAnnouncementManager.tsx",import.meta.url),"utf8");
 const eventManager=await readFile(new URL("../app/portal/admin/AdminEventManager.tsx",import.meta.url),"utf8");
@@ -18,8 +19,11 @@ const statusMigration=await readFile(new URL("../supabase/migrations/20260818174
 
 test("Administration is account permission based rather than character role based",()=>{
   assert.match(adminClient,/current_account_admin_access/);
-  assert.match(adminClient,/Faculty characters do not grant admin access/);
+  assert.match(adminClient,/Faculty character never grants admin access/);
   assert.doesNotMatch(adminClient,/character\.role/);
+  assert.match(adminClient,/has_privileged_portal_session/);
+  assert.match(privilegedLogin,/ADMINISTRATOR SIGN IN/);
+  assert.match(privilegedLogin,/verify_privileged_portal_login/);
   assert.match(migration,/account_permissions/);
   assert.match(migration,/site_admin/);
   assert.match(migration,/content_editor/);
