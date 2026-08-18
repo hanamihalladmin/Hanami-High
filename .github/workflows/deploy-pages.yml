@@ -41,6 +41,7 @@ jobs:
           test -f app/portal/StudentActivitiesPanel.tsx
           test -f app/portal/FacultyCourseManager.tsx
           test -f app/portal/FacultyGradingPanel.tsx
+          test -f app/portal/FacultyAdvisingPanel.tsx
           test -f app/portal/InboxPanel.tsx
           grep -q 'auth/v1/authorize' app/portal/PortalAuthPanel.tsx
           grep -q 'Enter Student Portal' app/portal/PortalAuthPanel.tsx
@@ -51,10 +52,15 @@ jobs:
           grep -q 'Activities & events' app/portal/StudentActivitiesPanel.tsx
           grep -q 'Create assignment' app/portal/FacultyCourseManager.tsx
           grep -q 'Return graded work' app/portal/FacultyGradingPanel.tsx
+          grep -q 'Advising roster' app/portal/FacultyAdvisingPanel.tsx
           grep -q 'HANAMI MESSAGES' app/portal/InboxPanel.tsx
           grep -q 'start_direct_conversation' app/portal/InboxPanel.tsx
           if grep -R -q 'Continue with Discord — setup pending' app; then
             echo 'Stale portal setup-pending UI is still present.'
+            exit 1
+          fi
+          if grep -R -q 'Module coming next' app/portal; then
+            echo 'A role portal placeholder remains in source.'
             exit 1
           fi
       - run: npm run build
@@ -78,6 +84,10 @@ jobs:
           }
           grep -R -q 'Activities & events' out || {
             echo 'Student Activities client bundle is missing from the Pages artifact.'
+            exit 1
+          }
+          grep -R -q 'Advising roster' out || {
+            echo 'Faculty Advising client bundle is missing from the Pages artifact.'
             exit 1
           }
           grep -R -q 'Student Portal' out/portal/student || {
