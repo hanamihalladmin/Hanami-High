@@ -4,8 +4,11 @@ import {readFile} from "node:fs/promises";
 
 const adminClient=await readFile(new URL("../app/portal/admin/AdminPortalClient.tsx",import.meta.url),"utf8");
 const manager=await readFile(new URL("../app/portal/admin/AdminAnnouncementManager.tsx",import.meta.url),"utf8");
+const directory=await readFile(new URL("../app/portal/admin/AdminCharacterDirectory.tsx",import.meta.url),"utf8");
 const adminPage=await readFile(new URL("../app/portal/admin/page.tsx",import.meta.url),"utf8");
 const migration=await readFile(new URL("../supabase/migrations/20260818163000_administration_and_live_announcements_foundation.sql",import.meta.url),"utf8");
+const hardening=await readFile(new URL("../supabase/migrations/20260818165000_harden_administration_rpc_boundaries.sql",import.meta.url),"utf8");
+const directoryMigration=await readFile(new URL("../supabase/migrations/20260818170000_administration_character_directory.sql",import.meta.url),"utf8");
 
 test("Administration is account permission based rather than character role based",()=>{
   assert.match(adminClient,/current_account_admin_access/);
@@ -21,6 +24,14 @@ test("ordinary authenticated users cannot self grant Administration permissions"
   assert.match(migration,/revoke all on public\.account_permissions from anon, authenticated/);
   assert.doesNotMatch(migration,/create policy .*account_permissions.*insert/is);
   assert.match(migration,/private\.account_has_permission/);
+  assert.match(hardening,/deny direct permission reads/);
+});
+
+test("public Administration RPCs are security-invoker wrappers around private helpers",()=>{
+  assert.match(hardening,/private\.current_account_admin_access_internal/);
+  assert.match(hardening,/public\.current_account_admin_access/);
+  assert.match(hardening,/security invoker/);
+  assert.match(hardening,/private\.moderation_report_queue_internal/);
 });
 
 test("announcement management is protected by permission-aware RLS",()=>{
@@ -34,8 +45,19 @@ test("announcement management is protected by permission-aware RLS",()=>{
   assert.match(manager,/Delete permanently/);
 });
 
+test("moderators have a private character directory rather than global profile exposure",()=>{
+  assert.match(directory,/administration_character_directory/);
+  assert.match(directory,/Open reports/);
+  assert.match(directoryMigration,/moderator permission required/);
+  assert.match(directoryMigration,/security invoker/);
+  assert.match(directoryMigration,/limit 100/);
+});
+
 test("Administration has its own website section",()=>{
   assert.match(adminPage,/ADMINISTRATION NETWORK/);
   assert.match(adminPage,/AdminPortalClient/);
   assert.match(adminPage,/Character roles cannot unlock admin tools/);
+  assert.match(adminClient,/AdminAnnouncementManager/);
+  assert.match(adminClient,/AdminModerationManager/);
+  assert.match(adminClient,/AdminCharacterDirectory/);
 });
