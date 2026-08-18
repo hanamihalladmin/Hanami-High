@@ -6,6 +6,7 @@ import type {ActiveCharacter} from "./DashboardShell";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
+const CHARACTER_SESSION_KEY="hanami.portal.character.v1";
 
 type CharacterRole="student"|"faculty";
 type Character=ActiveCharacter;
@@ -13,6 +14,10 @@ type Props={accessToken:string;onActiveCharacterChange?:(character:Character|nul
 
 function authHeaders(accessToken:string,extra:Record<string,string>={}){
   return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`,...extra};
+}
+function rememberCharacter(character:Character|null){
+  if(character)localStorage.setItem(CHARACTER_SESSION_KEY,character.id);
+  else localStorage.removeItem(CHARACTER_SESSION_KEY);
 }
 
 export default function CharacterManager({accessToken,onActiveCharacterChange}:Props){
@@ -30,8 +35,11 @@ export default function CharacterManager({accessToken,onActiveCharacterChange}:P
     if(!response.ok)throw new Error("Your character slots could not be loaded.");
     const rows=await response.json() as Character[];
     setCharacters(rows);
-    onActiveCharacterChange?.(rows.find(character=>character.is_active)??null);
-    setNotice(rows.length?"Choose the character you want to play, or fill an open slot.":"Both character slots are open. Create your first Hanami character below.");
+    const rememberedId=localStorage.getItem(CHARACTER_SESSION_KEY);
+    const active=rows.find(character=>character.id===rememberedId&&character.is_active)??rows.find(character=>character.is_active)??null;
+    rememberCharacter(active);
+    onActiveCharacterChange?.(active);
+    setNotice(active?`${active.display_name} is still your active Hanami character.`:rows.length?"Choose the character you want to play, or fill an open slot.":"Both character slots are open. Create your first Hanami character below.");
     return uid;
   },[accessToken,onActiveCharacterChange]);
 
@@ -85,8 +93,9 @@ export default function CharacterManager({accessToken,onActiveCharacterChange}:P
       if(!deactivate.ok)throw new Error("The current character could not be released.");
       const activate=await fetch(`${SUPABASE_URL}/rest/v1/characters?id=eq.${encodeURIComponent(character.id)}`,{method:"PATCH",headers:authHeaders(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({is_active:true})});
       if(!activate.ok)throw new Error("The new character could not be activated.");
+      rememberCharacter(character);
       await loadCharacters(userId);
-      setNotice(`${character.display_name} is now your active Hanami character.`);
+      setNotice(`${character.display_name} is now your active Hanami character and will stay active until logout.`);
     }catch(error){setNotice(error instanceof Error?error.message:"The character switch did not finish.");}
     finally{setSaving(false);}
   }
