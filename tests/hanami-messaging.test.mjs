@@ -6,6 +6,7 @@ const inbox=await readFile(new URL("../app/portal/InboxPanel.tsx",import.meta.ur
 const dashboard=await readFile(new URL("../app/portal/DashboardShell.tsx",import.meta.url),"utf8");
 const foundation=await readFile(new URL("../supabase/migrations/20260818143500_hanami_messaging_foundation.sql",import.meta.url),"utf8");
 const privateHardening=await readFile(new URL("../supabase/migrations/20260818145500_move_messaging_privileged_helpers_private.sql",import.meta.url),"utf8");
+const groupMigration=await readFile(new URL("../supabase/migrations/20260818151000_add_group_conversation_function.sql",import.meta.url),"utf8");
 
 test("Hanami Inbox is website-native and character scoped",()=>{
   assert.match(inbox,/HANAMI MESSAGES/);
@@ -22,6 +23,16 @@ test("direct messages start by exact Hanami handle through a controlled RPC",()=
   assert.match(privateHardening,/private\.resolve_character_id_by_handle\(target_handle\)/);
   assert.match(privateHardening,/existing_conversation_id/);
   assert.match(privateHardening,/security invoker/);
+});
+
+test("group chats use exact handles and cap invited characters",()=>{
+  assert.match(inbox,/rpc\/start_group_conversation/);
+  assert.match(inbox,/target_handles:handles/);
+  assert.match(inbox,/handles\.length<1\|\|handles\.length>7/);
+  assert.match(groupMigration,/cardinality\(target_handles\) < 1 or cardinality\(target_handles\) > 7/);
+  assert.match(groupMigration,/private\.resolve_character_id_by_handle/);
+  assert.match(groupMigration,/values \('group', clean_title, sender_character_id\)/);
+  assert.match(groupMigration,/security invoker/);
 });
 
 test("messaging RLS requires conversation participation and character ownership",()=>{
