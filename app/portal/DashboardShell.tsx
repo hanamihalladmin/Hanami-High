@@ -12,6 +12,7 @@ import CharacterProfilePanel from "./CharacterProfilePanel";
 import ProfileLookupPanel from "./ProfileLookupPanel";
 import ProfileDesignWorkspace from "./ProfileDesignWorkspace";
 import FriendsPanel from "./FriendsPanel";
+import SchoolStatusPanel from "./SchoolStatusPanel";
 import SchoolNoticesPanel from "./SchoolNoticesPanel";
 import SchoolCalendarPanel from "./SchoolCalendarPanel";
 
@@ -23,7 +24,8 @@ export default function DashboardShell({character,accessToken}:Props){
   const isStudent=character.role==="student";
   return <section className={styles.dashboard} aria-labelledby="dashboard-title">
     <div className={styles.hero}><div><p className="eyebrow">MY HANAMI • {isStudent?"STUDENT":"FACULTY"} DESK</p><h3 id="dashboard-title">Welcome back, {character.display_name}.</h3><p>@{character.handle} • {isStudent?"Student":"Faculty"} • Profile {character.visibility.replace("_"," ")}</p></div><div className={styles.identity}><span>ACTIVE CHARACTER</span><strong>SLOT {character.slot}</strong></div></div>
-    <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>{isStudent?"School Notices, School Calendar, Student Schedule, Coursework, Campus Activities, Hanami Messages, Friends, Profile & Privacy, Profile Templates, Hanami Profiles, and Profile Studio are connected to live Supabase data.":"School Notices, School Calendar, Faculty Schedule, Course Management, Grading, Student Advising, Hanami Messages, Friends, Profile & Privacy, Profile Templates, Hanami Profiles, and Profile Studio are connected to live Supabase data."}</span></div>
+    <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>{isStudent?"School Status, School Notices, School Calendar, Student Schedule, Coursework, Campus Activities, Hanami Messages, Friends, Profile & Privacy, Profile Templates, Hanami Profiles, and Profile Studio are connected to live Supabase data.":"School Status, School Notices, School Calendar, Faculty Schedule, Course Management, Grading, Student Advising, Hanami Messages, Friends, Profile & Privacy, Profile Templates, Hanami Profiles, and Profile Studio are connected to live Supabase data."}</span></div>
+    <SchoolStatusPanel accessToken={accessToken}/>
     <SchoolNoticesPanel accessToken={accessToken}/>
     <SchoolCalendarPanel accessToken={accessToken}/>
     <SchedulePanel accessToken={accessToken} characterId={character.id} role={character.role}/>
@@ -33,6 +35,6 @@ export default function DashboardShell({character,accessToken}:Props){
     <CharacterProfilePanel accessToken={accessToken} characterId={character.id} currentVisibility={character.visibility}/>
     <ProfileDesignWorkspace accessToken={accessToken} characterId={character.id}/>
     <ProfileLookupPanel accessToken={accessToken} viewerCharacterId={character.id}/>
-    <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Notices • Calendar • Classes • Assignments • Campus • Messages • Friends • Profile Studio":"Notices • Calendar • Classes • Rosters • Assignments • Messages • Friends • Profile Studio"}</span></div>
+    <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Status • Notices • Calendar • Classes • Assignments • Campus • Messages • Friends • Profile Studio":"Status • Notices • Calendar • Classes • Rosters • Assignments • Messages • Friends • Profile Studio"}</span></div>
   </section>;
 }
