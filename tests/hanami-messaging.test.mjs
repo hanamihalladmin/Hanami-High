@@ -6,6 +6,7 @@ const inbox=await readFile(new URL("../app/portal/InboxPanel.tsx",import.meta.ur
 const dashboard=await readFile(new URL("../app/portal/DashboardShell.tsx",import.meta.url),"utf8");
 const foundation=await readFile(new URL("../supabase/migrations/20260818143500_hanami_messaging_foundation.sql",import.meta.url),"utf8");
 const privateHardening=await readFile(new URL("../supabase/migrations/20260818145500_move_messaging_privileged_helpers_private.sql",import.meta.url),"utf8");
+const directFix=await readFile(new URL("../supabase/migrations/20260818181100_fix_direct_message_conversation_creation.sql",import.meta.url),"utf8");
 const groupMigration=await readFile(new URL("../supabase/migrations/20260818151000_add_group_conversation_function.sql",import.meta.url),"utf8");
 
 test("Hanami Inbox is website-native and character scoped",()=>{
@@ -16,13 +17,16 @@ test("Hanami Inbox is website-native and character scoped",()=>{
   assert.doesNotMatch(inbox,/mailto:/i);
 });
 
-test("direct messages start by exact Hanami handle through a controlled RPC",()=>{
+test("direct messages start by exact Hanami handle through a hardened controlled RPC",()=>{
   assert.match(inbox,/rpc\/start_direct_conversation/);
   assert.match(inbox,/target_handle:clean/);
-  assert.match(privateHardening,/private\.user_owns_character\(sender_character_id\)/);
-  assert.match(privateHardening,/private\.resolve_character_id_by_handle\(target_handle\)/);
-  assert.match(privateHardening,/existing_conversation_id/);
-  assert.match(privateHardening,/security invoker/);
+  assert.match(directFix,/private\.start_direct_conversation_internal/);
+  assert.match(directFix,/private\.user_owns_character\(sender_character_id\)/);
+  assert.match(directFix,/private\.resolve_character_id_by_handle\(target_handle\)/);
+  assert.match(directFix,/insert into public\.conversations/);
+  assert.match(directFix,/insert into public\.conversation_participants/);
+  assert.match(directFix,/create or replace function public\.start_direct_conversation/);
+  assert.match(directFix,/security invoker/);
 });
 
 test("group chats use exact handles and cap invited characters",()=>{
