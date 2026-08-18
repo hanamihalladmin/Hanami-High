@@ -21,7 +21,7 @@ test("campus activity membership reads remain owner scoped",()=>{
 
 test("student dashboard has no remaining placeholder modules",()=>{
   assert.match(dashboard,/StudentActivitiesPanel accessToken=\{accessToken\} characterId=\{character\.id\}/);
-  assert.match(dashboard,/Student Schedule, Coursework, Campus Activities/);
+  assert.match(dashboard,/Student Schedule, Coursework, Academic Record, Campus Activities/);
   assert.match(dashboard,/Hanami Messages/);
   assert.match(dashboard,/Profile & Privacy/);
   assert.match(dashboard,/Hanami Profiles/);
