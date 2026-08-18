@@ -1,6 +1,7 @@
 import SiteSearch from "./components/site-search";
 import LiveAnnouncements from "./components/live-announcements";
 import LiveNextEvent from "./components/live-next-event";
+import LiveSchoolStatus from "./components/live-school-status";
 
 const navigation = [["Home", "#home"], ["About", "./about/"], ["Academics", "./academics/"], ["Campus Life", "./campus-life/"], ["Clubs", "./campus-life/#directory"], ["Calendar", "./academics/#calendar"], ["News", "#news"], ["People", "./about/#directory"], ["Gallery", "./campus-life/#gallery"]] as const;
 const quickLinks = [["A", "About Hanami", "./about/"], ["学", "Academic departments", "./academics/#departments"], ["C", "Clubs & organizations", "./campus-life/#directory"], ["E", "Academic calendar", "./academics/#calendar"], ["J", "Part-time jobs", "./campus-life/#jobs"]] as const;
@@ -20,7 +21,7 @@ export default function Home() {
         <div className="network-strip">HANAMI HIGH SCHOOL • PUBLIC SCHOOL NETWORK • EST. 2006</div>
         <div className="brand-row">
           <div className="brand-lockup"><div className="school-mark" aria-hidden="true"><span>花</span></div><div><p className="jp-name">花見高等学校</p><h1>HANAMI HIGH SCHOOL</h1><p className="brand-subtitle">Knowledge • Character • Community</p></div></div>
-          <div className="school-clock" aria-label={`Today is ${currentDate}`}><strong>{currentDate.toUpperCase()}</strong><span>HANAMI CITY • SCHOOL STATUS: OPEN</span></div>
+          <div className="school-clock" aria-label={`Today is ${currentDate}`}><strong>{currentDate.toUpperCase()}</strong><LiveSchoolStatus/></div>
         </div>
         <div className="nav-row"><nav aria-label="Primary navigation">{navigation.map(([label, href], index) => <a className={index === 0 ? "active" : ""} href={href} key={label}>{label}</a>)}</nav><a className="portal-button" href="./portal/">↪ Login / Portal</a></div>
       </header>
