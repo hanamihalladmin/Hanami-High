@@ -8,6 +8,7 @@ const auth=await readFile(new URL("../app/portal/PortalAuthPanel.tsx",import.met
 const roleClient=await readFile(new URL("../app/portal/RolePortalClient.tsx",import.meta.url),"utf8");
 const schedule=await readFile(new URL("../app/portal/SchedulePanel.tsx",import.meta.url),"utf8");
 const notices=await readFile(new URL("../app/portal/SchoolNoticesPanel.tsx",import.meta.url),"utf8");
+const calendar=await readFile(new URL("../app/portal/SchoolCalendarPanel.tsx",import.meta.url),"utf8");
 const academicMigration=await readFile(new URL("../supabase/migrations/20260818140500_academic_schedule_foundation.sql",import.meta.url),"utf8");
 
 test("dashboard is driven by the active character role",()=>{
@@ -21,6 +22,7 @@ test("dashboard is driven by the active character role",()=>{
 test("role dashboards use live authenticated modules without placeholder cards",()=>{
   assert.match(dashboard,/LIVE DASHBOARD/);
   assert.match(dashboard,/SchoolNoticesPanel accessToken=\{accessToken\}/);
+  assert.match(dashboard,/SchoolCalendarPanel accessToken=\{accessToken\}/);
   assert.match(dashboard,/SchedulePanel accessToken=\{accessToken\} characterId=\{character\.id\}/);
   assert.match(dashboard,/CourseworkPanel/);
   assert.match(dashboard,/StudentActivitiesPanel/);
@@ -33,12 +35,16 @@ test("role dashboards use live authenticated modules without placeholder cards",
   assert.match(schedule,/Authorization:`Bearer \$\{accessToken\}`/);
 });
 
-test("role dashboards read published notices from the Administration CMS",()=>{
+test("role dashboards read published notices and calendar events from Administration",()=>{
   assert.match(notices,/site_announcements/);
   assert.match(notices,/Authorization:`Bearer \$\{accessToken\}`/);
   assert.match(notices,/LIVE CMS/);
   assert.match(notices,/is_test_data/);
-  assert.match(notices,/timeZone:"Asia\/Tokyo"/);
+  assert.match(calendar,/school_calendar_events/);
+  assert.match(calendar,/Authorization:`Bearer \$\{accessToken\}`/);
+  assert.match(calendar,/LIVE CALENDAR/);
+  assert.match(calendar,/is_test_data/);
+  assert.match(calendar,/timeZone:"Asia\/Tokyo"/);
 });
 
 test("academic database keeps membership reads owner scoped",()=>{
