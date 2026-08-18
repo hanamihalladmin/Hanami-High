@@ -44,6 +44,7 @@ jobs:
           test -f app/portal/FacultyAdvisingPanel.tsx
           test -f app/portal/InboxPanel.tsx
           test -f app/portal/CharacterProfilePanel.tsx
+          test -f app/portal/ProfileLookupPanel.tsx
           grep -q 'auth/v1/authorize' app/portal/PortalAuthPanel.tsx
           grep -q 'Enter Student Portal' app/portal/PortalAuthPanel.tsx
           grep -q 'Enter Faculty Portal' app/portal/PortalAuthPanel.tsx
@@ -59,6 +60,8 @@ jobs:
           grep -q 'start_group_conversation' app/portal/InboxPanel.tsx
           grep -q 'Create group' app/portal/InboxPanel.tsx
           grep -q 'Save profile & privacy' app/portal/CharacterProfilePanel.tsx
+          grep -q 'lookup_visible_character_profile' app/portal/ProfileLookupPanel.tsx
+          grep -q 'Character lookup' app/portal/ProfileLookupPanel.tsx
           if grep -R -q 'Continue with Discord — setup pending' app; then
             echo 'Stale portal setup-pending UI is still present.'
             exit 1
@@ -100,6 +103,10 @@ jobs:
           }
           grep -R -q 'Save profile & privacy' out || {
             echo 'Profile & Privacy client bundle is missing from the Pages artifact.'
+            exit 1
+          }
+          grep -R -q 'Character lookup' out || {
+            echo 'Hanami Profiles lookup bundle is missing from the Pages artifact.'
             exit 1
           }
           grep -R -q 'Student Portal' out/portal/student || {
