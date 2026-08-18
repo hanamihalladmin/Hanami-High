@@ -17,6 +17,7 @@ const grantMigration=await readFile(new URL("../supabase/migrations/202608181814
 const edgeFunction=await readFile(new URL("../supabase/functions/profile-media-sign/index.ts",import.meta.url),"utf8");
 const fixture=await readFile(new URL("../supabase/migrations/20260818155000_test_faculty_portal_fixture.sql",import.meta.url),"utf8");
 const ownerFixture=await readFile(new URL("../supabase/migrations/20260818181000_restrict_test_faculty_fixture_to_owner.sql",import.meta.url),"utf8");
+const authorizationMigration=await readFile(new URL("../supabase/migrations/20260818180800_portal_authorization_and_privileged_login_foundation.sql",import.meta.url),"utf8");
 const manager=await readFile(new URL("../app/portal/CharacterManager.tsx",import.meta.url),"utf8");
 
 test("Profile Studio uses independent saved widgets instead of a fixed profile template",()=>{
@@ -131,7 +132,9 @@ test("TEST Faculty fixture is explicit test data, owner scoped, and Owner only",
   assert.match(fixture,/2006-2007/);
   assert.match(fixture,/c\.owner_user_id=auth\.uid\(\)/);
   assert.match(fixture,/c\.handle like 'testfaculty_%'/);
-  assert.match(ownerFixture,/974361056451379210/);
+  assert.match(ownerFixture,/private\.is_owner_discord_user\(\)/);
+  assert.match(authorizationMigration,/owner_discord_user_id','974361056451379210'/);
+  assert.match(authorizationMigration,/create or replace function private\.is_owner_discord_user/);
   assert.match(manager,/current_owner_status/);
   assert.match(manager,/rpc\/attach_test_faculty_section/);
 });
