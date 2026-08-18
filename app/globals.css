@@ -176,3 +176,67 @@ footer a { color:#fff; }
 
 @media (max-width:900px) { .about-layout{grid-template-columns:1fr}.about-nav{position:static}.about-nav nav{display:grid;grid-template-columns:repeat(3,1fr)}.about-note{display:none}.statistics-grid{grid-template-columns:1fr 1fr}.statistics-grid article:nth-child(2){border-right:0}.statistics-grid article:nth-child(-n+2){border-bottom:1px dotted #cbb6bf} }
 @media (max-width:700px) { .brand-name{white-space:normal;font-size:25px}.about-layout{padding:10px}.about-hero{padding:18px;background:#fffaf3}.about-hero>div{grid-template-columns:1fr}.about-year{display:none}.about-nav nav{grid-template-columns:1fr 1fr}.history-copy,.leadership-grid,.values-grid,.traditions-list,.directory-results,.contact-grid{grid-template-columns:1fr}.history-copy{gap:14px}.values-grid article,.leadership-grid article,.traditions-list article,.directory-results article,.contact-grid article{border-right:0;border-bottom:1px dotted #cbb6bf}.values-grid article:last-child,.leadership-grid article:last-child,.traditions-list article:last-child,.directory-results article:last-child,.contact-grid article:last-child{border-bottom:0}.directory-controls{grid-template-columns:1fr}.traditions-list article:nth-last-child(2),.directory-results article:nth-last-child(2){border-bottom:1px dotted #cbb6bf} }
+
+/* Academics */
+.academics-hero { margin:16px 18px 0; padding:26px; display:grid; grid-template-columns:minmax(0,1fr) 220px; gap:35px; background:linear-gradient(118deg,#fffaf3 0 70%,#e6edf5 70%); border:1px solid var(--line-blue); border-top:5px solid var(--ink); box-shadow:2px 2px 0 rgba(42,63,86,.14); }
+.academics-hero h1 { margin:0; font:400 clamp(38px,5vw,60px)/.96 Georgia,serif; letter-spacing:-.03em; }
+.academics-hero>div>p:not(.eyebrow) { max-width:760px; color:#53647a; font-size:14px; line-height:1.7; }
+.academics-hero aside { padding:18px; text-align:center; background:#fff; border:1px solid #9eb0c4; box-shadow:inset 0 0 0 5px #eef3f8; }
+.academics-hero aside small,.academics-hero aside span { display:block; color:var(--muted); font-size:9px; font-weight:700; letter-spacing:.12em; }
+.academics-hero aside strong { display:block; margin-top:4px; font:700 46px Georgia,serif; }
+.academics-hero aside hr { border:0; border-top:1px dotted #a9b5c2; }
+.academics-hero aside p { margin-bottom:0; line-height:1.6; }
+.academic-page-layout { display:grid; grid-template-columns:205px minmax(0,1fr); gap:14px; padding:16px 18px 30px; }
+.academic-side { align-self:start; position:sticky; top:12px; display:flex; flex-direction:column; gap:12px; }
+.academic-page-content { min-width:0; display:flex; flex-direction:column; gap:14px; }
+.academic-page-content section[id] { scroll-margin-top:20px; }
+.department-grid { display:grid; grid-template-columns:1fr 1fr; }
+.department-grid article { display:grid; grid-template-columns:52px 1fr; gap:14px; min-height:150px; padding:19px; border-right:1px dotted #cbb6bf; border-bottom:1px dotted #cbb6bf; }
+.department-grid article:nth-child(even) { border-right:0; }
+.department-grid article:nth-last-child(-n+2) { border-bottom:0; }
+.department-grid article>span { width:52px; height:52px; display:grid; place-items:center; background:#e7edf4; border:1px solid #95a9bf; color:var(--ink); font:700 20px Georgia,serif; }
+.department-grid h3,.course-results h3,.graduation-intro h3,.academic-timeline h3,.honors-grid h3,.guidance-grid h3 { margin:0 0 7px; font:400 20px Georgia,serif; }
+.department-grid p,.course-results p,.graduation-intro p,.academic-timeline p,.honors-grid p,.guidance-grid p { color:#58677a; line-height:1.55; }
+.department-grid small { color:var(--rose-dark); font-size:9px; font-weight:700; }
+.course-controls { display:grid; grid-template-columns:1fr 190px 160px; gap:9px; padding:14px; background:#eef3f8; border-bottom:1px solid var(--line-blue); }
+.course-controls label>span { display:block; margin-bottom:5px; color:#53647a; font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+.course-controls input,.course-controls select { width:100%; min-height:39px; padding:8px 10px; border:1px solid #8296ae; background:#fff; color:var(--ink); font:inherit; }
+.course-results { display:grid; grid-template-columns:1fr 1fr; }
+.course-results article { display:grid; grid-template-columns:75px 1fr; gap:13px; padding:17px; border-right:1px dotted #cbb6bf; border-bottom:1px dotted #cbb6bf; }
+.course-results article:nth-child(even) { border-right:0; }
+.course-code { align-self:start; padding:9px 5px; background:var(--ink); color:#fff; text-align:center; }
+.course-code strong,.course-code span { display:block; }
+.course-code strong { font:700 11px Georgia,serif; }
+.course-code span { margin-top:5px; font-size:8px; }
+.course-results h3,.course-results p { margin-top:0; }
+.graduation-intro { display:grid; grid-template-columns:120px 1fr; gap:22px; align-items:center; padding:20px; background:#fff8fa; border-bottom:1px dotted #cbb6bf; }
+.credit-ring { width:105px; height:105px; display:grid; place-items:center; align-content:center; border:7px double var(--rose); border-radius:50%; background:#fff; }
+.credit-ring strong { font:700 32px Georgia,serif; }
+.credit-ring span { font-size:8px; font-weight:700; letter-spacing:.12em; }
+.requirements-table>div { display:grid; grid-template-columns:1.2fr 100px 1.8fr; gap:12px; align-items:center; padding:11px 16px; border-bottom:1px dotted #cbb6bf; }
+.requirements-table>div:last-child { border-bottom:0; }
+.requirements-table span { color:var(--rose-dark); font-weight:700; }
+.requirements-table p { margin:0; color:var(--muted); font-size:10px; }
+.academic-timeline { display:grid; grid-template-columns:1fr 1fr; }
+.academic-timeline article { display:grid; grid-template-columns:70px 1fr; gap:13px; padding:16px; border-right:1px dotted #cbb6bf; border-bottom:1px dotted #cbb6bf; }
+.academic-timeline article:nth-child(even) { border-right:0; }
+.academic-timeline time { color:var(--rose-dark); font-size:10px; font-weight:700; }
+.academic-timeline h3,.academic-timeline p { margin-top:0; }
+.calendar-actions { display:flex; align-items:center; gap:16px; padding:13px; background:#eef3f8; }
+.calendar-actions small { color:var(--muted); }
+.honors-grid { display:grid; grid-template-columns:repeat(3,1fr); }
+.honors-grid article { padding:20px; border-right:1px dotted #cbb6bf; }
+.honors-grid article:last-child { border-right:0; }
+.eligibility-strip { display:grid; grid-template-columns:150px repeat(3,1fr); gap:1px; padding:1px; background:#b8c8d9; }
+.eligibility-strip>* { padding:10px; background:#eef3f8; font-size:9px; }
+.eligibility-strip strong { background:var(--ink); color:#fff; letter-spacing:.1em; }
+.guidance-grid { display:grid; grid-template-columns:1fr 1fr; }
+.guidance-grid>div { padding:22px; background:#fff8fa; border-right:1px dotted #cbb6bf; }
+.guidance-grid ul { margin:0; padding:0; list-style:none; }
+.guidance-grid li { padding:14px 17px; border-bottom:1px dotted #cbb6bf; }
+.guidance-grid li:last-child { border-bottom:0; }
+.guidance-grid li strong,.guidance-grid li span { display:block; }
+.guidance-grid li span { margin-top:4px; color:var(--muted); font-size:10px; }
+
+@media(max-width:900px){.academics-hero{grid-template-columns:1fr}.academics-hero aside{display:none}.academic-page-layout{grid-template-columns:1fr}.academic-side{position:static}.academic-index nav{display:grid;grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.academics-hero{margin:10px;padding:18px;background:#fffaf3}.academic-page-layout{padding:10px}.academic-index nav{grid-template-columns:1fr 1fr}.department-grid,.course-results,.academic-timeline,.honors-grid,.guidance-grid{grid-template-columns:1fr}.department-grid article,.course-results article,.academic-timeline article,.honors-grid article,.guidance-grid>div{border-right:0;border-bottom:1px dotted #cbb6bf}.course-controls{grid-template-columns:1fr}.requirements-table>div{grid-template-columns:1fr 90px}.requirements-table p{grid-column:1/-1}.graduation-intro{grid-template-columns:1fr}.credit-ring{display:none}.calendar-actions{align-items:flex-start;flex-direction:column}.eligibility-strip{grid-template-columns:1fr}.eligibility-strip>*{font-size:10px}}

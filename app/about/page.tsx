@@ -32,7 +32,7 @@ export default function AboutPage() {
         </div>
         <div className="nav-row">
           <nav aria-label="Primary navigation">
-            <a href="../">Home</a><a className="active" href="./">About</a><a href="../#academics">Academics</a><a href="../#campus-life">Campus Life</a><a href="../#clubs">Clubs</a><a href="../#calendar">Calendar</a><a href="../#news">News</a><a href="#directory">People</a><a href="../#gallery">Gallery</a>
+            <a href="../">Home</a><a className="active" href="./">About</a><a href="../academics/">Academics</a><a href="../#campus-life">Campus Life</a><a href="../#clubs">Clubs</a><a href="../academics/#calendar">Calendar</a><a href="../#news">News</a><a href="#directory">People</a><a href="../#gallery">Gallery</a>
           </nav>
           <a className="portal-button" href="../#portal-access">↪ Login / Portal</a>
         </div>
