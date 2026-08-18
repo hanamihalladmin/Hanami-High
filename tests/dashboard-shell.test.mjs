@@ -7,6 +7,7 @@ const manager=await readFile(new URL("../app/portal/CharacterManager.tsx",import
 const auth=await readFile(new URL("../app/portal/PortalAuthPanel.tsx",import.meta.url),"utf8");
 const roleClient=await readFile(new URL("../app/portal/RolePortalClient.tsx",import.meta.url),"utf8");
 const schedule=await readFile(new URL("../app/portal/SchedulePanel.tsx",import.meta.url),"utf8");
+const notices=await readFile(new URL("../app/portal/SchoolNoticesPanel.tsx",import.meta.url),"utf8");
 const academicMigration=await readFile(new URL("../supabase/migrations/20260818140500_academic_schedule_foundation.sql",import.meta.url),"utf8");
 
 test("dashboard is driven by the active character role",()=>{
@@ -19,6 +20,7 @@ test("dashboard is driven by the active character role",()=>{
 
 test("role dashboards use live authenticated modules without placeholder cards",()=>{
   assert.match(dashboard,/LIVE DASHBOARD/);
+  assert.match(dashboard,/SchoolNoticesPanel accessToken=\{accessToken\}/);
   assert.match(dashboard,/SchedulePanel accessToken=\{accessToken\} characterId=\{character\.id\}/);
   assert.match(dashboard,/CourseworkPanel/);
   assert.match(dashboard,/StudentActivitiesPanel/);
@@ -29,6 +31,14 @@ test("role dashboards use live authenticated modules without placeholder cards",
   assert.doesNotMatch(dashboard,/Module coming next/);
   assert.match(schedule,/section_memberships/);
   assert.match(schedule,/Authorization:`Bearer \$\{accessToken\}`/);
+});
+
+test("role dashboards read published notices from the Administration CMS",()=>{
+  assert.match(notices,/site_announcements/);
+  assert.match(notices,/Authorization:`Bearer \$\{accessToken\}`/);
+  assert.match(notices,/LIVE CMS/);
+  assert.match(notices,/is_test_data/);
+  assert.match(notices,/timeZone:"Asia\/Tokyo"/);
 });
 
 test("academic database keeps membership reads owner scoped",()=>{
