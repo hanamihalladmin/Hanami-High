@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 
 const adminClient=await readFile(new URL("../app/portal/admin/AdminPortalClient.tsx",import.meta.url),"utf8");
+const statusManager=await readFile(new URL("../app/portal/admin/AdminSchoolStatusManager.tsx",import.meta.url),"utf8");
 const manager=await readFile(new URL("../app/portal/admin/AdminAnnouncementManager.tsx",import.meta.url),"utf8");
 const eventManager=await readFile(new URL("../app/portal/admin/AdminEventManager.tsx",import.meta.url),"utf8");
 const directory=await readFile(new URL("../app/portal/admin/AdminCharacterDirectory.tsx",import.meta.url),"utf8");
@@ -13,6 +14,7 @@ const hardening=await readFile(new URL("../supabase/migrations/20260818165000_ha
 const directoryMigration=await readFile(new URL("../supabase/migrations/20260818170000_administration_character_directory.sql",import.meta.url),"utf8");
 const academicMigration=await readFile(new URL("../supabase/migrations/20260818171500_administration_academic_management_permissions.sql",import.meta.url),"utf8");
 const calendarMigration=await readFile(new URL("../supabase/migrations/20260818173000_school_calendar_events_foundation.sql",import.meta.url),"utf8");
+const statusMigration=await readFile(new URL("../supabase/migrations/20260818174500_live_school_status_foundation.sql",import.meta.url),"utf8");
 
 test("Administration is account permission based rather than character role based",()=>{
   assert.match(adminClient,/current_account_admin_access/);
@@ -36,6 +38,16 @@ test("public Administration RPCs are security-invoker wrappers around private he
   assert.match(hardening,/public\.current_account_admin_access/);
   assert.match(hardening,/security invoker/);
   assert.match(hardening,/private\.moderation_report_queue_internal/);
+});
+
+test("school status is public-read and content-editor managed",()=>{
+  assert.match(statusMigration,/public reads school status/);
+  assert.match(statusMigration,/content editors update school status/);
+  assert.match(statusMigration,/open','delayed','closed','holiday','emergency/);
+  assert.match(statusManager,/school_status_config/);
+  assert.match(statusManager,/Update school status/);
+  assert.match(statusManager,/timeZone:"Asia\/Tokyo"/);
+  assert.match(adminClient,/AdminSchoolStatusManager/);
 });
 
 test("announcement management is protected by permission-aware RLS",()=>{
@@ -86,6 +98,7 @@ test("Administration has its own website section",()=>{
   assert.match(adminPage,/ADMINISTRATION NETWORK/);
   assert.match(adminPage,/AdminPortalClient/);
   assert.match(adminPage,/Character roles cannot unlock admin tools/);
+  assert.match(adminClient,/AdminSchoolStatusManager/);
   assert.match(adminClient,/AdminAnnouncementManager/);
   assert.match(adminClient,/AdminEventManager/);
   assert.match(adminClient,/AdminModerationManager/);
