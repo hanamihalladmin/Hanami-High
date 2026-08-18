@@ -5,10 +5,12 @@ import {readFile} from "node:fs/promises";
 const adminClient=await readFile(new URL("../app/portal/admin/AdminPortalClient.tsx",import.meta.url),"utf8");
 const manager=await readFile(new URL("../app/portal/admin/AdminAnnouncementManager.tsx",import.meta.url),"utf8");
 const directory=await readFile(new URL("../app/portal/admin/AdminCharacterDirectory.tsx",import.meta.url),"utf8");
+const academics=await readFile(new URL("../app/portal/admin/AdminAcademicManager.tsx",import.meta.url),"utf8");
 const adminPage=await readFile(new URL("../app/portal/admin/page.tsx",import.meta.url),"utf8");
 const migration=await readFile(new URL("../supabase/migrations/20260818163000_administration_and_live_announcements_foundation.sql",import.meta.url),"utf8");
 const hardening=await readFile(new URL("../supabase/migrations/20260818165000_harden_administration_rpc_boundaries.sql",import.meta.url),"utf8");
 const directoryMigration=await readFile(new URL("../supabase/migrations/20260818170000_administration_character_directory.sql",import.meta.url),"utf8");
+const academicMigration=await readFile(new URL("../supabase/migrations/20260818171500_administration_academic_management_permissions.sql",import.meta.url),"utf8");
 
 test("Administration is account permission based rather than character role based",()=>{
   assert.match(adminClient,/current_account_admin_access/);
@@ -53,6 +55,18 @@ test("moderators have a private character directory rather than global profile e
   assert.match(directoryMigration,/limit 100/);
 });
 
+test("Site Admin academic management preserves role separation",()=>{
+  assert.match(adminClient,/access\.site_admin&&<AdminAcademicManager/);
+  assert.match(academics,/academic_courses/);
+  assert.match(academics,/class_sections/);
+  assert.match(academics,/section_meetings/);
+  assert.match(academics,/admin_assign_character_to_section/);
+  assert.match(academicMigration,/site admins manage academic courses/);
+  assert.match(academicMigration,/student membership requires a student character/);
+  assert.match(academicMigration,/instructor membership requires a faculty character/);
+  assert.match(academicMigration,/security invoker/);
+});
+
 test("Administration has its own website section",()=>{
   assert.match(adminPage,/ADMINISTRATION NETWORK/);
   assert.match(adminPage,/AdminPortalClient/);
@@ -60,4 +74,5 @@ test("Administration has its own website section",()=>{
   assert.match(adminClient,/AdminAnnouncementManager/);
   assert.match(adminClient,/AdminModerationManager/);
   assert.match(adminClient,/AdminCharacterDirectory/);
+  assert.match(adminClient,/AdminAcademicManager/);
 });
