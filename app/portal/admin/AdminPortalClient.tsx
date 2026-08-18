@@ -2,6 +2,7 @@
 
 import {useEffect,useState} from "react";
 import AdminAnnouncementManager from "./AdminAnnouncementManager";
+import AdminEventManager from "./AdminEventManager";
 import AdminModerationManager from "./AdminModerationManager";
 import AdminCharacterDirectory from "./AdminCharacterDirectory";
 import AdminAcademicManager from "./AdminAcademicManager";
@@ -23,6 +24,6 @@ export default function AdminPortalClient(){
   catch(error){if(!cancelled){setState("blocked");setMessage(error instanceof Error?error.message:"Administration access could not be verified.");}}}initialize();return()=>{cancelled=true;};},[]);
  function logout(){localStorage.removeItem(SESSION_KEY);localStorage.removeItem("hanami.portal.character.v1");window.location.assign("../");}
  if(state!=="ready"||!session||!access||!userId)return <section className={styles.gate}><p className="eyebrow">ADMINISTRATION</p><h2>{state==="loading"?"Verifying administration access…":"Administration access unavailable"}</h2><p>{message}</p><div className={styles.actions}><a href="../">Return to portal gateway</a>{session&&<button type="button" onClick={logout}>Logout</button>}</div></section>;
- const canModerate=access.site_admin||access.moderator;
- return <div className={styles.portal}><div className={styles.sessionBar}><div><strong>ADMINISTRATION PORTAL</strong><span>{message} {access.site_admin?"Site Admin":access.content_editor&&access.moderator?"Content Editor + Moderator":access.content_editor?"Content Editor":"Moderator"}</span></div><div className={styles.actions}><a href="../">Portal gateway</a><button type="button" onClick={logout}>Logout</button></div></div>{(access.site_admin||access.content_editor)&&<AdminAnnouncementManager accessToken={session.accessToken} userId={userId} access={access}/>} {canModerate&&<><AdminModerationManager accessToken={session.accessToken} userId={userId} access={access}/><AdminCharacterDirectory accessToken={session.accessToken}/></>}{access.site_admin&&<AdminAcademicManager accessToken={session.accessToken}/>}</div>;
+ const canModerate=access.site_admin||access.moderator;const canEditContent=access.site_admin||access.content_editor;
+ return <div className={styles.portal}><div className={styles.sessionBar}><div><strong>ADMINISTRATION PORTAL</strong><span>{message} {access.site_admin?"Site Admin":access.content_editor&&access.moderator?"Content Editor + Moderator":access.content_editor?"Content Editor":"Moderator"}</span></div><div className={styles.actions}><a href="../">Portal gateway</a><button type="button" onClick={logout}>Logout</button></div></div>{canEditContent&&<><AdminAnnouncementManager accessToken={session.accessToken} userId={userId} access={access}/><AdminEventManager accessToken={session.accessToken} userId={userId} access={access}/></>}{canModerate&&<><AdminModerationManager accessToken={session.accessToken} userId={userId} access={access}/><AdminCharacterDirectory accessToken={session.accessToken}/></>}{access.site_admin&&<AdminAcademicManager accessToken={session.accessToken}/>}</div>;
 }
