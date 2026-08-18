@@ -5,6 +5,7 @@ import {readFile} from "node:fs/promises";
 const dashboard=await readFile(new URL("../app/portal/DashboardShell.tsx",import.meta.url),"utf8");
 const manager=await readFile(new URL("../app/portal/CharacterManager.tsx",import.meta.url),"utf8");
 const auth=await readFile(new URL("../app/portal/PortalAuthPanel.tsx",import.meta.url),"utf8");
+const roleClient=await readFile(new URL("../app/portal/RolePortalClient.tsx",import.meta.url),"utf8");
 const schedule=await readFile(new URL("../app/portal/SchedulePanel.tsx",import.meta.url),"utf8");
 const academicMigration=await readFile(new URL("../supabase/migrations/20260818140500_academic_schedule_foundation.sql",import.meta.url),"utf8");
 
@@ -32,10 +33,11 @@ test("academic database keeps membership reads owner scoped",()=>{
   assert.match(academicMigration,/revoke insert, update, delete on public\.section_memberships from authenticated/);
 });
 
-test("active character changes propagate from switcher to dashboard",()=>{
+test("active character flows from gateway into role-specific dashboard",()=>{
   assert.match(manager,/onActiveCharacterChange/);
-  assert.match(manager,/rows\.find\(character=>character\.is_active\)/);
   assert.match(auth,/setActiveCharacter/);
-  assert.match(auth,/DashboardShell character=\{activeCharacter\} accessToken=\{session\.accessToken\}/);
-  assert.match(auth,/onActiveCharacterChange=\{setActiveCharacter\}/);
+  assert.match(auth,/Enter Student Portal/);
+  assert.match(auth,/Enter Faculty Portal/);
+  assert.doesNotMatch(auth,/DashboardShell character=/);
+  assert.match(roleClient,/DashboardShell character=\{character\} accessToken=\{session\.accessToken\}/);
 });
