@@ -6,6 +6,7 @@ const page=await readFile(new URL("../app/portal/owner/page.tsx",import.meta.url
 const owner=await readFile(new URL("../app/portal/owner/OwnerPortalClient.tsx",import.meta.url),"utf8");
 const gateway=await readFile(new URL("../app/portal/PortalAuthPanel.tsx",import.meta.url),"utf8");
 const workflow=await readFile(new URL("../.github/workflows/deploy-pages.yml",import.meta.url),"utf8");
+const claimMigration=await readFile(new URL("../supabase/migrations/20260818195549_allow_owner_created_unclaimed_admin_logins.sql",import.meta.url),"utf8");
 
 test("Owner has a separate exported portal section",()=>{
   assert.match(page,/OWNER CONTROL NETWORK/);
@@ -39,9 +40,13 @@ test("Owner gateway handoff is returned only after server Owner verification",()
   assert.match(gateway,/Enter Owner Portal/);
 });
 
-test("Owner can provision bound Administrator credentials",()=>{
+test("Owner can create bound or claimable Administrator logins",()=>{
   assert.match(owner,/owner_create_admin_credential/);
-  assert.match(owner,/target_discord_user_id/);
-  assert.match(owner,/ADMIN DISCORD USER ID/);
+  assert.match(owner,/target_discord_user_id:cleanTarget\|\|null/);
+  assert.match(owner,/ADMIN DISCORD USER ID • OPTIONAL/);
+  assert.match(owner,/first Discord account that successfully uses it will claim it permanently/);
   assert.match(owner,/ADMIN PASSWORD • 12\+ CHARACTERS/);
+  assert.match(claimMigration,/bound_discord_user_id is null/);
+  assert.match(claimMigration,/claimed_at = now\(\)/);
+  assert.match(claimMigration,/values\(auth\.uid\(\), 'site_admin', null\)/);
 });
