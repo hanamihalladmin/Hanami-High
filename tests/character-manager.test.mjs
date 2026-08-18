@@ -20,11 +20,19 @@ test("character creation uses the next open slot and starts private",()=>{
   assert.match(manager,/faculty/);
 });
 
-test("character switching updates the active account character",()=>{
+test("character switching updates and remembers the active character",()=>{
   assert.match(manager,/is_active=eq\.true/);
   assert.match(manager,/is_active:false/);
   assert.match(manager,/is_active:true/);
-  assert.match(manager,/Play this character/);
+  assert.match(manager,/hanami\.portal\.character\.v1/);
+  assert.match(manager,/localStorage\.setItem\(CHARACTER_SESSION_KEY,character\.id\)/);
+  assert.match(manager,/will stay active until logout/);
+});
+
+test("character selection restores across refreshes",()=>{
+  assert.match(manager,/localStorage\.getItem\(CHARACTER_SESSION_KEY\)/);
+  assert.match(manager,/character\.id===rememberedId&&character\.is_active/);
+  assert.match(manager,/is still your active Hanami character/);
 });
 
 test("database remains the final authority for the two-slot rule",()=>{
