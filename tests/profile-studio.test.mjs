@@ -74,10 +74,11 @@ test("private profile media is owner uploaded and privacy signed",()=>{
   assert.match(studio,/storage_path/);
   assert.match(studio,/5 MB/);
   assert.match(lookup,/profile-media-sign/);
-  assert.match(edgeFunction,/verify/);
+  assert.match(edgeFunction,/Missing authorization/);
+  assert.match(edgeFunction,/paths\.some\(path => !path\.startsWith/);
   assert.match(edgeFunction,/createSignedUrls\(paths, 300\)/);
   assert.match(edgeFunction,/can_view_character_profile/);
-  assert.match(edgeFunction,/targetCharacterId/);
+  assert.match(edgeFunction,/Profile media is not visible to this character/);
 });
 
 test("both role dashboards expose the shared Profile Design Workspace",()=>{
