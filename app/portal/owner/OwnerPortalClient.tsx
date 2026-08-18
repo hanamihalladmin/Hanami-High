@@ -40,12 +40,13 @@ export default function OwnerPortalClient(){
 
  async function createAdmin(event:FormEvent<HTMLFormElement>){
   event.preventDefault();if(!session||saving)return;
+  const cleanTarget=adminDiscordId.trim();
   setSaving(true);setMessage("Creating administrator credential…");
   try{
-   const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_create_admin_credential`,{method:"POST",headers:headers(session.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({requested_handle:adminHandle.trim().toLowerCase(),requested_password:adminPassword,target_discord_user_id:adminDiscordId.trim()})});
-   if(!response.ok)throw new Error("Administrator credential could not be created. Use a unique handle, 12+ character password, and the administrator's Discord user ID.");
+   const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_create_admin_credential`,{method:"POST",headers:headers(session.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({requested_handle:adminHandle.trim().toLowerCase(),requested_password:adminPassword,target_discord_user_id:cleanTarget||null})});
+   if(!response.ok)throw new Error("Administrator credential could not be created. Use a unique handle and a 12+ character password. A Discord user ID is optional.");
    setAdminHandle("");setAdminPassword("");setAdminDiscordId("");
-   setMessage("Administrator credential created and bound to that Discord user ID.");
+   setMessage(cleanTarget?"Administrator credential created and bound to that Discord user ID.":"Administrator login created. It will bind permanently to the first Discord account that successfully signs in with it.");
   }catch(error){setMessage(error instanceof Error?error.message:"Administrator credential could not be created.");}
   finally{setSaving(false);}
  }
@@ -89,14 +90,15 @@ export default function OwnerPortalClient(){
 
    <section className={styles.panel}>
     <div className={styles.label}>ADMINISTRATOR PROVISIONING</div>
-    <h3>Create a bound Administrator sign-in</h3>
-    <p>Administrator credentials are a second gate and are bound to a specific Discord user account. Use a Discord user ID, not a Discord role ID.</p>
+    <h3>Create an Administrator sign-in</h3>
+    <p>Create the Administrator handle and password here. Leave the Discord user ID blank to create an unclaimed login; the first Discord account that successfully uses it will claim it permanently. If you already know the administrator's individual Discord user ID, enter it to bind the login immediately.</p>
     <form className={styles.form} onSubmit={createAdmin}>
-     <label><span>ADMIN HANDLE</span><input value={adminHandle} onChange={event=>setAdminHandle(event.target.value)} maxLength={32} required/></label>
-     <label><span>ADMIN DISCORD USER ID</span><input value={adminDiscordId} onChange={event=>setAdminDiscordId(event.target.value)} inputMode="numeric" required/></label>
+     <label><span>ADMIN HANDLE</span><input value={adminHandle} onChange={event=>setAdminHandle(event.target.value)} maxLength={64} required/></label>
+     <label><span>ADMIN DISCORD USER ID • OPTIONAL</span><input value={adminDiscordId} onChange={event=>setAdminDiscordId(event.target.value)} inputMode="numeric" placeholder="Leave blank for first-login claim"/></label>
      <label><span>ADMIN PASSWORD • 12+ CHARACTERS</span><input type="password" value={adminPassword} onChange={event=>setAdminPassword(event.target.value)} minLength={12} required/></label>
-     <button type="submit" disabled={saving}>{saving?"Saving…":"Create Administrator Credential"}</button>
+     <button type="submit" disabled={saving}>{saving?"Saving…":"Create Administrator Login"}</button>
     </form>
+    <div className={styles.notice}>Important: an unclaimed login is a one-time claim credential. Give that handle/password only to the intended Administrator. After their first successful Administrator sign-in, it becomes bound to their Discord account and cannot be claimed by another account.</div>
    </section>
 
    <section className={`${styles.panel} ${styles.ownerOnly}`}>
