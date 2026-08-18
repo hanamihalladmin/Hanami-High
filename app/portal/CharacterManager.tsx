@@ -2,19 +2,20 @@
 
 import {FormEvent,useCallback,useEffect,useState} from "react";
 import styles from "./CharacterManager.module.css";
+import type {ActiveCharacter} from "./DashboardShell";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
 
 type CharacterRole="student"|"faculty";
-type Character={id:string;slot:number;role:CharacterRole;display_name:string;handle:string;visibility:"private"|"friends"|"public";is_active:boolean};
-type Props={accessToken:string};
+type Character=ActiveCharacter;
+type Props={accessToken:string;onActiveCharacterChange?:(character:Character|null)=>void};
 
 function authHeaders(accessToken:string,extra:Record<string,string>={}){
   return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`,...extra};
 }
 
-export default function CharacterManager({accessToken}:Props){
+export default function CharacterManager({accessToken,onActiveCharacterChange}:Props){
   const [userId,setUserId]=useState("");
   const [characters,setCharacters]=useState<Character[]>([]);
   const [loading,setLoading]=useState(true);
@@ -29,9 +30,10 @@ export default function CharacterManager({accessToken}:Props){
     if(!response.ok)throw new Error("Your character slots could not be loaded.");
     const rows=await response.json() as Character[];
     setCharacters(rows);
+    onActiveCharacterChange?.(rows.find(character=>character.is_active)??null);
     setNotice(rows.length?"Choose the character you want to play, or fill an open slot.":"Both character slots are open. Create your first Hanami character below.");
     return uid;
-  },[accessToken]);
+  },[accessToken,onActiveCharacterChange]);
 
   useEffect(()=>{
     let cancelled=false;
@@ -98,7 +100,7 @@ export default function CharacterManager({accessToken}:Props){
         const character=characters.find(item=>item.slot===slot);
         return <article className={`${styles.slot} ${character?.is_active?styles.active:""}`} key={slot}>
           <div className={styles.slotTop}><strong>SLOT {slot}</strong>{character?.is_active&&<span>ACTIVE</span>}</div>
-          {character?<><div className={styles.avatar}>花</div><h4>{character.display_name}</h4><p>@{character.handle}</p><dl><div><dt>Role</dt><dd>{character.role}</dd></div><div><dt>Privacy</dt><dd>{character.visibility}</dd></div></dl><button type="button" onClick={()=>switchCharacter(character)} disabled={saving||character.is_active}>{character.is_active?"Currently playing":"Play this character"}</button></>:<div className={styles.empty}><b>Open character slot</b><p>Create a student or faculty identity. New profiles begin private.</p></div>}
+          {character?<><div className={styles.avatar}>花</div><h4>{character.display_name}</h4><p>@{character.handle}</p><dl><div><dt>Role</dt><dd>{character.role}</dd></div><div><dt>Privacy</dt><dd>{character.visibility.replace("_"," ")}</dd></div></dl><button type="button" onClick={()=>switchCharacter(character)} disabled={saving||character.is_active}>{character.is_active?"Currently playing":"Play this character"}</button></>:<div className={styles.empty}><b>Open character slot</b><p>Create a student or faculty identity. New profiles begin private.</p></div>}
         </article>;
       })}
     </div>
