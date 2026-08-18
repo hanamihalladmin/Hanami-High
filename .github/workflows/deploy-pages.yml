@@ -51,12 +51,12 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           test -f out/portal/index.html
-          if grep -R -q 'Continue with Discord — setup pending' out/portal; then
+          if grep -R -q 'Continue with Discord — setup pending' out; then
             echo 'Stale portal markup reached the Pages artifact.'
             exit 1
           fi
-          grep -R -q 'LIVE DASHBOARD' out/portal || {
-            echo 'Live dashboard marker is missing from the Pages artifact.'
+          grep -R -q 'LIVE DASHBOARD' out || {
+            echo 'Live dashboard client bundle is missing from the Pages artifact.'
             exit 1
           }
       - uses: actions/upload-pages-artifact@v3
