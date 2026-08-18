@@ -40,6 +40,7 @@ jobs:
           test -f app/portal/CourseworkPanel.tsx
           test -f app/portal/FacultyCourseManager.tsx
           test -f app/portal/FacultyGradingPanel.tsx
+          test -f app/portal/InboxPanel.tsx
           grep -q 'auth/v1/authorize' app/portal/PortalAuthPanel.tsx
           grep -q 'Enter Student Portal' app/portal/PortalAuthPanel.tsx
           grep -q 'Enter Faculty Portal' app/portal/PortalAuthPanel.tsx
@@ -48,6 +49,8 @@ jobs:
           grep -q 'Submit assignment' app/portal/CourseworkPanel.tsx
           grep -q 'Create assignment' app/portal/FacultyCourseManager.tsx
           grep -q 'Return graded work' app/portal/FacultyGradingPanel.tsx
+          grep -q 'HANAMI MESSAGES' app/portal/InboxPanel.tsx
+          grep -q 'start_direct_conversation' app/portal/InboxPanel.tsx
           if grep -R -q 'Continue with Discord — setup pending' app; then
             echo 'Stale portal setup-pending UI is still present.'
             exit 1
@@ -65,6 +68,10 @@ jobs:
           fi
           grep -R -q 'LIVE DASHBOARD' out || {
             echo 'Live dashboard client bundle is missing from the Pages artifact.'
+            exit 1
+          }
+          grep -R -q 'HANAMI MESSAGES' out || {
+            echo 'Hanami Inbox client bundle is missing from the Pages artifact.'
             exit 1
           }
           grep -R -q 'Student Portal' out/portal/student || {
