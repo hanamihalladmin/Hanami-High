@@ -15,11 +15,13 @@ type Props={accessToken:string;viewerCharacterId:string};
 
 function headers(accessToken:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`,...extra};}
 
-function widgetView(widget:Widget){
+function widgetView(widget:Widget,mediaUrls:Record<string,string>){
   const s=widget.style;
   const base={width:"100%",height:"100%",display:"flex",alignItems:"center",justifyContent:s.textAlign==="center"?"center":s.textAlign==="right"?"flex-end":"flex-start",padding:widget.widget_type==="divider"?0:10,boxSizing:"border-box" as const,overflow:"hidden",background:String(s.background??"transparent"),color:String(s.color??"#17375f"),fontFamily:String(s.fontFamily??"Arial, sans-serif"),fontSize:Number(s.fontSize??16),textAlign:(s.textAlign??"left") as "left"|"center"|"right",borderRadius:Number(s.borderRadius??0),whiteSpace:"pre-wrap" as const};
-  if(widget.widget_type==="image")return widget.content.url?<img src={widget.content.url} alt={widget.content.alt||"Profile image"} style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:Number(s.borderRadius??0)}}/>:<div style={base}>IMAGE</div>;
-  if(widget.widget_type==="photo_strip")return <div style={{...base,gap:8,padding:8}}>{widget.content.url?<img src={widget.content.url} alt={widget.content.alt||"Profile photo strip"} style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:Number(s.borderRadius??0)}}/>:<><span>▧</span><span>▧</span><span>▧</span><span>▧</span></>}</div>;
+  const mediaPath=widget.content.storage_path;
+  const mediaSrc=(mediaPath&&mediaUrls[mediaPath])||widget.content.url;
+  if(widget.widget_type==="image")return mediaSrc?<img src={mediaSrc} alt={widget.content.alt||"Profile image"} style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:Number(s.borderRadius??0)}}/>:<div style={base}>IMAGE</div>;
+  if(widget.widget_type==="photo_strip")return <div style={{...base,gap:8,padding:8}}>{mediaSrc?<img src={mediaSrc} alt={widget.content.alt||"Profile photo strip"} style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:Number(s.borderRadius??0)}}/>:<><span>▧</span><span>▧</span><span>▧</span><span>▧</span></>}</div>;
   if(widget.widget_type==="divider")return <div style={base}/>;
   if(widget.widget_type==="marquee")return <div style={{...base,overflow:"hidden"}}><span className={styles.marqueeText}>{widget.content.text||"★ welcome ★"}</span></div>;
   if(widget.widget_type==="quote")return <div style={{...base,display:"block",padding:16}}><div>{widget.content.text||"Quote"}</div>{widget.content.credit&&<small style={{display:"block",marginTop:8,opacity:.7}}>{widget.content.credit}</small>}</div>;
@@ -30,14 +32,26 @@ export default function ProfileLookupPanel({accessToken,viewerCharacterId}:Props
   const [handle,setHandle]=useState("");
   const [profile,setProfile]=useState<VisibleProfile|null>(null);
   const [design,setDesign]=useState<Design|null>(null);
+  const [mediaUrls,setMediaUrls]=useState<Record<string,string>>({});
   const [message,setMessage]=useState("Search an exact Hanami handle to view an available character profile.");
   const [loading,setLoading]=useState(false);
+
+  async function signDesignMedia(targetCharacterId:string,nextDesign:Design|null){
+    const paths=[...new Set((nextDesign?.widgets??[]).map(widget=>widget.content.storage_path).filter(Boolean))];
+    if(!paths.length){setMediaUrls({});return;}
+    const response=await fetch(`${SUPABASE_URL}/functions/v1/profile-media-sign`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({viewer_character_id:viewerCharacterId,target_character_id:targetCharacterId,paths})});
+    if(!response.ok){setMediaUrls({});return;}
+    const payload=await response.json() as {files?:Array<{path?:string;signedUrl?:string;signedURL?:string;signed_url?:string;error?:string}>};
+    const next:Record<string,string>={};
+    for(const file of payload.files??[]){const url=file.signedUrl??file.signedURL??file.signed_url;if(file.path&&url&&!file.error)next[file.path]=url;}
+    setMediaUrls(next);
+  }
 
   async function search(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
     const clean=handle.trim().replace(/^@/,"").toLowerCase();
-    if(!/^[a-z0-9_]{3,24}$/.test(clean)){setProfile(null);setDesign(null);setMessage("Enter a valid Hanami handle using lowercase letters, numbers, or underscores.");return;}
-    setLoading(true);setProfile(null);setDesign(null);setMessage(`Checking profile visibility for @${clean}…`);
+    if(!/^[a-z0-9_]{3,24}$/.test(clean)){setProfile(null);setDesign(null);setMediaUrls({});setMessage("Enter a valid Hanami handle using lowercase letters, numbers, or underscores.");return;}
+    setLoading(true);setProfile(null);setDesign(null);setMediaUrls({});setMessage(`Checking profile visibility for @${clean}…`);
     try{
       const payload=JSON.stringify({viewer_character_id:viewerCharacterId,target_handle:clean});
       const [profileResponse,designResponse]=await Promise.all([
@@ -48,7 +62,9 @@ export default function ProfileLookupPanel({accessToken,viewerCharacterId}:Props
       const profileRows=await profileResponse.json() as VisibleProfile[];
       const designRows=await designResponse.json() as Design[];
       const result=profileRows[0]??null;
-      setProfile(result);setDesign(designRows[0]??null);
+      const nextDesign=designRows[0]??null;
+      setProfile(result);setDesign(nextDesign);
+      if(result)await signDesignMedia(result.character_id,nextDesign);
       setMessage(result?`@${clean} is visible to your active character.`:`@${clean} is private, friends-only, unavailable, or does not exist.`);
     }catch(error){setMessage(error instanceof Error?error.message:"The Hanami profile lookup could not be completed.");}
     finally{setLoading(false);}
@@ -60,7 +76,7 @@ export default function ProfileLookupPanel({accessToken,viewerCharacterId}:Props
     <div className={styles.heading}><div><p className="eyebrow">HANAMI PROFILES</p><h4 id="profile-search-title">Character lookup</h4></div><span>PRIVACY-AWARE</span></div>
     <form className={styles.search} onSubmit={search}><label><span>Exact Hanami handle</span><div><b>@</b><input value={handle} onChange={event=>setHandle(event.target.value)} maxLength={24} placeholder="character_handle" autoComplete="off"/><button type="submit" disabled={loading}>{loading?"Checking…":"View profile"}</button></div></label></form>
     <div className={styles.status} aria-live="polite">{message}</div>
-    {profile&&<><article className={styles.card}><div className={styles.avatar}>花</div><div className={styles.identity}><p className="eyebrow">{profile.role.toUpperCase()} • {profile.visibility.replace("_"," ").toUpperCase()}</p><h5>{profile.display_name}</h5><span>@{profile.handle}</span>{profile.status_message&&<blockquote>{profile.status_message}</blockquote>}</div><div className={styles.copy}><strong>{profile.headline||"Hanami character profile"}</strong><p>{profile.bio||"This character has not added a biography yet."}</p></div></article>{design&&<div className={styles.designWrap}><div className={styles.designLabel}><strong>CUSTOM PROFILE DESIGN</strong><span>{design.widgets.length} WIDGET{design.widgets.length===1?"":"S"}</span></div><div className={styles.previewScroller}><div className={styles.preview} style={{width:design.canvas.canvas_width*scale,height:Math.min(design.canvas.canvas_height*scale,760),background:design.canvas.background,backgroundImage:design.canvas.background_image_url?`url(${design.canvas.background_image_url})`:undefined,backgroundSize:"cover"}}>{design.widgets.map(widget=><div key={widget.id} className={styles.previewWidget} style={{left:widget.x*scale,top:widget.y*scale,width:widget.width*scale,height:widget.height*scale,zIndex:widget.z_index,opacity:widget.opacity,transform:`rotate(${widget.rotation}deg)`}}>{widgetView(widget)}</div>)}</div></div></div>}</>}
-    <div className={styles.privacy}><strong>VISIBILITY RULE</strong><span>Public profiles can be viewed by signed-in Hanami members. Friends-only profiles can be viewed by accepted character friends. Private profiles remain owner-only.</span></div>
+    {profile&&<><article className={styles.card}><div className={styles.avatar}>花</div><div className={styles.identity}><p className="eyebrow">{profile.role.toUpperCase()} • {profile.visibility.replace("_"," ").toUpperCase()}</p><h5>{profile.display_name}</h5><span>@{profile.handle}</span>{profile.status_message&&<blockquote>{profile.status_message}</blockquote>}</div><div className={styles.copy}><strong>{profile.headline||"Hanami character profile"}</strong><p>{profile.bio||"This character has not added a biography yet."}</p></div></article>{design&&<div className={styles.designWrap}><div className={styles.designLabel}><strong>CUSTOM PROFILE DESIGN</strong><span>{design.widgets.length} WIDGET{design.widgets.length===1?"":"S"}</span></div><div className={styles.previewScroller}><div className={styles.preview} style={{width:design.canvas.canvas_width*scale,height:Math.min(design.canvas.canvas_height*scale,760),background:design.canvas.background,backgroundImage:design.canvas.background_image_url?`url(${design.canvas.background_image_url})`:undefined,backgroundSize:"cover"}}>{design.widgets.map(widget=><div key={widget.id} className={styles.previewWidget} style={{left:widget.x*scale,top:widget.y*scale,width:widget.width*scale,height:widget.height*scale,zIndex:widget.z_index,opacity:widget.opacity,transform:`rotate(${widget.rotation}deg)`}}>{widgetView(widget,mediaUrls)}</div>)}</div></div></div>}</>}
+    <div className={styles.privacy}><strong>VISIBILITY RULE</strong><span>Public profiles can be viewed by signed-in Hanami members. Friends-only profiles can be viewed by accepted character friends. Private profiles remain owner-only. Private Hanami uploads use short-lived signed media links after the same visibility check.</span></div>
   </section>;
 }
