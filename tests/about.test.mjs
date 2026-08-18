@@ -4,11 +4,10 @@ import { readFile } from "node:fs/promises";
 
 const about = await readFile(new URL("../app/about/page.tsx", import.meta.url), "utf8");
 const directory = await readFile(new URL("../app/components/faculty-directory.tsx", import.meta.url), "utf8");
+const roleplayDate = await readFile(new URL("../app/components/roleplay-date.ts", import.meta.url), "utf8");
 
 test("About Hanami includes all approved public requirements", () => {
-  for (const expected of ["OUR STORY", "MISSION & VALUES", "SCHOOL LEADERSHIP", "HANAMI TRADITIONS", "SCHOOL AT A GLANCE", "CONTACT INFORMATION"]) {
-    assert.match(about, new RegExp(expected));
-  }
+  for (const expected of ["OUR STORY", "MISSION & VALUES", "SCHOOL LEADERSHIP", "HANAMI TRADITIONS", "SCHOOL AT A GLANCE", "CONTACT INFORMATION"]) assert.match(about, new RegExp(expected));
   assert.match(about, /FacultyDirectory/);
 });
 
@@ -18,8 +17,11 @@ test("faculty directory supports search and department filters", () => {
   assert.match(directory, /aria-live="polite"/);
 });
 
-test("About dates follow the Tokyo roleplay timezone", () => {
-  assert.match(about, /timeZone: "Asia\/Tokyo"/);
+test("About dates use the shared Tokyo 2006 roleplay clock", () => {
+  assert.match(about, /hanamiRoleplayDate/);
+  assert.match(roleplayDate, /HANAMI_ROLEPLAY_YEAR=2006/);
+  assert.match(roleplayDate, /timeZone:"Asia\/Tokyo"/);
+  assert.match(about, /INAUGURAL YEAR • 2006/);
 });
 
 test("About and Contact use real portal routes",()=>{
