@@ -16,10 +16,10 @@ const directoryMigration=await readFile(new URL("../supabase/migrations/20260818
 const academicMigration=await readFile(new URL("../supabase/migrations/20260818171500_administration_academic_management_permissions.sql",import.meta.url),"utf8");
 const calendarMigration=await readFile(new URL("../supabase/migrations/20260818173000_school_calendar_events_foundation.sql",import.meta.url),"utf8");
 const statusMigration=await readFile(new URL("../supabase/migrations/20260818174500_live_school_status_foundation.sql",import.meta.url),"utf8");
+const claimMigration=await readFile(new URL("../supabase/migrations/20260818195549_allow_owner_created_unclaimed_admin_logins.sql",import.meta.url),"utf8");
 
 test("Administration is account permission based rather than character role based",()=>{
   assert.match(adminClient,/current_account_admin_access/);
-  assert.match(adminClient,/Faculty character never grants admin access/);
   assert.doesNotMatch(adminClient,/character\.role/);
   assert.match(adminClient,/has_privileged_portal_session/);
   assert.match(privilegedLogin,/ADMINISTRATOR SIGN IN/);
@@ -30,11 +30,21 @@ test("Administration is account permission based rather than character role base
   assert.match(migration,/moderator/);
 });
 
-test("ordinary authenticated users cannot self grant Administration permissions",()=>{
+test("Owner-issued unclaimed Administrator login can bind on first successful sign-in",()=>{
+  assert.match(adminClient,/Owner-issued Administrator handle and password/);
+  assert.match(adminClient,/unclaimed login will bind permanently/);
+  assert.match(claimMigration,/bound_discord_user_id is null/);
+  assert.match(claimMigration,/update public\.privileged_portal_credentials/);
+  assert.match(claimMigration,/claimed_at = now\(\)/);
+  assert.match(claimMigration,/values\(auth\.uid\(\), 'site_admin', null\)/);
+});
+
+test("ordinary authenticated users cannot self grant Administration permissions without a valid Owner-issued credential",()=>{
   assert.match(migration,/revoke all on public\.account_permissions from anon, authenticated/);
   assert.doesNotMatch(migration,/create policy .*account_permissions.*insert/is);
   assert.match(migration,/private\.account_has_permission/);
   assert.match(hardening,/deny direct permission reads/);
+  assert.match(claimMigration,/extensions\.crypt\(requested_password, cred\.password_hash\)/);
 });
 
 test("public Administration RPCs are security-invoker wrappers around private helpers",()=>{
