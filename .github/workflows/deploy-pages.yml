@@ -1,5 +1,6 @@
 name: Deploy Hanami High
 
+# Deployment checkpoint: refresh full GitHub Pages export after portal/profile updates.
 on:
   push:
     branches: [main]
