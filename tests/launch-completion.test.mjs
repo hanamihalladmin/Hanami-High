@@ -11,7 +11,7 @@ test("launch gate synchronizes Discord roles without exposing bot credentials",(
   assert.match(discordSync,/HANAMI_DISCORD_GUILD_ID/);assert.match(discordSync,/HANAMI_DISCORD_BOT_TOKEN/);assert.match(discordSync,/discord\.com\/api\/v10\/guilds/);
   assert.match(gateway,/discord-role-sync/);assert.match(gateway,/current_discord_role_sync/);assert.match(gateway,/Resync roles/);
   assert.match(rolePortal,/roleSync\?\.sync_status==="synced"/);assert.match(rolePortal,/roleSync\[role\]/);
-  assert.match(admin,/roles\?\.administrator/);assert.match(admin,/roles\?\.owner/);
+  assert.match(admin,/roles\.administrator/);assert.match(admin,/roles\.owner/);
   assert.doesNotMatch(gateway,/HANAMI_DISCORD_BOT_TOKEN/);
 });
 
@@ -43,7 +43,7 @@ test("academic launch feature set includes attendance report cards and weighted 
 
 test("Profile Studio includes duplication shape choice and private backgrounds",()=>{
   assert.match(studio,/Duplicate/);assert.match(studio,/Corner radius/);assert.match(studio,/borderRadius/);
-  assert.match(workspace,/Upload background/);assert.match(workspace,/Clear background/);assert.match(studio,/background_storage_path/);assert.match(lookup,/background_storage_path/);
+  assert.match(workspace,/Upload background/);assert.match(workspace,/Clear background/);assert.match(workspace,/background_storage_path/);assert.match(lookup,/background_storage_path/);
 });
 
 test("public chronology is anchored to 2006 and calendar stays in-universe",()=>{
