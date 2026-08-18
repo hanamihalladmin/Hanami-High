@@ -55,6 +55,8 @@ jobs:
           grep -q 'Advising roster' app/portal/FacultyAdvisingPanel.tsx
           grep -q 'HANAMI MESSAGES' app/portal/InboxPanel.tsx
           grep -q 'start_direct_conversation' app/portal/InboxPanel.tsx
+          grep -q 'start_group_conversation' app/portal/InboxPanel.tsx
+          grep -q 'Create group' app/portal/InboxPanel.tsx
           if grep -R -q 'Continue with Discord — setup pending' app; then
             echo 'Stale portal setup-pending UI is still present.'
             exit 1
@@ -80,6 +82,10 @@ jobs:
           }
           grep -R -q 'HANAMI MESSAGES' out || {
             echo 'Hanami Inbox client bundle is missing from the Pages artifact.'
+            exit 1
+          }
+          grep -R -q 'Create group' out || {
+            echo 'Hanami group chat controls are missing from the Pages artifact.'
             exit 1
           }
           grep -R -q 'Activities & events' out || {
