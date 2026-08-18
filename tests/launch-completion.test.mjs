@@ -15,6 +15,15 @@ test("launch gate synchronizes Discord roles without exposing bot credentials",(
   assert.doesNotMatch(gateway,/HANAMI_DISCORD_BOT_TOKEN/);
 });
 
+test("Owner TEST Faculty fixture remains usable after Discord role sync is enabled",()=>{
+  assert.match(rolePortal,/current_owner_status/);
+  assert.match(rolePortal,/ownerTestFaculty/);
+  assert.match(rolePortal,/activeCharacter\.handle\.startsWith\("testfaculty_"\)/);
+  assert.match(rolePortal,/!roleSync\[role\]&&!ownerTestFaculty/);
+  assert.match(rolePortal,/sync_status==="not_member"&&!ownerTestFaculty/);
+  assert.match(rolePortal,/Owner TEST Faculty authorization verified/);
+});
+
 test("suspended accounts are blocked and governance is audited",()=>{
   assert.match(accountGate,/current_account_status/);assert.match(rolePortal,/current_account_status/);assert.match(admin,/current_account_status/);
   assert.match(governance,/account_governance_directory/);assert.match(governance,/set_account_status/);assert.match(governance,/system_audit_log_feed/);assert.match(governance,/Suspend/);assert.match(governance,/Reactivate/);
