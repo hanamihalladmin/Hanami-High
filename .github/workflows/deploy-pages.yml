@@ -33,11 +33,17 @@ jobs:
       - name: Verify portal source is current
         run: |
           test -f app/portal/PortalAuthPanel.tsx
+          test -f app/portal/RolePortalClient.tsx
+          test -f app/portal/student/page.tsx
+          test -f app/portal/faculty/page.tsx
           test -f app/portal/SchedulePanel.tsx
           test -f app/portal/CourseworkPanel.tsx
           test -f app/portal/FacultyCourseManager.tsx
           test -f app/portal/FacultyGradingPanel.tsx
           grep -q 'auth/v1/authorize' app/portal/PortalAuthPanel.tsx
+          grep -q 'Enter Student Portal' app/portal/PortalAuthPanel.tsx
+          grep -q 'Enter Faculty Portal' app/portal/PortalAuthPanel.tsx
+          grep -q 'hanami.portal.character.v1' app/portal/RolePortalClient.tsx
           grep -q 'section_memberships' app/portal/SchedulePanel.tsx
           grep -q 'Submit assignment' app/portal/CourseworkPanel.tsx
           grep -q 'Create assignment' app/portal/FacultyCourseManager.tsx
@@ -51,12 +57,22 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           test -f out/portal/index.html
+          test -f out/portal/student/index.html
+          test -f out/portal/faculty/index.html
           if grep -R -q 'Continue with Discord — setup pending' out; then
             echo 'Stale portal markup reached the Pages artifact.'
             exit 1
           fi
           grep -R -q 'LIVE DASHBOARD' out || {
             echo 'Live dashboard client bundle is missing from the Pages artifact.'
+            exit 1
+          }
+          grep -R -q 'Student Portal' out/portal/student || {
+            echo 'Student portal export is missing.'
+            exit 1
+          }
+          grep -R -q 'Faculty Portal' out/portal/faculty || {
+            echo 'Faculty portal export is missing.'
             exit 1
           }
       - uses: actions/upload-pages-artifact@v3
