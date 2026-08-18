@@ -32,7 +32,7 @@ export default function AboutPage() {
         </div>
         <div className="nav-row">
           <nav aria-label="Primary navigation">
-            <a href="../">Home</a><a className="active" href="./">About</a><a href="../academics/">Academics</a><a href="../#campus-life">Campus Life</a><a href="../#clubs">Clubs</a><a href="../academics/#calendar">Calendar</a><a href="../#news">News</a><a href="#directory">People</a><a href="../#gallery">Gallery</a>
+            <a href="../">Home</a><a className="active" href="./">About</a><a href="../academics/">Academics</a><a href="../campus-life/">Campus Life</a><a href="../campus-life/#directory">Clubs</a><a href="../academics/#calendar">Calendar</a><a href="../#news">News</a><a href="#directory">People</a><a href="../campus-life/#gallery">Gallery</a>
           </nav>
           <a className="portal-button" href="../#portal-access">↪ Login / Portal</a>
         </div>
@@ -66,7 +66,7 @@ export default function AboutPage() {
 
           <section className="info-section" id="leadership">
             <div className="section-heading"><h2>SCHOOL LEADERSHIP</h2><span>OFFICE DIRECTORY</span></div>
-            <div className="leadership-grid"><article><div className="portrait-placeholder">校</div><div><p className="eyebrow">HEAD OF SCHOOL</p><h3>Principal&apos;s Office</h3><p>Academic direction, faculty leadership, and whole-school planning.</p><a href="mailto:principal@hanamihigh.example">Contact office →</a></div></article><article><div className="portrait-placeholder">生</div><div><p className="eyebrow">STUDENT AFFAIRS</p><h3>Student Life Office</h3><p>Clubs, conduct, attendance support, events, and student wellbeing.</p><a href="mailto:studentlife@hanamihigh.example">Contact office →</a></div></article></div>
+            <div className="leadership-grid"><article><div className="portrait-placeholder">校</div><div><p className="eyebrow">HEAD OF SCHOOL</p><h3>Principal&apos;s Office</h3><p>Academic direction, faculty leadership, and whole-school planning.</p><a href="../#portal-access">Message through portal →</a></div></article><article><div className="portrait-placeholder">生</div><div><p className="eyebrow">STUDENT AFFAIRS</p><h3>Student Life Office</h3><p>Clubs, conduct, attendance support, events, and student wellbeing.</p><a href="../#portal-access">Message through portal →</a></div></article></div>
             <p className="content-note">Named roleplay staff will appear here as faculty profiles are approved.</p>
           </section>
 
@@ -84,7 +84,7 @@ export default function AboutPage() {
 
           <section className="info-section" id="contact">
             <div className="section-heading"><h2>CONTACT INFORMATION</h2><span>HANAMI CITY, JAPAN</span></div>
-            <div className="contact-grid"><article><h3>General Office</h3><p>For public information, records, school visits, and general questions.</p><a href="mailto:office@hanamihigh.example">office@hanamihigh.example</a><p>Monday–Friday<br />8:00 AM–3:30 PM JST</p></article><article><h3>Student Support</h3><p>For counseling, accessibility, health, safety, and student services.</p><a href="mailto:support@hanamihigh.example">support@hanamihigh.example</a><p>Private support tools will also be available inside the student portal.</p></article><article><h3>Portal Help</h3><p>For Discord sign-in, account access, profiles, and technical problems.</p><a href="mailto:help@hanamihigh.example">help@hanamihigh.example</a><p>Do not send passwords or private account codes by email.</p></article></div>
+            <div className="contact-grid"><article><h3>General Office</h3><p>For public information, records, school visits, and general questions.</p><a href="../#portal-access">Open an office conversation →</a><p>Monday–Friday<br />8:00 AM–3:30 PM JST</p></article><article><h3>Student Support</h3><p>For counseling, accessibility, health, safety, and student services.</p><a href="../#portal-access">Request private support →</a><p>Support conversations stay inside the authenticated portal.</p></article><article><h3>Portal Help</h3><p>For Discord sign-in, account access, profiles, and technical problems.</p><a href="../#portal-access">Open portal help →</a><p>Never share passwords or private account codes in a conversation.</p></article></div>
           </section>
         </div>
       </div>
