@@ -10,6 +10,7 @@ const dashboard=await readFile(new URL("../app/portal/DashboardShell.tsx",import
 const migration=await readFile(new URL("../supabase/migrations/20260818154500_customizable_profile_canvas_foundation.sql",import.meta.url),"utf8");
 const widgetMigration=await readFile(new URL("../supabase/migrations/20260818155000_expand_profile_widget_library.sql",import.meta.url),"utf8");
 const mediaMigration=await readFile(new URL("../supabase/migrations/20260818155500_profile_media_storage.sql",import.meta.url),"utf8");
+const backgroundMigration=await readFile(new URL("../supabase/migrations/20260818213000_profile_background_upload_support.sql",import.meta.url),"utf8");
 const dividerMigration=await readFile(new URL("../supabase/migrations/20260818180600_allow_thin_profile_dividers.sql",import.meta.url),"utf8");
 const capacityMigration=await readFile(new URL("../supabase/migrations/20260818180700_limit_profile_widgets_to_canvas_capacity.sql",import.meta.url),"utf8");
 const deleteMigration=await readFile(new URL("../supabase/migrations/20260818181300_confirm_profile_widget_deletion.sql",import.meta.url),"utf8");
@@ -32,16 +33,24 @@ test("Profile Studio uses independent saved widgets instead of a fixed profile t
   assert.match(studio,/Lock position/);
 });
 
-test("Profile Studio supports Canva-style multi-select history and alignment",()=>{
+test("Profile Studio supports Canva-style multi-select history alignment and duplication",()=>{
   assert.match(studio,/Shift-click/);
   assert.match(studio,/selectedIds/);
   assert.match(studio,/Undo/);
   assert.match(studio,/Redo/);
-  assert.match(studio,/Duplicate/);
+  assert.match(studio,/duplicateWidget/);
+  assert.match(studio,/>Duplicate</);
   assert.match(studio,/To front/);
   assert.match(studio,/To back/);
   assert.match(studio,/Align left/);
   assert.match(studio,/Align bottom/);
+});
+
+test("widgets support sharp or curved corners and duplication preserves styling",()=>{
+  assert.match(studio,/Corner radius/);
+  assert.match(studio,/borderRadius/);
+  assert.match(studio,/style: \{ \.\.\.selected\.style \}/);
+  assert.match(studio,/Widget duplicated/);
 });
 
 test("profile canvas and widgets remain owner scoped",()=>{
@@ -117,6 +126,16 @@ test("private profile media is owner uploaded and privacy signed",()=>{
   assert.match(edgeFunction,/createSignedUrls\(paths, 300\)/);
   assert.match(edgeFunction,/can_view_character_profile/);
   assert.match(edgeFunction,/Profile media is not visible to this character/);
+});
+
+test("profile background uploads persist and use privacy-aware media signing",()=>{
+  assert.match(backgroundMigration,/background_storage_path/);
+  assert.match(backgroundMigration,/visible_profile_design_internal/);
+  assert.match(workspace,/Upload background/);
+  assert.match(workspace,/background_storage_path/);
+  assert.match(workspace,/profile-media/);
+  assert.match(lookup,/background_storage_path/);
+  assert.match(lookup,/profile-media-sign/);
 });
 
 test("both role dashboards expose the shared Profile Design Workspace",()=>{
