@@ -2,6 +2,7 @@
 
 import {FormEvent,useCallback,useEffect,useState} from "react";
 import PrivilegedPortalLogin from "../PrivilegedPortalLogin";
+import AdminGovernancePanel from "../admin/AdminGovernancePanel";
 import styles from "./OwnerPortalClient.module.css";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
@@ -61,7 +62,7 @@ export default function OwnerPortalClient(){
  return <div className={styles.ownerShell}>
   <section className={styles.topBar}>
    <div><strong>Owner Control Center</strong><span>{message} • Owner controls are separate from Student, Faculty, and Administration roles.</span></div>
-   <div className={styles.actions}><a href="../">Portal Gateway</a><button type="button" onClick={lockOwner}>Lock Owner Portal</button></div>
+   <div className={styles.actions}><a href="../">Portal Gateway</a><a href="../admin/">Administration</a><button type="button" onClick={lockOwner}>Lock Owner Portal</button></div>
   </section>
 
   <div className={styles.grid}>
@@ -72,6 +73,7 @@ export default function OwnerPortalClient(){
     <div className={styles.statusList}>
      <div className={styles.statusRow}><strong>Discord Owner identity</strong><span>VERIFIED</span></div>
      <div className={styles.statusRow}><strong>Owner credential gate</strong><span>UNLOCKED</span></div>
+     <div className={styles.statusRow}><strong>Administrator portal</strong><span>AUTOMATIC ACCESS</span></div>
      <div className={styles.statusRow}><strong>Privileged session</strong><span>UP TO 8 HOURS</span></div>
      <div className={styles.statusRow}><strong>Character role required</strong><span>NO</span></div>
     </div>
@@ -80,9 +82,9 @@ export default function OwnerPortalClient(){
    <section className={styles.panel}>
     <div className={styles.label}>PORTAL ACCESS</div>
     <h3>Your network sections</h3>
-    <p>These remain separate portals. Opening one does not convert the Owner portal into that role or remove your Owner authorization.</p>
+    <p>These remain separate portals. Owner authority automatically satisfies Administrator eligibility without converting Student or Faculty character roles.</p>
     <div className={styles.portalGrid}>
-     <a className={styles.portalCard} href="../admin/"><strong>Administration</strong><span>School operations, CMS, moderation, academics, Office Requests.</span></a>
+     <a className={styles.portalCard} href="../admin/"><strong>Administration</strong><span>School operations, CMS, moderation, academics, accounts, audit logs, and Office Requests.</span></a>
      <a className={styles.portalCard} href="../student/"><strong>Student</strong><span>Open your active Student character portal when applicable.</span></a>
      <a className={styles.portalCard} href="../faculty/"><strong>Faculty</strong><span>Open your active Faculty or Owner-only TEST Faculty portal.</span></a>
     </div>
@@ -98,7 +100,7 @@ export default function OwnerPortalClient(){
      <label><span>ADMIN PASSWORD • 12+ CHARACTERS</span><input type="password" value={adminPassword} onChange={event=>setAdminPassword(event.target.value)} minLength={12} required/></label>
      <button type="submit" disabled={saving}>{saving?"Saving…":"Create Administrator Login"}</button>
     </form>
-    <div className={styles.notice}>Important: an unclaimed login is a one-time claim credential. Give that handle/password only to the intended Administrator. After their first successful Administrator sign-in, it becomes bound to their Discord account and cannot be claimed by another account.</div>
+    <div className={styles.notice}>An unclaimed login is a one-time claim credential. Give that handle/password only to the intended Administrator. After first successful sign-in it becomes bound to that Discord account.</div>
    </section>
 
    <section className={`${styles.panel} ${styles.ownerOnly}`}>
@@ -109,6 +111,7 @@ export default function OwnerPortalClient(){
     <div className={styles.actions} style={{marginTop:12}}><a href="../">Open Portal Gateway</a><a href="../faculty/">Open Faculty Portal</a></div>
    </section>
   </div>
+  <AdminGovernancePanel accessToken={session.accessToken} ownerMode/>
   <div className={styles.notice} aria-live="polite">{message}</div>
  </div>;
 }
