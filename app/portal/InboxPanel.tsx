@@ -20,6 +20,8 @@ export default function InboxPanel({accessToken,characterId}:Props){
   const [participants,setParticipants]=useState<Record<string,Participant[]>>({});
   const [selectedId,setSelectedId]=useState<string|null>(null);
   const [targetHandle,setTargetHandle]=useState("");
+  const [groupTitle,setGroupTitle]=useState("");
+  const [groupHandles,setGroupHandles]=useState("");
   const [body,setBody]=useState("");
   const [message,setMessage]=useState("Loading Hanami conversations…");
   const [sending,setSending]=useState(false);
@@ -44,7 +46,7 @@ export default function InboxPanel({accessToken,characterId}:Props){
     if(!membershipResponse.ok)throw new Error("Your Hanami conversations could not be checked.");
     const memberships=await membershipResponse.json() as {conversation_id:string}[];
     const ids=memberships.map(item=>item.conversation_id);
-    if(ids.length===0){setConversations([]);setSelectedId(null);setMessages([]);setMessage("No conversations yet. Start a private Hanami message by exact character handle.");return;}
+    if(ids.length===0){setConversations([]);setSelectedId(null);setMessages([]);setMessage("No conversations yet. Start a DM or group chat inside Hanami High.");return;}
     const filter=`(${ids.join(",")})`;
     const response=await fetch(`${SUPABASE_URL}/rest/v1/conversations?select=id,kind,title,created_at&id=in.${encodeURIComponent(filter)}&order=created_at.desc`,{headers:headers(accessToken)});
     if(!response.ok)throw new Error("Your Hanami conversations could not be loaded.");
@@ -76,6 +78,24 @@ export default function InboxPanel({accessToken,characterId}:Props){
     finally{setSending(false);}
   }
 
+  async function startGroup(event:FormEvent<HTMLFormElement>){
+    event.preventDefault();
+    const title=groupTitle.trim();
+    const handles=[...new Set(groupHandles.split(",").map(item=>item.trim().replace(/^@/,"").toLowerCase()).filter(Boolean))];
+    if(title.length<2||title.length>100){setMessage("Group title must be between 2 and 100 characters.");return;}
+    if(handles.length<1||handles.length>7||handles.some(handle=>!/^[a-z0-9_]{3,24}$/.test(handle))){setMessage("Add 1–7 valid Hanami handles separated by commas.");return;}
+    setSending(true);setMessage(`Creating group chat “${title}”…`);
+    try{
+      const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/start_group_conversation`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({sender_character_id:characterId,conversation_title:title,target_handles:handles})});
+      if(!response.ok){const detail=await response.text();throw new Error(detail.includes("could not be found")?"One or more Hanami handles could not be found.":"The group chat could not be created.");}
+      const conversationId=await response.json() as string;
+      setGroupTitle("");setGroupHandles("");
+      await loadConversations(conversationId);
+      setMessage(`Group chat “${title}” ready.`);
+    }catch(error){setMessage(error instanceof Error?error.message:"The group chat could not be created.");}
+    finally{setSending(false);}
+  }
+
   async function sendMessage(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
     const clean=body.trim();
@@ -98,7 +118,11 @@ export default function InboxPanel({accessToken,characterId}:Props){
   return <section className={styles.panel} aria-labelledby="inbox-title">
     <div className={styles.heading}><div><p className="eyebrow">HANAMI MESSAGES</p><h4 id="inbox-title">Website-native inbox</h4></div><span>{conversations.length} THREAD{conversations.length===1?"":"S"}</span></div>
     <div className={styles.status} aria-live="polite">{message}</div>
-    <form className={styles.startForm} onSubmit={startDirect}><label><span>Start private message by exact Hanami handle</span><div><b>@</b><input value={targetHandle} onChange={event=>setTargetHandle(event.target.value)} placeholder="character_handle" maxLength={24} autoComplete="off"/><button type="submit" disabled={sending}>Start DM</button></div></label><small>No external email app or email address is used.</small></form>
+    <div className={styles.startTools}>
+      <form className={styles.startForm} onSubmit={startDirect}><label><span>Private message</span><div><b>@</b><input value={targetHandle} onChange={event=>setTargetHandle(event.target.value)} placeholder="character_handle" maxLength={24} autoComplete="off"/><button type="submit" disabled={sending}>Start DM</button></div></label><small>Enter one exact Hanami handle.</small></form>
+      <form className={styles.groupForm} onSubmit={startGroup}><label><span>Group chat title</span><input value={groupTitle} onChange={event=>setGroupTitle(event.target.value)} placeholder="Study Group" maxLength={100}/></label><label><span>Invite 1–7 Hanami handles</span><input value={groupHandles} onChange={event=>setGroupHandles(event.target.value)} placeholder="hana_mori, test_student" autoComplete="off"/></label><button type="submit" disabled={sending}>Create group</button></form>
+    </div>
+    <div className={styles.nativeNotice}>No external email app or email address is used. Direct messages and group chats stay inside Hanami High.</div>
     <div className={styles.workspace}>
       <aside className={styles.threads}>{conversations.length===0?<p>No conversations yet.</p>:conversations.map(conversation=><button type="button" key={conversation.id} className={conversation.id===selectedId?styles.selected:""} onClick={()=>chooseConversation(conversation.id)}><strong>{titleFor(conversation)}</strong><span>{conversation.kind.toUpperCase()} • {timeLabel(conversation.created_at)}</span></button>)}</aside>
       <div className={styles.conversation}>{selected?<><div className={styles.conversationHead}><div><strong>{titleFor(selected)}</strong><span>{otherParticipants.length?otherParticipants.map(item=>`@${item.handle}`).join(" • "):selected.kind.toUpperCase()}</span></div><b>{selected.kind.toUpperCase()}</b></div><div className={styles.messages}>{messages.length===0?<p className={styles.emptyMessage}>No messages yet. Start the conversation below.</p>:messages.map(item=>{const mine=item.sender_character_id===characterId;const sender=participantMap.get(item.sender_character_id);return <article key={item.id} className={mine?styles.mine:""}><div><strong>{mine?"You":sender?.display_name??"Participant"}</strong><span>{timeLabel(item.created_at)}</span></div><p>{item.body}</p></article>;})}</div><form className={styles.composer} onSubmit={sendMessage}><label><span>Message as your active character</span><textarea value={body} onChange={event=>setBody(event.target.value)} maxLength={8000} placeholder="Write a Hanami message…"/></label><button type="submit" disabled={sending||!body.trim()}>{sending?"Sending…":"Send message"}</button></form></>:<div className={styles.empty}><strong>Select a conversation</strong><p>Your private Hanami messages stay inside the school website.</p></div>}</div>
