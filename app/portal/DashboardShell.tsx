@@ -3,9 +3,11 @@
 import styles from "./DashboardShell.module.css";
 import SchedulePanel from "./SchedulePanel";
 import CourseworkPanel from "./CourseworkPanel";
+import StudentAcademicRecordPanel from "./StudentAcademicRecordPanel";
 import FacultyCourseManager from "./FacultyCourseManager";
 import FacultyGradingPanel from "./FacultyGradingPanel";
 import FacultyAdvisingPanel from "./FacultyAdvisingPanel";
+import FacultyAttendanceReportPanel from "./FacultyAttendanceReportPanel";
 import InboxPanel from "./InboxPanel";
 import StudentActivitiesPanel from "./StudentActivitiesPanel";
 import StudentOpportunityPanel from "./StudentOpportunityPanel";
@@ -26,18 +28,18 @@ export default function DashboardShell({character,accessToken}:Props){
   const isStudent=character.role==="student";
   return <section className={styles.dashboard} aria-labelledby="dashboard-title">
     <div className={styles.hero}><div><p className="eyebrow">MY HANAMI • {isStudent?"STUDENT":"FACULTY"} DESK</p><h3 id="dashboard-title">Welcome back, {character.display_name}.</h3><p>@{character.handle} • {isStudent?"Student":"Faculty"} • Profile {character.visibility.replace("_"," ")}</p></div><div className={styles.identity}><span>ACTIVE CHARACTER</span><strong>SLOT {character.slot}</strong></div></div>
-    <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>{isStudent?"School Status, School Notices, School Calendar, Student Schedule, Coursework, Campus Activities, Campus Opportunities, School Office Requests, Hanami Messages, Friends, Profile & Privacy, Profile Templates, Hanami Profiles, and Profile Studio are connected to live Supabase data.":"School Status, School Notices, School Calendar, Faculty Schedule, Course Management, Grading, Student Advising, School Office Requests, Hanami Messages, Friends, Profile & Privacy, Profile Templates, Hanami Profiles, and Profile Studio are connected to live Supabase data."}</span></div>
+    <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>{isStudent?"School Status, School Notices, School Calendar, Student Schedule, Coursework, Academic Record, Campus Activities, Campus Opportunities, School Office Requests, Hanami Messages, Friends, Profile & Privacy, Profile Templates, Hanami Profiles, and Profile Studio are connected to live Supabase data.":"School Status, School Notices, School Calendar, Faculty Schedule, Course Management, Grading, Attendance, Report Cards, Student Advising, School Office Requests, Hanami Messages, Friends, Profile & Privacy, Profile Templates, Hanami Profiles, and Profile Studio are connected to live Supabase data."}</span></div>
     <SchoolStatusPanel accessToken={accessToken}/>
     <SchoolNoticesPanel accessToken={accessToken}/>
     <SchoolCalendarPanel accessToken={accessToken}/>
     <SchedulePanel accessToken={accessToken} characterId={character.id} role={character.role}/>
-    {isStudent?<><CourseworkPanel accessToken={accessToken} characterId={character.id}/><StudentActivitiesPanel accessToken={accessToken} characterId={character.id}/><StudentOpportunityPanel accessToken={accessToken} characterId={character.id}/></>:<><FacultyCourseManager accessToken={accessToken} characterId={character.id}/><FacultyGradingPanel accessToken={accessToken} characterId={character.id}/><FacultyAdvisingPanel accessToken={accessToken} characterId={character.id}/></>}
+    {isStudent?<><CourseworkPanel accessToken={accessToken} characterId={character.id}/><StudentAcademicRecordPanel accessToken={accessToken} characterId={character.id}/><StudentActivitiesPanel accessToken={accessToken} characterId={character.id}/><StudentOpportunityPanel accessToken={accessToken} characterId={character.id}/></>:<><FacultyCourseManager accessToken={accessToken} characterId={character.id}/><FacultyGradingPanel accessToken={accessToken} characterId={character.id}/><FacultyAttendanceReportPanel accessToken={accessToken} characterId={character.id}/><FacultyAdvisingPanel accessToken={accessToken} characterId={character.id}/></>}
     <OfficeRequestPanel accessToken={accessToken} characterId={character.id}/>
     <InboxPanel accessToken={accessToken} characterId={character.id}/>
     <FriendsPanel accessToken={accessToken} characterId={character.id}/>
     <CharacterProfilePanel accessToken={accessToken} characterId={character.id} currentVisibility={character.visibility}/>
     <ProfileDesignWorkspace accessToken={accessToken} characterId={character.id}/>
     <ProfileLookupPanel accessToken={accessToken} viewerCharacterId={character.id}/>
-    <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Status • Notices • Calendar • Classes • Assignments • Campus • Opportunities • School Office • Messages • Friends • Profile Studio":"Status • Notices • Calendar • Classes • Rosters • Assignments • School Office • Messages • Friends • Profile Studio"}</span></div>
+    <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Status • Notices • Calendar • Classes • Assignments • Academic Record • Campus • Opportunities • School Office • Messages • Friends • Profile Studio":"Status • Notices • Calendar • Classes • Rosters • Assignments • Attendance • Report Cards • School Office • Messages • Friends • Profile Studio"}</span></div>
   </section>;
 }
