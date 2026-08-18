@@ -21,3 +21,10 @@ test("faculty directory supports search and department filters", () => {
 test("About dates follow the Tokyo roleplay timezone", () => {
   assert.match(about, /timeZone: "Asia\/Tokyo"/);
 });
+
+test("About and Contact use real portal routes",()=>{
+  assert.doesNotMatch(about,/#portal-access/);
+  assert.match(about,/href="\.\.\/portal\/"/);
+  assert.match(about,/href="\.\.\/portal\/student\/"/);
+  assert.match(about,/href="\.\.\/calendar\/"/);
+});
