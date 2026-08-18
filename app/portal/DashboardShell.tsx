@@ -10,8 +10,7 @@ import InboxPanel from "./InboxPanel";
 import StudentActivitiesPanel from "./StudentActivitiesPanel";
 import CharacterProfilePanel from "./CharacterProfilePanel";
 import ProfileLookupPanel from "./ProfileLookupPanel";
-import ProfileStudioPanel from "./ProfileStudioPanel";
-import ProfileTemplateGallery from "./ProfileTemplateGallery";
+import ProfileDesignWorkspace from "./ProfileDesignWorkspace";
 import FriendsPanel from "./FriendsPanel";
 
 export type ActiveCharacter={id:string;slot:number;role:"student"|"faculty";display_name:string;handle:string;visibility:"private"|"friends_only"|"public";is_active:boolean};
@@ -28,8 +27,7 @@ export default function DashboardShell({character,accessToken}:Props){
     <InboxPanel accessToken={accessToken} characterId={character.id}/>
     <FriendsPanel accessToken={accessToken} characterId={character.id}/>
     <CharacterProfilePanel accessToken={accessToken} characterId={character.id} currentVisibility={character.visibility}/>
-    <ProfileTemplateGallery accessToken={accessToken} characterId={character.id}/>
-    <ProfileStudioPanel accessToken={accessToken} characterId={character.id}/>
+    <ProfileDesignWorkspace accessToken={accessToken} characterId={character.id}/>
     <ProfileLookupPanel accessToken={accessToken} viewerCharacterId={character.id}/>
     <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Classes • Assignments • Campus • Messages • Friends • Profile Studio":"Classes • Rosters • Assignments • Messages • Friends • Profile Studio"}</span></div>
   </section>;
