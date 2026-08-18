@@ -5,6 +5,7 @@ import {readFile} from "node:fs/promises";
 const panel=await readFile(new URL("../app/portal/CourseworkPanel.tsx",import.meta.url),"utf8");
 const dashboard=await readFile(new URL("../app/portal/DashboardShell.tsx",import.meta.url),"utf8");
 const migration=await readFile(new URL("../supabase/migrations/20260818141500_coursework_foundation.sql",import.meta.url),"utf8");
+const hardening=await readFile(new URL("../supabase/migrations/20260818142500_harden_student_submissions.sql",import.meta.url),"utf8");
 
 test("student coursework is scoped to the active character enrollments",()=>{
   assert.match(panel,/section_memberships\?select=section_id/);
@@ -24,9 +25,19 @@ test("coursework RLS separates students and instructors",()=>{
   assert.match(migration,/students read published assignments for own classes/);
   assert.match(migration,/instructors read assignments for own sections/);
   assert.match(migration,/students read own submissions/);
-  assert.match(migration,/students create own submissions/);
   assert.match(migration,/instructors update submissions for own sections/);
   assert.match(migration,/revoke delete on public\.assignment_submissions from authenticated/);
+});
+
+test("student submissions cannot spoof grading or keep editing after submit",()=>{
+  assert.match(hardening,/status in \('draft', 'submitted'\)/);
+  assert.match(hardening,/grade is null/);
+  assert.match(hardening,/feedback = ''/);
+  assert.match(hardening,/students update own draft submissions/);
+  assert.match(hardening,/status = 'draft'/);
+  assert.match(panel,/Save draft/);
+  assert.match(panel,/Submit assignment/);
+  assert.match(panel,/Submitting locks student editing/);
 });
 
 test("coursework keeps test data visibly labeled",()=>{
