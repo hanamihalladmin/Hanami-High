@@ -30,7 +30,23 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+      - name: Verify portal source is current
+        run: |
+          test -f app/portal/PortalAuthPanel.tsx
+          grep -q 'auth/v1/authorize' app/portal/PortalAuthPanel.tsx
+          if grep -R -q 'Continue with Discord — setup pending' app; then
+            echo 'Stale portal setup-pending UI is still present.'
+            exit 1
+          fi
       - run: npm run build
+      - name: Verify exported portal artifact
+        if: github.event_name != 'pull_request'
+        run: |
+          test -f out/portal/index.html
+          if grep -R -q 'Continue with Discord — setup pending' out/portal; then
+            echo 'Stale portal markup reached the Pages artifact.'
+            exit 1
+          fi
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'
         with:
