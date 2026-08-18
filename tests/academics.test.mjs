@@ -20,3 +20,10 @@ test("development course records are clearly identified as test data",()=>{
 test("academics uses Tokyo dates and documents 32-credit graduation",()=>{
   assert.match(academics,/timeZone:"Asia\/Tokyo"/); assert.match(academics,/32 CREDITS TOTAL/);
 });
+
+test("Academics uses real portal and complete calendar routes",()=>{
+  assert.doesNotMatch(academics,/#portal-access/);
+  assert.match(academics,/href="\.\.\/portal\/"/);
+  assert.match(academics,/href="\.\.\/portal\/student\/"/);
+  assert.match(academics,/href="\.\.\/calendar\/">View complete calendar/);
+});
