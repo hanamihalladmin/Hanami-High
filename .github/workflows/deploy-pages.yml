@@ -38,6 +38,7 @@ jobs:
           test -f app/portal/faculty/page.tsx
           test -f app/portal/SchedulePanel.tsx
           test -f app/portal/CourseworkPanel.tsx
+          test -f app/portal/StudentActivitiesPanel.tsx
           test -f app/portal/FacultyCourseManager.tsx
           test -f app/portal/FacultyGradingPanel.tsx
           test -f app/portal/InboxPanel.tsx
@@ -47,6 +48,7 @@ jobs:
           grep -q 'hanami.portal.character.v1' app/portal/RolePortalClient.tsx
           grep -q 'section_memberships' app/portal/SchedulePanel.tsx
           grep -q 'Submit assignment' app/portal/CourseworkPanel.tsx
+          grep -q 'Activities & events' app/portal/StudentActivitiesPanel.tsx
           grep -q 'Create assignment' app/portal/FacultyCourseManager.tsx
           grep -q 'Return graded work' app/portal/FacultyGradingPanel.tsx
           grep -q 'HANAMI MESSAGES' app/portal/InboxPanel.tsx
@@ -72,6 +74,10 @@ jobs:
           }
           grep -R -q 'HANAMI MESSAGES' out || {
             echo 'Hanami Inbox client bundle is missing from the Pages artifact.'
+            exit 1
+          }
+          grep -R -q 'Activities & events' out || {
+            echo 'Student Activities client bundle is missing from the Pages artifact.'
             exit 1
           }
           grep -R -q 'Student Portal' out/portal/student || {
