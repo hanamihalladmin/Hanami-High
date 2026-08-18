@@ -25,6 +25,8 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
