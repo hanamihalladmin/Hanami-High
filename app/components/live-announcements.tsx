@@ -1,0 +1,17 @@
+"use client";
+
+import {useEffect,useState} from "react";
+
+const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
+type Announcement={id:string;title:string;body:string;category:"general"|"event"|"urgent";featured:boolean;is_test_data:boolean;published_at:string|null};
+const fallback:Announcement[]=[{id:"fallback-feature",title:"Preparations begin for the Autumn Culture Festival",body:"Clubs may submit booth proposals through Friday. Student Council will publish the first approved roster next week.",category:"event",featured:true,is_test_data:true,published_at:"2026-08-18T00:00:00+09:00"},{id:"fallback-1",title:"Club recruitment week opens Monday",body:"Student organizations are preparing recruitment materials for the new term.",category:"general",featured:false,is_test_data:true,published_at:"2026-08-18T00:00:00+09:00"},{id:"fallback-2",title:"Honors course applications posted",body:"Academic departments have posted the next application window.",category:"general",featured:false,is_test_data:true,published_at:"2026-08-17T00:00:00+09:00"}];
+function shortDate(value:string|null){if(!value)return "--.--";return new Intl.DateTimeFormat("en-US",{month:"2-digit",day:"2-digit",timeZone:"Asia/Tokyo"}).format(new Date(value));}
+function longDate(value:string|null){if(!value)return "HANAMI NETWORK";return new Intl.DateTimeFormat("en-US",{month:"long",day:"numeric",year:"numeric",timeZone:"Asia/Tokyo"}).format(new Date(value)).toUpperCase();}
+
+export default function LiveAnnouncements(){
+ const [items,setItems]=useState<Announcement[]>(fallback);const [live,setLive]=useState(false);
+ useEffect(()=>{let cancelled=false;async function load(){try{const response=await fetch(`${SUPABASE_URL}/rest/v1/site_announcements?select=id,title,body,category,featured,is_test_data,published_at&order=featured.desc,published_at.desc&limit=5`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY}});if(!response.ok)return;const rows=await response.json() as Announcement[];if(!cancelled&&rows.length){setItems(rows);setLive(true);}}catch{/* Keep the public fallback when live content is temporarily unavailable. */}}load();return()=>{cancelled=true;};},[]);
+ const featured=items.find(item=>item.featured)??items[0];const latest=items.filter(item=>item.id!==featured.id).slice(0,4);
+ return <><section className="status-banner" aria-label="Featured announcement"><span className="status-label">{featured.category==="urgent"?"URGENT":"NOTICE"}</span><p><strong>{featured.title}</strong> {featured.body}</p><a href="#news">Read notice</a></section><section className="feature-grid" id="news" aria-label="School news"><article className="feature-story"><p className="eyebrow">FEATURED ANNOUNCEMENT {featured.is_test_data?"• TEST":""}</p><p className="story-date">{longDate(featured.published_at)}</p><h2>{featured.title}</h2><p>{featured.body}</p><span className="text-link">{live?"LIVE SCHOOL NETWORK":"FALLBACK PREVIEW"}</span></article><div className="news-list"><div className="section-heading"><h2>LATEST NEWS</h2><span>{live?"LIVE":"PREVIEW"}</span></div>{latest.length?latest.map(item=><article key={item.id}><time>{shortDate(item.published_at)}</time><a href="#news">{item.is_test_data?"[TEST] ":""}{item.title}</a></article>):<article><time>--.--</time><a href="#news">No additional announcements have been published.</a></article>}</div></section></>;
+}
