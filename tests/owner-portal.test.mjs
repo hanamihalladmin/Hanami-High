@@ -8,6 +8,7 @@ const gateway=await readFile(new URL("../app/portal/PortalAuthPanel.tsx",import.
 const workflow=await readFile(new URL("../.github/workflows/deploy-pages.yml",import.meta.url),"utf8");
 const claimMigration=await readFile(new URL("../supabase/migrations/20260818195549_allow_owner_created_unclaimed_admin_logins.sql",import.meta.url),"utf8");
 const ownerAdminAccessMigration=await readFile(new URL("../supabase/migrations/20260818201207_owner_automatic_administrator_portal_access.sql",import.meta.url),"utf8");
+const helperGrantMigration=await readFile(new URL("../supabase/migrations/20260818202431_restore_privileged_session_helper_execute.sql",import.meta.url),"utf8");
 
 test("Owner has a separate exported portal section",()=>{
   assert.match(page,/OWNER CONTROL NETWORK/);
@@ -28,6 +29,10 @@ test("Owner automatically satisfies the Administrator privileged gate",()=>{
   assert.match(ownerAdminAccessMigration,/private\.is_owner_discord_user\(\)/);
   assert.match(ownerAdminAccessMigration,/then true/);
   assert.match(ownerAdminAccessMigration,/privileged_portal_sessions/);
+});
+
+test("privileged session wrapper can execute its private helper",()=>{
+  assert.match(helperGrantMigration,/grant execute on function private\.has_privileged_portal_session_internal\(text\) to authenticated/);
 });
 
 test("Owner Control Center stays separate from Administration operations",()=>{
