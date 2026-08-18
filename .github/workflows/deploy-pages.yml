@@ -33,7 +33,15 @@ jobs:
       - name: Verify portal source is current
         run: |
           test -f app/portal/PortalAuthPanel.tsx
+          test -f app/portal/SchedulePanel.tsx
+          test -f app/portal/CourseworkPanel.tsx
+          test -f app/portal/FacultyCourseManager.tsx
+          test -f app/portal/FacultyGradingPanel.tsx
           grep -q 'auth/v1/authorize' app/portal/PortalAuthPanel.tsx
+          grep -q 'section_memberships' app/portal/SchedulePanel.tsx
+          grep -q 'Submit assignment' app/portal/CourseworkPanel.tsx
+          grep -q 'Create assignment' app/portal/FacultyCourseManager.tsx
+          grep -q 'Return graded work' app/portal/FacultyGradingPanel.tsx
           if grep -R -q 'Continue with Discord — setup pending' app; then
             echo 'Stale portal setup-pending UI is still present.'
             exit 1
@@ -47,6 +55,10 @@ jobs:
             echo 'Stale portal markup reached the Pages artifact.'
             exit 1
           fi
+          grep -R -q 'LIVE DASHBOARD' out/portal || {
+            echo 'Live dashboard marker is missing from the Pages artifact.'
+            exit 1
+          }
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'
         with:
