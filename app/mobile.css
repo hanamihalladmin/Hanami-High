@@ -1,0 +1,53 @@
+@media(max-width:900px){
+  .site-page{width:min(100% - 16px,1320px);margin:8px auto;border-top-width:4px}
+  .brand-row{min-height:auto;padding:12px;align-items:flex-start}
+  .school-clock{min-width:0;flex:0 1 240px}
+  .homepage-grid{grid-template-columns:1fr;gap:10px;padding:12px}
+  .left-rail,.right-rail{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-copy{grid-template-columns:1fr}
+  .sakura-seal{justify-self:start;width:96px;height:96px}
+  .about-layout,.academic-page-layout,.campus-page-layout{grid-template-columns:1fr!important}
+  .about-nav,.academic-side,.campus-side{position:static!important}
+  .portal-gateway{grid-template-columns:1fr!important}
+}
+@media(max-width:640px){
+  body{font-size:12px;background-size:14px 14px}
+  .site-page{width:100%;margin:0;border-left:0;border-right:0;box-shadow:none}
+  .network-strip{font-size:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .brand-row{display:grid;grid-template-columns:1fr;gap:10px}
+  .brand-lockup{gap:9px}
+  .school-mark{width:48px;height:48px;flex-basis:48px;font-size:20px}
+  .brand-lockup h1,.brand-name{font-size:25px!important;white-space:normal!important}
+  .school-clock{width:100%;text-align:left}
+  .nav-row{display:block;padding:6px;overflow:hidden}
+  .nav-row nav{display:flex;width:100%;overflow-x:auto;padding-bottom:3px}
+  .nav-row nav a,.portal-button{min-height:38px;padding:8px 10px;font-size:10px}
+  .portal-button{margin-top:6px;justify-content:center}
+  .status-banner{grid-template-columns:1fr;margin:10px;padding:9px}
+  .homepage-grid{padding:10px}
+  .left-rail,.right-rail{grid-template-columns:1fr}
+  .hero-panel{padding:14px}
+  .hero-copy h2{font-size:34px}
+  .hero-actions{align-items:stretch}
+  .hero-actions a{width:100%}
+  .academic-grid,.campus-columns,.values-grid,.leadership-grid,.statistics-grid,.department-grid,.honors-grid,.guidance-grid,.government-grid,.campus-services,.opportunity-grid,.contact-grid{grid-template-columns:1fr!important}
+  .portal-gateway{padding:10px!important}
+  .portal-intro{padding:16px!important}
+  .portal-intro h1{font-size:40px!important}
+  .portal-status{grid-template-columns:1fr!important}
+  .portal-features,.portal-rules{margin-left:10px!important;margin-right:10px!important}
+  .school-header+*{scroll-margin-top:8px}
+  button,input,select,textarea,a.primary-action,a.secondary-action{touch-action:manipulation}
+  input,select,textarea{font-size:16px!important}
+}
+@media(max-width:420px){
+  .brand-lockup h1,.brand-name{font-size:22px!important}
+  .brand-subtitle,.jp-name{font-size:8px}
+  .hero-copy h2{font-size:30px}
+  .section-heading{align-items:flex-start;gap:6px;flex-direction:column}
+  footer{display:grid!important;gap:8px;padding:12px!important}
+  footer nav{display:flex;gap:8px;flex-wrap:wrap}
+}
+@media(hover:none) and (pointer:coarse){
+  button,.nav-row a,.portal-button,.primary-action,.secondary-action{min-height:40px}
+}
