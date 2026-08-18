@@ -5,6 +5,7 @@ import SchedulePanel from "./SchedulePanel";
 import CourseworkPanel from "./CourseworkPanel";
 import FacultyCourseManager from "./FacultyCourseManager";
 import FacultyGradingPanel from "./FacultyGradingPanel";
+import InboxPanel from "./InboxPanel";
 
 export type ActiveCharacter={id:string;slot:number;role:"student"|"faculty";display_name:string;handle:string;visibility:"private"|"friends_only"|"public";is_active:boolean};
 
@@ -12,12 +13,10 @@ type Props={character:ActiveCharacter|null;accessToken:string};
 
 const studentCards=[
   ["CAMPUS","Activities","Clubs, student government, and school events tied to this character."],
-  ["MESSAGES","Hanami inbox","Private website-native conversations with classmates, faculty, and offices."],
 ] as const;
 
 const facultyCards=[
   ["STUDENTS","Advising","Advisory information and approved student support tools for this character."],
-  ["MESSAGES","Hanami inbox","Private website-native conversations with students, faculty, and offices."],
 ] as const;
 
 export default function DashboardShell({character,accessToken}:Props){
@@ -29,9 +28,10 @@ export default function DashboardShell({character,accessToken}:Props){
       <div><p className="eyebrow">MY HANAMI • {isStudent?"STUDENT":"FACULTY"} DESK</p><h3 id="dashboard-title">Welcome back, {character.display_name}.</h3><p>@{character.handle} • {isStudent?"Student":"Faculty"} • Profile {character.visibility.replace("_"," ")}</p></div>
       <div className={styles.identity}><span>ACTIVE CHARACTER</span><strong>SLOT {character.slot}</strong></div>
     </div>
-    <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>Schedules are live for both roles. Student coursework supports drafts/submission; faculty can create assignments and return graded work. Remaining cards stay clearly marked until connected.</span></div>
+    <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>Schedules and Hanami Messages are live for both roles. Students have coursework/submissions; faculty have assignment management/grading. Only the remaining role-specific card below is still a placeholder.</span></div>
     <SchedulePanel accessToken={accessToken} characterId={character.id} role={character.role}/>
-    {isStudent?<CourseworkPanel accessToken={accessToken} characterId={character.id}/>:<><FacultyCourseManager accessToken={accessToken} characterId={character.id}/><FacultyGradingPanel accessToken={accessToken} characterId={character.id}/></>} 
+    {isStudent?<CourseworkPanel accessToken={accessToken} characterId={character.id}/>:<><FacultyCourseManager accessToken={accessToken} characterId={character.id}/><FacultyGradingPanel accessToken={accessToken} characterId={character.id}/></>}
+    <InboxPanel accessToken={accessToken} characterId={character.id}/>
     <div className={styles.grid}>{cards.map(([label,title,copy])=><article key={title}><span>{label}</span><h4>{title}</h4><p>{copy}</p><button type="button" disabled>Module coming next</button></article>)}</div>
     <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Classes • Assignments • Calendar • Campus • Messages":"Classes • Rosters • Assignments • Calendar • Messages"}</span></div>
   </section>;
