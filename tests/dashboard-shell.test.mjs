@@ -17,13 +17,18 @@ test("dashboard is driven by the active character role",()=>{
   assert.match(dashboard,/Faculty/);
 });
 
-test("schedule is a real authenticated module while remaining modules stay labeled",()=>{
+test("role dashboards use live authenticated modules without placeholder cards",()=>{
   assert.match(dashboard,/LIVE DASHBOARD/);
   assert.match(dashboard,/SchedulePanel accessToken=\{accessToken\} characterId=\{character\.id\}/);
-  assert.match(dashboard,/Module coming next/);
+  assert.match(dashboard,/CourseworkPanel/);
+  assert.match(dashboard,/StudentActivitiesPanel/);
+  assert.match(dashboard,/FacultyCourseManager/);
+  assert.match(dashboard,/FacultyGradingPanel/);
+  assert.match(dashboard,/FacultyAdvisingPanel/);
+  assert.match(dashboard,/InboxPanel/);
+  assert.doesNotMatch(dashboard,/Module coming next/);
   assert.match(schedule,/section_memberships/);
   assert.match(schedule,/Authorization:`Bearer \$\{accessToken\}`/);
-  assert.match(schedule,/No classes have been assigned to this character yet/);
 });
 
 test("academic database keeps membership reads owner scoped",()=>{
