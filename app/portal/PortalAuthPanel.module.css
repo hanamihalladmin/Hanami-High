@@ -1,0 +1,5 @@
+.accountCard{margin-top:18px;padding:18px;background:#eef3f8;border:1px solid #9babc0;box-shadow:2px 2px 0 rgba(23,55,95,.12)}
+.accountCard h2{margin:4px 0;font:400 28px Georgia,serif}
+.handle{margin:0 0 12px;color:#66758a;font-size:11px;font-weight:700}
+.note{margin:12px 0;color:#53647a;font-size:11px;line-height:1.55}
+.signout{display:inline-flex;justify-content:center;align-items:center;min-height:38px;margin-top:4px;padding:8px 14px;cursor:pointer}
