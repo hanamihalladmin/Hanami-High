@@ -20,14 +20,14 @@ export default function Home() {
           <div className="brand-lockup"><div className="school-mark" aria-hidden="true"><span>花</span></div><div><p className="jp-name">花見高等学校</p><h1>HANAMI HIGH SCHOOL</h1><p className="brand-subtitle">Knowledge • Character • Community</p></div></div>
           <div className="school-clock" aria-label={`Today is ${currentDate}`}><strong>{currentDate.toUpperCase()}</strong><span>HANAMI CITY • SCHOOL STATUS: OPEN</span></div>
         </div>
-        <div className="nav-row"><nav aria-label="Primary navigation">{navigation.map(([label, href], index) => <a className={index === 0 ? "active" : ""} href={href} key={label}>{label}</a>)}</nav><a className="portal-button" href="#portal-access">↪ Login / Portal</a></div>
+        <div className="nav-row"><nav aria-label="Primary navigation">{navigation.map(([label, href], index) => <a className={index === 0 ? "active" : ""} href={href} key={label}>{label}</a>)}</nav><a className="portal-button" href="./portal/">↪ Login / Portal</a></div>
       </header>
 
       <section className="status-banner" aria-label="Featured announcement"><span className="status-label">NOTICE</span><p><strong>Welcome to the new Hanami High network.</strong> Summer office hours are Monday–Friday, 8:00 AM–3:30 PM.</p><a href="#news">Read notice</a></section>
 
       <div className="homepage-grid">
         <aside className="left-rail" aria-label="Quick links and portal access">
-          <section className="panel" id="portal-access"><h2 className="panel-title">PORTAL ACCESS</h2><div className="panel-body portal-panel"><p className="eyebrow">HANAMI SCHOOL NETWORK</p><p>Students and faculty can access their private school desk here.</p><a className="primary-action" href="#login-information">Student Login</a><a className="secondary-action" href="#login-information">Faculty Login</a><small id="login-information">Discord access opens with registration.</small></div></section>
+          <section className="panel" id="portal-access"><h2 className="panel-title">PORTAL ACCESS</h2><div className="panel-body portal-panel"><p className="eyebrow">HANAMI SCHOOL NETWORK</p><p>Students and faculty can access their private school desk here.</p><a className="primary-action" href="./portal/">Student Login</a><a className="secondary-action" href="./portal/">Faculty Login</a><small>Discord access and character selection will open here.</small></div></section>
           <section className="panel"><h2 className="panel-title">QUICK LINKS</h2><div className="link-list">{quickLinks.map(([icon, label, href]) => <a href={href} key={label}><span>{icon}</span>{label}</a>)}</div></section>
           <section className="panel network-panel"><h2 className="panel-title">NETWORK STATUS</h2><div className="panel-body"><p><i aria-hidden="true" /> ONLINE • 2026</p><small>Student Web Committee</small></div></section>
         </aside>
