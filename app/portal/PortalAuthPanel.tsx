@@ -58,18 +58,31 @@ async function loadProfile(accessToken:string):Promise<AccountProfile|null>{
   const rows=await response.json() as AccountProfile[];
   return rows[0]??null;
 }
+async function loadOwnerStatus(accessToken:string):Promise<boolean>{
+  try{
+    const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/current_owner_status`,{
+      method:"POST",
+      headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`,"Content-Type":"application/json"},
+      body:"{}",
+    });
+    if(!response.ok)return false;
+    return Boolean(await response.json());
+  }catch{return false;}
+}
 
 export default function PortalAuthPanel(){
   const [state,setState]=useState<ViewState>("checking");
   const [profile,setProfile]=useState<AccountProfile|null>(null);
   const [session,setSession]=useState<PortalSession|null>(null);
   const [activeCharacter,setActiveCharacter]=useState<ActiveCharacter|null>(null);
+  const [isOwner,setIsOwner]=useState(false);
   const [message,setMessage]=useState("Checking this browser for an existing Hanami session.");
 
   const finishSignedIn=useCallback(async(activeSession:PortalSession)=>{
     saveSession(activeSession);
-    const account=await loadProfile(activeSession.accessToken);
+    const [account,ownerStatus]=await Promise.all([loadProfile(activeSession.accessToken),loadOwnerStatus(activeSession.accessToken)]);
     setProfile(account);
+    setIsOwner(ownerStatus);
     setSession(activeSession);
     setState("signed-in");
     setMessage("Discord authentication is active. Choose or continue your Hanami character below.");
@@ -105,7 +118,7 @@ export default function PortalAuthPanel(){
     try{
       if(activeSession)await fetch(`${SUPABASE_URL}/rest/v1/characters?is_active=eq.true`,{method:"PATCH",headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${activeSession.accessToken}`,"Content-Type":"application/json"},body:JSON.stringify({is_active:false})});
     }finally{
-      clearSession();setProfile(null);setSession(null);setActiveCharacter(null);setState("signed-out");setMessage("Signed out on this device. Choose a character again the next time you enter Hanami High.");
+      clearSession();setProfile(null);setSession(null);setActiveCharacter(null);setIsOwner(false);setState("signed-out");setMessage("Signed out on this device. Choose a character again the next time you enter Hanami High.");
     }
   }
 
@@ -114,7 +127,7 @@ export default function PortalAuthPanel(){
 
   return <>
     <div className={`portal-status portal-status-${state}`} aria-live="polite"><strong>{state==="checking"?"CHECKING SESSION":state==="signed-in"?"SIGNED IN":state==="error"?"SIGN-IN NOTICE":"DISCORD ACCESS"}</strong><span>{message}</span></div>
-    {state==="signed-in"&&session?<div className={styles.accountCard}><p className="eyebrow">CURRENT HANAMI ACCOUNT</p><h2>{profile?.display_name??"Hanami Member"}</h2>{profile?.discord_username&&<p className={styles.handle}>@{profile.discord_username}</p>}<p className={styles.note}>This page is your character gateway. Student and Faculty school tools open in their own portal sections.</p>{portalPath&&portalLabel&&<div className={styles.portalHandoff}><div><strong>{activeCharacter?.display_name}</strong><span>{activeCharacter?.role==="student"?"Student character active":"Faculty character active"} • stays active until logout</span></div><a href={portalPath}>{portalLabel} →</a></div>}<CharacterManager accessToken={session.accessToken} onActiveCharacterChange={setActiveCharacter}/><button className={`secondary-action ${styles.signout}`} type="button" onClick={signOut}>Logout</button></div>:<button className="discord-button" type="button" onClick={signIn} disabled={state==="checking"}><span>◉</span>{state==="checking"?" Checking session…":" Continue with Discord"}</button>}
+    {state==="signed-in"&&session?<div className={styles.accountCard}><p className="eyebrow">CURRENT HANAMI ACCOUNT</p><h2>{profile?.display_name??"Hanami Member"}</h2>{profile?.discord_username&&<p className={styles.handle}>@{profile.discord_username}</p>}<p className={styles.note}>This page is your character gateway. Student and Faculty school tools open in their own portal sections.</p>{isOwner&&<div className={`${styles.portalHandoff} ${styles.ownerHandoff}`}><div><strong>Hanami Owner Control</strong><span>Verified Owner account • separate privileged portal</span></div><a href="./owner/">Enter Owner Portal →</a></div>}{portalPath&&portalLabel&&<div className={styles.portalHandoff}><div><strong>{activeCharacter?.display_name}</strong><span>{activeCharacter?.role==="student"?"Student character active":"Faculty character active"} • stays active until logout</span></div><a href={portalPath}>{portalLabel} →</a></div>}<CharacterManager accessToken={session.accessToken} onActiveCharacterChange={setActiveCharacter}/><button className={`secondary-action ${styles.signout}`} type="button" onClick={signOut}>Logout</button></div>:<button className="discord-button" type="button" onClick={signIn} disabled={state==="checking"}><span>◉</span>{state==="checking"?" Checking session…":" Continue with Discord"}</button>}
     <small>Hanami High never asks for a portal password and never displays your Discord email address. Access to private school data is enforced by Supabase Row Level Security.</small>
   </>;
 }
