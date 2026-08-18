@@ -3,7 +3,7 @@
 import {useCallback,useEffect,useState} from "react";
 import styles from "./PortalAuthPanel.module.css";
 import CharacterManager from "./CharacterManager";
-import DashboardShell,{type ActiveCharacter} from "./DashboardShell";
+import type {ActiveCharacter} from "./DashboardShell";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
@@ -72,7 +72,7 @@ export default function PortalAuthPanel(){
     setProfile(account);
     setSession(activeSession);
     setState("signed-in");
-    setMessage("Discord authentication is active. Your private Hanami account is ready.");
+    setMessage("Discord authentication is active. Choose or continue your Hanami character below.");
   },[]);
 
   useEffect(()=>{
@@ -80,29 +80,14 @@ export default function PortalAuthPanel(){
     async function initialize(){
       try{
         const authError=oauthErrorFromLocation();
-        if(authError){
-          clearSession();
-          if(!cancelled){setState("error");setMessage(`Discord sign-in was not completed: ${authError}`);}
-          history.replaceState({},document.title,window.location.pathname);
-          return;
-        }
+        if(authError){clearSession();if(!cancelled){setState("error");setMessage(`Discord sign-in was not completed: ${authError}`);}history.replaceState({},document.title,window.location.pathname);return;}
         const returned=sessionFromHash();
-        if(returned){
-          history.replaceState({},document.title,window.location.pathname);
-          if(!cancelled)await finishSignedIn(returned);
-          return;
-        }
+        if(returned){history.replaceState({},document.title,window.location.pathname);if(!cancelled)await finishSignedIn(returned);return;}
         let stored=readStoredSession();
         if(!stored){if(!cancelled){setState("signed-out");setMessage("Sign in with Discord to open your private Hanami school desk.");}return;}
-        if(stored.expiresAt-Date.now()<120000){
-          stored=await refreshSession(stored);
-          if(!stored){clearSession();if(!cancelled){setState("signed-out");setMessage("Your previous session expired. Sign in with Discord again.");}return;}
-        }
+        if(stored.expiresAt-Date.now()<120000){stored=await refreshSession(stored);if(!stored){clearSession();if(!cancelled){setState("signed-out");setMessage("Your previous session expired. Sign in with Discord again.");}return;}}
         if(!cancelled)await finishSignedIn(stored);
-      }catch(error){
-        clearSession();
-        if(!cancelled){setState("error");setMessage(error instanceof Error?error.message:"The Hanami session could not be restored.");}
-      }
+      }catch(error){clearSession();if(!cancelled){setState("error");setMessage(error instanceof Error?error.message:"The Hanami session could not be restored.");}}
     }
     initialize();
     return()=>{cancelled=true;};
@@ -118,20 +103,9 @@ export default function PortalAuthPanel(){
   async function signOut(){
     const activeSession=session;
     try{
-      if(activeSession){
-        await fetch(`${SUPABASE_URL}/rest/v1/characters?is_active=eq.true`,{
-          method:"PATCH",
-          headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${activeSession.accessToken}`,"Content-Type":"application/json"},
-          body:JSON.stringify({is_active:false}),
-        });
-      }
+      if(activeSession)await fetch(`${SUPABASE_URL}/rest/v1/characters?is_active=eq.true`,{method:"PATCH",headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${activeSession.accessToken}`,"Content-Type":"application/json"},body:JSON.stringify({is_active:false})});
     }finally{
-      clearSession();
-      setProfile(null);
-      setSession(null);
-      setActiveCharacter(null);
-      setState("signed-out");
-      setMessage("Signed out on this device. Choose a character again the next time you enter Hanami High.");
+      clearSession();setProfile(null);setSession(null);setActiveCharacter(null);setState("signed-out");setMessage("Signed out on this device. Choose a character again the next time you enter Hanami High.");
     }
   }
 
@@ -140,7 +114,7 @@ export default function PortalAuthPanel(){
 
   return <>
     <div className={`portal-status portal-status-${state}`} aria-live="polite"><strong>{state==="checking"?"CHECKING SESSION":state==="signed-in"?"SIGNED IN":state==="error"?"SIGN-IN NOTICE":"DISCORD ACCESS"}</strong><span>{message}</span></div>
-    {state==="signed-in"&&session?<div className={styles.accountCard}><p className="eyebrow">CURRENT HANAMI ACCOUNT</p><h2>{profile?.display_name??"Hanami Member"}</h2>{profile?.discord_username&&<p className={styles.handle}>@{profile.discord_username}</p>}<p className={styles.note}>Authentication only uses Discord for identity. School communication stays inside Hanami High.</p>{portalPath&&portalLabel&&<div className={styles.portalHandoff}><div><strong>{activeCharacter?.display_name}</strong><span>{activeCharacter?.role==="student"?"Student character active":"Faculty character active"} • stays active until logout</span></div><a href={portalPath}>{portalLabel} →</a></div>}<DashboardShell character={activeCharacter} accessToken={session.accessToken}/><CharacterManager accessToken={session.accessToken} onActiveCharacterChange={setActiveCharacter}/><button className={`secondary-action ${styles.signout}`} type="button" onClick={signOut}>Logout</button></div>:<button className="discord-button" type="button" onClick={signIn} disabled={state==="checking"}><span>◉</span>{state==="checking"?" Checking session…":" Continue with Discord"}</button>}
+    {state==="signed-in"&&session?<div className={styles.accountCard}><p className="eyebrow">CURRENT HANAMI ACCOUNT</p><h2>{profile?.display_name??"Hanami Member"}</h2>{profile?.discord_username&&<p className={styles.handle}>@{profile.discord_username}</p>}<p className={styles.note}>This page is your character gateway. Student and Faculty school tools open in their own portal sections.</p>{portalPath&&portalLabel&&<div className={styles.portalHandoff}><div><strong>{activeCharacter?.display_name}</strong><span>{activeCharacter?.role==="student"?"Student character active":"Faculty character active"} • stays active until logout</span></div><a href={portalPath}>{portalLabel} →</a></div>}<CharacterManager accessToken={session.accessToken} onActiveCharacterChange={setActiveCharacter}/><button className={`secondary-action ${styles.signout}`} type="button" onClick={signOut}>Logout</button></div>:<button className="discord-button" type="button" onClick={signIn} disabled={state==="checking"}><span>◉</span>{state==="checking"?" Checking session…":" Continue with Discord"}</button>}
     <small>Hanami High never asks for a portal password and never displays your Discord email address. Access to private school data is enforced by Supabase Row Level Security.</small>
   </>;
 }
