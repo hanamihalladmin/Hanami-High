@@ -12,25 +12,20 @@ const CHARACTER_SESSION_KEY="hanami.portal.character.v1";
 type PortalSession={accessToken:string;refreshToken:string;expiresAt:number;tokenType:string};
 type Role="student"|"faculty";
 type Props={role:Role};
+type RoleSync={student:boolean;faculty:boolean;administrator:boolean;owner:boolean;synced_at:string|null;sync_status:"pending"|"synced"|"not_member"|"error"};
 
 function readSession():PortalSession|null{
-  try{
-    const raw=localStorage.getItem(SESSION_KEY);
-    if(!raw)return null;
-    const value=JSON.parse(raw) as Partial<PortalSession>;
-    if(typeof value.accessToken!=="string"||typeof value.refreshToken!=="string"||typeof value.expiresAt!=="number")return null;
-    return {accessToken:value.accessToken,refreshToken:value.refreshToken,expiresAt:value.expiresAt,tokenType:value.tokenType??"bearer"};
-  }catch{return null;}
+  try{const raw=localStorage.getItem(SESSION_KEY);if(!raw)return null;const value=JSON.parse(raw) as Partial<PortalSession>;if(typeof value.accessToken!=="string"||typeof value.refreshToken!=="string"||typeof value.expiresAt!=="number")return null;return {accessToken:value.accessToken,refreshToken:value.refreshToken,expiresAt:value.expiresAt,tokenType:value.tokenType??"bearer"};}catch{return null;}
 }
 function headers(accessToken:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`,...extra};}
-async function refreshSession(session:PortalSession):Promise<PortalSession|null>{
-  const response=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,{method:"POST",headers:{apikey:SUPABASE_PUBLISHABLE_KEY,"Content-Type":"application/json"},body:JSON.stringify({refresh_token:session.refreshToken})});
+async function refreshSession(session:PortalSession):Promise<PortalSession|null>{const response=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,{method:"POST",headers:{apikey:SUPABASE_PUBLISHABLE_KEY,"Content-Type":"application/json"},body:JSON.stringify({refresh_token:session.refreshToken})});if(!response.ok)return null;const data=await response.json() as {access_token?:string;refresh_token?:string;expires_in?:number;token_type?:string};if(!data.access_token||!data.refresh_token)return null;const next={accessToken:data.access_token,refreshToken:data.refresh_token,expiresAt:Date.now()+(data.expires_in??3600)*1000,tokenType:data.token_type??"bearer"};localStorage.setItem(SESSION_KEY,JSON.stringify(next));return next;}
+
+async function refreshDiscordRoles(accessToken:string){
+  try{await fetch(`${SUPABASE_URL}/functions/v1/discord-role-sync`,{method:"POST",headers:{Authorization:`Bearer ${accessToken}`,apikey:SUPABASE_PUBLISHABLE_KEY}});}catch{}
+  const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/current_discord_role_sync`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:"{}"});
   if(!response.ok)return null;
-  const data=await response.json() as {access_token?:string;refresh_token?:string;expires_in?:number;token_type?:string};
-  if(!data.access_token||!data.refresh_token)return null;
-  const next={accessToken:data.access_token,refreshToken:data.refresh_token,expiresAt:Date.now()+(data.expires_in??3600)*1000,tokenType:data.token_type??"bearer"};
-  localStorage.setItem(SESSION_KEY,JSON.stringify(next));
-  return next;
+  const rows=await response.json() as RoleSync[];
+  return rows[0]??null;
 }
 
 export default function RolePortalClient({role}:Props){
@@ -39,16 +34,7 @@ export default function RolePortalClient({role}:Props){
   const [state,setState]=useState<"loading"|"ready"|"blocked">("loading");
   const [message,setMessage]=useState("Restoring your Hanami character session…");
 
-  const logout=useCallback(async()=>{
-    const active=session;
-    try{
-      if(active)await fetch(`${SUPABASE_URL}/rest/v1/characters?is_active=eq.true`,{method:"PATCH",headers:headers(active.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({is_active:false})});
-    }finally{
-      localStorage.removeItem(SESSION_KEY);
-      localStorage.removeItem(CHARACTER_SESSION_KEY);
-      window.location.assign("../");
-    }
-  },[session]);
+  const logout=useCallback(async()=>{const active=session;try{if(active)await fetch(`${SUPABASE_URL}/rest/v1/characters?is_active=eq.true`,{method:"PATCH",headers:headers(active.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({is_active:false})});}finally{localStorage.removeItem(SESSION_KEY);localStorage.removeItem(CHARACTER_SESSION_KEY);window.location.assign("../");}},[session]);
 
   useEffect(()=>{
     let cancelled=false;
@@ -57,26 +43,31 @@ export default function RolePortalClient({role}:Props){
         let stored=readSession();
         if(!stored){if(!cancelled){setState("blocked");setMessage("You are signed out. Return to the portal gateway to sign in with Discord.");}return;}
         if(stored.expiresAt-Date.now()<120000){stored=await refreshSession(stored);if(!stored){localStorage.removeItem(SESSION_KEY);localStorage.removeItem(CHARACTER_SESSION_KEY);if(!cancelled){setState("blocked");setMessage("Your Hanami session expired. Sign in again from the portal gateway.");}return;}}
+
+        const roleSync=await refreshDiscordRoles(stored.accessToken);
+        if(roleSync?.sync_status==="synced"&&!roleSync[role]){
+          if(!cancelled){setSession(stored);setState("blocked");setMessage(`Your Discord account does not currently have the Hanami ${role==="student"?"Student":"Faculty"} role required for this portal.`);}return;
+        }
+        if(roleSync?.sync_status==="not_member"){
+          if(!cancelled){setSession(stored);setState("blocked");setMessage("Your Discord account is not currently a member of the configured Hanami server.");}return;
+        }
+
         const rememberedId=localStorage.getItem(CHARACTER_SESSION_KEY);
         const query=rememberedId?`id=eq.${encodeURIComponent(rememberedId)}&is_active=eq.true`:`is_active=eq.true`;
         const response=await fetch(`${SUPABASE_URL}/rest/v1/characters?select=id,slot,role,display_name,handle,visibility,is_active&${query}&limit=1`,{headers:headers(stored.accessToken)});
         if(!response.ok)throw new Error("Your active character could not be restored.");
-        const rows=await response.json() as ActiveCharacter[];
-        const activeCharacter=rows[0]??null;
+        const rows=await response.json() as ActiveCharacter[];const activeCharacter=rows[0]??null;
         if(!activeCharacter){if(!cancelled){setSession(stored);setState("blocked");setMessage("No character is active. Choose a character from the portal gateway first.");}return;}
         if(activeCharacter.role!==role){if(!cancelled){setSession(stored);setCharacter(activeCharacter);setState("blocked");setMessage(`Your active character is a ${activeCharacter.role}. Open the matching portal section or switch characters.`);}return;}
         localStorage.setItem(CHARACTER_SESSION_KEY,activeCharacter.id);
-        if(!cancelled){setSession(stored);setCharacter(activeCharacter);setState("ready");setMessage(`${activeCharacter.display_name} restored as your active character.`);}
+        const syncNote=roleSync?.sync_status==="pending"?" Discord role synchronization is waiting for server configuration.":"";
+        if(!cancelled){setSession(stored);setCharacter(activeCharacter);setState("ready");setMessage(`${activeCharacter.display_name} restored as your active character.${syncNote}`);}
       }catch(error){if(!cancelled){setState("blocked");setMessage(error instanceof Error?error.message:"The portal session could not be restored.");}}
     }
-    initialize();
-    return()=>{cancelled=true;};
+    initialize();return()=>{cancelled=true;};
   },[role]);
 
   if(state!=="ready"||!session||!character)return <section className={styles.gate}><p className="eyebrow">{role.toUpperCase()} PORTAL</p><h2>{state==="loading"?"Opening your school desk…":"Portal access paused"}</h2><p>{message}</p><div className={styles.actions}><a href="../">Return to character gateway</a>{session&&<button type="button" onClick={logout}>Logout</button>}</div></section>;
 
-  return <div className={styles.portal}>
-    <div className={styles.sessionBar}><div><strong>{role==="student"?"STUDENT PORTAL":"FACULTY PORTAL"}</strong><span>{message}</span></div><div className={styles.actions}><a href="../">Switch character</a><button type="button" onClick={logout}>Logout</button></div></div>
-    <DashboardShell character={character} accessToken={session.accessToken}/>
-  </div>;
+  return <div className={styles.portal}><div className={styles.sessionBar}><div><strong>{role==="student"?"STUDENT PORTAL":"FACULTY PORTAL"}</strong><span>{message}</span></div><div className={styles.actions}><a href="../">Switch character</a><button type="button" onClick={logout}>Logout</button></div></div><DashboardShell character={character} accessToken={session.accessToken}/></div>;
 }
