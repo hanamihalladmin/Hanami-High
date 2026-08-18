@@ -199,6 +199,9 @@ footer a { color:#fff; }
 .department-grid p,.course-results p,.graduation-intro p,.academic-timeline p,.honors-grid p,.guidance-grid p { color:#58677a; line-height:1.55; }
 .department-grid small { color:var(--rose-dark); font-size:9px; font-weight:700; }
 .course-controls { display:grid; grid-template-columns:1fr 190px 160px; gap:9px; padding:14px; background:#eef3f8; border-bottom:1px solid var(--line-blue); }
+.test-data-notice { display:grid; grid-template-columns:150px 1fr; gap:14px; align-items:center; padding:10px 14px; background:#fff8d8; border-bottom:1px solid #d9c576; color:#594c25; }
+.test-data-notice strong { font-size:9px; letter-spacing:.12em; }
+.test-data-notice p { margin:0; line-height:1.5; }
 .course-controls label>span { display:block; margin-bottom:5px; color:#53647a; font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
 .course-controls input,.course-controls select { width:100%; min-height:39px; padding:8px 10px; border:1px solid #8296ae; background:#fff; color:var(--ink); font:inherit; }
 .course-results { display:grid; grid-template-columns:1fr 1fr; }
@@ -239,4 +242,4 @@ footer a { color:#fff; }
 .guidance-grid li span { margin-top:4px; color:var(--muted); font-size:10px; }
 
 @media(max-width:900px){.academics-hero{grid-template-columns:1fr}.academics-hero aside{display:none}.academic-page-layout{grid-template-columns:1fr}.academic-side{position:static}.academic-index nav{display:grid;grid-template-columns:repeat(3,1fr)}}
-@media(max-width:700px){.academics-hero{margin:10px;padding:18px;background:#fffaf3}.academic-page-layout{padding:10px}.academic-index nav{grid-template-columns:1fr 1fr}.department-grid,.course-results,.academic-timeline,.honors-grid,.guidance-grid{grid-template-columns:1fr}.department-grid article,.course-results article,.academic-timeline article,.honors-grid article,.guidance-grid>div{border-right:0;border-bottom:1px dotted #cbb6bf}.course-controls{grid-template-columns:1fr}.requirements-table>div{grid-template-columns:1fr 90px}.requirements-table p{grid-column:1/-1}.graduation-intro{grid-template-columns:1fr}.credit-ring{display:none}.calendar-actions{align-items:flex-start;flex-direction:column}.eligibility-strip{grid-template-columns:1fr}.eligibility-strip>*{font-size:10px}}
+@media(max-width:700px){.academics-hero{margin:10px;padding:18px;background:#fffaf3}.academic-page-layout{padding:10px}.academic-index nav{grid-template-columns:1fr 1fr}.department-grid,.course-results,.academic-timeline,.honors-grid,.guidance-grid{grid-template-columns:1fr}.department-grid article,.course-results article,.academic-timeline article,.honors-grid article,.guidance-grid>div{border-right:0;border-bottom:1px dotted #cbb6bf}.course-controls{grid-template-columns:1fr}.test-data-notice{grid-template-columns:1fr;gap:4px}.requirements-table>div{grid-template-columns:1fr 90px}.requirements-table p{grid-column:1/-1}.graduation-intro{grid-template-columns:1fr}.credit-ring{display:none}.calendar-actions{align-items:flex-start;flex-direction:column}.eligibility-strip{grid-template-columns:1fr}.eligibility-strip>*{font-size:10px}}
