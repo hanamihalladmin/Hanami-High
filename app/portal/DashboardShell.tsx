@@ -2,13 +2,13 @@
 
 import styles from "./DashboardShell.module.css";
 import SchedulePanel from "./SchedulePanel";
+import CourseworkPanel from "./CourseworkPanel";
 
 export type ActiveCharacter={id:string;slot:number;role:"student"|"faculty";display_name:string;handle:string;visibility:"private"|"friends_only"|"public";is_active:boolean};
 
 type Props={character:ActiveCharacter|null;accessToken:string};
 
 const studentCards=[
-  ["ASSIGNMENTS","Coursework","Upcoming work, due dates, and submitted assignments will live here."],
   ["CAMPUS","Activities","Clubs, student government, and school events tied to this character."],
   ["MESSAGES","Hanami inbox","Private website-native conversations with classmates, faculty, and offices."],
 ] as const;
@@ -28,8 +28,9 @@ export default function DashboardShell({character,accessToken}:Props){
       <div><p className="eyebrow">MY HANAMI • {isStudent?"STUDENT":"FACULTY"} DESK</p><h3 id="dashboard-title">Welcome back, {character.display_name}.</h3><p>@{character.handle} • {isStudent?"Student":"Faculty"} • Profile {character.visibility.replace("_"," ")}</p></div>
       <div className={styles.identity}><span>ACTIVE CHARACTER</span><strong>SLOT {character.slot}</strong></div>
     </div>
-    <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>Your class schedule now reads real Supabase assignments for this active character. Remaining cards are clearly marked until their own data modules are connected.</span></div>
+    <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>Schedules are live for both roles. Student coursework now reads real assignments and submission status. Remaining cards stay clearly marked until their data modules are connected.</span></div>
     <SchedulePanel accessToken={accessToken} characterId={character.id} role={character.role}/>
+    {isStudent&&<CourseworkPanel accessToken={accessToken} characterId={character.id}/>} 
     <div className={styles.grid}>{cards.map(([label,title,copy])=><article key={title}><span>{label}</span><h4>{title}</h4><p>{copy}</p><button type="button" disabled>Module coming next</button></article>)}</div>
     <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Classes • Assignments • Calendar • Campus • Messages":"Classes • Rosters • Assignments • Calendar • Messages"}</span></div>
   </section>;
