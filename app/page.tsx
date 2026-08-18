@@ -1,7 +1,7 @@
 import SiteSearch from "./components/site-search";
 
-const navigation = [["Home", "#home"], ["About", "#about"], ["Academics", "#academics"], ["Campus Life", "#campus-life"], ["Clubs", "#clubs"], ["Calendar", "#calendar"], ["News", "#news"], ["People", "#people"], ["Gallery", "#gallery"]] as const;
-const quickLinks = [["A", "About Hanami", "#about"], ["学", "Academic departments", "#academics"], ["C", "Clubs & organizations", "#clubs"], ["E", "Events calendar", "#calendar"], ["J", "Part-time jobs", "#jobs"]] as const;
+const navigation = [["Home", "#home"], ["About", "./about/"], ["Academics", "#academics"], ["Campus Life", "#campus-life"], ["Clubs", "#clubs"], ["Calendar", "#calendar"], ["News", "#news"], ["People", "./about/#directory"], ["Gallery", "#gallery"]] as const;
+const quickLinks = [["A", "About Hanami", "./about/"], ["学", "Academic departments", "#academics"], ["C", "Clubs & organizations", "#clubs"], ["E", "Events calendar", "#calendar"], ["J", "Part-time jobs", "#jobs"]] as const;
 
 export default function Home() {
   const currentDate = new Intl.DateTimeFormat("en-US", {
