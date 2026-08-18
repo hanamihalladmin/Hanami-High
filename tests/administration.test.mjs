@@ -4,6 +4,7 @@ import {readFile} from "node:fs/promises";
 
 const adminClient=await readFile(new URL("../app/portal/admin/AdminPortalClient.tsx",import.meta.url),"utf8");
 const manager=await readFile(new URL("../app/portal/admin/AdminAnnouncementManager.tsx",import.meta.url),"utf8");
+const eventManager=await readFile(new URL("../app/portal/admin/AdminEventManager.tsx",import.meta.url),"utf8");
 const directory=await readFile(new URL("../app/portal/admin/AdminCharacterDirectory.tsx",import.meta.url),"utf8");
 const academics=await readFile(new URL("../app/portal/admin/AdminAcademicManager.tsx",import.meta.url),"utf8");
 const adminPage=await readFile(new URL("../app/portal/admin/page.tsx",import.meta.url),"utf8");
@@ -11,6 +12,7 @@ const migration=await readFile(new URL("../supabase/migrations/20260818163000_ad
 const hardening=await readFile(new URL("../supabase/migrations/20260818165000_harden_administration_rpc_boundaries.sql",import.meta.url),"utf8");
 const directoryMigration=await readFile(new URL("../supabase/migrations/20260818170000_administration_character_directory.sql",import.meta.url),"utf8");
 const academicMigration=await readFile(new URL("../supabase/migrations/20260818171500_administration_academic_management_permissions.sql",import.meta.url),"utf8");
+const calendarMigration=await readFile(new URL("../supabase/migrations/20260818173000_school_calendar_events_foundation.sql",import.meta.url),"utf8");
 
 test("Administration is account permission based rather than character role based",()=>{
   assert.match(adminClient,/current_account_admin_access/);
@@ -47,6 +49,19 @@ test("announcement management is protected by permission-aware RLS",()=>{
   assert.match(manager,/Delete permanently/);
 });
 
+test("school calendar management is content-editor scoped and Tokyo based",()=>{
+  assert.match(calendarMigration,/public reads published school events/);
+  assert.match(calendarMigration,/content editors create school events/);
+  assert.match(calendarMigration,/content editors update school events/);
+  assert.match(calendarMigration,/site admins delete school events/);
+  assert.match(eventManager,/status:"draft"/);
+  assert.match(eventManager,/Starts \(Tokyo\)/);
+  assert.match(eventManager,/\+09:00/);
+  assert.match(eventManager,/Publish/);
+  assert.match(eventManager,/Cancel event/);
+  assert.match(adminClient,/AdminEventManager/);
+});
+
 test("moderators have a private character directory rather than global profile exposure",()=>{
   assert.match(directory,/administration_character_directory/);
   assert.match(directory,/Open reports/);
@@ -72,6 +87,7 @@ test("Administration has its own website section",()=>{
   assert.match(adminPage,/AdminPortalClient/);
   assert.match(adminPage,/Character roles cannot unlock admin tools/);
   assert.match(adminClient,/AdminAnnouncementManager/);
+  assert.match(adminClient,/AdminEventManager/);
   assert.match(adminClient,/AdminModerationManager/);
   assert.match(adminClient,/AdminCharacterDirectory/);
   assert.match(adminClient,/AdminAcademicManager/);
