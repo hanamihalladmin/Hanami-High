@@ -1,12 +1,6 @@
 HANAMI_FINAL_CI=FAIL
 exit_code=1
 --- failing tests / errors ---
-# Subtest: course creation reports specific server failures
-# Subtest: authenticated RLS evaluation can execute the private permission helper
-# Subtest: Administration is account permission based rather than character role based
-# Subtest: Owner-issued unclaimed Administrator login can bind on first successful sign-in
-# Subtest: ordinary authenticated users cannot self grant Administration permissions without a valid Owner-issued credential
-# Subtest: public Administration RPCs are security-invoker wrappers around private helpers
 # Subtest: school status is public-read and content-editor managed
 # Subtest: announcement management is protected by permission-aware RLS
 # Subtest: school calendar management is content-editor scoped and Tokyo based
@@ -50,6 +44,9 @@ exit_code=1
 # Subtest: homepage surfaces a multi-event upcoming school feed
 # Subtest: dashboard is driven by the active character role
 # Subtest: role dashboards use live authenticated modules without placeholder cards
+not ok 59 - role dashboards use live authenticated modules without placeholder cards
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 # Subtest: role dashboards read school status notices and calendar from Administration
 # Subtest: academic database keeps membership reads owner scoped
 # Subtest: active character flows from gateway into role-specific dashboard
@@ -78,6 +75,9 @@ exit_code=1
 # Subtest: completed messaging supports unread state and private attachments
 # Subtest: privileged messaging helpers are kept out of the public API schema
 # Subtest: both role dashboards render the real inbox instead of a message placeholder
+not ok 87 - both role dashboards render the real inbox instead of a message placeholder
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 # Subtest: homepage includes every approved public-home requirement
 # Subtest: public announcements use live Supabase data with a labeled fallback
 # Subtest: public next event uses the live school calendar with a labeled fallback
@@ -185,90 +185,90 @@ not ok 160 - Profile Studio presents image editing as file upload instead of pas
 # Subtest: student and faculty have separate website sections
 ok 172 - student and faculty have separate website sections
   ---
-  duration_ms: 1.159112
+  duration_ms: 1.274694
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
 ok 173 - role portal restores the selected character session
   ---
-  duration_ms: 0.270778
+  duration_ms: 0.317344
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
 ok 174 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.203084
+  duration_ms: 0.257521
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
 ok 175 - role portal logout clears character and account session
   ---
-  duration_ms: 0.220867
+  duration_ms: 0.239939
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 176 - student activities are loaded for the active character
   ---
-  duration_ms: 0.907789
+  duration_ms: 0.988259
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 177 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.182626
+  duration_ms: 0.212547
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 178 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.280526
+  duration_ms: 0.387084
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 179 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.17993
+  duration_ms: 0.153006
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 180 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.596153
+  duration_ms: 7.95535
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 181 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.359651
+  duration_ms: 2.061786
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 182 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.328474
+  duration_ms: 1.961499
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 183 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.629126
+  duration_ms: 2.399718
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 184 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.520396
+  duration_ms: 1.525202
   type: 'test'
   ...
 1..184
 # tests 184
 # suites 0
-# pass 182
-# fail 2
+# pass 180
+# fail 4
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1002.587127
+# duration_ms 929.388488
 === build ===
 
 > hanami-high@0.1.0 build
@@ -284,15 +284,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 4.8s
+✓ Compiled successfully in 5.3s
   Running TypeScript ...
-  Finished TypeScript in 6.7s ...
+  Finished TypeScript in 7.0s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/22) ...
   Generating static pages using 3 workers (5/22) 
   Generating static pages using 3 workers (10/22) 
   Generating static pages using 3 workers (16/22) 
-✓ Generating static pages using 3 workers (22/22) in 513ms
+✓ Generating static pages using 3 workers (22/22) in 532ms
   Finalizing page optimization ...
 
 Route (app)
