@@ -6,6 +6,7 @@ import SchedulePanel from "./SchedulePanel";
 import CourseworkPanel from "./CourseworkPanel";
 import StudentAcademicRecordPanel from "./StudentAcademicRecordPanel";
 import StudentActionSupportPanel from "./StudentActionSupportPanel";
+import StudentLifeSystemsPanel from "./StudentLifeSystemsPanel";
 import FacultyCourseManager from "./FacultyCourseManager";
 import FacultyGradingPanel from "./FacultyGradingPanel";
 import FacultyAdvisingPanel from "./FacultyAdvisingPanel";
@@ -61,6 +62,7 @@ export default function DashboardShell({character,accessToken}:Props){
     <CollapsibleSection title="Notifications & Accessibility" subtitle="Preferences and display controls"><NotificationAccessibilityPanel accessToken={accessToken}/></CollapsibleSection>
     <CollapsibleSection title="School Status" subtitle="Current campus status"><SchoolStatusPanel accessToken={accessToken}/></CollapsibleSection>
     <CollapsibleSection title="School Notices" subtitle="Announcements and updates"><SchoolNoticesPanel accessToken={accessToken}/></CollapsibleSection>
+    <CollapsibleSection title="School Life Systems" subtitle="Targeted notices, hall passes, attendance excuses, discipline, session, and ID"><StudentLifeSystemsPanel accessToken={accessToken} characterId={character.id} role={character.role}/></CollapsibleSection>
     <CollapsibleSection title="School Calendar" subtitle="Upcoming Hanami events"><SchoolCalendarPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
     <CollapsibleSection title="Schedule" subtitle="Classes and timetable"><SchedulePanel accessToken={accessToken} characterId={character.id} role={character.role}/></CollapsibleSection>
     {isStudent?<>
@@ -84,6 +86,6 @@ export default function DashboardShell({character,accessToken}:Props){
     <CollapsibleSection title="Profile & Privacy" subtitle="Character profile settings"><CharacterProfilePanel accessToken={accessToken} characterId={character.id} currentVisibility={character.visibility}/></CollapsibleSection>
     <CollapsibleSection title="Profile Studio" subtitle="Templates, widgets, and page design"><ProfileDesignWorkspace accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
     <CollapsibleSection title="Profile Lookup" subtitle="Find visible Hanami profiles"><ProfileLookupPanel accessToken={accessToken} viewerCharacterId={character.id}/></CollapsibleSection>
-    <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Notifications • Accessibility • Classes • Assignments • Academic Record • Homeroom • To-Do • Counseling • Health • Campus Opportunities • Organizations • Elections • Forums • Bulletin Boards • Study Groups • Newspaper • Galleries • School Office Requests • School Office • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile & Privacy • Profile Templates • Profile Studio":`Notifications • Accessibility • Classes • Rosters • Assignments • Attendance • Report Cards${nurseEligible?" • Nurse Dashboard":""} • Forums • Bulletin Boards • Newspaper • Galleries • School Office Requests • School Office • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile & Privacy • Profile Templates • Profile Studio`}</span></div>
+    <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Notifications • Accessibility • Announcements • Hall Passes • Attendance Excuses • Detention • Session • School ID • Classes • Assignments • Academic Record • Homeroom • To-Do • Counseling • Health • Campus Opportunities • Organizations • Elections • Forums • Bulletin Boards • Study Groups • Newspaper • Galleries • School Office Requests • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile & Privacy • Profile Templates • Profile Studio":`Notifications • Accessibility • Announcements • Hall Pass Review • Attendance Excuse Review • Detention • Session • School ID • Classes • Rosters • Assignments • Attendance • Report Cards${nurseEligible?" • Nurse Dashboard":""} • Forums • Bulletin Boards • Newspaper • Galleries • School Office Requests • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile & Privacy • Profile Templates • Profile Studio`}</span></div>
   </section>;
 }
