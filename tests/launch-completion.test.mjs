@@ -7,8 +7,9 @@ const [gateway,rolePortal,admin,owner,governance,inbox,signer,dashboard,facultyC
   read("app/portal/PortalAuthPanel.tsx"),read("app/portal/RolePortalClient.tsx"),read("app/portal/admin/AdminPortalClient.tsx"),read("app/portal/owner/OwnerPortalClient.tsx"),read("app/portal/admin/AdminGovernancePanel.tsx"),read("app/portal/InboxPanel.tsx"),read("supabase/functions/message-media-sign/index.ts"),read("app/portal/DashboardShell.tsx"),read("app/portal/FacultyCourseManager.tsx"),read("app/portal/ProfileStudioPanel.tsx"),read("app/portal/ProfileDesignWorkspace.tsx"),read("app/portal/ProfileLookupPanel.tsx"),read("app/mobile.css"),read("app/layout.tsx"),read("app/components/roleplay-date.ts"),read("app/calendar/page.tsx"),read("supabase/migrations/20260818213000_enforce_account_status_at_portal_gate.sql"),read("supabase/functions/discord-role-sync/index.ts")
 ]);
 
-test("launch gate synchronizes Discord roles without exposing bot credentials",()=>{
-  assert.match(discordSync,/HANAMI_DISCORD_GUILD_ID/);assert.match(discordSync,/HANAMI_DISCORD_BOT_TOKEN/);assert.match(discordSync,/discord\.com\/api\/v10\/guilds/);
+test("launch gate synchronizes Discord roles through signed-in OAuth without exposing a bot token",()=>{
+  assert.match(discordSync,/provider_token/);assert.match(discordSync,/discord_guild_id/);assert.match(discordSync,/users\/@me\/guilds/);assert.match(discordSync,/users\/@me/);
+  assert.doesNotMatch(discordSync,/HANAMI_DISCORD_BOT_TOKEN/);
   assert.match(gateway,/discord-role-sync/);assert.match(gateway,/current_discord_role_sync/);assert.match(gateway,/Resync roles/);
   assert.match(rolePortal,/roleSync\?\.sync_status==="synced"/);assert.match(rolePortal,/roleSync\[role\]/);
   assert.match(admin,/roles\.administrator/);assert.match(admin,/roles\.owner/);
