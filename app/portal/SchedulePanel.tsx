@@ -67,13 +67,8 @@ export default function SchedulePanel({accessToken,characterId,role}:Props){
       const section=membership.class_sections;
       if(!section)return null;
       const course=section.academic_courses;
-      return <article key={section.id}>
-        <div className={styles.courseTop}><span>{course?.code??"COURSE"} • SECTION {section.section_code}</span>{section.is_test_data||course?.is_test_data?<b>TEST</b>:null}</div>
-        <h5>{course?.title??"Untitled course"}</h5>
-        <p>{course?.department??"Department pending"} • {section.term}{section.room?` • Room ${section.room}`:" • Room TBA"}</p>
-        <div className={styles.meetingList}>{section.section_meetings.length?section.section_meetings.sort((a,b)=>a.weekday-b.weekday||a.starts_at.localeCompare(b.starts_at)).map(meeting=><div key={meeting.id}><strong>{DAYS[meeting.weekday]??"Day"}</strong><span>{timeLabel(meeting.starts_at)}–{timeLabel(meeting.ends_at)}{meeting.label?` • ${meeting.label}`:""}</span></div>):<div><strong>Meeting time</strong><span>Not scheduled yet</span></div>}</div>
-        <small>{role==="student"?"Enrollment":"Instructor assignment"} #{index+1}</small>
-      </article>;
+      const content=<><div className={styles.courseTop}><span>{course?.code??"COURSE"} • SECTION {section.section_code}</span>{section.is_test_data||course?.is_test_data?<b>TEST</b>:null}</div><h5>{course?.title??"Untitled course"}</h5><p>{course?.department??"Department pending"} • {section.term}{section.room?` • Room ${section.room}`:" • Room TBA"}</p><div className={styles.meetingList}>{section.section_meetings.length?section.section_meetings.sort((a,b)=>a.weekday-b.weekday||a.starts_at.localeCompare(b.starts_at)).map(meeting=><div key={meeting.id}><strong>{DAYS[meeting.weekday]??"Day"}</strong><span>{timeLabel(meeting.starts_at)}–{timeLabel(meeting.ends_at)}{meeting.label?` • ${meeting.label}`:""}</span></div>):<div><strong>Meeting time</strong><span>Not scheduled yet</span></div>}</div><small>{role==="student"?"Enrollment":"Instructor assignment"} #{index+1}</small>{role==="student"&&<span className={styles.openHint}>Open class →</span>}</>;
+      return <article key={section.id}>{role==="student"?<a className={styles.classLink} href={`./class/?section=${encodeURIComponent(section.id)}`} aria-label={`Open ${course?.title??"class"}`}>{content}</a>:content}</article>;
     })}</div>}
     {meetings.length>0&&<div className={styles.weekStrip}><strong>WEEK AT A GLANCE</strong><span>{meetings.length} scheduled meeting{meetings.length===1?"":"s"}</span></div>}
   </section>;
