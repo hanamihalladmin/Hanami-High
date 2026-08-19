@@ -2,78 +2,78 @@ HANAMI_FINAL_CI=PASS
 exit_code=0
 --- tail ---
   ---
-  duration_ms: 0.299381
+  duration_ms: 0.31905
   type: 'test'
   ...
 # Subtest: profile lookup keeps private helpers behind security-invoker wrappers
-ok 139 - profile lookup keeps private helpers behind security-invoker wrappers
+ok 140 - profile lookup keeps private helpers behind security-invoker wrappers
   ---
-  duration_ms: 0.222377
+  duration_ms: 0.191852
   type: 'test'
   ...
 # Subtest: both role dashboards expose privacy-aware profile lookup
-ok 140 - both role dashboards expose privacy-aware profile lookup
+ok 141 - both role dashboards expose privacy-aware profile lookup
   ---
-  duration_ms: 0.189615
+  duration_ms: 0.17553
   type: 'test'
   ...
 # Subtest: student and faculty have separate website sections
-ok 141 - student and faculty have separate website sections
+ok 142 - student and faculty have separate website sections
   ---
-  duration_ms: 1.36192
+  duration_ms: 0.922804
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
-ok 142 - role portal restores the selected character session
+ok 143 - role portal restores the selected character session
   ---
-  duration_ms: 0.340278
+  duration_ms: 0.201358
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
-ok 143 - direct navigation cannot bypass role matching
+ok 144 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.231062
+  duration_ms: 0.122525
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
-ok 144 - role portal logout clears character and account session
+ok 145 - role portal logout clears character and account session
   ---
-  duration_ms: 0.229741
+  duration_ms: 0.168259
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 145 - student activities are loaded for the active character
+ok 146 - student activities are loaded for the active character
   ---
-  duration_ms: 0.881481
+  duration_ms: 0.740222
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 146 - campus activity membership reads remain owner scoped
+ok 147 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.164187
+  duration_ms: 0.139887
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 147 - student dashboard has no remaining placeholder modules
+ok 148 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.22967
+  duration_ms: 0.227191
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
-ok 148 - test activity data stays visibly labeled
+ok 149 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.137087
+  duration_ms: 0.102132
   type: 'test'
   ...
-1..148
-# tests 148
+1..149
+# tests 149
 # suites 0
-# pass 147
+# pass 148
 # fail 1
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 783.713686
+# duration_ms 671.725455
 === build ===
 
 > hanami-high@0.1.0 build
@@ -90,13 +90,13 @@ https://nextjs.org/telemetry
   Creating an optimized production build ...
 ✓ Compiled successfully in 3.5s
   Running TypeScript ...
-  Finished TypeScript in 6.0s ...
+  Finished TypeScript in 5.8s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/17) ...
   Generating static pages using 3 workers (4/17) 
   Generating static pages using 3 workers (8/17) 
   Generating static pages using 3 workers (12/17) 
-✓ Generating static pages using 3 workers (17/17) in 436ms
+✓ Generating static pages using 3 workers (17/17) in 400ms
   Finalizing page optimization ...
 
 Route (app)
