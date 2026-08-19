@@ -58,20 +58,20 @@ exit_code=0
     async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
 # Subtest: test activity data stays visibly labeled
-ok 156 - test activity data stays visibly labeled
+ok 163 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.221936
+  duration_ms: 0.243607
   type: 'test'
   ...
-1..156
-# tests 156
+1..163
+# tests 163
 # suites 0
-# pass 149
+# pass 156
 # fail 7
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 845.616508
+# duration_ms 813.214705
 === build ===
 
 > hanami-high@0.1.0 build
@@ -86,15 +86,15 @@ https://nextjs.org/telemetry
 ▲ Next.js 16.2.11 (Turbopack)
 
   Creating an optimized production build ...
-✓ Compiled successfully in 4.0s
+✓ Compiled successfully in 3.5s
   Running TypeScript ...
-  Finished TypeScript in 7.1s ...
+  Finished TypeScript in 6.7s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/19) ...
   Generating static pages using 3 workers (4/19) 
   Generating static pages using 3 workers (9/19) 
   Generating static pages using 3 workers (14/19) 
-✓ Generating static pages using 3 workers (19/19) in 461ms
+✓ Generating static pages using 3 workers (19/19) in 419ms
   Finalizing page optimization ...
 
 Route (app)
