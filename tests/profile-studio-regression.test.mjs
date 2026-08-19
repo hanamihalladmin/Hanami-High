@@ -9,10 +9,12 @@ const overrides=await readFile(new URL("../app/profile-studio-overrides.css",imp
 const layout=await readFile(new URL("../app/layout.tsx",import.meta.url),"utf8");
 
 test("Profile Studio keeps image upload controls visible",()=>{
-  assert.match(studio,/Upload image/);
-  assert.match(studio,/type="file"/);
-  assert.match(studio,/uploadSelectedImage/);
+  assert.match(studio,/IMAGE_TYPES/);
+  assert.match(studio,/MAX_IMAGE_SIZE/);
+  assert.match(studio,/uploadPath\(characterId:string,file:File/);
+  assert.match(studio,/profile-media/);
   assert.match(overrides,/uploadField/);
+  assert.match(overrides,/input\[type="file"\]/);
   assert.match(overrides,/display:block!important/);
   assert.match(layout,/profile-studio-overrides\.css/);
 });
