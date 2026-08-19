@@ -130,9 +130,10 @@ test("private profile media is owner uploaded and privacy signed",()=>{
 });
 
 test("Profile Studio presents image editing as file upload instead of pasted image links",()=>{
-  assert.match(studioCss,/\.inspector>label:nth-of-type\(3\)\{display:none\}/);
-  assert.match(studioCss,/\.uploadField\+label\{display:none\}/);
+  assert.match(studioCss,/\.uploadField\{display:block!important/);
+  assert.match(studioCss,/\.uploadField input\[type=file\]\{display:block!important/);
   assert.match(studio,/Upload from your computer/);
+  assert.match(workspace,/Image URLs are no longer required/);
   assert.match(workspace,/Upload background/);
 });
 
