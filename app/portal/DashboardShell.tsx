@@ -21,6 +21,9 @@ import SchoolNoticesPanel from "./SchoolNoticesPanel";
 import SchoolCalendarPanel from "./SchoolCalendarPanel";
 import OfficeRequestPanel from "./OfficeRequestPanel";
 import SupportTicketPanel from "./SupportTicketPanel";
+import NotificationAccessibilityPanel from "./NotificationAccessibilityPanel";
+import CommunityCenterPanel from "./CommunityCenterPanel";
+import SchoolResourcesPanel from "./SchoolResourcesPanel";
 
 export type ActiveCharacter={id:string;slot:number;role:"student"|"faculty";display_name:string;handle:string;visibility:"private"|"friends_only"|"public";is_active:boolean};
 type Props={character:ActiveCharacter|null;accessToken:string};
@@ -30,12 +33,15 @@ export default function DashboardShell({character,accessToken}:Props){
   const isStudent=character.role==="student";
   return <section className={styles.dashboard} aria-labelledby="dashboard-title">
     <div className={styles.hero}><div><p className="eyebrow">MY HANAMI • {isStudent?"STUDENT":"FACULTY"} DESK</p><h3 id="dashboard-title">Welcome back, {character.display_name}.</h3><p>@{character.handle} • {isStudent?"Student":"Faculty"} • Profile {character.visibility.replace("_"," ")}</p></div><div className={styles.identity}><span>ACTIVE CHARACTER</span><strong>SLOT {character.slot}</strong></div></div>
-    <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>{isStudent?"School Status, School Notices, School Calendar, Student Schedule, Coursework, Academic Record, Student Action & Support, Campus Activities, Campus Opportunities, School Office Requests, Support Tickets, Hanami Messages, Friends, Profile & Privacy, Profile Templates, Hanami Profiles, and Profile Studio are connected to live Supabase data.":"School Status, School Notices, School Calendar, Faculty Schedule, Course Management, Grading, Attendance, Report Cards, Student Advising, School Office Requests, Support Tickets, Hanami Messages, Friends, Profile & Privacy, Profile Templates, Hanami Profiles, and Profile Studio are connected to live Supabase data."}</span></div>
+    <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>{isStudent?"School status, notices, calendar, academics, Student Action & Support, notifications, community publishing, school resources, support, messaging, friends, and Profile Studio are connected to live Supabase data.":"School status, notices, calendar, course management, grading, advising, notifications, community publishing, school resources, support, messaging, friends, and Profile Studio are connected to live Supabase data."}</span></div>
+    <NotificationAccessibilityPanel accessToken={accessToken}/>
     <SchoolStatusPanel accessToken={accessToken}/>
     <SchoolNoticesPanel accessToken={accessToken}/>
     <SchoolCalendarPanel accessToken={accessToken} characterId={character.id}/>
     <SchedulePanel accessToken={accessToken} characterId={character.id} role={character.role}/>
     {isStudent?<><CourseworkPanel accessToken={accessToken} characterId={character.id}/><StudentAcademicRecordPanel accessToken={accessToken} characterId={character.id}/><StudentActionSupportPanel accessToken={accessToken} characterId={character.id}/><StudentActivitiesPanel accessToken={accessToken} characterId={character.id}/><StudentOpportunityPanel accessToken={accessToken} characterId={character.id}/></>:<><FacultyCourseManager accessToken={accessToken} characterId={character.id}/><FacultyGradingPanel accessToken={accessToken} characterId={character.id}/><FacultyAttendanceReportPanel accessToken={accessToken} characterId={character.id}/><FacultyAdvisingPanel accessToken={accessToken} characterId={character.id}/></>}
+    <CommunityCenterPanel accessToken={accessToken} characterId={character.id} role={character.role}/>
+    <SchoolResourcesPanel accessToken={accessToken} characterId={character.id}/>
     <OfficeRequestPanel accessToken={accessToken} characterId={character.id}/>
     <SupportTicketPanel accessToken={accessToken} characterId={character.id}/>
     <InboxPanel accessToken={accessToken} characterId={character.id}/>
@@ -43,6 +49,6 @@ export default function DashboardShell({character,accessToken}:Props){
     <CharacterProfilePanel accessToken={accessToken} characterId={character.id} currentVisibility={character.visibility}/>
     <ProfileDesignWorkspace accessToken={accessToken} characterId={character.id}/>
     <ProfileLookupPanel accessToken={accessToken} viewerCharacterId={character.id}/>
-    <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Status • Notices • Calendar • Classes • Assignments • Academic Record • Homeroom • To-Do • Counseling • Health • Athletics • Waitlists • Organizations • Elections • Rooms • Campus • Opportunities • School Office • Support • Messages • Friends • Profile Studio":"Status • Notices • Calendar • Classes • Rosters • Assignments • Attendance • Report Cards • School Office • Support • Messages • Friends • Profile Studio"}</span></div>
+    <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Notifications • Accessibility • Classes • Assignments • Academic Record • Homeroom • To-Do • Counseling • Health • Organizations • Elections • Forums • Bulletin Boards • Study Groups • Newspaper • Galleries • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile Studio":"Notifications • Accessibility • Classes • Rosters • Assignments • Attendance • Report Cards • Forums • Bulletin Boards • Newspaper • Galleries • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile Studio"}</span></div>
   </section>;
 }
