@@ -31,7 +31,7 @@ test("role dashboards use live authenticated modules without placeholder cards",
   assert.match(dashboard,/FacultyCourseManager/);
   assert.match(dashboard,/FacultyGradingPanel/);
   assert.match(dashboard,/FacultyAdvisingPanel/);
-  assert.match(dashboard,/InboxPanel/);
+  assert.match(dashboard,/MessageCenterPanel/);
   assert.doesNotMatch(dashboard,/Module coming next/);
   assert.match(schedule,/section_memberships/);
   assert.match(schedule,/Authorization:`Bearer \$\{accessToken\}`/);
