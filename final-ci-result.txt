@@ -1,7 +1,6 @@
 HANAMI_FINAL_CI=PASS
 exit_code=0
 --- failing tests / errors ---
-# Subtest: course catalog supports search and useful filters
 # Subtest: development course records are clearly identified as test data
 # Subtest: academics uses the Tokyo 2006–07 roleplay calendar and 32-credit graduation
 # Subtest: Academics uses real portal and complete calendar routes
@@ -164,6 +163,7 @@ exit_code=0
 # Subtest: public and accepted Friends-only profiles are visible while private stays owner only
 # Subtest: profile lookup keeps private helpers behind security-invoker wrappers
 # Subtest: both role dashboards expose privacy-aware profile lookup
+# Subtest: Profile Studio allows freeform overlap and caps each character at 40 widgets
 # Subtest: public community pages share the persistent Hanami browser session
 # Subtest: public browsing refreshes the stored session instead of forcing another Discord login
 # Subtest: public portal button returns an active character to the correct dashboard
@@ -183,99 +183,99 @@ exit_code=0
 # Subtest: Help has a direct router and support anchor
 --- tail ---
 # Subtest: student and faculty have separate website sections
-ok 173 - student and faculty have separate website sections
+ok 174 - student and faculty have separate website sections
   ---
-  duration_ms: 0.818367
+  duration_ms: 1.237987
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
-ok 174 - role portal restores the selected character session
+ok 175 - role portal restores the selected character session
   ---
-  duration_ms: 0.233855
+  duration_ms: 0.314368
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
-ok 175 - direct navigation cannot bypass role matching
+ok 176 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.187196
+  duration_ms: 0.232014
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
-ok 176 - role portal logout clears character and account session
+ok 177 - role portal logout clears character and account session
   ---
-  duration_ms: 0.152265
+  duration_ms: 0.210013
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 177 - student activities are loaded for the active character
+ok 178 - student activities are loaded for the active character
   ---
-  duration_ms: 1.104549
+  duration_ms: 1.176922
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 178 - campus activity membership reads remain owner scoped
+ok 179 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.240875
+  duration_ms: 0.163706
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 179 - student dashboard has no remaining placeholder modules
+ok 180 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.255767
+  duration_ms: 0.267631
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
-ok 180 - test activity data stays visibly labeled
+ok 181 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.117133
+  duration_ms: 0.154439
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 181 - accessibility and notification preferences bind to signed-in user automatically
+ok 182 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 7.91837
+  duration_ms: 5.406828
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 182 - group chat creation uses a validated private helper and creator management
+ok 183 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.884309
+  duration_ms: 1.397155
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 183 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 184 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.675752
+  duration_ms: 1.25561
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 184 - School Office separates staff action waiting member and archive queues
+ok 185 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 2.096893
+  duration_ms: 1.5444
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 185 - Help has a direct router and support anchor
+ok 186 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.419303
+  duration_ms: 1.167765
   type: 'test'
   ...
-1..185
-# tests 185
+1..186
+# tests 186
 # suites 0
-# pass 185
+# pass 186
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 895.073486
+# duration_ms 931.917017
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 28ms
+✓ Running next.config.ts took 24ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -284,15 +284,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 4.9s
+✓ Compiled successfully in 4.8s
   Running TypeScript ...
-  Finished TypeScript in 6.8s ...
+  Finished TypeScript in 6.9s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/22) ...
   Generating static pages using 3 workers (5/22) 
   Generating static pages using 3 workers (10/22) 
   Generating static pages using 3 workers (16/22) 
-✓ Generating static pages using 3 workers (22/22) in 509ms
+✓ Generating static pages using 3 workers (22/22) in 548ms
   Finalizing page optimization ...
 
 Route (app)
