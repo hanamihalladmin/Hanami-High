@@ -1,79 +1,77 @@
 HANAMI_FINAL_CI=PASS
 exit_code=0
 --- tail ---
-  ---
-  duration_ms: 0.216575
-  type: 'test'
-  ...
-# Subtest: profile lookup keeps private helpers behind security-invoker wrappers
-ok 143 - profile lookup keeps private helpers behind security-invoker wrappers
-  ---
-  duration_ms: 0.186739
-  type: 'test'
-  ...
-# Subtest: both role dashboards expose privacy-aware profile lookup
-ok 144 - both role dashboards expose privacy-aware profile lookup
-  ---
-  duration_ms: 0.13895
-  type: 'test'
-  ...
-# Subtest: student and faculty have separate website sections
-ok 145 - student and faculty have separate website sections
-  ---
-  duration_ms: 0.90945
-  type: 'test'
-  ...
-# Subtest: role portal restores the selected character session
-ok 146 - role portal restores the selected character session
-  ---
-  duration_ms: 0.210443
-  type: 'test'
-  ...
-# Subtest: direct navigation cannot bypass role matching
-ok 147 - direct navigation cannot bypass role matching
-  ---
-  duration_ms: 0.149429
-  type: 'test'
-  ...
-# Subtest: role portal logout clears character and account session
-ok 148 - role portal logout clears character and account session
-  ---
-  duration_ms: 0.147325
-  type: 'test'
-  ...
-# Subtest: student activities are loaded for the active character
-ok 149 - student activities are loaded for the active character
-  ---
-  duration_ms: 0.918657
-  type: 'test'
-  ...
-# Subtest: campus activity membership reads remain owner scoped
-ok 150 - campus activity membership reads remain owner scoped
-  ---
-  duration_ms: 0.19788
-  type: 'test'
-  ...
-# Subtest: student dashboard has no remaining placeholder modules
-ok 151 - student dashboard has no remaining placeholder modules
-  ---
-  duration_ms: 0.231012
-  type: 'test'
+    import FacultyAdvisingPanel from "./FacultyAdvisingPanel";
+    import FacultyAttendanceReportPanel from "./FacultyAttendanceReportPanel";
+    import InboxPanel from "./InboxPanel";
+    import StudentActivitiesPanel from "./StudentActivitiesPanel";
+    import StudentOpportunityPanel from "./StudentOpportunityPanel";
+    import CharacterProfilePanel from "./CharacterProfilePanel";
+    import ProfileLookupPanel from "./ProfileLookupPanel";
+    import ProfileDesignWorkspace from "./ProfileDesignWorkspace";
+    import FriendsPanel from "./FriendsPanel";
+    import SchoolStatusPanel from "./SchoolStatusPanel";
+    import SchoolNoticesPanel from "./SchoolNoticesPanel";
+    import SchoolCalendarPanel from "./SchoolCalendarPanel";
+    import OfficeRequestPanel from "./OfficeRequestPanel";
+    import SupportTicketPanel from "./SupportTicketPanel";
+    import NotificationAccessibilityPanel from "./NotificationAccessibilityPanel";
+    import CommunityCenterPanel from "./CommunityCenterPanel";
+    import SchoolResourcesPanel from "./SchoolResourcesPanel";
+    
+    export type ActiveCharacter={id:string;slot:number;role:"student"|"faculty";display_name:string;handle:string;visibility:"private"|"friends_only"|"public";is_active:boolean};
+    type Props={character:ActiveCharacter|null;accessToken:string};
+    
+    export default function DashboardShell({character,accessToken}:Props){
+      if(!character)return <section className={styles.empty} aria-label="Dashboard unavailable"><p className="eyebrow">MY HANAMI DASHBOARD</p><h3>Create a character to open your school desk.</h3><p>Your dashboard stays locked until one of your two character slots is active.</p></section>;
+      const isStudent=character.role==="student";
+      return <section className={styles.dashboard} aria-labelledby="dashboard-title">
+        <div className={styles.hero}><div><p className="eyebrow">MY HANAMI • {isStudent?"STUDENT":"FACULTY"} DESK</p><h3 id="dashboard-title">Welcome back, {character.display_name}.</h3><p>@{character.handle} • {isStudent?"Student":"Faculty"} • Profile {character.visibility.replace("_"," ")}</p></div><div className={styles.identity}><span>ACTIVE CHARACTER</span><strong>SLOT {character.slot}</strong></div></div>
+        <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>{isStudent?"School status, notices, calendar, academics, Student Action & Support, notifications, community publishing, school resources, support, messaging, friends, and Profile Studio are connected to live Supabase data.":"School status, notices, calendar, course management, grading, advising, notifications, community publishing, school resources, support, messaging, friends, and Profile Studio are connected to live Supabase data."}</span></div>
+        <NotificationAccessibilityPanel accessToken={accessToken}/>
+        <SchoolStatusPanel accessToken={accessToken}/>
+        <SchoolNoticesPanel accessToken={accessToken}/>
+        <SchoolCalendarPanel accessToken={accessToken} characterId={character.id}/>
+        <SchedulePanel accessToken={accessToken} characterId={character.id} role={character.role}/>
+        {isStudent?<><CourseworkPanel accessToken={accessToken} characterId={character.id}/><StudentAcademicRecordPanel accessToken={accessToken} characterId={character.id}/><StudentActionSupportPanel accessToken={accessToken} characterId={character.id}/><StudentActivitiesPanel accessToken={accessToken} characterId={character.id}/><StudentOpportunityPanel accessToken={accessToken} characterId={character.id}/></>:<><FacultyCourseManager accessToken={accessToken} characterId={character.id}/><FacultyGradingPanel accessToken={accessToken} characterId={character.id}/><FacultyAttendanceReportPanel accessToken={accessToken} characterId={character.id}/><FacultyAdvisingPanel accessToken={accessToken} characterId={character.id}/></>}
+        <CommunityCenterPanel accessToken={accessToken} characterId={character.id} role={character.role}/>
+        <SchoolResourcesPanel accessToken={accessToken} characterId={character.id}/>
+        <OfficeRequestPanel accessToken={accessToken} characterId={character.id}/>
+        <SupportTicketPanel accessToken={accessToken} characterId={character.id}/>
+        <InboxPanel accessToken={accessToken} characterId={character.id}/>
+        <FriendsPanel accessToken={accessToken} characterId={character.id}/>
+        <CharacterProfilePanel accessToken={accessToken} characterId={character.id} currentVisibility={character.visibility}/>
+        <ProfileDesignWorkspace accessToken={accessToken} characterId={character.id}/>
+        <ProfileLookupPanel accessToken={accessToken} viewerCharacterId={character.id}/>
+        <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Notifications • Accessibility • Classes • Assignments • Academic Record • Homeroom • To-Do • Counseling • Health • Organizations • Elections • Forums • Bulletin Boards • Study Groups • Newspaper • Galleries • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile Studio":"Notifications • Accessibility • Classes • Rosters • Assignments • Attendance • Report Cards • Forums • Bulletin Boards • Newspaper • Galleries • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile Studio"}</span></div>
+      </section>;
+    }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/Hanami-High/Hanami-High/tests/student-activities.test.mjs:24:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
 # Subtest: test activity data stays visibly labeled
 ok 152 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.138919
+  duration_ms: 0.20857
   type: 'test'
   ...
 1..152
 # tests 152
 # suites 0
-# pass 151
-# fail 1
+# pass 146
+# fail 6
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 748.286771
+# duration_ms 789.237675
 === build ===
 
 > hanami-high@0.1.0 build
@@ -88,15 +86,15 @@ https://nextjs.org/telemetry
 ▲ Next.js 16.2.11 (Turbopack)
 
   Creating an optimized production build ...
-✓ Compiled successfully in 3.5s
+✓ Compiled successfully in 3.9s
   Running TypeScript ...
-  Finished TypeScript in 6.4s ...
+  Finished TypeScript in 6.7s ...
   Collecting page data using 3 workers ...
-  Generating static pages using 3 workers (0/17) ...
-  Generating static pages using 3 workers (4/17) 
-  Generating static pages using 3 workers (8/17) 
-  Generating static pages using 3 workers (12/17) 
-✓ Generating static pages using 3 workers (17/17) in 443ms
+  Generating static pages using 3 workers (0/19) ...
+  Generating static pages using 3 workers (4/19) 
+  Generating static pages using 3 workers (9/19) 
+  Generating static pages using 3 workers (14/19) 
+✓ Generating static pages using 3 workers (19/19) in 458ms
   Finalizing page optimization ...
 
 Route (app)
@@ -115,7 +113,9 @@ Route (app)
 ├ ○ /portal/owner
 ├ ○ /portal/student
 ├ ○ /rooms
-└ ○ /sports
+├ ○ /sports
+├ ○ /traditions
+└ ○ /updates
 
 
 ○  (Static)  prerendered as static content
