@@ -33,7 +33,7 @@ test("Owner detector UI uses Owner-only feed and lifecycle RPC",async()=>{
 });
 
 test("Bug Detector migration enforces verified Owner reads and updates",async()=>{
- const migration=await read("supabase/migrations/20260819012600_owner_only_bug_detector_foundation.sql");
+ const migration=await read("supabase/migrations/20260819011901_owner_only_bug_detector_foundation.sql");
  assert.match(migration,/revoke all on public\.owner_bug_reports from anon,authenticated/i);
  assert.match(migration,/if not private\.is_owner_discord_user\(\) then raise exception 'Owner access required'/i);
  assert.match(migration,/owner_bug_detector_feed/);
