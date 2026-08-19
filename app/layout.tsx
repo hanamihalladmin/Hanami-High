@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import RuntimeBugReporter from "./components/RuntimeBugReporter";
+import RuntimeOperationsBridge from "./components/RuntimeOperationsBridge";
 import PublicSessionBridge from "./components/PublicSessionBridge";
 import GlobalRulesNotice from "./components/GlobalRulesNotice";
 import "./globals.css";
@@ -15,5 +16,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><RuntimeBugReporter/><PublicSessionBridge/><GlobalRulesNotice/>{children}</body></html>;
+  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><GlobalRulesNotice/>{children}</body></html>;
 }
