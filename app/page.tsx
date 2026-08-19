@@ -5,8 +5,8 @@ import LiveUpcomingEvents from "./components/live-upcoming-events";
 import LiveSchoolStatus from "./components/live-school-status";
 import {hanamiRoleplayDate} from "./components/roleplay-date";
 
-const navigation = [["Home", "#home"], ["About", "./about/"], ["Academics", "./academics/"], ["Campus Life", "./campus-life/"], ["Clubs", "./campus-life/#directory"], ["Calendar", "./calendar/"], ["News", "#news"], ["People", "./about/#directory"], ["Gallery", "./campus-life/#gallery"], ["Apply", "./apply/"]] as const;
-const quickLinks = [["A", "About Hanami", "./about/"], ["学", "Academic departments", "./academics/#departments"], ["C", "Clubs & organizations", "./campus-life/#directory"], ["E", "School calendar", "./calendar/"], ["J", "Campus opportunities", "./campus-life/#jobs"], ["入", "Apply to Hanami", "./apply/"]] as const;
+const navigation = [["Home", "#home"], ["About", "./about/"], ["Academics", "./academics/"], ["Campus Life", "./campus-life/"], ["Clubs", "./campus-life/#directory"], ["Calendar", "./calendar/"], ["Rules", "./rules/"], ["News", "#news"], ["People", "./about/#directory"], ["Gallery", "./campus-life/#gallery"], ["Apply", "./apply/"]] as const;
+const quickLinks = [["A", "About Hanami", "./about/"], ["学", "Academic departments", "./academics/#departments"], ["C", "Clubs & organizations", "./campus-life/#directory"], ["E", "School calendar", "./calendar/"], ["規", "Rules & conduct", "./rules/"], ["入", "Apply to Hanami", "./apply/"]] as const;
 
 export default function Home() {
   const currentDate = hanamiRoleplayDate();
@@ -26,7 +26,7 @@ export default function Home() {
 
       <div className="homepage-grid">
         <aside className="left-rail" aria-label="Quick links and portal access">
-          <section className="panel" id="portal-access"><h2 className="panel-title">PORTAL ACCESS</h2><div className="panel-body portal-panel"><a className="eyebrow" href="./portal/">HANAMI SCHOOL NETWORK</a><p>Students and faculty can access their private school desk here. Returning users keep their browser session and active character until Logout.</p><a className="primary-action" href="./portal/">Student Login</a><a className="secondary-action" href="./portal/">Faculty Login</a><a className="secondary-action" href="./apply/">Apply to Join Hanami</a><small>New guests can begin enrollment through the public Apply page. Approved members sign in with Discord after receiving their school role.</small></div></section>
+          <section className="panel" id="portal-access"><h2 className="panel-title">PORTAL ACCESS</h2><div className="panel-body portal-panel"><a className="eyebrow" href="./portal/">HANAMI SCHOOL NETWORK</a><p>Students and faculty can access their private school desk here. Returning users keep their browser session and active character until Logout.</p><a className="primary-action" href="./portal/">Student Login</a><a className="secondary-action" href="./portal/">Faculty Login</a><a className="secondary-action" href="./apply/">Apply to Join Hanami</a><a className="secondary-action" href="./rules/">Read Rules & Conduct</a><small>New guests can review the rules and begin enrollment through the public Apply page. Approved members sign in with Discord after receiving their school role.</small></div></section>
           <section className="panel"><h2 className="panel-title">QUICK LINKS</h2><div className="link-list">{quickLinks.map(([icon, label, href]) => <a href={href} key={label}><span>{icon}</span>{label}</a>)}</div></section>
           <section className="panel network-panel"><h2 className="panel-title">NETWORK STATUS</h2><div className="panel-body"><p><i aria-hidden="true" /> ONLINE • 2006</p><small>Student Web Committee</small></div></section>
         </aside>
@@ -47,7 +47,7 @@ export default function Home() {
           <section className="panel"><h2 className="panel-title">HALLWAY WIRE</h2><div className="panel-body wire-card"><p className="eyebrow">BROADCAST COMMITTEE</p><h3>Who moved the courtyard bench?</h3><p>Three witnesses. Four conflicting stories. One very confused groundskeeper.</p><span>RUMOR • 8:42 AM</span></div></section>
         </aside>
       </div>
-      <footer><p>HANAMI HIGH SCHOOL • 花見高等学校 • HANAMI CITY • 2006</p><nav aria-label="Footer navigation"><a href="./apply/">Apply</a><a href="./about/#contact">Contact</a><a href="./portal/help/">Portal Help</a><a href="#home">Back to top ↑</a></nav></footer>
+      <footer><p>HANAMI HIGH SCHOOL • 花見高等学校 • HANAMI CITY • 2006</p><nav aria-label="Footer navigation"><a href="./apply/">Apply</a><a href="./rules/">Rules</a><a href="./about/#contact">Contact</a><a href="./portal/help/">Portal Help</a><a href="#home">Back to top ↑</a></nav></footer>
     </main>
   );
 }
