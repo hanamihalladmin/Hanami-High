@@ -3,6 +3,7 @@
 import {FormEvent,useCallback,useEffect,useState} from "react";
 import PrivilegedPortalLogin from "../PrivilegedPortalLogin";
 import AdminGovernancePanel from "../admin/AdminGovernancePanel";
+import OwnerBugDetectorPanel from "./OwnerBugDetectorPanel";
 import styles from "./OwnerPortalClient.module.css";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
@@ -74,6 +75,7 @@ export default function OwnerPortalClient(){
      <div className={styles.statusRow}><strong>Discord Owner identity</strong><span>VERIFIED</span></div>
      <div className={styles.statusRow}><strong>Owner credential gate</strong><span>UNLOCKED</span></div>
      <div className={styles.statusRow}><strong>Administrator portal</strong><span>AUTOMATIC ACCESS</span></div>
+     <div className={styles.statusRow}><strong>Bug Detector</strong><span>OWNER ONLY</span></div>
      <div className={styles.statusRow}><strong>Privileged session</strong><span>UP TO 8 HOURS</span></div>
      <div className={styles.statusRow}><strong>Character role required</strong><span>NO</span></div>
     </div>
@@ -111,6 +113,7 @@ export default function OwnerPortalClient(){
     <div className={styles.actions} style={{marginTop:12}}><a href="../">Open Portal Gateway</a><a href="../faculty/">Open Faculty Portal</a></div>
    </section>
   </div>
+  <OwnerBugDetectorPanel accessToken={session.accessToken}/>
   <AdminGovernancePanel accessToken={session.accessToken} ownerMode/>
   <div className={styles.notice} aria-live="polite">{message}</div>
  </div>;
