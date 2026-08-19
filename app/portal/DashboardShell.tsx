@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect,useState} from "react";
+import {ReactNode,useEffect,useState} from "react";
 import styles from "./DashboardShell.module.css";
 import SchedulePanel from "./SchedulePanel";
 import CourseworkPanel from "./CourseworkPanel";
@@ -34,7 +34,18 @@ const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlq
 const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
 export type ActiveCharacter={id:string;slot:number;role:"student"|"faculty";display_name:string;handle:string;visibility:"private"|"friends_only"|"public";is_active:boolean};
 type Props={character:ActiveCharacter|null;accessToken:string};
+type CollapsibleProps={title:string;subtitle?:string;children:ReactNode;defaultOpen?:boolean;id?:string};
 function headers(accessToken:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`,...extra};}
+
+function CollapsibleSection({title,subtitle,children,defaultOpen=true,id}:CollapsibleProps){
+  return <details className={styles.collapse} open={defaultOpen} id={id}>
+    <summary className={styles.collapseSummary}>
+      <span><strong>{title}</strong>{subtitle&&<small>{subtitle}</small>}</span>
+      <span className={styles.chevron} aria-hidden="true">⌄</span>
+    </summary>
+    <div className={styles.collapseBody}>{children}</div>
+  </details>;
+}
 
 export default function DashboardShell({character,accessToken}:Props){
   const [nurseEligible,setNurseEligible]=useState(false);const [nurseMode,setNurseMode]=useState(false);
@@ -46,22 +57,33 @@ export default function DashboardShell({character,accessToken}:Props){
     <div className={styles.hero}><div><p className="eyebrow">MY HANAMI • {isStudent?"STUDENT":"FACULTY"} DESK</p><h3 id="dashboard-title">Welcome back, {character.display_name}.</h3><p>@{character.handle} • {isStudent?"Student":"Faculty"} • Profile {character.visibility.replace("_"," ")}</p></div><div className={styles.identity}><span>ACTIVE CHARACTER</span><strong>SLOT {character.slot}</strong><MessageNotificationBadge accessToken={accessToken} characterId={character.id}/>{!isStudent&&nurseEligible&&<button type="button" onClick={()=>setNurseMode(true)} style={{marginTop:8,minHeight:32,padding:"6px 9px",border:"1px solid #17375f",background:"#fff",color:"#17375f",fontSize:8,fontWeight:700,cursor:"pointer"}}>Switch to Nurse Dashboard</button>}</div></div>
     <SystemAnnouncementBanner accessToken={accessToken} role={character.role}/>
     <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>{isStudent?"School status, notices, calendar, academics, Student Action & Support, notifications, community publishing, school resources, support, messaging, friends, and Profile Studio are connected to live Supabase data.":`School status, notices, calendar, course management, grading, advising, notifications, community publishing, school resources, support, messaging, friends, and Profile Studio are connected to live Supabase data.${nurseEligible?" Nurse Dashboard access is active for this Faculty character.":""}`}</span></div>
-    {ownerTestFaculty&&<OwnerFacultyQaPanel accessToken={accessToken} characterId={character.id}/>}    
-    <NotificationAccessibilityPanel accessToken={accessToken}/>
-    <SchoolStatusPanel accessToken={accessToken}/>
-    <SchoolNoticesPanel accessToken={accessToken}/>
-    <SchoolCalendarPanel accessToken={accessToken} characterId={character.id}/>
-    <SchedulePanel accessToken={accessToken} characterId={character.id} role={character.role}/>
-    {isStudent?<><CourseworkPanel accessToken={accessToken} characterId={character.id}/><StudentAcademicRecordPanel accessToken={accessToken} characterId={character.id}/><StudentActionSupportPanel accessToken={accessToken} characterId={character.id}/><StudentActivitiesPanel accessToken={accessToken} characterId={character.id}/><StudentOpportunityPanel accessToken={accessToken} characterId={character.id}/></>:<><FacultyCourseManager accessToken={accessToken} characterId={character.id}/><FacultyGradingPanel accessToken={accessToken} characterId={character.id}/><FacultyAttendanceReportPanel accessToken={accessToken} characterId={character.id}/><FacultyAdvisingPanel accessToken={accessToken} characterId={character.id}/></>}
-    <CommunityCenterPanel accessToken={accessToken} characterId={character.id} role={character.role}/>
-    <SchoolResourcesPanel accessToken={accessToken} characterId={character.id}/>
-    <OfficeRequestPanel accessToken={accessToken} characterId={character.id}/>
-    <SupportTicketPanel accessToken={accessToken} characterId={character.id}/>
-    <MessageCenterPanel accessToken={accessToken} characterId={character.id}/>
-    <FriendsPanel accessToken={accessToken} characterId={character.id}/>
-    <CharacterProfilePanel accessToken={accessToken} characterId={character.id} currentVisibility={character.visibility}/>
-    <ProfileDesignWorkspace accessToken={accessToken} characterId={character.id}/>
-    <ProfileLookupPanel accessToken={accessToken} viewerCharacterId={character.id}/>
+    {ownerTestFaculty&&<CollapsibleSection title="Owner QA" subtitle="TEST Faculty tools"><OwnerFacultyQaPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>}
+    <CollapsibleSection title="Notifications & Accessibility" subtitle="Preferences and display controls"><NotificationAccessibilityPanel accessToken={accessToken}/></CollapsibleSection>
+    <CollapsibleSection title="School Status" subtitle="Current campus status"><SchoolStatusPanel accessToken={accessToken}/></CollapsibleSection>
+    <CollapsibleSection title="School Notices" subtitle="Announcements and updates"><SchoolNoticesPanel accessToken={accessToken}/></CollapsibleSection>
+    <CollapsibleSection title="School Calendar" subtitle="Upcoming Hanami events"><SchoolCalendarPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+    <CollapsibleSection title="Schedule" subtitle="Classes and timetable"><SchedulePanel accessToken={accessToken} characterId={character.id} role={character.role}/></CollapsibleSection>
+    {isStudent?<>
+      <CollapsibleSection title="Coursework" subtitle="Assignments and submissions"><CourseworkPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+      <CollapsibleSection title="Academic Record" subtitle="Grades, attendance, and records"><StudentAcademicRecordPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+      <CollapsibleSection title="Student Action & Support" subtitle="Counseling, health, and school support"><StudentActionSupportPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+      <CollapsibleSection title="Activities" subtitle="Clubs and campus involvement"><StudentActivitiesPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+      <CollapsibleSection title="Campus Opportunities" subtitle="Jobs and internships"><StudentOpportunityPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+    </>:<>
+      <CollapsibleSection title="Course Management" subtitle="Classes and rosters"><FacultyCourseManager accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+      <CollapsibleSection title="Grading" subtitle="Assignments and student grades"><FacultyGradingPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+      <CollapsibleSection title="Attendance & Reports" subtitle="Attendance and report records"><FacultyAttendanceReportPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+      <CollapsibleSection title="Advising" subtitle="Student advising tools"><FacultyAdvisingPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+    </>}
+    <CollapsibleSection title="Community Center" subtitle="Forums, boards, newspaper, and galleries"><CommunityCenterPanel accessToken={accessToken} characterId={character.id} role={character.role}/></CollapsibleSection>
+    <CollapsibleSection title="School Resources" subtitle="Forms, documents, handbook, and IT"><SchoolResourcesPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+    <CollapsibleSection title="School Office Requests" subtitle="Website-native office requests"><OfficeRequestPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+    <CollapsibleSection title="Support & Bug Reports" subtitle="Help desk and technical support"><SupportTicketPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+    <CollapsibleSection title="Messages" subtitle="Inbox, sent mail, and unread notifications" id="dashboard-messages"><MessageCenterPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+    <CollapsibleSection title="Friends" subtitle="Character friendships"><FriendsPanel accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+    <CollapsibleSection title="Profile & Privacy" subtitle="Character profile settings"><CharacterProfilePanel accessToken={accessToken} characterId={character.id} currentVisibility={character.visibility}/></CollapsibleSection>
+    <CollapsibleSection title="Profile Studio" subtitle="Templates, widgets, and page design"><ProfileDesignWorkspace accessToken={accessToken} characterId={character.id}/></CollapsibleSection>
+    <CollapsibleSection title="Profile Lookup" subtitle="Find visible Hanami profiles"><ProfileLookupPanel accessToken={accessToken} viewerCharacterId={character.id}/></CollapsibleSection>
     <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Notifications • Accessibility • Classes • Assignments • Academic Record • Homeroom • To-Do • Counseling • Health • Campus Opportunities • Organizations • Elections • Forums • Bulletin Boards • Study Groups • Newspaper • Galleries • School Office Requests • School Office • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile & Privacy • Profile Templates • Profile Studio":`Notifications • Accessibility • Classes • Rosters • Assignments • Attendance • Report Cards${nurseEligible?" • Nurse Dashboard":""} • Forums • Bulletin Boards • Newspaper • Galleries • School Office Requests • School Office • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile & Privacy • Profile Templates • Profile Studio`}</span></div>
   </section>;
 }
