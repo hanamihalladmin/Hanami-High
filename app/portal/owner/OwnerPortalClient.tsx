@@ -5,6 +5,7 @@ import PrivilegedPortalLogin from "../PrivilegedPortalLogin";
 import AdminGovernancePanel from "../admin/AdminGovernancePanel";
 import OwnerBugDetectorPanel from "./OwnerBugDetectorPanel";
 import OwnerDiscordRoleSyncPanel from "./OwnerDiscordRoleSyncPanel";
+import OwnerOperationsPanel from "./OwnerOperationsPanel";
 import styles from "./OwnerPortalClient.module.css";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
@@ -76,6 +77,9 @@ export default function OwnerPortalClient(){
      <div className={styles.statusRow}><strong>Discord Owner identity</strong><span>VERIFIED</span></div>
      <div className={styles.statusRow}><strong>Owner credential gate</strong><span>UNLOCKED</span></div>
      <div className={styles.statusRow}><strong>Administrator portal</strong><span>AUTOMATIC ACCESS</span></div>
+     <div className={styles.statusRow}><strong>Feature flags</strong><span>OWNER ONLY</span></div>
+     <div className={styles.statusRow}><strong>Maintenance mode</strong><span>OWNER ONLY</span></div>
+     <div className={styles.statusRow}><strong>Granular sanctions</strong><span>OWNER / MODERATION</span></div>
      <div className={styles.statusRow}><strong>Bug Detector</strong><span>OWNER ONLY</span></div>
      <div className={styles.statusRow}><strong>Discord role sync</strong><span>OWNER CONFIGURED</span></div>
      <div className={styles.statusRow}><strong>Privileged session</strong><span>UP TO 8 HOURS</span></div>
@@ -91,6 +95,7 @@ export default function OwnerPortalClient(){
      <a className={styles.portalCard} href="../admin/"><strong>Administration</strong><span>School operations, CMS, moderation, academics, accounts, audit logs, and Office Requests.</span></a>
      <a className={styles.portalCard} href="../student/"><strong>Student</strong><span>Open your active Student character portal when applicable.</span></a>
      <a className={styles.portalCard} href="../faculty/"><strong>Faculty</strong><span>Open your active Faculty or Owner-only TEST Faculty portal.</span></a>
+     <a className={styles.portalCard} href="./student-viewer/"><strong>Student Portal Viewer</strong><span>Owner-only read/moderation view of Student portal records without impersonating their account.</span></a>
     </div>
    </section>
 
@@ -115,6 +120,7 @@ export default function OwnerPortalClient(){
     <div className={styles.actions} style={{marginTop:12}}><a href="../">Open Portal Gateway</a><a href="../faculty/">Open Faculty Portal</a></div>
    </section>
   </div>
+  <OwnerOperationsPanel accessToken={session.accessToken}/>
   <OwnerDiscordRoleSyncPanel accessToken={session.accessToken}/>
   <OwnerBugDetectorPanel accessToken={session.accessToken}/>
   <AdminGovernancePanel accessToken={session.accessToken} ownerMode/>
