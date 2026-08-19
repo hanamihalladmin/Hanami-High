@@ -45,7 +45,8 @@ test("new public school RPCs use invoker wrappers after hardening",async()=>{
   assert.match(migration,/owner bug reports deny direct access/);
 });
 
-test("Next.js is pinned to the patched 16.2.11 release",async()=>{
+test("Next.js is pinned to the patched 16.3.1 release",async()=>{
   const pkg=JSON.parse(await read("package.json"));
-  assert.equal(pkg.dependencies.next,"16.2.11");
+  assert.equal(pkg.dependencies.next,"16.3.1");
+  assert.equal(pkg.devDependencies["eslint-config-next"],"16.3.1");
 });
