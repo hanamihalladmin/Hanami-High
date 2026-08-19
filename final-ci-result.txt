@@ -1,9 +1,6 @@
-HANAMI_FINAL_CI=PASS
-exit_code=0
+HANAMI_FINAL_CI=FAIL
+exit_code=1
 --- failing tests / errors ---
-# Subtest: academics uses the Tokyo 2006–07 roleplay calendar and 32-credit graduation
-# Subtest: Academics uses real portal and complete calendar routes
-# Subtest: Admin Academic course creation uses privileged RPC
 # Subtest: course creation reports specific server failures
 # Subtest: authenticated RLS evaluation can execute the private permission helper
 # Subtest: Administration is account permission based rather than character role based
@@ -103,6 +100,9 @@ exit_code=0
 # Subtest: School Office requests are character-owned and website-native
 # Subtest: members can only follow up when the Office requests more information
 # Subtest: Office request types and lifecycle are complete
+not ok 109 - Office request types and lifecycle are complete
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 # Subtest: Office staff queue stays permission scoped
 # Subtest: anonymous users have no direct School Office table grants
 # Subtest: both Student and Faculty dashboards expose the shared Office desk
@@ -162,83 +162,82 @@ exit_code=0
 # Subtest: student dashboard has no remaining placeholder modules
 # Subtest: test activity data stays visibly labeled
 --- tail ---
-  ...
 # Subtest: public portal button returns an active character to the correct dashboard
 ok 158 - public portal button returns an active character to the correct dashboard
   ---
-  duration_ms: 0.152343
+  duration_ms: 0.219862
   type: 'test'
   ...
 # Subtest: signed-in public pages no longer have to present themselves as logged out
 ok 159 - signed-in public pages no longer have to present themselves as logged out
   ---
-  duration_ms: 0.128664
+  duration_ms: 0.234138
   type: 'test'
   ...
 # Subtest: student and faculty have separate website sections
 ok 160 - student and faculty have separate website sections
   ---
-  duration_ms: 0.603826
+  duration_ms: 0.862696
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
 ok 161 - role portal restores the selected character session
   ---
-  duration_ms: 0.154528
+  duration_ms: 0.212268
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
 ok 162 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.121828
+  duration_ms: 0.150151
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
 ok 163 - role portal logout clears character and account session
   ---
-  duration_ms: 0.088377
+  duration_ms: 0.184225
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 164 - student activities are loaded for the active character
   ---
-  duration_ms: 0.590724
+  duration_ms: 0.974305
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 165 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.114313
+  duration_ms: 0.193011
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 166 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.190645
+  duration_ms: 0.295914
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 167 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.079111
+  duration_ms: 0.167815
   type: 'test'
   ...
 1..167
 # tests 167
 # suites 0
-# pass 167
-# fail 0
+# pass 166
+# fail 1
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 604.023038
+# duration_ms 835.392511
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 22ms
+✓ Running next.config.ts took 30ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -247,15 +246,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 3.9s
+✓ Compiled successfully in 5.0s
   Running TypeScript ...
-  Finished TypeScript in 5.1s ...
+  Finished TypeScript in 6.5s ...
   Collecting page data using 3 workers ...
-  Generating static pages using 3 workers (0/19) ...
-  Generating static pages using 3 workers (4/19) 
-  Generating static pages using 3 workers (9/19) 
-  Generating static pages using 3 workers (14/19) 
-✓ Generating static pages using 3 workers (19/19) in 418ms
+  Generating static pages using 3 workers (0/20) ...
+  Generating static pages using 3 workers (5/20) 
+  Generating static pages using 3 workers (10/20) 
+  Generating static pages using 3 workers (15/20) 
+✓ Generating static pages using 3 workers (20/20) in 502ms
   Finalizing page optimization ...
 
 Route (app)
@@ -271,6 +270,7 @@ Route (app)
 ├ ○ /portal
 ├ ○ /portal/admin
 ├ ○ /portal/faculty
+├ ○ /portal/help
 ├ ○ /portal/owner
 ├ ○ /portal/student
 ├ ○ /rooms
