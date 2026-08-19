@@ -1,5 +1,5 @@
 name: Deploy Hanami High
-# Deployment refresh: messaging center and notification badge release
+# Deployment refresh: rules, profile fixes, privacy, and owner moderation release
 
 on:
   push:
