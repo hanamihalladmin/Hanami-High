@@ -1,0 +1,85 @@
+/* Hanami readability layer: preserve the 2006 visual language while preventing tiny or overflowing text. */
+
+html,body{overflow-x:hidden}
+body{font-size:15px;line-height:1.5}
+
+/* Let grid/flex children shrink instead of forcing horizontal overflow. */
+.site-page,
+.site-page *,
+.portal-page,
+.portal-page *,
+main,section,article,aside,div,form,label,fieldset,nav,header,footer{min-width:0}
+
+/* Long prose, handles, filenames, URLs and user-created content must stay inside cards. */
+p,li,dd,dt,small,span,strong,b,a,h1,h2,h3,h4,h5,h6,label,button,td,th,blockquote,figcaption,
+textarea,input,select,option{
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+pre,code{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}
+
+/* Keep form controls comfortably readable. */
+input,select,textarea,button{font-size:14px;line-height:1.4}
+input,select,button{min-height:38px}
+textarea{min-height:88px}
+
+/* Raise the floor on the many intentionally-small 2006 UI labels. */
+small{font-size:12px;line-height:1.45}
+.eyebrow{font-size:11px;line-height:1.35}
+.network-strip{font-size:11px}
+.jp-name,.brand-subtitle{font-size:11px}
+.school-clock span{font-size:11px}
+.nav-row nav a,.portal-button{font-size:13px}
+.panel-title,.section-heading h2{font-size:13px}
+.section-heading a{font-size:12px}
+.status-label{font-size:11px}
+.link-list a{font-size:13px}
+.story-date,.news-list time{font-size:11px}
+.quiet-sections p{font-size:12px}
+.wire-card span{font-size:11px}
+footer{font-size:11px;line-height:1.5}
+.about-breadcrumb{font-size:12px}
+.about-year small,.section-heading>span{font-size:11px}
+.content-note{font-size:12px}
+.statistics-grid span{font-size:12px}
+.directory-controls label>span,.course-controls label>span,.campus-directory-controls label>span{font-size:11px}
+.directory-results strong{font-size:13px}
+.department-grid small{font-size:11px}
+.course-code strong{font-size:13px}.course-code span{font-size:10px}
+.requirements-table p{font-size:12px}
+.academic-timeline time{font-size:12px}
+.eligibility-strip>*{font-size:11px}
+.guidance-grid li span{font-size:12px}
+.campus-board span{font-size:11px}.campus-board p:last-child{font-size:12px}
+.activity-results dt,.opportunity-grid dt{font-size:10px}
+.activity-results dd,.opportunity-grid dd{font-size:12px}
+.campus-events article>span{font-size:12px}
+.campus-gallery figcaption{font-size:12px}
+.portal-status strong{font-size:11px}.portal-status span{font-size:12px}
+.window-title{font-size:11px}.test-character span{font-size:12px}.desk-list b{font-size:11px}
+.portal-rules p:last-child{font-size:12px}
+
+/* CSS modules still inherit the body increase, but many set explicit 7–10px labels.
+   Raise those without needing to rewrite every portal module. */
+.portal-page [class*="status"],
+.portal-page [class*="meta"],
+.portal-page [class*="label"],
+.portal-page [class*="note"],
+.portal-page [class*="hint"],
+.portal-page [class*="subtitle"],
+.portal-page [class*="caption"]{line-height:1.45}
+
+/* Tables and horizontally dense modules may scroll, but their cell text should wrap first. */
+table{width:100%;max-width:100%;table-layout:auto}
+th,td{white-space:normal;vertical-align:top}
+
+/* Never let authored/user content force an entire dashboard wider than the viewport. */
+img,video,canvas,svg{max-width:100%}
+
+@media(max-width:760px){
+  body{font-size:15px}
+  .network-strip{font-size:10px}
+  .nav-row nav a,.portal-button{font-size:13px}
+  input,select,textarea,button{font-size:16px} /* prevents iOS form zoom and improves touch readability */
+  small{font-size:12px}
+}
