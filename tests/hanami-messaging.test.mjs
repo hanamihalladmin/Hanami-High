@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 
 const inbox=await readFile(new URL("../app/portal/InboxPanel.tsx",import.meta.url),"utf8");
+const messageCenter=await readFile(new URL("../app/portal/MessageCenterPanel.tsx",import.meta.url),"utf8");
 const dashboard=await readFile(new URL("../app/portal/DashboardShell.tsx",import.meta.url),"utf8");
 const foundation=await readFile(new URL("../supabase/migrations/20260818143500_hanami_messaging_foundation.sql",import.meta.url),"utf8");
 const privateHardening=await readFile(new URL("../supabase/migrations/20260818145500_move_messaging_privileged_helpers_private.sql",import.meta.url),"utf8");
@@ -36,10 +37,18 @@ test("completed messaging supports unread state and private attachments",()=>{
   assert.match(signer,/Authentication required/);assert.match(signer,/conversation_participants/);assert.match(signer,/message_attachments/);assert.match(signer,/expiresIn:300/);
 });
 
+test("message center exposes unread notifications and reopenable sent messages",()=>{
+  assert.match(messageCenter,/conversation_unread_counts/);
+  assert.match(messageCenter,/Inbox/);
+  assert.match(messageCenter,/Sent messages/);
+  assert.match(messageCenter,/sender_character_id=eq\.\$\{encodeURIComponent\(characterId\)\}/);
+  assert.match(messageCenter,/openMessageId/);
+});
+
 test("privileged messaging helpers are kept out of the public API schema",()=>{
   assert.match(privateHardening,/create or replace function private\.conversation_participant_directory_internal/);assert.match(privateHardening,/create or replace function public\.conversation_participant_directory/);assert.match(privateHardening,/security invoker/);assert.match(privateHardening,/drop function if exists public\.user_participates_in_conversation/);
 });
 
-test("both role dashboards render the real inbox instead of a message placeholder",()=>{
-  assert.match(dashboard,/InboxPanel accessToken=\{accessToken\} characterId=\{character\.id\}/);assert.doesNotMatch(dashboard,/\["MESSAGES","Hanami inbox"/);
+test("both role dashboards render the real message center instead of a placeholder",()=>{
+  assert.match(dashboard,/MessageCenterPanel accessToken=\{accessToken\} characterId=\{character\.id\}/);assert.doesNotMatch(dashboard,/\["MESSAGES","Hanami inbox"/);
 });
