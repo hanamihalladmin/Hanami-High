@@ -185,79 +185,79 @@ exit_code=0
 # Subtest: student and faculty have separate website sections
 ok 173 - student and faculty have separate website sections
   ---
-  duration_ms: 0.875684
+  duration_ms: 1.062546
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
 ok 174 - role portal restores the selected character session
   ---
-  duration_ms: 0.236264
+  duration_ms: 0.284605
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
 ok 175 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.145444
+  duration_ms: 0.198233
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
 ok 176 - role portal logout clears character and account session
   ---
-  duration_ms: 0.143599
+  duration_ms: 0.175191
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 177 - student activities are loaded for the active character
   ---
-  duration_ms: 1.264615
+  duration_ms: 1.075937
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 178 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.210976
+  duration_ms: 0.217743
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 179 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.370165
+  duration_ms: 0.32042
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 180 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.202962
+  duration_ms: 0.119667
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 181 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 7.468985
+  duration_ms: 7.344873
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 182 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.383087
+  duration_ms: 1.594773
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 183 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.17672
+  duration_ms: 1.813466
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 184 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.581509
+  duration_ms: 2.355626
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 185 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.343583
+  duration_ms: 1.442628
   type: 'test'
   ...
 1..185
@@ -268,14 +268,14 @@ ok 185 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 933.057796
+# duration_ms 826.90304
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 30ms
+✓ Running next.config.ts took 22ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -284,15 +284,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.3s
+✓ Compiled successfully in 4.7s
   Running TypeScript ...
-  Finished TypeScript in 7.0s ...
+  Finished TypeScript in 6.2s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/22) ...
   Generating static pages using 3 workers (5/22) 
   Generating static pages using 3 workers (10/22) 
   Generating static pages using 3 workers (16/22) 
-✓ Generating static pages using 3 workers (22/22) in 536ms
+✓ Generating static pages using 3 workers (22/22) in 479ms
   Finalizing page optimization ...
 
 Route (app)
