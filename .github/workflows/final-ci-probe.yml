@@ -19,35 +19,54 @@ jobs:
         run: |
           set +e
           LOG=/tmp/hanami-final-ci.log
-          {
-            echo '=== npm ci ==='
-            npm ci
-            echo '=== production audit ==='
-            npm audit --omit=dev --audit-level=high
-            echo '=== typecheck ==='
-            npm run typecheck
-            echo '=== tests ==='
-            npm test
-            echo '=== build ==='
-            npm run build
-            echo '=== routes ==='
-            test -f out/index.html
-            test -f out/calendar/index.html
-            test -f out/portal/index.html
-            test -f out/portal/student/index.html
-            test -f out/portal/faculty/index.html
-            test -f out/portal/admin/index.html
-            test -f out/portal/owner/index.html
-          } >"$LOG" 2>&1
-          CODE=$?
+          CODE=0
+
+          run_check() {
+            local label="$1"
+            shift
+            echo "=== $label ===" >>"$LOG"
+            "$@" >>"$LOG" 2>&1
+            local status=$?
+            if [ "$status" -ne 0 ] && [ "$CODE" -eq 0 ]; then CODE="$status"; fi
+            return 0
+          }
+
+          : >"$LOG"
+          run_check "npm ci" npm ci
+          run_check "production audit" npm audit --omit=dev --audit-level=high
+          run_check "typecheck" npm run typecheck
+          run_check "tests" npm test
+          run_check "build" npm run build
+
+          echo '=== routes ===' >>"$LOG"
+          for route in \
+            out/index.html \
+            out/calendar/index.html \
+            out/portal/index.html \
+            out/portal/student/index.html \
+            out/portal/faculty/index.html \
+            out/portal/admin/index.html \
+            out/portal/owner/index.html \
+            out/updates/index.html \
+            out/traditions/index.html; do
+            if [ ! -f "$route" ]; then
+              echo "MISSING ROUTE: $route" >>"$LOG"
+              [ "$CODE" -eq 0 ] && CODE=1
+            fi
+          done
+
           {
             if [ "$CODE" -eq 0 ]; then echo 'HANAMI_FINAL_CI=PASS'; else echo 'HANAMI_FINAL_CI=FAIL'; fi
             echo "exit_code=$CODE"
+            echo '--- failing tests / errors ---'
+            grep -E '^(not ok|# Subtest:)|AssertionError|ERR_ASSERTION|MISSING ROUTE|npm ERR!|found [1-9][0-9]* vulnerabilities' "$LOG" | tail -n 160 || true
             echo '--- tail ---'
             tail -n 120 "$LOG"
           } > final-ci-result.txt
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add final-ci-result.txt
-          git commit -m "Record final Hanami CI probe result"
-          git push
+          git commit -m "Record final Hanami CI probe result" || true
+          git push || true
+          exit "$CODE"
