@@ -44,7 +44,9 @@ jobs:
           test -f out/calendar/index.html
           test -f out/portal/index.html
           test -f out/portal/student/index.html
+          test -f out/portal/student/class/index.html
           test -f out/portal/faculty/index.html
+          test -f out/portal/help/index.html
           test -f out/portal/admin/index.html
           test -f out/portal/owner/index.html
       - uses: actions/upload-pages-artifact@v3
