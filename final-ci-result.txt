@@ -1,6 +1,12 @@
-HANAMI_FINAL_CI=FAIL
-exit_code=1
+HANAMI_FINAL_CI=PASS
+exit_code=0
 --- failing tests / errors ---
+# Subtest: course catalog supports search and useful filters
+# Subtest: development course records are clearly identified as test data
+# Subtest: academics uses the Tokyo 2006–07 roleplay calendar and 32-credit graduation
+# Subtest: Academics uses real portal and complete calendar routes
+# Subtest: Admin Academic course creation uses privileged RPC
+# Subtest: course creation reports specific server failures
 # Subtest: authenticated RLS evaluation can execute the private permission helper
 # Subtest: Administration is account permission based rather than character role based
 # Subtest: Owner-issued unclaimed Administrator login can bind on first successful sign-in
@@ -133,9 +139,6 @@ exit_code=1
 # Subtest: cute decorative symbols are editable profile widgets
 # Subtest: decorative library keeps multiple badges and cards
 # Subtest: Profile Studio keeps image upload controls visible
-not ok 143 - Profile Studio keeps image upload controls visible
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 # Subtest: Profile Studio exposes a decorative preset library
 # Subtest: decorative presets are saved as character-owned profile widgets
 # Subtest: Design Your Character uses Profile Studio V2
@@ -154,9 +157,6 @@ not ok 143 - Profile Studio keeps image upload controls visible
 # Subtest: profile widget deletion is server confirmed and cannot silently reappear
 # Subtest: private profile media is owner uploaded and privacy signed
 # Subtest: Profile Studio presents image editing as file upload instead of pasted image links
-not ok 161 - Profile Studio presents image editing as file upload instead of pasted image links
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 # Subtest: profile background uploads persist and use privacy-aware media signing
 # Subtest: both role dashboards expose the shared Profile Design Workspace
 # Subtest: TEST Faculty fixture is explicit test data, owner scoped, and Owner only
@@ -185,97 +185,97 @@ not ok 161 - Profile Studio presents image editing as file upload instead of pas
 # Subtest: student and faculty have separate website sections
 ok 173 - student and faculty have separate website sections
   ---
-  duration_ms: 1.149557
+  duration_ms: 0.875684
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
 ok 174 - role portal restores the selected character session
   ---
-  duration_ms: 0.284922
+  duration_ms: 0.236264
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
 ok 175 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.257251
+  duration_ms: 0.145444
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
 ok 176 - role portal logout clears character and account session
   ---
-  duration_ms: 0.220502
+  duration_ms: 0.143599
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 177 - student activities are loaded for the active character
   ---
-  duration_ms: 0.897155
+  duration_ms: 1.264615
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 178 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.189684
+  duration_ms: 0.210976
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 179 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.291985
+  duration_ms: 0.370165
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 180 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.141505
+  duration_ms: 0.202962
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 181 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.777088
+  duration_ms: 7.468985
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 182 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.850225
+  duration_ms: 1.383087
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 183 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.643769
+  duration_ms: 1.17672
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 184 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.977813
+  duration_ms: 1.581509
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 185 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.591061
+  duration_ms: 1.343583
   type: 'test'
   ...
 1..185
 # tests 185
 # suites 0
-# pass 183
-# fail 2
+# pass 185
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 923.612492
+# duration_ms 933.057796
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 28ms
+✓ Running next.config.ts took 30ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -284,15 +284,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.2s
+✓ Compiled successfully in 6.3s
   Running TypeScript ...
-  Finished TypeScript in 6.9s ...
+  Finished TypeScript in 7.0s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/22) ...
   Generating static pages using 3 workers (5/22) 
   Generating static pages using 3 workers (10/22) 
   Generating static pages using 3 workers (16/22) 
-✓ Generating static pages using 3 workers (22/22) in 527ms
+✓ Generating static pages using 3 workers (22/22) in 536ms
   Finalizing page optimization ...
 
 Route (app)
