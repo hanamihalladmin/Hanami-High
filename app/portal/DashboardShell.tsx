@@ -13,6 +13,7 @@ import FacultyAttendanceReportPanel from "./FacultyAttendanceReportPanel";
 import FacultyNurseDashboard from "./FacultyNurseDashboard";
 import OwnerFacultyQaPanel from "./OwnerFacultyQaPanel";
 import MessageCenterPanel from "./MessageCenterPanel";
+import MessageNotificationBadge from "./MessageNotificationBadge";
 import StudentActivitiesPanel from "./StudentActivitiesPanel";
 import StudentOpportunityPanel from "./StudentOpportunityPanel";
 import CharacterProfilePanel from "./CharacterProfilePanel";
@@ -42,7 +43,7 @@ export default function DashboardShell({character,accessToken}:Props){
   const isStudent=character.role==="student";const ownerTestFaculty=!isStudent&&character.handle.startsWith("testfaculty_");
   if(!isStudent&&nurseEligible&&nurseMode)return <FacultyNurseDashboard accessToken={accessToken} characterId={character.id} displayName={character.display_name} onReturn={()=>setNurseMode(false)}/>;
   return <section className={styles.dashboard} aria-labelledby="dashboard-title">
-    <div className={styles.hero}><div><p className="eyebrow">MY HANAMI • {isStudent?"STUDENT":"FACULTY"} DESK</p><h3 id="dashboard-title">Welcome back, {character.display_name}.</h3><p>@{character.handle} • {isStudent?"Student":"Faculty"} • Profile {character.visibility.replace("_"," ")}</p></div><div className={styles.identity}><span>ACTIVE CHARACTER</span><strong>SLOT {character.slot}</strong>{!isStudent&&nurseEligible&&<button type="button" onClick={()=>setNurseMode(true)} style={{marginTop:8,minHeight:32,padding:"6px 9px",border:"1px solid #17375f",background:"#fff",color:"#17375f",fontSize:8,fontWeight:700,cursor:"pointer"}}>Switch to Nurse Dashboard</button>}</div></div>
+    <div className={styles.hero}><div><p className="eyebrow">MY HANAMI • {isStudent?"STUDENT":"FACULTY"} DESK</p><h3 id="dashboard-title">Welcome back, {character.display_name}.</h3><p>@{character.handle} • {isStudent?"Student":"Faculty"} • Profile {character.visibility.replace("_"," ")}</p></div><div className={styles.identity}><span>ACTIVE CHARACTER</span><strong>SLOT {character.slot}</strong><MessageNotificationBadge accessToken={accessToken} characterId={character.id}/>{!isStudent&&nurseEligible&&<button type="button" onClick={()=>setNurseMode(true)} style={{marginTop:8,minHeight:32,padding:"6px 9px",border:"1px solid #17375f",background:"#fff",color:"#17375f",fontSize:8,fontWeight:700,cursor:"pointer"}}>Switch to Nurse Dashboard</button>}</div></div>
     <SystemAnnouncementBanner accessToken={accessToken} role={character.role}/>
     <div className={styles.notice}><strong>LIVE DASHBOARD</strong><span>{isStudent?"School status, notices, calendar, academics, Student Action & Support, notifications, community publishing, school resources, support, messaging, friends, and Profile Studio are connected to live Supabase data.":`School status, notices, calendar, course management, grading, advising, notifications, community publishing, school resources, support, messaging, friends, and Profile Studio are connected to live Supabase data.${nurseEligible?" Nurse Dashboard access is active for this Faculty character.":""}`}</span></div>
     {ownerTestFaculty&&<OwnerFacultyQaPanel accessToken={accessToken} characterId={character.id}/>}    
