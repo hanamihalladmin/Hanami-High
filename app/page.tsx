@@ -1,6 +1,7 @@
 import SiteSearch from "./components/site-search";
 import LiveAnnouncements from "./components/live-announcements";
 import LiveNextEvent from "./components/live-next-event";
+import LiveUpcomingEvents from "./components/live-upcoming-events";
 import LiveSchoolStatus from "./components/live-school-status";
 import {hanamiRoleplayDate} from "./components/roleplay-date";
 
@@ -41,11 +42,12 @@ export default function Home() {
         <aside className="right-rail" aria-label="Today at Hanami">
           <section className="panel"><h2 className="panel-title">TODAY AT HANAMI</h2><div className="panel-body today-panel"><strong>{currentDate.toUpperCase()}</strong><hr /><p><b>Hanami City</b><br />Japan Standard Time<br /><small>Roleplay year • 2006</small></p></div></section>
           <LiveNextEvent />
+          <LiveUpcomingEvents />
           <section className="panel"><h2 className="panel-title">STUDENT VOTE</h2><div className="panel-body vote-card"><p className="eyebrow">SEMESTER TITLES</p><strong>Best Dressed Hoodie?</strong><p>Voting opens September 1.</p><a href="./portal/student/">Return to Student Portal to participate</a></div></section>
           <section className="panel"><h2 className="panel-title">HALLWAY WIRE</h2><div className="panel-body wire-card"><p className="eyebrow">BROADCAST COMMITTEE</p><h3>Who moved the courtyard bench?</h3><p>Three witnesses. Four conflicting stories. One very confused groundskeeper.</p><span>RUMOR • 8:42 AM</span></div></section>
         </aside>
       </div>
-      <footer><p>HANAMI HIGH SCHOOL • 花見高等学校 • HANAMI CITY • 2006</p><nav aria-label="Footer navigation"><a href="./about/#contact">Contact</a><a href="./portal/">Portal Help</a><a href="#home">Back to top ↑</a></nav></footer>
+      <footer><p>HANAMI HIGH SCHOOL • 花見高等学校 • HANAMI CITY • 2006</p><nav aria-label="Footer navigation"><a href="./about/#contact">Contact</a><a href="./portal/help/">Portal Help</a><a href="#home">Back to top ↑</a></nav></footer>
     </main>
   );
 }
