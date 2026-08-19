@@ -1,6 +1,10 @@
-HANAMI_FINAL_CI=FAIL
-exit_code=1
+HANAMI_FINAL_CI=PASS
+exit_code=0
 --- failing tests / errors ---
+# Subtest: About Hanami includes all approved public requirements
+# Subtest: faculty directory supports search and department filters
+# Subtest: About dates use the shared Tokyo 2006 roleplay clock
+# Subtest: About and Contact use real portal routes
 # Subtest: Academics contains all approved public requirements
 # Subtest: course catalog supports search and useful filters
 # Subtest: development course records are clearly identified as test data
@@ -22,17 +26,11 @@ exit_code=1
 # Subtest: Campus Life includes every approved public requirement
 # Subtest: campus directory is searchable and filterable
 # Subtest: campus keeps fixture directory data labeled while public opportunities use the live portal flow
-not ok 25 - campus keeps fixture directory data labeled while public opportunities use the live portal flow
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 # Subtest: Campus Life uses the Tokyo 2006 roleplay clock
 # Subtest: Campus Life returns signed-in students to real portal routes
 # Subtest: Campus Opportunities are published content with character-owned Student applications
 # Subtest: Student portal exposes the website-native Campus Opportunities application desk
 # Subtest: Administration manages opportunities and reviews applications
-not ok 30 - Administration manages opportunities and reviews applications
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 # Subtest: Applicant identity is exposed only through a permission-gated queue
 # Subtest: ordinary Faculty role does not get school-wide opportunity review access
 # Subtest: character manager loads only authenticated account data
@@ -186,97 +184,97 @@ not ok 30 - Administration manages opportunities and reviews applications
 # Subtest: student and faculty have separate website sections
 ok 166 - student and faculty have separate website sections
   ---
-  duration_ms: 0.87695
+  duration_ms: 1.057831
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
 ok 167 - role portal restores the selected character session
   ---
-  duration_ms: 0.220952
+  duration_ms: 0.283314
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
 ok 168 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.111615
+  duration_ms: 0.17421
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
 ok 169 - role portal logout clears character and account session
   ---
-  duration_ms: 0.135843
+  duration_ms: 0.16064
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 170 - student activities are loaded for the active character
   ---
-  duration_ms: 0.974172
+  duration_ms: 0.9307
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 171 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.240216
+  duration_ms: 0.179949
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 172 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.298511
+  duration_ms: 0.260479
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 173 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.150803
+  duration_ms: 0.135562
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 174 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 4.763866
+  duration_ms: 5.684832
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 175 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.291113
+  duration_ms: 1.535554
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 176 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.162072
+  duration_ms: 1.356998
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 177 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.674104
+  duration_ms: 1.839868
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 178 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.151901
+  duration_ms: 1.295376
   type: 'test'
   ...
 1..178
 # tests 178
 # suites 0
-# pass 176
-# fail 2
+# pass 178
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 762.353314
+# duration_ms 865.076552
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 27ms
+✓ Running next.config.ts took 25ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -285,15 +283,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 4.6s
+✓ Compiled successfully in 5.2s
   Running TypeScript ...
-  Finished TypeScript in 6.2s ...
+  Finished TypeScript in 6.6s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/21) ...
   Generating static pages using 3 workers (5/21) 
   Generating static pages using 3 workers (10/21) 
   Generating static pages using 3 workers (15/21) 
-✓ Generating static pages using 3 workers (21/21) in 497ms
+✓ Generating static pages using 3 workers (21/21) in 494ms
   Finalizing page optimization ...
 
 Route (app)
