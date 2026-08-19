@@ -1,9 +1,6 @@
 HANAMI_FINAL_CI=FAIL
 exit_code=1
 --- failing tests / errors ---
-# Subtest: course creation reports specific server failures
-# Subtest: authenticated RLS evaluation can execute the private permission helper
-# Subtest: Administration is account permission based rather than character role based
 # Subtest: Owner-issued unclaimed Administrator login can bind on first successful sign-in
 # Subtest: ordinary authenticated users cannot self grant Administration permissions without a valid Owner-issued credential
 # Subtest: public Administration RPCs are security-invoker wrappers around private helpers
@@ -60,6 +57,9 @@ exit_code=1
 # Subtest: Admin support desk can respond assign tag close and reopen tickets
 # Subtest: new public school RPCs use invoker wrappers after hardening
 # Subtest: Next.js is pinned to the patched 16.2.11 release
+not ok 69 - Next.js is pinned to the patched 16.2.11 release
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 # Subtest: friend requests are exact-handle and active-character scoped
 # Subtest: incoming requests require the owned addressee character
 # Subtest: friendship mutation stays behind controlled RPCs
@@ -162,7 +162,6 @@ not ok 158 - public portal button returns an active character to the correct das
 # Subtest: student dashboard has no remaining placeholder modules
 # Subtest: test activity data stays visibly labeled
 --- tail ---
-    TestContext.<anonymous> (file:///home/runner/work/Hanami-High/Hanami-High/tests/public-session-continuity.test.mjs:25:10)
     Test.runInAsyncScope (node:async_hooks:214:14)
     Test.run (node:internal/test_runner/test:1047:25)
     Test.processPendingSubtests (node:internal/test_runner/test:744:18)
@@ -173,89 +172,90 @@ not ok 158 - public portal button returns an active character to the correct das
 # Subtest: signed-in public pages no longer have to present themselves as logged out
 ok 159 - signed-in public pages no longer have to present themselves as logged out
   ---
-  duration_ms: 0.203582
+  duration_ms: 0.287628
   type: 'test'
   ...
 # Subtest: student and faculty have separate website sections
 ok 160 - student and faculty have separate website sections
   ---
-  duration_ms: 0.875518
+  duration_ms: 1.141314
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
 ok 161 - role portal restores the selected character session
   ---
-  duration_ms: 0.268069
+  duration_ms: 0.319838
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
 ok 162 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.142473
+  duration_ms: 0.197429
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
 ok 163 - role portal logout clears character and account session
   ---
-  duration_ms: 0.140788
+  duration_ms: 0.187931
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 164 - student activities are loaded for the active character
   ---
-  duration_ms: 0.564915
+  duration_ms: 0.824431
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 165 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.119451
+  duration_ms: 0.162303
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 166 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.167622
+  duration_ms: 0.239017
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 167 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.081953
+  duration_ms: 0.13375
   type: 'test'
   ...
 1..167
 # tests 167
 # suites 0
-# pass 166
-# fail 1
+# pass 165
+# fail 2
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 592.133982
+# duration_ms 829.490989
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
+▲ Next.js 16.3.1 (Turbopack)
+✓ Running next.config.ts took 27ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
 https://nextjs.org/telemetry
 
-▲ Next.js 16.2.11 (Turbopack)
 
   Creating an optimized production build ...
-✓ Compiled successfully in 2.8s
+✓ Compiled successfully in 4.8s
   Running TypeScript ...
-  Finished TypeScript in 5.1s ...
+  Finished TypeScript in 6.4s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/19) ...
   Generating static pages using 3 workers (4/19) 
   Generating static pages using 3 workers (9/19) 
   Generating static pages using 3 workers (14/19) 
-✓ Generating static pages using 3 workers (19/19) in 314ms
+✓ Generating static pages using 3 workers (19/19) in 449ms
   Finalizing page optimization ...
 
 Route (app)
