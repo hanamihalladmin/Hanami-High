@@ -1,13 +1,6 @@
 HANAMI_FINAL_CI=FAIL
 exit_code=1
 --- failing tests / errors ---
-# Subtest: About and Contact use real portal routes
-# Subtest: Academics contains all approved public requirements
-# Subtest: course catalog supports search and useful filters
-# Subtest: development course records are clearly identified as test data
-# Subtest: academics uses the Tokyo 2006–07 roleplay calendar and 32-credit graduation
-# Subtest: Academics uses real portal and complete calendar routes
-# Subtest: Admin Academic course creation uses privileged RPC
 # Subtest: course creation reports specific server failures
 # Subtest: authenticated RLS evaluation can execute the private permission helper
 # Subtest: Administration is account permission based rather than character role based
@@ -153,6 +146,13 @@ exit_code=1
 # Subtest: public and accepted Friends-only profiles are visible while private stays owner only
 # Subtest: profile lookup keeps private helpers behind security-invoker wrappers
 # Subtest: both role dashboards expose privacy-aware profile lookup
+# Subtest: public community pages share the persistent Hanami browser session
+# Subtest: public browsing refreshes the stored session instead of forcing another Discord login
+# Subtest: public portal button returns an active character to the correct dashboard
+not ok 158 - public portal button returns an active character to the correct dashboard
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+# Subtest: signed-in public pages no longer have to present themselves as logged out
 # Subtest: student and faculty have separate website sections
 # Subtest: role portal restores the selected character session
 # Subtest: direct navigation cannot bypass role matching
@@ -162,77 +162,77 @@ exit_code=1
 # Subtest: student dashboard has no remaining placeholder modules
 # Subtest: test activity data stays visibly labeled
 --- tail ---
-  type: 'test'
+    TestContext.<anonymous> (file:///home/runner/work/Hanami-High/Hanami-High/tests/public-session-continuity.test.mjs:25:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
-# Subtest: profile lookup keeps private helpers behind security-invoker wrappers
-ok 154 - profile lookup keeps private helpers behind security-invoker wrappers
+# Subtest: signed-in public pages no longer have to present themselves as logged out
+ok 159 - signed-in public pages no longer have to present themselves as logged out
   ---
-  duration_ms: 0.220482
-  type: 'test'
-  ...
-# Subtest: both role dashboards expose privacy-aware profile lookup
-ok 155 - both role dashboards expose privacy-aware profile lookup
-  ---
-  duration_ms: 0.205083
+  duration_ms: 0.203582
   type: 'test'
   ...
 # Subtest: student and faculty have separate website sections
-ok 156 - student and faculty have separate website sections
+ok 160 - student and faculty have separate website sections
   ---
-  duration_ms: 0.878463
+  duration_ms: 0.875518
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
-ok 157 - role portal restores the selected character session
+ok 161 - role portal restores the selected character session
   ---
-  duration_ms: 0.217446
+  duration_ms: 0.268069
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
-ok 158 - direct navigation cannot bypass role matching
+ok 162 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.140804
+  duration_ms: 0.142473
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
-ok 159 - role portal logout clears character and account session
+ok 163 - role portal logout clears character and account session
   ---
-  duration_ms: 0.133279
+  duration_ms: 0.140788
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 160 - student activities are loaded for the active character
+ok 164 - student activities are loaded for the active character
   ---
-  duration_ms: 0.777564
+  duration_ms: 0.564915
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 161 - campus activity membership reads remain owner scoped
+ok 165 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.171671
+  duration_ms: 0.119451
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 162 - student dashboard has no remaining placeholder modules
+ok 166 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.225903
+  duration_ms: 0.167622
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
-ok 163 - test activity data stays visibly labeled
+ok 167 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.123391
+  duration_ms: 0.081953
   type: 'test'
   ...
-1..163
-# tests 163
+1..167
+# tests 167
 # suites 0
-# pass 163
-# fail 0
+# pass 166
+# fail 1
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 795.451278
+# duration_ms 592.133982
 === build ===
 
 > hanami-high@0.1.0 build
@@ -247,15 +247,15 @@ https://nextjs.org/telemetry
 ▲ Next.js 16.2.11 (Turbopack)
 
   Creating an optimized production build ...
-✓ Compiled successfully in 3.5s
+✓ Compiled successfully in 2.8s
   Running TypeScript ...
-  Finished TypeScript in 6.4s ...
+  Finished TypeScript in 5.1s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/19) ...
   Generating static pages using 3 workers (4/19) 
   Generating static pages using 3 workers (9/19) 
   Generating static pages using 3 workers (14/19) 
-✓ Generating static pages using 3 workers (19/19) in 445ms
+✓ Generating static pages using 3 workers (19/19) in 314ms
   Finalizing page optimization ...
 
 Route (app)
