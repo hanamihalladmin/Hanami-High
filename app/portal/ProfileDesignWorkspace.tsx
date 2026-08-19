@@ -3,6 +3,7 @@
 import {ChangeEvent,CSSProperties,useEffect,useState} from "react";
 import ProfileTemplateGallery from "./ProfileTemplateGallery";
 import ProfileDecorativePresetGallery from "./ProfileDecorativePresetGallery";
+import GlitterDividerPresetGallery from "./GlitterDividerPresetGallery";
 import ProfileStudioV2Panel from "./ProfileStudioV2Panel";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
@@ -43,6 +44,7 @@ export default function ProfileDesignWorkspace({accessToken,characterId}:Props){
   return <>
     <ProfileTemplateGallery accessToken={accessToken} characterId={characterId}/>
     <ProfileDecorativePresetGallery accessToken={accessToken} characterId={characterId} onAdded={()=>refreshStudio()}/>
+    <GlitterDividerPresetGallery accessToken={accessToken} characterId={characterId} onAdded={()=>refreshStudio()}/>
     <section style={{marginTop:12,padding:"10px 12px",border:"1px solid #c8b5bf",background:"#fff8fb",display:"grid",gap:10}} aria-label="Profile Studio workspace controls">
       <div style={{display:"flex",gap:10,alignItems:"center",justifyContent:"space-between",flexWrap:"wrap"}}><div><strong style={{display:"block",fontSize:9,color:"#8e4364",letterSpacing:".06em"}}>PROFILE BACKGROUND</strong><span style={{fontSize:9,color:"#6a6470"}}>Upload a background directly from your device. Image URLs are no longer required.</span></div><div style={{display:"flex",gap:6,flexWrap:"wrap"}}><label style={{minHeight:32,padding:"7px 10px",border:"1px solid #17375f",background:"#fff",color:"#17375f",fontSize:8,fontWeight:700,cursor:"pointer"}}>{uploadingBackground?"Uploading…":"Upload background"}<input type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={uploadBackground} disabled={uploadingBackground} style={{display:"none"}}/></label>{(backgroundPath||backgroundUrl)&&<button type="button" onClick={clearBackground} style={{minHeight:32,padding:"6px 10px",border:"1px solid #983845",background:"#fff",color:"#8b2632",fontSize:8,fontWeight:700,cursor:"pointer"}}>Clear background</button>}</div></div>
       <div style={{display:"flex",gap:10,alignItems:"center",justifyContent:"space-between",flexWrap:"wrap"}}><div><strong style={{display:"block",fontSize:9,color:"#8e4364",letterSpacing:".06em"}}>PROFILE STUDIO V2</strong><span style={{fontSize:9,color:"#6a6470"}}>Enhanced editor: zoom, layers, keyboard nudging, border/shadow tools, corner presets, image fitting, style copy/paste, and private uploads.</span>{notice&&<div style={{marginTop:4,fontSize:8,color:"#5d6d80"}}>{notice}</div>}</div><button type="button" onClick={unlockAll} disabled={unlocking} style={{minHeight:32,padding:"6px 10px",border:"1px solid #17375f",background:"#fff",color:"#17375f",fontSize:8,fontWeight:700,cursor:"pointer"}}>{unlocking?"Unlocking…":"Unlock all widgets"}</button></div>
