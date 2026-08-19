@@ -1,12 +1,6 @@
-HANAMI_FINAL_CI=PASS
-exit_code=0
+HANAMI_FINAL_CI=FAIL
+exit_code=1
 --- failing tests / errors ---
-# Subtest: Administration is account permission based rather than character role based
-# Subtest: Owner-issued unclaimed Administrator login can bind on first successful sign-in
-# Subtest: ordinary authenticated users cannot self grant Administration permissions without a valid Owner-issued credential
-# Subtest: public Administration RPCs are security-invoker wrappers around private helpers
-# Subtest: school status is public-read and content-editor managed
-# Subtest: announcement management is protected by permission-aware RLS
 # Subtest: school calendar management is content-editor scoped and Tokyo based
 # Subtest: moderators have a private character directory rather than global profile exposure
 # Subtest: Site Admin academic management preserves role separation
@@ -14,11 +8,17 @@ exit_code=0
 # Subtest: Campus Life includes every approved public requirement
 # Subtest: campus directory is searchable and filterable
 # Subtest: campus keeps fixture directory data labeled while public opportunities use the live portal flow
+not ok 25 - campus keeps fixture directory data labeled while public opportunities use the live portal flow
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 # Subtest: Campus Life uses the Tokyo 2006 roleplay clock
 # Subtest: Campus Life returns signed-in students to real portal routes
 # Subtest: Campus Opportunities are published content with character-owned Student applications
 # Subtest: Student portal exposes the website-native Campus Opportunities application desk
 # Subtest: Administration manages opportunities and reviews applications
+not ok 30 - Administration manages opportunities and reviews applications
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 # Subtest: Applicant identity is exposed only through a permission-gated queue
 # Subtest: ordinary Faculty role does not get school-wide opportunity review access
 # Subtest: character manager loads only authenticated account data
@@ -164,79 +164,79 @@ exit_code=0
 --- tail ---
 ok 163 - role portal logout clears character and account session
   ---
-  duration_ms: 0.146389
+  duration_ms: 0.097345
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 164 - student activities are loaded for the active character
   ---
-  duration_ms: 0.941107
+  duration_ms: 0.880844
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 165 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.193084
+  duration_ms: 0.170534
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 166 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.287354
+  duration_ms: 0.28177
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 167 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.158957
+  duration_ms: 0.145828
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 168 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.329013
+  duration_ms: 5.224425
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 169 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 0.990483
+  duration_ms: 1.227291
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 170 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.253993
+  duration_ms: 0.971229
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 171 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.401763
+  duration_ms: 1.344185
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 172 - Help has a direct router and support anchor
   ---
-  duration_ms: 0.959774
+  duration_ms: 0.899312
   type: 'test'
   ...
 1..172
 # tests 172
 # suites 0
-# pass 172
-# fail 0
+# pass 170
+# fail 2
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 608.97798
+# duration_ms 664.438264
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 20ms
+✓ Running next.config.ts took 19ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -245,15 +245,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 4.3s
+✓ Compiled successfully in 4.1s
   Running TypeScript ...
-  Finished TypeScript in 5.2s ...
+  Finished TypeScript in 5.1s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/21) ...
   Generating static pages using 3 workers (5/21) 
   Generating static pages using 3 workers (10/21) 
   Generating static pages using 3 workers (15/21) 
-✓ Generating static pages using 3 workers (21/21) in 417ms
+✓ Generating static pages using 3 workers (21/21) in 394ms
   Finalizing page optimization ...
 
 Route (app)
