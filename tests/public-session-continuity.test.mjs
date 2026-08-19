@@ -22,10 +22,8 @@ test("public browsing refreshes the stored session instead of forcing another Di
 });
 
 test("public portal button returns an active character to the correct dashboard",()=>{
-  assert.match(bridge,/Return to Student/);
-  assert.match(bridge,/Return to Faculty/);
-  assert.match(bridge,/\/portal\/student\//);
-  assert.match(bridge,/\/portal\/faculty\//);
+  assert.match(bridge,/Return to \$\{row\.role==="faculty"\?"Faculty":"Student"\} Portal/);
+  assert.match(bridge,/row\.role==="faculty"\?"\/portal\/faculty\/":"\/portal\/student\/"/);
   assert.match(bridge,/characters\?select=id,role,display_name,is_active/);
 });
 
