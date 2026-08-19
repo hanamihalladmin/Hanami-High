@@ -45,6 +45,7 @@ jobs:
         run: |
           test -f out/index.html
           test -f out/apply/index.html
+          test -f out/rules/index.html
           test -f out/calendar/index.html
           test -f out/portal/index.html
           test -f out/portal/student/index.html
