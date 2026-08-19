@@ -1,0 +1,17 @@
+"use client";
+
+import {useCallback,useEffect,useState} from "react";
+
+const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
+type Flag={key:string;enabled:boolean;tester_only:boolean};
+type Maintenance={enabled?:boolean;message?:string};
+
+export default function RuntimeOperationsBridge(){
+ const [maintenance,setMaintenance]=useState<Maintenance>({enabled:false});const [loaded,setLoaded]=useState(false);
+ const load=useCallback(async()=>{try{const [flagsResponse,runtimeResponse]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/feature_flags?select=key,enabled,tester_only`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY}}),fetch(`${SUPABASE_URL}/rest/v1/site_runtime_config?select=value&key=eq.maintenance&limit=1`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY}})]);if(flagsResponse.ok){const flags=await flagsResponse.json() as Flag[];for(const flag of flags){document.documentElement.dataset[`feature${flag.key.replace(/[^a-z0-9]/gi,"")}`]=flag.enabled?flag.tester_only?"tester":"on":"off";}window.dispatchEvent(new CustomEvent("hanami-feature-flags",{detail:flags}));}if(runtimeResponse.ok){const rows=await runtimeResponse.json() as Array<{value:Maintenance}>;setMaintenance(rows[0]?.value??{enabled:false});}}catch{}finally{setLoaded(true);}},[]);
+ useEffect(()=>{void load();const timer=window.setInterval(load,60000);return()=>window.clearInterval(timer);},[load]);
+ if(!loaded||!maintenance.enabled)return null;
+ const path=typeof window!=="undefined"?window.location.pathname:"";const privileged=/\/portal\/(?:owner|admin)(?:\/|$)/.test(path);if(privileged)return <div style={{position:"fixed",bottom:8,right:8,zIndex:10000,padding:"7px 10px",background:"#fff4d7",border:"1px solid #8e6b24",fontSize:10,color:"#5f4b1e"}}>MAINTENANCE MODE ACTIVE • privileged access remains available</div>;
+ return <div role="alertdialog" aria-modal="true" aria-label="Hanami School Network maintenance" style={{position:"fixed",inset:0,zIndex:99999,display:"grid",placeItems:"center",padding:24,background:"rgba(17,28,42,.94)"}}><section style={{maxWidth:620,width:"100%",padding:"28px",background:"#fffdf8",border:"4px double #8f365b",boxShadow:"0 18px 60px rgba(0,0,0,.35)",textAlign:"center"}}><p className="eyebrow">HANAMI SCHOOL NETWORK</p><h1 style={{margin:"6px 0 12px",font:"400 32px Georgia,serif",color:"#17375f"}}>School Network Maintenance</h1><p style={{lineHeight:1.6,color:"#536174"}}>{maintenance.message||"Hanami School Network maintenance is in progress."}</p><p style={{marginTop:16,fontSize:10,color:"#7a6872"}}>Student and Faculty portal activity is temporarily unavailable. Owner and Administration access remains available for maintenance work.</p></section></div>;
+}
