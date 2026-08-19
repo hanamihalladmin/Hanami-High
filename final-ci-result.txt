@@ -183,79 +183,79 @@ exit_code=0
 # Subtest: Help has a direct router and support anchor
 --- tail ---
   ---
-  duration_ms: 0.62867
+  duration_ms: 1.149624
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
 ok 175 - role portal restores the selected character session
   ---
-  duration_ms: 0.173983
+  duration_ms: 0.31887
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
 ok 176 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.102966
+  duration_ms: 0.252322
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
 ok 177 - role portal logout clears character and account session
   ---
-  duration_ms: 0.099741
+  duration_ms: 0.215728
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 178 - student activities are loaded for the active character
   ---
-  duration_ms: 0.621239
+  duration_ms: 1.13967
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 179 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.123556
+  duration_ms: 0.230369
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 180 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.130006
+  duration_ms: 0.567416
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 181 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.057236
+  duration_ms: 0.159665
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 182 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 3.178632
+  duration_ms: 5.231501
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 183 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 0.864085
+  duration_ms: 1.229813
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 184 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 0.76808
+  duration_ms: 1.121804
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 185 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.135025
+  duration_ms: 1.671463
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 186 - Help has a direct router and support anchor
   ---
-  duration_ms: 0.753488
+  duration_ms: 1.184286
   type: 'test'
   ...
 1..186
@@ -266,14 +266,14 @@ ok 186 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 576.699865
+# duration_ms 923.137059
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 15ms
+✓ Running next.config.ts took 24ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -282,15 +282,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 3.2s
+✓ Compiled successfully in 5.2s
   Running TypeScript ...
-  Finished TypeScript in 4.2s ...
+  Finished TypeScript in 7.0s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/24) ...
   Generating static pages using 3 workers (6/24) 
   Generating static pages using 3 workers (12/24) 
   Generating static pages using 3 workers (18/24) 
-✓ Generating static pages using 3 workers (24/24) in 368ms
+✓ Generating static pages using 3 workers (24/24) in 584ms
   Finalizing page optimization ...
 
 Route (app)
