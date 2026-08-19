@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 
 const studio=await readFile(new URL("../app/portal/ProfileStudioPanel.tsx",import.meta.url),"utf8");
+const studioCss=await readFile(new URL("../app/portal/ProfileStudioPanel.module.css",import.meta.url),"utf8");
 const templates=await readFile(new URL("../app/portal/ProfileTemplateGallery.tsx",import.meta.url),"utf8");
 const workspace=await readFile(new URL("../app/portal/ProfileDesignWorkspace.tsx",import.meta.url),"utf8");
 const lookup=await readFile(new URL("../app/portal/ProfileLookupPanel.tsx",import.meta.url),"utf8");
@@ -126,6 +127,13 @@ test("private profile media is owner uploaded and privacy signed",()=>{
   assert.match(edgeFunction,/createSignedUrls\(paths, 300\)/);
   assert.match(edgeFunction,/can_view_character_profile/);
   assert.match(edgeFunction,/Profile media is not visible to this character/);
+});
+
+test("Profile Studio presents image editing as file upload instead of pasted image links",()=>{
+  assert.match(studioCss,/\.inspector>label:nth-of-type\(3\)\{display:none\}/);
+  assert.match(studioCss,/\.uploadField\+label\{display:none\}/);
+  assert.match(studio,/Upload from your computer/);
+  assert.match(workspace,/Upload background/);
 });
 
 test("profile background uploads persist and use privacy-aware media signing",()=>{
