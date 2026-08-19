@@ -1,66 +1,227 @@
-HANAMI_FINAL_CI=PASS
-exit_code=0
+HANAMI_FINAL_CI=FAIL
+exit_code=1
+--- failing tests / errors ---
+# Subtest: school calendar management is content-editor scoped and Tokyo based
+# Subtest: moderators have a private character directory rather than global profile exposure
+# Subtest: Site Admin academic management preserves role separation
+# Subtest: Administration has its own website section
+# Subtest: Campus Life includes every approved public requirement
+# Subtest: campus directory is searchable and filterable
+# Subtest: campus keeps fixture directory data labeled while public opportunities use the live portal flow
+# Subtest: Campus Life uses the Tokyo 2006 roleplay clock
+# Subtest: Campus Life returns signed-in students to real portal routes
+# Subtest: Campus Opportunities are published content with character-owned Student applications
+# Subtest: Student portal exposes the website-native Campus Opportunities application desk
+not ok 29 - Student portal exposes the website-native Campus Opportunities application desk
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+# Subtest: Administration manages opportunities and reviews applications
+# Subtest: Applicant identity is exposed only through a permission-gated queue
+# Subtest: ordinary Faculty role does not get school-wide opportunity review access
+# Subtest: character manager loads only authenticated account data
+# Subtest: character creation uses the next open slot and starts private
+# Subtest: character switching updates and remembers the active character
+# Subtest: character selection restores across refreshes
+# Subtest: test faculty character uses the signed-in account and receives TEST-101
+# Subtest: character deletion requires explicit permanent confirmation
+# Subtest: shared message and coursework history no longer blocks character deletion
+# Subtest: database remains the final authority for the two-slot rule
+# Subtest: profile editor reads and saves only the active character record
+# Subtest: profile save uses an upsert and updates privacy separately
+# Subtest: character profile table is owner scoped by RLS
+# Subtest: both role dashboards render the profile editor
+not ok 44 - both role dashboards render the profile editor
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+# Subtest: application never opens an external email client
+# Subtest: communication architecture requires authenticated in-site messaging
+# Subtest: student coursework is scoped to the active character enrollments
+# Subtest: student dashboard uses real coursework instead of a coursework placeholder
+# Subtest: coursework RLS separates students and instructors
+# Subtest: student submissions cannot spoof grading or keep editing after submit
+# Subtest: coursework keeps test data visibly labeled
+# Subtest: dashboard is driven by the active character role
+# Subtest: role dashboards use live authenticated modules without placeholder cards
+# Subtest: role dashboards read school status notices and calendar from Administration
+# Subtest: academic database keeps membership reads owner scoped
+# Subtest: active character flows from gateway into role-specific dashboard
+# Subtest: faculty advising roster is loaded through controlled RPC
+# Subtest: advising roster only includes students from taught sections
+# Subtest: public advising RPC is security invoker with private internal helper
+# Subtest: faculty dashboard renders advising without a placeholder
+# Subtest: faculty grading is scoped to instructor-owned sections
+# Subtest: faculty can create assignments only through assigned instructor sections
+# Subtest: grading enforces assignment point maximum before returning
+# Subtest: faculty dashboard renders both course management and grading
+# Subtest: Discord role sync uses member OAuth authorization without a bot token
+# Subtest: Owner Discord server configuration stays Owner-gated
+# Subtest: Admin support desk can respond assign tag close and reopen tickets
+# Subtest: new public school RPCs use invoker wrappers after hardening
+# Subtest: Next.js is pinned to the patched 16.2.11 release
+# Subtest: friend requests are exact-handle and active-character scoped
+# Subtest: incoming requests require the owned addressee character
+# Subtest: friendship mutation stays behind controlled RPCs
+# Subtest: Students can only friend Students and Faculty can only friend Faculty
+# Subtest: Friends-only visibility requires an accepted same-role character friendship
+# Subtest: Hanami Inbox is website-native and character scoped
+# Subtest: direct messages start by exact Hanami handle through a hardened controlled RPC
+# Subtest: group chats use exact handles, cap invites, and support membership management
+# Subtest: messaging RLS requires conversation participation and character ownership
+# Subtest: completed messaging supports unread state and private attachments
+# Subtest: privileged messaging helpers are kept out of the public API schema
+# Subtest: both role dashboards render the real inbox instead of a message placeholder
+# Subtest: homepage includes every approved public-home requirement
+# Subtest: public announcements use live Supabase data with a labeled fallback
+# Subtest: public next event uses the live school calendar with a labeled fallback
+# Subtest: public school status reads the Administration status record
+# Subtest: roleplay locale is Tokyo and public chronology is fixed to 2006
+# Subtest: Supabase secrets are not committed
+# Subtest: launch gate synchronizes Discord roles through signed-in OAuth without exposing a bot token
+# Subtest: Owner TEST Faculty fixture remains usable after Discord role sync is enabled
+# Subtest: suspended accounts are blocked and governance is audited
+# Subtest: messaging launch feature set includes unread state attachments and group management
+# Subtest: academic launch feature set includes attendance report cards and weighted grading
+# Subtest: Profile Studio includes duplication shape choice and private backgrounds
+# Subtest: public chronology is anchored to 2006 and calendar stays in-universe
+# Subtest: site-wide responsive layer is loaded and includes phone/tablet QA breakpoints
+# Subtest: launch client source contains no service-role credential
+# Subtest: visible profiles expose a character-scoped report action
+# Subtest: report creation is owner scoped and cannot be self reported
+# Subtest: moderation queue is permission gated
+# Subtest: Faculty dashboard verifies Nurse eligibility before exposing the alternate dashboard
+# Subtest: Nurse Dashboard is a dedicated Health Office workspace
+# Subtest: Nurse special role is Faculty scoped and does not grant Site Admin
+# Subtest: Owner QA pack includes realistic TEST classes and BOT Faculty
+# Subtest: TEST Faculty QA attachment remains Owner-only
+# Subtest: BOT Faculty directory and assignments are Owner-only
+# Subtest: Nurse feed validates ownership and special-role assignment
+# Subtest: School Office requests are character-owned and website-native
+# Subtest: members can only follow up when the Office requests more information
+# Subtest: Office request types and lifecycle are complete
+# Subtest: Office staff queue stays permission scoped
+# Subtest: anonymous users have no direct School Office table grants
+# Subtest: both Student and Faculty dashboards expose the shared Office desk
+not ok 112 - both Student and Faculty dashboards expose the shared Office desk
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+# Subtest: Owner portal renders the Bug Detector only inside Owner Control Center
+# Subtest: runtime reporter can only submit bugs and cannot read Owner findings
+# Subtest: Owner detector UI uses Owner-only feed and lifecycle RPC
+# Subtest: Bug Detector migration enforces verified Owner reads and updates
+# Subtest: Owner has a separate exported portal section
+# Subtest: Owner portal requires both Discord Owner identity and privileged credentials
+# Subtest: Owner automatically satisfies the Administrator privileged gate
+# Subtest: privileged session wrapper can execute its private helper
+# Subtest: Owner Control Center stays separate from Administration operations
+# Subtest: Owner gateway handoff is returned only after server Owner verification
+# Subtest: Owner can create bound or claimable Administrator logins
+# Subtest: portal starts Discord OAuth and returns to the current portal path
+# Subtest: portal restores and refreshes a browser session
+# Subtest: signed-in profile is loaded through bearer auth and RLS
+# Subtest: portal does not expose privileged keys or render an email field
+# Subtest: logout ends both account and active character sessions
+# Subtest: active character hands off into a dedicated role portal
+# Subtest: portal gateway explains authentication, privacy, and two-character rule
+# Subtest: database enforces two character slots and allowed roles
+# Subtest: portal foundation enables RLS and owner-scoped policies
+# Subtest: Design Your Character uses Profile Studio V2
+# Subtest: Profile Studio V2 provides stronger Canva-style editing controls
+not ok 134 - Profile Studio V2 provides stronger Canva-style editing controls
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+# Subtest: Profile Studio V2 remains upload-first and privately stored
+# Subtest: Profile Studio V2 supports explicit shape and presentation styling
+# Subtest: Profile Studio uses independent saved widgets instead of a fixed profile template
+# Subtest: Profile Studio supports Canva-style multi-select history alignment and duplication
+# Subtest: widgets support sharp or curved corners and duplication preserves styling
+# Subtest: profile canvas and widgets remain owner scoped
+# Subtest: Profile Studio includes expanded personal-site widgets
+# Subtest: profile templates are optional editable starting points
+# Subtest: profile capacity is limited by page area rather than an arbitrary widget count
+# Subtest: locked widgets remain selectable and recoverable
+# Subtest: image widgets do not steal Profile Studio drag gestures
+# Subtest: profile widget deletion is server confirmed and cannot silently reappear
+# Subtest: private profile media is owner uploaded and privacy signed
+# Subtest: Profile Studio presents image editing as file upload instead of pasted image links
+# Subtest: profile background uploads persist and use privacy-aware media signing
+# Subtest: both role dashboards expose the shared Profile Design Workspace
+not ok 150 - both role dashboards expose the shared Profile Design Workspace
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+# Subtest: TEST Faculty fixture is explicit test data, owner scoped, and Owner only
+# Subtest: profile lookup is exact-handle and active-character scoped
+# Subtest: public and accepted Friends-only profiles are visible while private stays owner only
+# Subtest: profile lookup keeps private helpers behind security-invoker wrappers
+# Subtest: both role dashboards expose privacy-aware profile lookup
+# Subtest: student and faculty have separate website sections
+# Subtest: role portal restores the selected character session
+# Subtest: direct navigation cannot bypass role matching
+# Subtest: role portal logout clears character and account session
+# Subtest: student activities are loaded for the active character
+# Subtest: campus activity membership reads remain owner scoped
+# Subtest: student dashboard has no remaining placeholder modules
+# Subtest: test activity data stays visibly labeled
 --- tail ---
   type: 'test'
   ...
 # Subtest: profile lookup keeps private helpers behind security-invoker wrappers
 ok 154 - profile lookup keeps private helpers behind security-invoker wrappers
   ---
-  duration_ms: 0.217876
+  duration_ms: 0.200703
   type: 'test'
   ...
 # Subtest: both role dashboards expose privacy-aware profile lookup
 ok 155 - both role dashboards expose privacy-aware profile lookup
   ---
-  duration_ms: 0.191036
+  duration_ms: 0.184103
   type: 'test'
   ...
 # Subtest: student and faculty have separate website sections
 ok 156 - student and faculty have separate website sections
   ---
-  duration_ms: 0.809323
+  duration_ms: 0.934809
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
 ok 157 - role portal restores the selected character session
   ---
-  duration_ms: 0.202814
+  duration_ms: 0.218767
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
 ok 158 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.155212
+  duration_ms: 0.195574
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
 ok 159 - role portal logout clears character and account session
   ---
-  duration_ms: 0.122804
+  duration_ms: 0.151331
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 160 - student activities are loaded for the active character
   ---
-  duration_ms: 0.793239
+  duration_ms: 0.894814
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 161 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.152799
+  duration_ms: 0.175747
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 162 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.223014
+  duration_ms: 0.249384
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 163 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.119439
+  duration_ms: 0.135603
   type: 'test'
   ...
 1..163
@@ -71,7 +232,7 @@ ok 163 - test activity data stays visibly labeled
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 807.801363
+# duration_ms 825.065988
 === build ===
 
 > hanami-high@0.1.0 build
@@ -86,15 +247,15 @@ https://nextjs.org/telemetry
 ▲ Next.js 16.2.11 (Turbopack)
 
   Creating an optimized production build ...
-✓ Compiled successfully in 3.7s
+✓ Compiled successfully in 3.8s
   Running TypeScript ...
-  Finished TypeScript in 6.7s ...
+  Finished TypeScript in 6.9s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/19) ...
   Generating static pages using 3 workers (4/19) 
   Generating static pages using 3 workers (9/19) 
   Generating static pages using 3 workers (14/19) 
-✓ Generating static pages using 3 workers (19/19) in 426ms
+✓ Generating static pages using 3 workers (19/19) in 465ms
   Finalizing page optimization ...
 
 Route (app)
