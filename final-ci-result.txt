@@ -1,6 +1,24 @@
-HANAMI_FINAL_CI=PASS
-exit_code=0
+HANAMI_FINAL_CI=FAIL
+exit_code=1
 --- tail ---
+      '    <ProfileLookupPanel accessToken={accessToken} viewerCharacterId={character.id}/>\n' +
+      '    <div className={styles.quickbar}><strong>{isStudent?"STUDENT QUICK LINKS":"FACULTY QUICK LINKS"}</strong><span>{isStudent?"Notifications • Accessibility • Classes • Assignments • Academic Record • Homeroom • To-Do • Counseling • Health • Organizations • Elections • Forums • Bulletin Boards • Study Groups • Newspaper • Galleries • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile Studio":"Notifications • Accessibility • Classes • Rosters • Assignments • Attendance • Report Cards • Forums • Bulletin Boards • Newspaper • Galleries • Forms • Documents • Handbook • Traditions • IT Help • Appeals • Bug Reports • Messages • Friends • Profile Studio"}</span></div>\n' +
+      '  </section>;\n' +
+      '}\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    "use client";
+    
+    import styles from "./DashboardShell.module.css";
+    import SchedulePanel from "./SchedulePanel";
+    import CourseworkPanel from "./CourseworkPanel";
+    import StudentAcademicRecordPanel from "./StudentAcademicRecordPanel";
+    import StudentActionSupportPanel from "./StudentActionSupportPanel";
+    import FacultyCourseManager from "./FacultyCourseManager";
+    import FacultyGradingPanel from "./FacultyGradingPanel";
     import FacultyAdvisingPanel from "./FacultyAdvisingPanel";
     import FacultyAttendanceReportPanel from "./FacultyAttendanceReportPanel";
     import InboxPanel from "./InboxPanel";
@@ -60,7 +78,7 @@ exit_code=0
 # Subtest: test activity data stays visibly labeled
 ok 156 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.16948
+  duration_ms: 0.200892
   type: 'test'
   ...
 1..156
@@ -71,7 +89,7 @@ ok 156 - test activity data stays visibly labeled
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 658.41619
+# duration_ms 772.521778
 === build ===
 
 > hanami-high@0.1.0 build
@@ -86,38 +104,20 @@ https://nextjs.org/telemetry
 ▲ Next.js 16.2.11 (Turbopack)
 
   Creating an optimized production build ...
-✓ Compiled successfully in 3.2s
+✓ Compiled successfully in 3.5s
   Running TypeScript ...
-  Finished TypeScript in 5.1s ...
-  Collecting page data using 3 workers ...
-  Generating static pages using 3 workers (0/19) ...
-  Generating static pages using 3 workers (4/19) 
-  Generating static pages using 3 workers (9/19) 
-  Generating static pages using 3 workers (14/19) 
-✓ Generating static pages using 3 workers (19/19) in 359ms
-  Finalizing page optimization ...
+Failed to type check.
 
-Route (app)
-┌ ○ /
-├ ○ /_not-found
-├ ○ /about
-├ ○ /academics
-├ ○ /calendar
-├ ○ /campus-life
-├ ○ /elections
-├ ○ /homeroom
-├ ○ /organizations
-├ ○ /portal
-├ ○ /portal/admin
-├ ○ /portal/faculty
-├ ○ /portal/owner
-├ ○ /portal/student
-├ ○ /rooms
-├ ○ /sports
-├ ○ /traditions
-└ ○ /updates
+./app/portal/FacultyNurseDashboard.tsx:39:215
+Type error: Type '{ accessToken: string; characterId: string; role: string; }' is not assignable to type 'IntrinsicAttributes & { accessToken: string; characterId: string; }'.
+  Property 'role' does not exist on type 'IntrinsicAttributes & { accessToken: string; characterId: string; }'.
 
-
-○  (Static)  prerendered as static content
-
+  [90m37 |[0m ...[35m<button type="button" onClick={()=>load().catch(()=>undefined)}>Refresh</button[0m><[35m/div>{...[0m
+  [90m38 |[0m ...form onSubmit={publishNotice}><label><span>[33mTitle[0m<[35m/span><input value={noticeTitle} onCha...[0m
+[31m[1m>[0m [90m39 |[0m ...en={accessToken} characterId={characterId} role=[32m"faculty"[0m/>
+  [90m   |[0m                                               [31m[1m^[0m
+  [90m40 |[0m ...
+  [90m41 |[0m ...
+  [90m42 |[0m ...
+Next.js build worker exited with code: 1 and signal: null
 === routes ===
