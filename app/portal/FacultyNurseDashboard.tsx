@@ -8,6 +8,7 @@ import NotificationAccessibilityPanel from "./NotificationAccessibilityPanel";
 import InboxPanel from "./InboxPanel";
 import SupportTicketPanel from "./SupportTicketPanel";
 import SchoolResourcesPanel from "./SchoolResourcesPanel";
+import SystemAnnouncementBanner from "./SystemAnnouncementBanner";
 import styles from "./FacultyNurseDashboard.module.css";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
@@ -32,6 +33,7 @@ export default function FacultyNurseDashboard({accessToken,characterId,displayNa
  function patchLocal(id:string,patch:Partial<Visit>){setVisits(rows=>rows.map(row=>row.visit_id===id?{...row,...patch}:row));}
  return <section className={styles.dashboard} aria-labelledby="nurse-dashboard-title">
   <div className={styles.hero}><div><p className="eyebrow">FACULTY SPECIAL DESK • HEALTH OFFICE</p><h3 id="nurse-dashboard-title">Nurse Dashboard</h3><p>{displayName} • School Nurse workspace • Private health-request operations</p></div><button type="button" onClick={onReturn}>Switch to Faculty Dashboard</button></div>
+  <SystemAnnouncementBanner accessToken={accessToken} role="faculty"/>
   <div className={styles.stats}><article><span>WAITING</span><strong>{counts.waiting}</strong></article><article><span>SCHEDULED</span><strong>{counts.scheduled}</strong></article><article><span>SEEN</span><strong>{counts.seen}</strong></article><article><span>OFFICE</span><strong>OPEN</strong></article></div>
   <div className={styles.status} aria-live="polite">{status}</div>
   <SchoolStatusPanel accessToken={accessToken}/><SchoolNoticesPanel accessToken={accessToken}/><SchoolCalendarPanel accessToken={accessToken} characterId={characterId}/><NotificationAccessibilityPanel accessToken={accessToken}/>
