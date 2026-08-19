@@ -28,8 +28,9 @@ test("Student portal exposes the website-native Campus Opportunities application
 });
 
 test("Administration manages opportunities and reviews applications",()=>{
-  assert.match(admin,/Create draft/);
-  assert.match(admin,/Publish/);
+  assert.match(admin,/Save draft/);
+  assert.match(admin,/Publish opportunity/);
+  assert.match(admin,/initialStatus==="published"/);
   assert.match(admin,/Close/);
   assert.match(admin,/administration_campus_application_queue/);
   assert.match(admin,/Under review/);
