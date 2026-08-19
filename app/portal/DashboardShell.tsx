@@ -12,7 +12,7 @@ import FacultyAdvisingPanel from "./FacultyAdvisingPanel";
 import FacultyAttendanceReportPanel from "./FacultyAttendanceReportPanel";
 import FacultyNurseDashboard from "./FacultyNurseDashboard";
 import OwnerFacultyQaPanel from "./OwnerFacultyQaPanel";
-import InboxPanel from "./InboxPanel";
+import MessageCenterPanel from "./MessageCenterPanel";
 import StudentActivitiesPanel from "./StudentActivitiesPanel";
 import StudentOpportunityPanel from "./StudentOpportunityPanel";
 import CharacterProfilePanel from "./CharacterProfilePanel";
@@ -56,7 +56,7 @@ export default function DashboardShell({character,accessToken}:Props){
     <SchoolResourcesPanel accessToken={accessToken} characterId={character.id}/>
     <OfficeRequestPanel accessToken={accessToken} characterId={character.id}/>
     <SupportTicketPanel accessToken={accessToken} characterId={character.id}/>
-    <InboxPanel accessToken={accessToken} characterId={character.id}/>
+    <MessageCenterPanel accessToken={accessToken} characterId={character.id}/>
     <FriendsPanel accessToken={accessToken} characterId={character.id}/>
     <CharacterProfilePanel accessToken={accessToken} characterId={character.id} currentVisibility={character.visibility}/>
     <ProfileDesignWorkspace accessToken={accessToken} characterId={character.id}/>
