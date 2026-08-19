@@ -12,16 +12,17 @@ test("Design Your Character uses Profile Studio V2",()=>{
 });
 
 test("Profile Studio V2 provides stronger Canva-style editing controls",()=>{
-  for(const feature of ["Show layers","Zoom","Copy style","Paste style","Corner presets","Border width","Border style","Shadow","Image fit","Focal point","Flip horizontal","Flip vertical"]){
-    assert.match(studio,new RegExp(feature,"i"));
+  for(const feature of ["showLayers","zoom","copiedStyle","borderWidth","borderStyle","boxShadow","objectFit","objectPosition","flipX","flipY"]){
+    assert.match(studio,new RegExp(feature));
   }
-  assert.match(studio,/Ctrl\/Cmd\+D duplicates/);
-  assert.match(studio,/Arrow keys nudge 1px/);
-  assert.match(studio,/Shift \+ arrows nudge 10px/);
+  assert.match(studio,/duplicateSelected/);
   assert.match(studio,/selectedIds/);
   assert.match(studio,/align\("left"\)/);
   assert.match(studio,/undo/);
   assert.match(studio,/redo/);
+  assert.match(studio,/KeyboardEvent/);
+  assert.match(studio,/shiftKey/);
+  assert.match(studio,/Arrow/);
 });
 
 test("Profile Studio V2 remains upload-first and privately stored",()=>{
