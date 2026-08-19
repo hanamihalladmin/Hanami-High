@@ -2,67 +2,67 @@ HANAMI_FINAL_CI=PASS
 exit_code=0
 --- tail ---
   ---
-  duration_ms: 0.300356
+  duration_ms: 0.185818
   type: 'test'
   ...
 # Subtest: profile lookup keeps private helpers behind security-invoker wrappers
 ok 143 - profile lookup keeps private helpers behind security-invoker wrappers
   ---
-  duration_ms: 0.238444
+  duration_ms: 0.105388
   type: 'test'
   ...
 # Subtest: both role dashboards expose privacy-aware profile lookup
 ok 144 - both role dashboards expose privacy-aware profile lookup
   ---
-  duration_ms: 0.158415
+  duration_ms: 0.084468
   type: 'test'
   ...
 # Subtest: student and faculty have separate website sections
 ok 145 - student and faculty have separate website sections
   ---
-  duration_ms: 0.813638
+  duration_ms: 0.602246
   type: 'test'
   ...
 # Subtest: role portal restores the selected character session
 ok 146 - role portal restores the selected character session
   ---
-  duration_ms: 0.209782
+  duration_ms: 0.173905
   type: 'test'
   ...
 # Subtest: direct navigation cannot bypass role matching
 ok 147 - direct navigation cannot bypass role matching
   ---
-  duration_ms: 0.134971
+  duration_ms: 0.101768
   type: 'test'
   ...
 # Subtest: role portal logout clears character and account session
 ok 148 - role portal logout clears character and account session
   ---
-  duration_ms: 0.143433
+  duration_ms: 0.097437
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 149 - student activities are loaded for the active character
   ---
-  duration_ms: 0.932825
+  duration_ms: 0.572089
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 150 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.161479
+  duration_ms: 0.120766
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 151 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.263642
+  duration_ms: 0.147456
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 152 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.123363
+  duration_ms: 0.077426
   type: 'test'
   ...
 1..152
@@ -73,7 +73,7 @@ ok 152 - test activity data stays visibly labeled
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 725.749033
+# duration_ms 562.881682
 === build ===
 
 > hanami-high@0.1.0 build
@@ -88,15 +88,15 @@ https://nextjs.org/telemetry
 ▲ Next.js 16.2.11 (Turbopack)
 
   Creating an optimized production build ...
-✓ Compiled successfully in 3.5s
+✓ Compiled successfully in 2.9s
   Running TypeScript ...
-  Finished TypeScript in 5.9s ...
+  Finished TypeScript in 4.8s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/17) ...
   Generating static pages using 3 workers (4/17) 
   Generating static pages using 3 workers (8/17) 
   Generating static pages using 3 workers (12/17) 
-✓ Generating static pages using 3 workers (17/17) in 425ms
+✓ Generating static pages using 3 workers (17/17) in 316ms
   Finalizing page optimization ...
 
 Route (app)
