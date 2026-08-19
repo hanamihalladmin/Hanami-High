@@ -1,0 +1,11 @@
+/* Profile Studio compatibility fixes. Keep upload controls visible even when legacy inspector ordering changes. */
+[class*="ProfileStudioPanel"][class*="inspector"] label[class*="uploadField"]{
+  display:block!important;
+}
+[class*="ProfileStudioPanel"][class*="inspector"] label[class*="uploadField"]+label{
+  display:block!important;
+}
+[class*="ProfileStudioPanel"][class*="inspector"] label[class*="uploadField"] input[type="file"]{
+  display:block!important;
+  width:100%!important;
+}
