@@ -4,6 +4,7 @@ import PublicSessionBridge from "./components/PublicSessionBridge";
 import "./globals.css";
 import "./mobile.css";
 import "./accessibility.css";
+import "./readability.css";
 import "./profile-studio-overrides.css";
 
 export const metadata: Metadata = {
