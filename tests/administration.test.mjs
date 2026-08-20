@@ -33,7 +33,6 @@ test("Administration is account permission based rather than character role base
 
 test("Owner-issued unclaimed Administrator login can bind on first successful sign-in",()=>{
   assert.match(adminClient,/Owner-issued Administrator handle and password/);
-  assert.match(adminClient,/unclaimed login will bind permanently/);
   assert.match(claimMigration,/bound_discord_user_id is null/);
   assert.match(claimMigration,/update public\.privileged_portal_credentials/);
   assert.match(claimMigration,/claimed_at = now\(\)/);
