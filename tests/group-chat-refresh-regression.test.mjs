@@ -8,7 +8,7 @@ test("group chat creation does not create a selectedId-driven inbox refresh loop
   assert.match(inbox,/event\.preventDefault\(\)/);
   assert.match(inbox,/selectedIdRef=useRef<string\|null>\(null\)/);
   assert.match(inbox,/const currentId=selectedIdRef\.current/);
-  assert.match(inbox,/\[accessToken,characterId,loadMessages,loadUnread,selectConversationState\]\)/);
+  assert.match(inbox,/\[accessToken,characterId,loadDirectory,loadMessages,loadUnread,selectConversationState\]\)/);
   assert.doesNotMatch(inbox,/\[accessToken,characterId,loadMessages,loadUnread,selectedId\]\)/);
 });
 
