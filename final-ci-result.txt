@@ -1,42 +1,14 @@
-HANAMI_FINAL_CI=FAIL
-exit_code=1
+HANAMI_FINAL_CI=PASS
+exit_code=0
 --- lint ---
 
 > hanami-high@0.1.0 lint
 > eslint . --ignore-pattern .next --ignore-pattern out
 
 
-/home/runner/work/Hanami-High/Hanami-High/app/components/live-next-event.tsx
-  13:89  error  Error: Cannot call impure function during render
-
-`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
-
-/home/runner/work/Hanami-High/Hanami-High/app/components/live-next-event.tsx:13:89
-  11 |  const [event,setEvent]=useState<EventRow>(fallback);const [live,setLive]=useState(false);
-  12 |  useEffect(()=>{let cancelled=false;async function load(){try{const now=encodeURIComponent(new Date().toISOString());const response=await fetch(`${SUPABASE_URL}/rest/v1/school_calendar_events?select=id,title,description,location,starts_at,all_day,category,featured,is_test_data&starts_at=gte.${now}&order=featured.desc,starts_at.asc&limit=1`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY}});if(!response.ok)return;const rows=await response.json() as EventRow[];if(!cancelled&&rows[0]){setEvent(rows[0]);setLive(true);}}catch{/* Retain labeled fallback. */}}load();return()=>{cancelled=true;};},[]);
-> 13 |  const start=new Date(event.starts_at);const days=Math.max(0,Math.ceil((start.getTime()-Date.now())/86400000));const when=new Intl.DateTimeFormat("en-US",{weekday:"long",month:"long",day:"numeric",hour:event.all_day?undefined:"numeric",minute:event.all_day?undefined:"2-digit",timeZone:"Asia/Tokyo"}).format(start);
-     |                                                                                         ^^^^^^^^^^ Cannot call impure function
-  14 |  return <section className="panel" id="calendar"><h2 className="panel-title">NEXT BIG EVENT</h2><div className="panel-body countdown"><p>{event.is_test_data?"[TEST] ":""}{event.title}</p><strong><span>{days}</span> DAYS</strong><small>{when}{event.location?` • ${event.location}`:""}</small><span className="text-link">{live?"Live school calendar":"Fallback preview"}</span></div></section>;
-  15 | }
-  16 |  react-hooks/purity
-
 /home/runner/work/Hanami-High/Hanami-High/app/portal/InboxPanel.tsx
   38:76    warning  The 'selectedParticipants' conditional could make the dependencies of useMemo Hook (at line 38) change on every render. To fix this, wrap the initialization of 'selectedParticipants' in its own useMemo() Hook                                                                         react-hooks/exhaustive-deps
   39:3668  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/NotificationAccessibilityPanel.tsx
-  21:104  error  Error: Cannot call impure function during render
-
-`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/NotificationAccessibilityPanel.tsx:21:104
-  19 | export default function NotificationAccessibilityPanel({accessToken,characterId}:{accessToken:string;characterId?:string}){
-  20 |  const [notifications,setNotifications]=useState<Notification[]>([]);const [systemNotices,setSystemNotices]=useState<SystemNotice[]>([]);const [prefs,setPrefs]=useState<Preferences>(defaultPrefs);const [access,setAccess]=useState<Accessibility>(defaultAccess);const [presence,setPresence]=useState<Presence>({do_not_disturb:false,dnd_until:null});const [open,setOpen]=useState(false);const [settingsOpen,setSettingsOpen]=useState(false);const [notice,setNotice]=useState("Loading notifications…");
-> 21 |  const dndActive=presence.do_not_disturb&&(!presence.dnd_until||new Date(presence.dnd_until).getTime()>Date.now());
-     |                                                                                                        ^^^^^^^^^^ Cannot call impure function
-  22 |  const visibleNotifications=useMemo(()=>dndActive?notifications.filter(essential):notifications,[dndActive,notifications]);
-  23 |  const unread=useMemo(()=>visibleNotifications.filter(item=>!item.is_read).length,[visibleNotifications]);
-  24 |  const suppressed=dndActive?notifications.length-visibleNotifications.length:0;  react-hooks/purity
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/ProfileDesignWorkspace.tsx
   33:5  warning  React Hook useEffect has a missing dependency: 'refreshStudio'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
@@ -50,28 +22,13 @@ exit_code=1
   535:11  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/ProfileStudioRoadmapTools.tsx
-  58:562  error    Error: Cannot call impure function during render
-
-`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/ProfileStudioRoadmapTools.tsx:58:562
-  56 |  ];const create=await fetch(`${SUPABASE_URL}/rest/v1/character_profile_widgets`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify(widgets)});if(!create.ok)throw new Error("Seasonal widgets could not be added. Your existing canvas was left intact.");setStatus(`${pack.label} pack added. Existing widgets were preserved.`);await loadLayout();onChanged();}catch(error){setStatus(error instanceof Error?error.message:"Seasonal pack could not be applied.");}finally{setBusy("");}}
-  57 |
-> 58 |  async function saveLayout(next:Map<string,{x?:number;y?:number}>){if(!next.size)return;setSaveState("Saving…");const results=await Promise.all([...next].map(([id,patch])=>fetch(`${SUPABASE_URL}/rest/v1/character_profile_widgets?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({...patch,updated_at:new Date().toISOString()})})));if(results.some(r=>!r.ok)){setSaveState("Failed to save");setStatus("One or more layout changes failed to save.");return;}setSaveState("Saved just now");setLastSaved(Date.now());setStatus("Layout changes saved to Profile Studio.");await loadLayout();onChanged();}
-     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^^^^^^^^^^ Cannot call impure function
-  59 |  async function alignLayout(mode:"left"|"center"|"right"|"top"|"middle"|"bottom"){if(selectedLayout.length<2)return;const left=Math.min(...selectedLayout.map(w=>w.x)),right=Math.max(...selectedLayout.map(w=>w.x+w.width)),top=Math.min(...selectedLayout.map(w=>w.y)),bottom=Math.max(...selectedLayout.map(w=>w.y+w.height));const next=new Map<string,{x?:number;y?:number}>();for(const w of selectedLayout){if(mode==="left")next.set(w.id,{x:left});if(mode==="center")next.set(w.id,{x:Math.round((left+right-w.width)/2)});if(mode==="right")next.set(w.id,{x:right-w.width});if(mode==="top")next.set(w.id,{y:top});if(mode==="middle")next.set(w.id,{y:Math.round((top+bottom-w.height)/2)});if(mode==="bottom")next.set(w.id,{y:bottom-w.height});}await saveLayout(next);}
-  60 |  async function snapCenter(axis:"x"|"y"){if(!selectedLayout.length)return;const next=new Map<string,{x?:number;y?:number}>();for(const w of selectedLayout)next.set(w.id,axis==="x"?{x:Math.max(0,Math.round((canvasRow.canvas_width-w.width)/2))}:{y:Math.max(0,Math.round((canvasRow.canvas_height-w.height)/2))});await saveLayout(next);}
-  61 |  async function distribute(axis:"x"|"y"){if(selectedLayout.length<3)return;const ordered=[...selectedLayout].sort((a,b)=>axis==="x"?a.x-b.x:a.y-b.y);const first=ordered[0],last=ordered[ordered.length-1];const firstEdge=axis==="x"?first.x:first.y;const lastEdge=axis==="x"?last.x+last.width:last.y+last.height;const totalSize=ordered.reduce((sum,w)=>sum+(axis==="x"?w.width:w.height),0);const gap=(lastEdge-firstEdge-totalSize)/(ordered.length-1);let cursor=firstEdge;const next=new Map<string,{x?:number;y?:number}>();for(const w of ordered){next.set(w.id,axis==="x"?{x:Math.round(cursor)}:{y:Math.round(cursor)});cursor+=(axis==="x"?w.width:w.height)+gap;}await saveLayout(next);}  react-hooks/purity
-  64:427  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @next/next/no-img-element
+  64:427  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/ProfileStudioV2Panel.tsx
    88:226   warning  Expected an assignment or function call and instead saw an expression                                                                                                                                                                                                                    @typescript-eslint/no-unused-expressions
    90:914   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
    90:1780  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
   105:1934  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/RoadmapHubPanel.tsx
-  59:204  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/RolePortalClient.tsx
   25:361  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
@@ -82,7 +39,7 @@ exit_code=1
 /home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminPortalClient.tsx
   32:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
-✖ 19 problems (4 errors, 15 warnings)
+✖ 15 problems (0 errors, 15 warnings)
 
 --- failing checks ---
 --- test summary ---
@@ -94,115 +51,115 @@ exit_code=1
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.232052
+  duration_ms: 0.20627
   type: 'test'
   ...
 # Subtest: normal School Resources never loads or renders form submission history
 ok 219 - normal School Resources never loads or renders form submission history
   ---
-  duration_ms: 1.391649
+  duration_ms: 1.194088
   type: 'test'
   ...
 # Subtest: normal users can still submit school forms without reading history
 ok 220 - normal users can still submit school forms without reading history
   ---
-  duration_ms: 0.188901
+  duration_ms: 0.234292
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 221 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 6.0571
+  duration_ms: 4.925538
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 222 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.273209
+  duration_ms: 1.159997
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 223 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.347857
+  duration_ms: 0.215775
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 224 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.236871
+  duration_ms: 0.134652
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 225 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.270814
+  duration_ms: 0.128634
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 226 - student activities are loaded for the active character
   ---
-  duration_ms: 1.218878
+  duration_ms: 1.345066
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 227 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.230509
+  duration_ms: 0.262535
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 228 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.389144
+  duration_ms: 0.452471
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 229 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.209831
+  duration_ms: 0.19215
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 230 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.892231
+  duration_ms: 1.243242
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 231 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.287575
+  duration_ms: 0.384459
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 232 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.566337
+  duration_ms: 5.680315
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 233 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.431253
+  duration_ms: 1.510255
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 234 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.271024
+  duration_ms: 1.388121
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 235 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.643388
+  duration_ms: 1.928354
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 236 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.246189
+  duration_ms: 1.30809
   type: 'test'
   ...
 1..236
@@ -213,14 +170,14 @@ ok 236 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1440.543579
+# duration_ms 1382.764577
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 25ms
+✓ Running next.config.ts took 24ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -229,15 +186,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.8s
+✓ Compiled successfully in 5.5s
   Running TypeScript ...
-  Finished TypeScript in 9.4s ...
+  Finished TypeScript in 8.9s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 671ms
+✓ Generating static pages using 3 workers (28/28) in 569ms
   Finalizing page optimization ...
 
 Route (app)
