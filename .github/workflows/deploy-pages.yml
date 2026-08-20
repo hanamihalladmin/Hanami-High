@@ -52,6 +52,7 @@ jobs:
           test -f out/changelog/index.html
           test -f out/portal/index.html
           test -f out/portal/roadmap/index.html
+          test -f out/portal/city/index.html
           test -f out/portal/student/index.html
           test -f out/portal/student/class/index.html
           test -f out/portal/faculty/index.html
