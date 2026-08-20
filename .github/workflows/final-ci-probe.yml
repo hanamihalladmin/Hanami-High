@@ -76,8 +76,12 @@ jobs:
           {
             if [ "$CODE" -eq 0 ]; then echo 'HANAMI_FINAL_CI=PASS'; else echo 'HANAMI_FINAL_CI=FAIL'; fi
             echo "exit_code=$CODE"
-            echo '--- failing tests / errors ---'
-            grep -E '^(not ok|# Subtest:)|AssertionError|ERR_ASSERTION|MISSING ROUTE|npm ERR!|found [1-9][0-9]* vulnerabilities|[0-9]+:[0-9]+  error ' "$LOG" | tail -n 220 || true
+            echo '--- lint ---'
+            awk '/^=== lint ===$/{capture=1;next}/^=== typecheck ===$/{capture=0}capture' "$LOG" | tail -n 180 || true
+            echo '--- failing checks ---'
+            grep -E '^not ok|AssertionError|ERR_ASSERTION|MISSING ROUTE|npm ERR!|found [1-9][0-9]* vulnerabilities' "$LOG" | tail -n 120 || true
+            echo '--- test summary ---'
+            grep -E '^# (tests|pass|fail|cancelled|skipped|todo) ' "$LOG" | tail -n 8 || true
             echo '--- tail ---'
             tail -n 180 "$LOG"
           } > final-ci-result.txt
