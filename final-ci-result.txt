@@ -1,9 +1,6 @@
 HANAMI_FINAL_CI=PASS
 exit_code=0
 --- failing tests / errors ---
-# Subtest: Administration is account permission based rather than character role based
-# Subtest: Owner-issued unclaimed Administrator login can bind on first successful sign-in
-# Subtest: ordinary authenticated users cannot self grant Administration permissions without a valid Owner-issued credential
 # Subtest: public Administration RPCs are security-invoker wrappers around private helpers
 # Subtest: school status is public-read and content-editor managed
 # Subtest: announcement management is protected by permission-aware RLS
@@ -131,6 +128,9 @@ exit_code=0
 # Subtest: Profile Studio offers a broad divider preset library
 # Subtest: cute decorative symbols are editable profile widgets
 # Subtest: decorative library keeps multiple badges and cards
+# Subtest: visible profile renderer includes Top Friends badges status and visit counter
+# Subtest: Top Friends remain strictly accepted-friend and platonic controls
+# Subtest: profile visit RPC verifies viewer ownership and target visibility
 # Subtest: Profile Studio keeps image upload controls visible
 # Subtest: Profile Studio exposes a decorative preset library
 # Subtest: decorative presets are saved as character-owned profile widgets
@@ -182,97 +182,97 @@ exit_code=0
 # Subtest: School Office separates staff action waiting member and archive queues
 # Subtest: Help has a direct router and support anchor
 --- tail ---
-  duration_ms: 0.791797
+  duration_ms: 0.675927
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
-ok 181 - Admin workspace includes storyline incident and evidence operations
+ok 184 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.212584
+  duration_ms: 0.169325
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
-ok 182 - Faculty dashboard includes a private lounge workflow
+ok 185 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.134579
+  duration_ms: 0.104688
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 183 - dark mode controls are absent from Hanami accessibility settings
+ok 186 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.133046
+  duration_ms: 0.102524
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 184 - student activities are loaded for the active character
+ok 187 - student activities are loaded for the active character
   ---
-  duration_ms: 1.13903
+  duration_ms: 0.64475
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 185 - campus activity membership reads remain owner scoped
+ok 188 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.215217
+  duration_ms: 0.117998
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 186 - student dashboard has no remaining placeholder modules
+ok 189 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.368043
+  duration_ms: 0.22609
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
-ok 187 - test activity data stays visibly labeled
+ok 190 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.187406
+  duration_ms: 0.095073
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 188 - accessibility and notification preferences bind to signed-in user automatically
+ok 191 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 7.892778
+  duration_ms: 4.505902
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 189 - group chat creation uses a validated private helper and creator management
+ok 192 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.863959
+  duration_ms: 1.192625
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 190 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 193 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.506211
+  duration_ms: 1.049049
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 191 - School Office separates staff action waiting member and archive queues
+ok 194 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.943596
+  duration_ms: 1.327588
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 192 - Help has a direct router and support anchor
+ok 195 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.15267
+  duration_ms: 0.848948
   type: 'test'
   ...
-1..192
-# tests 192
+1..195
+# tests 195
 # suites 0
-# pass 192
+# pass 195
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 950.655413
+# duration_ms 774.373235
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 23ms
+✓ Running next.config.ts took 19ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -281,15 +281,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.2s
+✓ Compiled successfully in 4.3s
   Running TypeScript ...
-  Finished TypeScript in 7.9s ...
+  Finished TypeScript in 6.2s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/25) ...
   Generating static pages using 3 workers (6/25) 
   Generating static pages using 3 workers (12/25) 
   Generating static pages using 3 workers (18/25) 
-✓ Generating static pages using 3 workers (25/25) in 592ms
+✓ Generating static pages using 3 workers (25/25) in 437ms
   Finalizing page optimization ...
 
 Route (app)
