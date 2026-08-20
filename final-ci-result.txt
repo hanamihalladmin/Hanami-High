@@ -1,6 +1,20 @@
-HANAMI_FINAL_CI=FAIL
-exit_code=2
+HANAMI_FINAL_CI=PASS
+exit_code=0
 --- failing tests / errors ---
+# Subtest: character switching updates and remembers the active character
+# Subtest: character selection restores across refreshes
+# Subtest: test faculty character uses the signed-in account and receives TEST-101
+# Subtest: character deletion requires explicit permanent confirmation
+# Subtest: shared message and coursework history no longer blocks character deletion
+# Subtest: database remains the final authority for the two-slot rule
+# Subtest: profile editor reads and saves only the active character record
+# Subtest: profile save uses an upsert and updates privacy separately
+# Subtest: character profile table is owner scoped by RLS
+# Subtest: both role dashboards render the profile editor
+# Subtest: application never opens an external email client
+# Subtest: communication architecture requires authenticated in-site messaging
+# Subtest: student coursework is scoped to the active character enrollments
+# Subtest: student dashboard uses real coursework instead of a coursework placeholder
 # Subtest: coursework RLS separates students and instructors
 # Subtest: student submissions cannot spoof grading or keep editing after submit
 # Subtest: coursework keeps test data visibly labeled
@@ -141,9 +155,6 @@ exit_code=2
 # Subtest: tester-only flags require tester release membership
 # Subtest: profile templates use moderated approval before publication
 # Subtest: character archive export and continuity archive have member and Admin workflows
-not ok 188 - character archive export and continuity archive have member and Admin workflows
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 # Subtest: Roadmap Hub exposes all completion modules
 # Subtest: Profile Studio roadmap tools are wired into the live workspace
 # Subtest: Student and Faculty portals include replayable first-login tours
@@ -170,132 +181,96 @@ not ok 188 - character archive export and continuity archive have member and Adm
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 # Subtest: School Office separates staff action waiting member and archive queues
 # Subtest: Help has a direct router and support anchor
-MISSING ROUTE: out/index.html
-MISSING ROUTE: out/calendar/index.html
-MISSING ROUTE: out/portal/index.html
-MISSING ROUTE: out/portal/student/index.html
-MISSING ROUTE: out/portal/student/class/index.html
-MISSING ROUTE: out/portal/faculty/index.html
-MISSING ROUTE: out/portal/help/index.html
-MISSING ROUTE: out/portal/admin/index.html
-MISSING ROUTE: out/portal/owner/index.html
-MISSING ROUTE: out/updates/index.html
-MISSING ROUTE: out/traditions/index.html
 --- tail ---
-  type: 'test'
-  ...
-# Subtest: normal users can still submit school forms without reading history
-ok 199 - normal users can still submit school forms without reading history
-  ---
-  duration_ms: 0.221466
-  type: 'test'
-  ...
-# Subtest: Owner receives system health and aggregate staff analytics
-ok 200 - Owner receives system health and aggregate staff analytics
-  ---
-  duration_ms: 1.15562
-  type: 'test'
-  ...
-# Subtest: Admin workspace includes storyline incident and evidence operations
-ok 201 - Admin workspace includes storyline incident and evidence operations
-  ---
-  duration_ms: 0.334829
-  type: 'test'
-  ...
-# Subtest: Faculty dashboard includes a private lounge workflow
-ok 202 - Faculty dashboard includes a private lounge workflow
-  ---
-  duration_ms: 0.214603
-  type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 203 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.211888
+  duration_ms: 0.256298
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 204 - student activities are loaded for the active character
   ---
-  duration_ms: 1.290532
+  duration_ms: 1.233854
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 205 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.229351
+  duration_ms: 0.225591
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 206 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.387257
+  duration_ms: 0.41258
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 207 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.21284
+  duration_ms: 0.205403
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 208 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.830168
+  duration_ms: 1.182317
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 209 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.236474
+  duration_ms: 0.403112
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 210 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.600704
+  duration_ms: 6.053984
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 211 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.412752
+  duration_ms: 1.443786
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 212 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.395089
+  duration_ms: 1.624994
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 213 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.746438
+  duration_ms: 2.247196
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 214 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.403265
+  duration_ms: 1.386288
   type: 'test'
   ...
 1..214
 # tests 214
 # suites 0
-# pass 213
-# fail 1
+# pass 214
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1111.331474
+# duration_ms 1093.426276
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 25ms
+✓ Running next.config.ts took 24ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -304,21 +279,46 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.6s
+✓ Compiled successfully in 5.4s
   Running TypeScript ...
-app/portal/ClassCompetitionExamPanel.tsx(28,1013): error TS2339: Property 'map' does not exist on type 'Set<{ section_id: string; }>'.
-app/portal/ClassCompetitionExamPanel.tsx(28,1017): error TS7006: Parameter 'x' implicitly has an 'any' type.
-Failed to type check.
+  Finished TypeScript in 8.7s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/27) ...
+  Generating static pages using 3 workers (6/27) 
+  Generating static pages using 3 workers (13/27) 
+  Generating static pages using 3 workers (20/27) 
+✓ Generating static pages using 3 workers (27/27) in 592ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ○ /academics
+├ ○ /apply
+├ ○ /calendar
+├ ○ /campus-life
+├ ○ /changelog
+├ ○ /elections
+├ ○ /homeroom
+├ ○ /organizations
+├ ○ /portal
+├ ○ /portal/admin
+├ ○ /portal/faculty
+├ ○ /portal/help
+├ ○ /portal/lore
+├ ○ /portal/owner
+├ ○ /portal/owner/student-viewer
+├ ○ /portal/roadmap
+├ ○ /portal/student
+├ ○ /portal/student/class
+├ ○ /rooms
+├ ○ /rules
+├ ○ /sports
+├ ○ /traditions
+└ ○ /updates
+
+
+○  (Static)  prerendered as static content
 
 === routes ===
-MISSING ROUTE: out/index.html
-MISSING ROUTE: out/calendar/index.html
-MISSING ROUTE: out/portal/index.html
-MISSING ROUTE: out/portal/student/index.html
-MISSING ROUTE: out/portal/student/class/index.html
-MISSING ROUTE: out/portal/faculty/index.html
-MISSING ROUTE: out/portal/help/index.html
-MISSING ROUTE: out/portal/admin/index.html
-MISSING ROUTE: out/portal/owner/index.html
-MISSING ROUTE: out/updates/index.html
-MISSING ROUTE: out/traditions/index.html
