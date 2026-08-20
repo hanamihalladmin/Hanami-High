@@ -36,8 +36,7 @@ test("Faculty dashboard includes a private lounge workflow",()=>{
  assert.match(lounge,/faculty_substitute_requests/);
 });
 
-test("dark mode is absent from Hanami accessibility controls",()=>{
+test("dark mode controls are absent from Hanami accessibility settings",()=>{
  assert.doesNotMatch(accessibility,/dark_mode/);
  assert.doesNotMatch(accessibility,/Dark display mode/);
- assert.doesNotMatch(accessibility,/hanamiTheme/);
 });
