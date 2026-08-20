@@ -7,5 +7,8 @@ export default function GlobalRulesNotice(){
   <Link href="/rules/" style={{fontWeight:700,color:"#17375f",textDecoration:"underline",textUnderlineOffset:2}}>Read the rules</Link>
   <span aria-hidden="true">•</span>
   <Link href="/portal/roadmap/" style={{fontWeight:700,color:"#17375f",textDecoration:"underline",textUnderlineOffset:2}}>Roadmap Hub</Link>
+  <span aria-hidden="true">•</span>
+  <Link href="/changelog/" style={{fontWeight:700,color:"#17375f",textDecoration:"underline",textUnderlineOffset:2}}>Changelog</Link>
+  <span style={{fontWeight:700,color:"#8f365b"}}>v0.1.0</span>
  </aside>;
 }
