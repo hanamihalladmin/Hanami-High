@@ -18,14 +18,28 @@ type SocialProfile={character_id:string;show_status:boolean;status_kind:string|n
 type Props={accessToken:string;viewerCharacterId:string};
 
 function headers(accessToken:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`,...extra};}
+function photoPaths(widget:Widget){let paths:string[]=[];try{const parsed=JSON.parse(widget.content.photo_paths??"[]");if(Array.isArray(parsed))paths=parsed.filter((value):value is string=>typeof value==="string"&&Boolean(value));}catch{}if(widget.widget_type==="photo_strip"&&widget.content.storage_path&&!paths.includes(widget.content.storage_path))paths.unshift(widget.content.storage_path);return paths.slice(0,8);}
 
 function widgetView(widget:Widget,mediaUrls:Record<string,string>){
   const s=widget.style;
-  const base={width:"100%",height:"100%",display:"flex",alignItems:"center",justifyContent:s.textAlign==="center"?"center":s.textAlign==="right"?"flex-end":"flex-start",padding:widget.widget_type==="divider"?0:10,boxSizing:"border-box" as const,overflow:"hidden",background:String(s.background??"transparent"),color:String(s.color??"#17375f"),fontFamily:String(s.fontFamily??"Arial, sans-serif"),fontSize:Number(s.fontSize??16),textAlign:(s.textAlign??"left") as "left"|"center"|"right",borderRadius:Number(s.borderRadius??0),whiteSpace:"pre-wrap" as const};
+  const borderWidth=Number(s.borderWidth??0);
+  const borderColor=String(s.borderColor??"#17375f");
+  const borderStyle=String(s.borderStyle??"solid");
+  const borderRadius=Number(s.borderRadius??0);
+  const boxShadow=String(s.boxShadow??"none");
+  const objectFit=(String(s.objectFit??"cover") as "cover"|"contain"|"fill"|"none"|"scale-down");
+  const objectPosition=String(s.objectPosition??"50% 50%");
+  const flipX=Number(s.flipX??1);
+  const flipY=Number(s.flipY??1);
+  const base={width:"100%",height:"100%",display:"flex",alignItems:"center",justifyContent:s.textAlign==="center"?"center":s.textAlign==="right"?"flex-end":"flex-start",padding:widget.widget_type==="divider"?0:10,boxSizing:"border-box" as const,overflow:"hidden",background:String(s.background??"transparent"),color:String(s.color??"#17375f"),fontFamily:String(s.fontFamily??"Arial, sans-serif"),fontSize:Number(s.fontSize??16),textAlign:(s.textAlign??"left") as "left"|"center"|"right",borderRadius,border:borderWidth?`${borderWidth}px ${borderStyle} ${borderColor}`:"none",boxShadow,whiteSpace:"pre-wrap" as const};
   const mediaPath=widget.content.storage_path;
   const mediaSrc=(mediaPath&&mediaUrls[mediaPath])||widget.content.url;
-  if(widget.widget_type==="image")return mediaSrc?<img src={mediaSrc} alt={widget.content.alt||"Profile image"} style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:Number(s.borderRadius??0)}}/>:<div style={base}>IMAGE</div>;
-  if(widget.widget_type==="photo_strip")return <div style={{...base,gap:8,padding:8}}>{mediaSrc?<img src={mediaSrc} alt={widget.content.alt||"Profile photo strip"} style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:Number(s.borderRadius??0)}}/>:<><span>▧</span><span>▧</span><span>▧</span><span>▧</span></>}</div>;
+  if(widget.widget_type==="image")return mediaSrc?<img src={mediaSrc} alt={widget.content.alt||"Profile image"} style={{width:"100%",height:"100%",objectFit,objectPosition,borderRadius,border:borderWidth?`${borderWidth}px ${borderStyle} ${borderColor}`:"none",boxShadow,transform:`scale(${flipX},${flipY})`}}/>:<div style={base}>IMAGE</div>;
+  if(widget.widget_type==="photo_strip"){
+    const paths=photoPaths(widget);const sources=paths.map(path=>mediaUrls[path]).filter(Boolean);
+    if(!sources.length&&mediaSrc)sources.push(mediaSrc);
+    return <div style={{...base,gap:8,padding:8,display:"grid",gridTemplateColumns:`repeat(${Math.max(1,Math.min(4,sources.length||4))},minmax(0,1fr))`}}>{sources.length?sources.map((src,index)=><img key={`${src}-${index}`} src={src} alt={`${widget.content.alt||"Profile photo strip"} ${index+1}`} style={{width:"100%",height:"100%",minHeight:0,objectFit,objectPosition,borderRadius,transform:`scale(${flipX},${flipY})`}}/>):<><span>▧</span><span>▧</span><span>▧</span><span>▧</span></>}</div>;
+  }
   if(widget.widget_type==="divider")return <div style={base}/>;
   if(widget.widget_type==="marquee")return <div style={{...base,overflow:"hidden"}}><span className={styles.marqueeText}>{widget.content.text||"★ welcome ★"}</span></div>;
   if(widget.widget_type==="quote")return <div style={{...base,display:"block",padding:16}}><div>{widget.content.text||"Quote"}</div>{widget.content.credit&&<small style={{display:"block",marginTop:8,opacity:.7}}>{widget.content.credit}</small>}</div>;
@@ -46,7 +60,7 @@ export default function ProfileLookupPanel({accessToken,viewerCharacterId}:Props
   const [loading,setLoading]=useState(false);
 
   async function signDesignMedia(targetCharacterId:string,nextDesign:Design|null){
-    const paths=[...new Set([...(nextDesign?.widgets??[]).map(widget=>widget.content.storage_path).filter(Boolean),nextDesign?.canvas.background_storage_path].filter(Boolean))] as string[];
+    const paths=[...new Set([...(nextDesign?.widgets??[]).flatMap(widget=>[widget.content.storage_path,...photoPaths(widget)]).filter(Boolean),nextDesign?.canvas.background_storage_path].filter(Boolean))] as string[];
     if(!paths.length){setMediaUrls({});return;}
     const response=await fetch(`${SUPABASE_URL}/functions/v1/profile-media-sign`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({viewer_character_id:viewerCharacterId,target_character_id:targetCharacterId,paths})});
     if(!response.ok){setMediaUrls({});return;}
@@ -85,7 +99,7 @@ export default function ProfileLookupPanel({accessToken,viewerCharacterId}:Props
     finally{setLoading(false);}
   }
 
-  const previewWidth=760;
+  const previewWidth=960;
   const scale=design?Math.min(1,previewWidth/design.canvas.canvas_width):1;
   const uploadedBackground=design?.canvas.background_storage_path?mediaUrls[design.canvas.background_storage_path]:"";
   const visibleBackground=uploadedBackground||design?.canvas.background_image_url||undefined;
@@ -99,7 +113,7 @@ export default function ProfileLookupPanel({accessToken,viewerCharacterId}:Props
         <article style={{border:"1px solid #c6b6c1",background:"#fff7fb",padding:12}}><p className="eyebrow">TOP FRIENDS</p><h5 style={{margin:"4px 0 10px",font:"400 20px Georgia,serif"}}>Top Friends • platonic only</h5>{social.top_friends?.length?<div style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:7}}>{social.top_friends.map(friend=><div key={`${friend.position}-${friend.character_id}`} style={{border:"1px solid #e1d5dc",background:"#fff",padding:8,minHeight:58}}><small>#{friend.position}</small><strong style={{display:"block"}}>{friend.display_name}</strong><span style={{fontSize:9}}>@{friend.handle} • {friend.role}</span></div>)}</div>:<p>No Top Friends selected yet.</p>}</article>
         <article style={{border:"1px solid #c6b6c1",background:"#fff7fb",padding:12}}><p className="eyebrow">PROFILE BADGES</p><h5 style={{margin:"4px 0 10px",font:"400 20px Georgia,serif"}}>Hanami badges</h5>{social.badges?.length?social.badges.map(badge=><div key={badge.id} style={{borderBottom:"1px solid #e1d5dc",padding:"6px 0"}}><strong>{badge.icon_text} {badge.label}</strong><small style={{display:"block"}}>{badge.badge_type.replaceAll("_"," ")}{badge.description?` • ${badge.description}`:""}</small></div>):<p>No visible badges yet.</p>}</article>
       </section>}
-      {design&&<div className={styles.designWrap}><div className={styles.designLabel}><strong>CUSTOM PROFILE DESIGN</strong><span>{design.widgets.length} WIDGET{design.widgets.length===1?"":"S"}</span></div><div className={styles.previewScroller}><div className={styles.preview} style={{width:design.canvas.canvas_width*scale,height:Math.min(design.canvas.canvas_height*scale,760),background:design.canvas.background,backgroundImage:visibleBackground?`url(${visibleBackground})`:undefined,backgroundSize:"cover",backgroundPosition:"center"}}>{design.widgets.map(widget=><div key={widget.id} className={styles.previewWidget} style={{left:widget.x*scale,top:widget.y*scale,width:widget.width*scale,height:widget.height*scale,zIndex:widget.z_index,opacity:widget.opacity,transform:`rotate(${widget.rotation}deg)`}}>{widgetView(widget,mediaUrls)}</div>)}</div></div></div>}
+      {design&&<div className={styles.designWrap}><div className={styles.designLabel}><strong>CUSTOM PROFILE DESIGN</strong><span>{design.canvas.canvas_width}×{design.canvas.canvas_height} • {design.widgets.length} WIDGET{design.widgets.length===1?"":"S"}</span></div><div className={styles.previewScroller}><div className={styles.preview} style={{width:design.canvas.canvas_width*scale,height:design.canvas.canvas_height*scale,background:design.canvas.background,backgroundImage:visibleBackground?`url(${visibleBackground})`:undefined,backgroundSize:"cover",backgroundPosition:"center"}}>{design.widgets.map(widget=><div key={widget.id} className={styles.previewWidget} style={{left:widget.x*scale,top:widget.y*scale,width:widget.width*scale,height:widget.height*scale,zIndex:widget.z_index,opacity:widget.opacity,transform:`rotate(${widget.rotation}deg)`}}>{widgetView(widget,mediaUrls)}</div>)}</div></div></div>}
       <ProfileReportPanel accessToken={accessToken} viewerCharacterId={viewerCharacterId} targetCharacterId={profile.character_id} targetHandle={profile.handle}/>
     </>}
     <div className={styles.privacy}><strong>VISIBILITY RULE</strong><span>Public profiles can be viewed by signed-in Hanami members. Friends-only profiles can be viewed by accepted character friends. Private profiles remain owner-only. Top Friends, visible badges, status, and visit counts are shown only after the same profile visibility check succeeds. Private Hanami uploads and uploaded backgrounds use short-lived signed media links after that check.</span></div>
