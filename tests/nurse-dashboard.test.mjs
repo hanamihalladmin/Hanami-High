@@ -9,7 +9,7 @@ const feed=await readFile(new URL("../supabase/migrations/20260819113611_nurse_h
 test("Faculty dashboard verifies Nurse eligibility before exposing the alternate dashboard",()=>{
   assert.match(dashboard,/current_faculty_has_special_role/);
   assert.match(dashboard,/requested_role:"nurse"/);
-  assert.match(dashboard,/Open Nurse Dashboard/);
+  assert.match(dashboard,/setNurseMode\(true\)/);
   assert.match(dashboard,/FacultyNurseDashboard/);
 });
 
