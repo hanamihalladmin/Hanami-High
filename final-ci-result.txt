@@ -10,30 +10,18 @@ exit_code=1
   14:1046  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
 /home/runner/work/Hanami-High/Hanami-High/app/components/PublicPageTextEditor.tsx
-  29:807  error  Error: This value cannot be modified
+  30:55  error  Error: This value cannot be modified
 
-Modifying a value returned from 'useState()', which should not be modified directly. Use the setter function to update instead.
+Modifying a value used previously in an effect function or as an effect dependency is not allowed. Consider moving the modification before calling useEffect().
 
-/home/runner/work/Hanami-High/Hanami-High/app/components/PublicPageTextEditor.tsx:29:807
-  27 |  window.addEventListener("hanami-owner-web-edit-change",ownerChange as EventListener);return()=>{cancelled=true;window.removeEventListener("hanami-owner-web-edit-change",ownerChange as EventListener);};},[page]);
-  28 |  useEffect(()=>{applyEditableState(items,editing);return()=>applyEditableState(items,false);},[editing,items]);
-> 29 |  async function save(){if(!token&&!webToken)return;setStatus("Saving page text…");let changed=0;for(const item of items){const content=(item.element.textContent??"").trim();if(content===item.baseline)continue;const usingWebSession=Boolean(webToken);const endpoint=usingWebSession?"owner_web_save_public_page_text":"owner_save_public_page_text";const body=usingWebSession?{requested_token:webToken,requested_page_path:page,requested_block_key:item.key,requested_content:content}:{requested_page_path:page,requested_block_key:item.key,requested_content:content};const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/${endpoint}`,{method:"POST",headers:rpcHeaders(usingWebSession?undefined:token),body:JSON.stringify(body)});if(!response.ok){setStatus("One or more text blocks could not be saved.");return;}item.baseline=content;changed++;}setEditing(false);setStatus(changed?`${changed} text block${changed===1?"":"s"} published.`:"No text changes to publish.");}
-     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^^^^ `items` cannot be modified
-  30 |  function cancel(){for(const item of items)item.element.textContent=item.baseline;setEditing(false);setStatus("Changes cancelled.");}
-  31 |  if(!owner||page.startsWith("/portal"))return null;
-  32 |  return <div data-owner-editor-ignore style={{position:"fixed",right:14,bottom:14,zIndex:10050,width:"min(360px,calc(100vw - 28px))",border:"1px solid #7f2c4d",background:"#fff",boxShadow:"0:8px 28px rgba(0,0,0,.2)",padding:10,fontFamily:"Arial,sans-serif",fontSize:12}} aria-label="Owner public page editor"><div style={{display:"flex",justifyContent:"space-between",gap:8,alignItems:"center"}}><strong>OWNER PAGE EDITOR</strong><span>{page}</span></div><p style={{margin:"6px 0",fontSize:11}}>You are viewing the normal website in Owner Edit Mode. Edit outlined page text in place. Dynamic school data stays managed by its normal Admin tools.</p><div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{!editing?<button type="button" onClick={()=>{setEditing(true);setStatus("Click outlined text and type your changes.");}}>Edit page text</button>:<><button type="button" onClick={()=>void save()}>Publish changes</button><button type="button" onClick={cancel}>Cancel</button></>}</div>{status&&<small style={{display:"block",marginTop:6}}>{status}</small>}</div>;  react-hooks/immutability
-  30:44   error  Error: This value cannot be modified
-
-Modifying a value returned from 'useState()', which should not be modified directly. Use the setter function to update instead.
-
-/home/runner/work/Hanami-High/Hanami-High/app/components/PublicPageTextEditor.tsx:30:44
-  28 |  useEffect(()=>{applyEditableState(items,editing);return()=>applyEditableState(items,false);},[editing,items]);
-  29 |  async function save(){if(!token&&!webToken)return;setStatus("Saving page text…");let changed=0;for(const item of items){const content=(item.element.textContent??"").trim();if(content===item.baseline)continue;const usingWebSession=Boolean(webToken);const endpoint=usingWebSession?"owner_web_save_public_page_text":"owner_save_public_page_text";const body=usingWebSession?{requested_token:webToken,requested_page_path:page,requested_block_key:item.key,requested_content:content}:{requested_page_path:page,requested_block_key:item.key,requested_content:content};const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/${endpoint}`,{method:"POST",headers:rpcHeaders(usingWebSession?undefined:token),body:JSON.stringify(body)});if(!response.ok){setStatus("One or more text blocks could not be saved.");return;}item.baseline=content;changed++;}setEditing(false);setStatus(changed?`${changed} text block${changed===1?"":"s"} published.`:"No text changes to publish.");}
-> 30 |  function cancel(){for(const item of items)item.element.textContent=item.baseline;setEditing(false);setStatus("Changes cancelled.");}
-     |                                            ^^^^^^^^^^^^ `items` cannot be modified
+/home/runner/work/Hanami-High/Hanami-High/app/components/PublicPageTextEditor.tsx:30:55
+  28 |  useEffect(()=>{applyEditableState(itemsRef.current,editing);return()=>applyEditableState(itemsRef.current,false);},[editing]);
+  29 |  async function save(){if(!token&&!webToken)return;setStatus("Saving page text…");let changed=0;const nextItems:Editable[]=[];for(const item of itemsRef.current){const content=(item.element.textContent??"").trim();if(content===item.baseline){nextItems.push(item);continue;}const usingWebSession=Boolean(webToken);const endpoint=usingWebSession?"owner_web_save_public_page_text":"owner_save_public_page_text";const body=usingWebSession?{requested_token:webToken,requested_page_path:page,requested_block_key:item.key,requested_content:content}:{requested_page_path:page,requested_block_key:item.key,requested_content:content};const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/${endpoint}`,{method:"POST",headers:rpcHeaders(usingWebSession?undefined:token),body:JSON.stringify(body)});if(!response.ok){setStatus("One or more text blocks could not be saved.");return;}nextItems.push({...item,baseline:content});changed++;}itemsRef.current=nextItems;setEditing(false);setStatus(changed?`${changed} text block${changed===1?"":"s"} published.`:"No text changes to publish.");}
+> 30 |  function cancel(){for(const item of itemsRef.current)item.element.textContent=item.baseline;setEditing(false);setStatus("Changes cancelled.");}
+     |                                                       ^^^^^^^^^^^^ `itemsRef` cannot be modified
   31 |  if(!owner||page.startsWith("/portal"))return null;
   32 |  return <div data-owner-editor-ignore style={{position:"fixed",right:14,bottom:14,zIndex:10050,width:"min(360px,calc(100vw - 28px))",border:"1px solid #7f2c4d",background:"#fff",boxShadow:"0:8px 28px rgba(0,0,0,.2)",padding:10,fontFamily:"Arial,sans-serif",fontSize:12}} aria-label="Owner public page editor"><div style={{display:"flex",justifyContent:"space-between",gap:8,alignItems:"center"}}><strong>OWNER PAGE EDITOR</strong><span>{page}</span></div><p style={{margin:"6px 0",fontSize:11}}>You are viewing the normal website in Owner Edit Mode. Edit outlined page text in place. Dynamic school data stays managed by its normal Admin tools.</p><div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{!editing?<button type="button" onClick={()=>{setEditing(true);setStatus("Click outlined text and type your changes.");}}>Edit page text</button>:<><button type="button" onClick={()=>void save()}>Publish changes</button><button type="button" onClick={cancel}>Cancel</button></>}</div>{status&&<small style={{display:"block",marginTop:6}}>{status}</small>}</div>;
-  33 | }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/immutability
+  33 | }  react-hooks/immutability
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/InboxPanel.tsx
   38:76    warning  The 'selectedParticipants' conditional could make the dependencies of useMemo Hook (at line 38) change on every render. To fix this, wrap the initialization of 'selectedParticipants' in its own useMemo() Hook                                                                         react-hooks/exhaustive-deps
@@ -62,27 +50,12 @@ Modifying a value returned from 'useState()', which should not be modified direc
 /home/runner/work/Hanami-High/Hanami-High/app/portal/RolePortalClient.tsx
   25:361  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
-/home/runner/work/Hanami-High/Hanami-High/app/portal/SearchEverythingPanel.tsx
-  34:60  warning  'characterId' is defined but never used  @typescript-eslint/no-unused-vars
-
 /home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminPortalClient.tsx
   32:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
-✖ 18 problems (2 errors, 16 warnings)
+✖ 16 problems (1 error, 15 warnings)
 
 --- failing checks ---
-not ok 3 - About dates use the shared Tokyo 2006 roleplay clock
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
-not ok 6 - course catalog supports search and useful filters
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
-not ok 7 - development course records are clearly identified as test data
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
-not ok 27 - campus keeps fixture directory data labeled while public opportunities use the live portal flow
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 not ok 65 - role dashboards read school status notices and calendar from Administration
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
@@ -102,7 +75,7 @@ not ok 145 - Owner website tokens are hashed, expiring, and isolated from portal
 not ok 203 - tester-only flags require tester release membership
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 226 - test activity data stays visibly labeled
+not ok 228 - test activity data stays visibly labeled
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
 MISSING ROUTE: out/index.html
@@ -132,9 +105,9 @@ MISSING ROUTE: out/sports/index.html
 MISSING ROUTE: out/traditions/index.html
 MISSING ROUTE: out/updates/index.html
 --- test summary ---
-# tests 233
-# pass 221
-# fail 12
+# tests 235
+# pass 227
+# fail 8
 # cancelled 0
 # skipped 0
 # todo 0
@@ -222,63 +195,63 @@ MISSING ROUTE: out/updates/index.html
     async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 227 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 229 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.003894
+  duration_ms: 0.842588
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 228 - Student life feeds validate owned Student character even for privileged accounts
+ok 230 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.298561
+  duration_ms: 0.268851
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 229 - accessibility and notification preferences bind to signed-in user automatically
+ok 231 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.091519
+  duration_ms: 5.536561
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 230 - group chat creation uses a validated private helper and creator management
+ok 232 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.387904
+  duration_ms: 1.321769
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 231 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 233 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.50534
+  duration_ms: 1.266095
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 232 - School Office separates staff action waiting member and archive queues
+ok 234 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.57101
+  duration_ms: 1.689893
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 233 - Help has a direct router and support anchor
+ok 235 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.098717
+  duration_ms: 1.28436
   type: 'test'
   ...
-1..233
-# tests 233
+1..235
+# tests 235
 # suites 0
-# pass 221
-# fail 12
+# pass 227
+# fail 8
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1368.599869
+# duration_ms 1431.890417
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 26ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -287,7 +260,7 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.5s
+✓ Compiled successfully in 5.6s
   Running TypeScript ...
 app/components/ProfileOpenBridge.tsx(24,5): error TS18049: 'section' is possibly 'null' or 'undefined'.
 Failed to type check.
