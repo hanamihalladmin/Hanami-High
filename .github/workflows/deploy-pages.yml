@@ -44,23 +44,38 @@ jobs:
         run: npm test
       - name: Build static site
         run: npm run build
-      - name: Verify required exported routes
+      - name: Verify all exported routes
         if: github.event_name != 'pull_request'
         run: |
-          test -f out/index.html
-          test -f out/apply/index.html
-          test -f out/rules/index.html
-          test -f out/calendar/index.html
-          test -f out/changelog/index.html
-          test -f out/portal/index.html
-          test -f out/portal/roadmap/index.html
-          test -f out/portal/city/index.html
-          test -f out/portal/student/index.html
-          test -f out/portal/student/class/index.html
-          test -f out/portal/faculty/index.html
-          test -f out/portal/help/index.html
-          test -f out/portal/admin/index.html
-          test -f out/portal/owner/index.html
+          for route in \
+            out/index.html \
+            out/about/index.html \
+            out/academics/index.html \
+            out/apply/index.html \
+            out/calendar/index.html \
+            out/campus-life/index.html \
+            out/changelog/index.html \
+            out/elections/index.html \
+            out/homeroom/index.html \
+            out/organizations/index.html \
+            out/portal/index.html \
+            out/portal/admin/index.html \
+            out/portal/city/index.html \
+            out/portal/faculty/index.html \
+            out/portal/help/index.html \
+            out/portal/lore/index.html \
+            out/portal/owner/index.html \
+            out/portal/owner/student-viewer/index.html \
+            out/portal/roadmap/index.html \
+            out/portal/student/index.html \
+            out/portal/student/class/index.html \
+            out/rooms/index.html \
+            out/rules/index.html \
+            out/sports/index.html \
+            out/traditions/index.html \
+            out/updates/index.html; do
+            test -f "$route"
+          done
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'
         with:
