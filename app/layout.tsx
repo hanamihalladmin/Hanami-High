@@ -19,6 +19,7 @@ import "./school-resources-fix.css";
 import "./site-themes.css";
 import "./exam-week.css";
 import "./portal-view-modes.css";
+import "./classroom-hub.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
