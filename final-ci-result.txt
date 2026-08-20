@@ -207,55 +207,55 @@ not ok 183 - dark mode is absent from Hanami accessibility controls
 # Subtest: student activities are loaded for the active character
 ok 184 - student activities are loaded for the active character
   ---
-  duration_ms: 0.842384
+  duration_ms: 0.754384
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 185 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.186897
+  duration_ms: 0.175231
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 186 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.268079
+  duration_ms: 0.237224
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 187 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.151911
+  duration_ms: 0.130084
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 188 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.994057
+  duration_ms: 4.380652
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 189 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.542573
+  duration_ms: 0.974793
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 190 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.079676
+  duration_ms: 0.896236
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 191 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.54178
+  duration_ms: 1.369232
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 192 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.008742
+  duration_ms: 1.051257
   type: 'test'
   ...
 1..192
@@ -266,14 +266,14 @@ ok 192 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 719.97749
+# duration_ms 767.516963
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 18ms
+✓ Running next.config.ts took 20ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -282,15 +282,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 4.2s
+✓ Compiled successfully in 4.5s
   Running TypeScript ...
-  Finished TypeScript in 6.1s ...
+  Finished TypeScript in 6.3s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/24) ...
   Generating static pages using 3 workers (6/24) 
   Generating static pages using 3 workers (12/24) 
   Generating static pages using 3 workers (18/24) 
-✓ Generating static pages using 3 workers (24/24) in 471ms
+✓ Generating static pages using 3 workers (24/24) in 442ms
   Finalizing page optimization ...
 
 Route (app)
