@@ -1,6 +1,22 @@
 HANAMI_FINAL_CI=FAIL
 exit_code=1
 --- lint ---
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminContentApprovalPanel.tsx:9:742
+   7 | function headers(token:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${token}`,...extra};}
+   8 | type QueueItem={id:string;content_type:string;source_id:string|null;submitted_by_character_id:string|null;title:string;summary:string;payload:Record<string,unknown>;status:string;reviewer_note:string;submitted_at:string};
+>  9 | export default function AdminContentApprovalPanel({accessToken}:{accessToken:string}){const [rows,setRows]=useState<QueueItem[]>([]);const [notes,setNotes]=useState<Record<string,string>>({});const [notice,setNotice]=useState("Loading moderation queue…");const load=useCallback(async()=>{const r=await fetch(`${SUPABASE_URL}/rest/v1/content_approval_queue?select=id,content_type,source_id,submitted_by_character_id,title,summary,payload,status,reviewer_note,submitted_at&status=in.(pending,changes_requested)&order=submitted_at.asc`,{headers:headers(accessToken)});if(r.ok){setRows(await r.json());setNotice("Unified content approval queue ready.");}else setNotice("Approval queue could not be loaded.");},[accessToken]);useEffect(()=>{void load();},[load]);async function review(item:QueueItem,status:"approved"|"changes_requested"|"rejected"){const r=await fetch(`${SUPABASE_URL}/rest/v1/content_approval_queue?id=eq.${item.id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status,reviewer_note:notes[item.id]?.trim()??"",reviewed_at:new Date().toISOString(),updated_at:new Date().toISOString()})});if(r.ok){if(item.content_type==="rumor"&&item.source_id){await fetch(`${SUPABASE_URL}/rest/v1/school_rumors?id=eq.${item.source_id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify(status==="approved"?{status:"published",approved_at:new Date().toISOString(),published_at:new Date().toISOString()}:{status:status==="rejected"?"rejected":"pending"})});}setNotice(`Content ${status.replaceAll("_"," ")}.`);await load();}else setNotice("Review decision could not be saved.");}
+     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^^^^ Avoid calling setState() directly within an effect
+  10 |  return <section style={{marginTop:18,border:"1px solid #aab7c6",background:"#fff"}}><div style={{padding:12,background:"#eef3f8",borderBottom:"1px solid #c5ced8"}}><p className="eyebrow">CONTENT MODERATION</p><h3 style={{margin:"3px 0",font:"400:21px Georgia,serif"}}>Unified Approval Queue</h3><small>{notice}</small></div><div style={{padding:12,display:"grid",gap:8}}>{rows.length?rows.map(item=><article key={item.id} style={{padding:10,border:"1px solid #d2d9e0"}}><div style={{display:"flex",justifyContent:"space-between",gap:8,flexWrap:"wrap"}}><strong>{item.title||item.content_type.replaceAll("_"," ")}</strong><span style={{fontSize:8}}>{item.content_type.replaceAll("_"," ").toUpperCase()} • {new Date(item.submitted_at).toLocaleString()}</span></div><p style={{fontSize:9}}>{item.summary||"No summary supplied."}</p><textarea value={notes[item.id]??""} onChange={e=>setNotes(v=>({...v,[item.id]:e.target.value}))} placeholder="Reviewer note / requested changes" style={{width:"100%",minHeight:55,boxSizing:"border-box"}}/><div style={{display:"flex",gap:6,marginTop:6,flexWrap:"wrap"}}><button type="button" onClick={()=>review(item,"approved")}>Approve</button><button type="button" onClick={()=>review(item,"changes_requested")}>Request changes</button><button type="button" onClick={()=>review(item,"rejected")}>Reject</button></div></article>):<p>No content is waiting for review.</p>}</div><div style={{padding:"0 12px 12px",fontSize:9,color:"#687789"}}>Queue supports newspaper posts, guestbook comments, gallery uploads, rumors, profile templates, organization announcements, and future moderated content types.</div></section>;}
+  11 |  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminContinuityArchiveManager.tsx
+  12:650  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
 * Update external systems with the latest state from React.
 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
 
@@ -106,23 +122,7 @@ Calling setState synchronously within an effect body causes cascading renders th
   23 |  async function saveEligibility(){if(!eligibilityDraft.student_character_id)return;const r=await fetch(`${SUPABASE_URL}/rest/v1/athletics_eligibility?on_conflict=student_character_id`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"}),body:JSON.stringify({...eligibilityDraft,reviewed_by:userId,reviewed_at:new Date().toISOString()})});setStatus(r.ok?"Athletics eligibility saved.":"Athletics eligibility could not be saved.");if(r.ok)await load();}  react-hooks/set-state-in-effect
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminPortalClient.tsx
-  30:17   error    Error: Calling setState synchronously within an effect can trigger cascading renders
-
-Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
-* Update external systems with the latest state from React.
-* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
-
-Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminPortalClient.tsx:30:17
-  28 |   setState("ready");setMessage(`Administrator authorization verified${roles?.sync_status==="synced"?" with synchronized Discord role":" in fallback role mode"}.`);}
-  29 |   catch(error){setState("blocked");setMessage(error instanceof Error?error.message:"Administration access could not be verified.");}},[]);
-> 30 |  useEffect(()=>{initialize();},[initialize]);
-     |                 ^^^^^^^^^^ Avoid calling setState() directly within an effect
-  31 |  async function privilegedLogout(){if(session)await fetch(`${SUPABASE_URL}/rest/v1/rpc/end_privileged_portal_session`,{method:"POST",headers:headers(session.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({requested_portal:"administrator"})});setState("signin");setMessage("Administrator portal locked. Your normal Hanami session remains signed in.");}
-  32 |  function logout(){localStorage.removeItem(SESSION_KEY);localStorage.removeItem("hanami.portal.character.v1");window.location.assign("../");}
-  33 |  if(state==="signin")return <PrivilegedPortalLogin portalKind="administrator" onUnlocked={initialize}/>;  react-hooks/set-state-in-effect
-  32:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @next/next/no-location-assign-relative-destination
+  32:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminRoadmapManager.tsx
   34:110  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-explicit-any
@@ -179,7 +179,7 @@ Calling setState synchronously within an effect body causes cascading renders th
   20 |  async function createSession(event:FormEvent){event.preventDefault();if(!access.site_admin||saving)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/roleplay_sessions`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({code:code.trim(),title:title.trim(),school_year:schoolYear.trim(),chapter_number:chapter,season,status:"planning",summary:summary.trim(),graduation_year_level:graduationLevel.trim()||null,starts_at:startsAt?new Date(startsAt).toISOString():null,ends_at:endsAt?new Date(endsAt).toISOString():null})});if(!response.ok)throw new Error("Session could not be created.");setCode("");setTitle("");setSummary("");setStartsAt("");setEndsAt("");await load();setNotice("Roleplay session created in planning state.");}catch(error){setNotice(error instanceof Error?error.message:"Session could not be created.");}finally{setSaving(false);}}
   21 |  async function setSessionStatus(item:Session,status:string){setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/roleplay_sessions?id=eq.${item.id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Session status could not be changed.");await load();setNotice(`${item.title} is now ${status}.`);}catch(error){setNotice(error instanceof Error?error.message:"Session could not be changed.");}finally{setSaving(false);}}  react-hooks/set-state-in-effect
 
-✖ 76 problems (61 errors, 15 warnings)
+✖ 75 problems (60 errors, 15 warnings)
 
 --- failing checks ---
 --- test summary ---
@@ -191,115 +191,115 @@ Calling setState synchronously within an effect body causes cascading renders th
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.239268
+  duration_ms: 0.186648
   type: 'test'
   ...
 # Subtest: normal School Resources never loads or renders form submission history
 ok 219 - normal School Resources never loads or renders form submission history
   ---
-  duration_ms: 1.252984
+  duration_ms: 1.358145
   type: 'test'
   ...
 # Subtest: normal users can still submit school forms without reading history
 ok 220 - normal users can still submit school forms without reading history
   ---
-  duration_ms: 0.28346
+  duration_ms: 0.238165
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 221 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 5.774394
+  duration_ms: 6.257881
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 222 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 0.893121
+  duration_ms: 1.176606
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 223 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.252522
+  duration_ms: 0.289179
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 224 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.160891
+  duration_ms: 0.215803
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 225 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.150942
+  duration_ms: 0.204712
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 226 - student activities are loaded for the active character
   ---
-  duration_ms: 1.327965
+  duration_ms: 0.900941
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 227 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.252052
+  duration_ms: 0.165539
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 228 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.37927
+  duration_ms: 0.277648
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 229 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.224049
+  duration_ms: 0.177291
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 230 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.297337
+  duration_ms: 0.856178
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 231 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.354674
+  duration_ms: 0.241802
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 232 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.556406
+  duration_ms: 5.896918
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 233 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.375013
+  duration_ms: 1.592102
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 234 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.256592
+  duration_ms: 1.484852
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 235 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.706974
+  duration_ms: 1.96599
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 236 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.289042
+  duration_ms: 1.577565
   type: 'test'
   ...
 1..236
@@ -310,14 +310,14 @@ ok 236 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1417.573076
+# duration_ms 1416.729023
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 25ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -326,15 +326,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.7s
+✓ Compiled successfully in 5.5s
   Running TypeScript ...
-  Finished TypeScript in 9.4s ...
+  Finished TypeScript in 9.2s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 604ms
+✓ Generating static pages using 3 workers (28/28) in 593ms
   Finalizing page optimization ...
 
 Route (app)
