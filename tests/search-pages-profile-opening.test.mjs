@@ -17,5 +17,6 @@ test("people results expose one-click profile opening",()=>{
  assert.match(search,/hanami-open-profile/);
  assert.match(search,/Open profile →/);
  assert.match(bridge,/form\.requestSubmit\(\)/);
- assert.match(dashboard,/id="dashboard-profile-lookup"/);
+ assert.match(dashboard,/ProfileLookupPanel accessToken=\{accessToken\} viewerCharacterId=\{character\.id\}/);
+ assert.match(dashboard,/SearchEverythingPanel accessToken=\{accessToken\} characterId=\{character\.id\}/);
 });
