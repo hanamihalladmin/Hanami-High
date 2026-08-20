@@ -1,9 +1,11 @@
 name: Deploy Hanami High
-# Deployment refresh: CI green (192/192) + School Resources layout fix
+# Deployment refresh: stable queued Pages deployment
 
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - final-ci-result.txt
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -15,7 +17,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   verify:
