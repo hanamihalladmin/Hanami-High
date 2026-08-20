@@ -133,6 +133,34 @@ MISSING ROUTE: out/updates/index.html
 # skipped 0
 # todo 0
 --- tail ---
+      '    <div className={styles.heading}><div><p className="eyebrow">CAMPUS</p><h4 id="activities-title">Activities & events</h4></div><span>{joined.length} JOINED</span></div>\n' +
+      '    <div className={styles.status} aria-live="polite">{message}</div>\n' +
+      '    <div className={styles.columns}>\n' +
+      '      <div className={styles.block}><div className={styles.blockTitle}><strong>MY ACTIVITIES</strong><span>ACTIVE CHARACTER</span></div>{joined.length===0?<div className={styles.empty}><b>No joined activities yet</b><p>Clubs, committees, and student-government memberships assigned to this character will appear here.</p></div>:joined.map(({membership,activity})=><article key={activity!.id}><div className={styles.meta}><span>{activity!.kind.replace("_"," ").toUpperCase()} • {membership.status.toUpperCase()}</span></div><h5>{activity!.name}</h5><p>{activity!.description||"No description posted."}</p><dl><div><dt>Meeting</dt><dd>{activity!.meeting_schedule||"Not posted"}</dd></div><div><dt>Location</dt><dd>{activity!.meeting_location||"Not posted"}</dd></div></dl></article>)}</div>\n' +
+      '      <div className={styles.block}><div className={styles.blockTitle}><strong>UPCOMING EVENTS</strong><span>PUBLIC CAMPUS CALENDAR</span></div>{events.length===0?<div className={styles.empty}><b>No upcoming public events</b><p>New campus events will appear here automatically when they are published.</p></div>:events.map(event=><article key={event.id}><div className={styles.meta}><span>{dateLabel(event.starts_at)}</span></div><h5>{event.title}</h5><p>{event.description||"No event description posted."}</p><dl><div><dt>Location</dt><dd>{event.location||"To be announced"}</dd></div><div><dt>Hosted by</dt><dd>{event.activity_id?activityMap.get(event.activity_id)?.name||"Campus activity":"Hanami High"}</dd></div></dl></article>)}</div>\n' +
+      '    </div>\n' +
+      '  </section>;\n' +
+      '}\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    "use client";
+    
+    import {useEffect,useMemo,useState} from "react";
+    import styles from "./StudentActivitiesPanel.module.css";
+    
+    const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
+    
+    type Activity={id:string;kind:"club"|"student_government"|"event"|"committee";name:string;description:string;meeting_location:string|null;meeting_schedule:string|null};
+    type Membership={activity_id:string;status:"member"|"officer"|"advisor"};
+    type Event={id:string;activity_id:string|null;title:string;description:string;starts_at:string;ends_at:string|null;location:string|null};
+    type Props={accessToken:string;characterId:string};
+    
+    function headers(accessToken:string){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`};}
+    function dateLabel(value:string){return new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZone:"Asia/Tokyo",timeZoneName:"short"}).format(new Date(value));}
     
     export default function StudentActivitiesPanel({accessToken,characterId}:Props){
       const [activities,setActivities]=useState<Activity[]>([]);
@@ -190,43 +218,43 @@ MISSING ROUTE: out/updates/index.html
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 224 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.863613
+  duration_ms: 0.809831
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 225 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.233886
+  duration_ms: 0.23129
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 226 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.399976
+  duration_ms: 5.95434
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 227 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.443266
+  duration_ms: 1.492956
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 228 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.279259
+  duration_ms: 1.519386
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 229 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.615187
+  duration_ms: 1.999322
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 230 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.287004
+  duration_ms: 1.241437
   type: 'test'
   ...
 1..230
@@ -237,14 +265,14 @@ ok 230 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1366.934521
+# duration_ms 1396.971583
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 27ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -253,39 +281,11 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
+✓ Compiled successfully in 6.0s
+  Running TypeScript ...
+app/components/ProfileOpenBridge.tsx(24,5): error TS18049: 'section' is possibly 'null' or 'undefined'.
+Failed to type check.
 
-> Build error occurred
-Error: Turbopack build failed with 1 error:
-./app/portal/DashboardShell.tsx:20:1
-Error: Module not found: Can't resolve './OwnerFacultyQaPanel'
-  [90m18 |[0m [36mimport[0m [33mFacultyNurseDashboard[0m [36mfrom[0m [32m"./FacultyNurseDashboard"[0m;
-  [90m19 |[0m [36mimport[0m [33mFacultyLoungePanel[0m [36mfrom[0m [32m"./FacultyLoungePanel"[0m;
-[31m[1m>[0m [90m20 |[0m [36mimport[0m [33mOwnerFacultyQaPanel[0m [36mfrom[0m [32m"./OwnerFacultyQaPanel"[0m;
-  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m21 |[0m [36mimport[0m [33mMessageCenterPanel[0m [36mfrom[0m [32m"./MessageCenterPanel"[0m;
-  [90m22 |[0m [36mimport[0m [33mMessageNotificationBadge[0m [36mfrom[0m [32m"./MessageNotificationBadge"[0m;
-  [90m23 |[0m [36mimport[0m [33mStudentActivitiesPanel[0m [36mfrom[0m [32m"./StudentActivitiesPanel"[0m;
-
-
-
-Import traces:
-  Client Component Browser:
-    ./app/portal/DashboardShell.tsx [Client Component Browser]
-    ./app/portal/RolePortalClient.tsx [Client Component Browser]
-    ./app/portal/RolePortalClient.tsx [Server Component]
-    ./app/portal/student/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/portal/DashboardShell.tsx [Client Component SSR]
-    ./app/portal/RolePortalClient.tsx [Client Component SSR]
-    ./app/portal/RolePortalClient.tsx [Server Component]
-    ./app/portal/student/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-    at <unknown> (./app/portal/DashboardShell.tsx:20:1)
-    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
 === routes ===
 MISSING ROUTE: out/index.html
 MISSING ROUTE: out/about/index.html
