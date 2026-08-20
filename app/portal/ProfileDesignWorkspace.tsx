@@ -1,6 +1,7 @@
 "use client";
 
 import {ChangeEvent,CSSProperties,useEffect,useState} from "react";
+import ProfileSavedDesignsPanel from "./ProfileSavedDesignsPanel";
 import ProfileTemplateGallery from "./ProfileTemplateGallery";
 import ProfileDecorativePresetGallery from "./ProfileDecorativePresetGallery";
 import GlitterDividerPresetGallery from "./GlitterDividerPresetGallery";
@@ -68,6 +69,7 @@ export default function ProfileDesignWorkspace({accessToken,characterId}:Props){
 
   const studioStyle=(backgroundUrl?{"--hanami-profile-background-image":`url(${JSON.stringify(backgroundUrl)})`}: {}) as CSSProperties;
   return <>
+    <ProfileSavedDesignsPanel accessToken={accessToken} characterId={characterId} onApplied={()=>{setRevision(value=>value+1);refreshStudio();}}/>
     <ProfileTemplateGallery accessToken={accessToken} characterId={characterId}/>
     <ProfileDecorativePresetGallery accessToken={accessToken} characterId={characterId} onAdded={()=>refreshStudio()}/>
     <GlitterDividerPresetGallery accessToken={accessToken} characterId={characterId} onAdded={()=>refreshStudio()}/>
