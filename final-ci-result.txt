@@ -1,6 +1,27 @@
-HANAMI_FINAL_CI=PASS
-exit_code=0
+HANAMI_FINAL_CI=FAIL
+exit_code=1
 --- failing tests / errors ---
+# Subtest: Administration has its own website section and shared workspace
+# Subtest: Campus Life includes every approved public requirement
+# Subtest: campus directory is searchable and filterable
+# Subtest: campus keeps fixture directory data labeled while public opportunities use the live portal flow
+# Subtest: Campus Life uses the Tokyo 2006 roleplay clock
+# Subtest: Campus Life returns signed-in students to real portal routes
+# Subtest: Campus Opportunities are published content with character-owned Student applications
+# Subtest: Student portal exposes the website-native Campus Opportunities application desk
+# Subtest: Administration manages opportunities and reviews applications
+# Subtest: Applicant identity is exposed only through a permission-gated queue
+# Subtest: ordinary Faculty role does not get school-wide opportunity review access
+# Subtest: character manager loads only authenticated account data
+# Subtest: character creation uses the next open slot and starts private
+# Subtest: character switching updates and remembers the active character
+# Subtest: character selection restores across refreshes
+# Subtest: test faculty character uses the signed-in account and receives TEST-101
+# Subtest: character deletion requires explicit permanent confirmation
+# Subtest: shared message and coursework history no longer blocks character deletion
+# Subtest: database remains the final authority for the two-slot rule
+# Subtest: profile editor reads and saves only the active character record
+# Subtest: profile save uses an upsert and updates privacy separately
 # Subtest: character profile table is owner scoped by RLS
 # Subtest: both role dashboards render the profile editor
 # Subtest: Hanami City content can be published and hidden without deletion
@@ -42,6 +63,25 @@ exit_code=0
 # Subtest: friendship mutation stays behind controlled RPCs
 # Subtest: Students can only friend Students and Faculty can only friend Faculty
 # Subtest: Friends-only visibility requires an accepted same-role character friendship
+# Subtest: full Hanami school-day and academic roadmap remains wired
+# Subtest: full profile social privacy roadmap remains wired
+# Subtest: full Profile Studio roadmap remains wired
+# Subtest: full community and moderation roadmap remains wired
+not ok 89 - full community and moderation roadmap remains wired
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+# Subtest: full worldbuilding roadmap remains wired
+not ok 90 - full worldbuilding roadmap remains wired
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+# Subtest: full Roadmap Hub social-program roadmap remains wired
+# Subtest: full onboarding changelog tester and release roadmap remains wired
+# Subtest: full staff Owner operations roadmap remains wired
+# Subtest: full messaging roadmap remains wired
+not ok 94 - full messaging roadmap remains wired
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+# Subtest: roadmap exclusions remain enforced
 # Subtest: group chat creation does not create a selectedId-driven inbox refresh loop
 # Subtest: group chat create action is single-flight and updates in place
 # Subtest: Hanami Inbox is website-native and character scoped
@@ -182,94 +222,134 @@ exit_code=0
 # Subtest: School Office separates staff action waiting member and archive queues
 # Subtest: Help has a direct router and support anchor
 --- tail ---
-# Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 213 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.229209
+  duration_ms: 0.173294
+  type: 'test'
+  ...
+# Subtest: role portal logout clears character and account session
+ok 217 - role portal logout clears character and account session
+  ---
+  duration_ms: 0.175939
+  type: 'test'
+  ...
+# Subtest: normal School Resources never loads or renders form submission history
+ok 218 - normal School Resources never loads or renders form submission history
+  ---
+  duration_ms: 1.640707
+  type: 'test'
+  ...
+# Subtest: normal users can still submit school forms without reading history
+ok 219 - normal users can still submit school forms without reading history
+  ---
+  duration_ms: 0.303207
+  type: 'test'
+  ...
+# Subtest: Owner receives system health and aggregate staff analytics
+ok 220 - Owner receives system health and aggregate staff analytics
+  ---
+  duration_ms: 1.496648
+  type: 'test'
+  ...
+# Subtest: Admin workspace includes storyline incident and evidence operations
+ok 221 - Admin workspace includes storyline incident and evidence operations
+  ---
+  duration_ms: 0.395449
+  type: 'test'
+  ...
+# Subtest: Faculty dashboard includes a private lounge workflow
+ok 222 - Faculty dashboard includes a private lounge workflow
+  ---
+  duration_ms: 0.284903
+  type: 'test'
+  ...
+# Subtest: dark mode controls are absent from Hanami accessibility settings
+ok 223 - dark mode controls are absent from Hanami accessibility settings
+  ---
+  duration_ms: 0.18749
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 214 - student activities are loaded for the active character
+ok 224 - student activities are loaded for the active character
   ---
-  duration_ms: 1.128903
+  duration_ms: 1.54057
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 215 - campus activity membership reads remain owner scoped
+ok 225 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.212999
+  duration_ms: 0.250047
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 216 - student dashboard has no remaining placeholder modules
+ok 226 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.341539
+  duration_ms: 0.383397
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
-ok 217 - test activity data stays visibly labeled
+ok 227 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.186018
+  duration_ms: 0.163145
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 218 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 228 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.858266
+  duration_ms: 0.970564
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 219 - Student life feeds validate owned Student character even for privileged accounts
+ok 229 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.246441
+  duration_ms: 0.275505
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 220 - accessibility and notification preferences bind to signed-in user automatically
+ok 230 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.470388
+  duration_ms: 6.715745
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 221 - group chat creation uses a validated private helper and creator management
+ok 231 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.322265
+  duration_ms: 1.868303
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 222 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 232 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.464501
+  duration_ms: 1.748118
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 223 - School Office separates staff action waiting member and archive queues
+ok 233 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 2.042904
+  duration_ms: 2.131515
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 224 - Help has a direct router and support anchor
+ok 234 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.193434
+  duration_ms: 1.749761
   type: 'test'
   ...
-1..224
-# tests 224
+1..234
+# tests 234
 # suites 0
-# pass 224
-# fail 0
+# pass 231
+# fail 3
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1303.18881
+# duration_ms 1534.545069
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 26ms
+✓ Running next.config.ts took 30ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -278,15 +358,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.5s
+✓ Compiled successfully in 7.1s
   Running TypeScript ...
-  Finished TypeScript in 9.2s ...
+  Finished TypeScript in 11.5s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 630ms
+✓ Generating static pages using 3 workers (28/28) in 711ms
   Finalizing page optimization ...
 
 Route (app)
