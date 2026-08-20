@@ -8,12 +8,14 @@ const admin=fs.readFileSync("app/portal/admin/AdminAcademicManager.tsx","utf8");
 const shared=fs.readFileSync("app/classroom-hub.css","utf8");
 const scheduleCss=fs.readFileSync("app/portal/SchedulePanel.module.css","utf8");
 
-test("Student classes use Classroom-style cards",()=>{
- assert.match(schedule,/HANAMI CLASSROOM/);
+test("Student courses use customizable Canvas-style cards",()=>{
+ assert.match(schedule,/COURSES/);
  assert.match(schedule,/classroomGrid/);
  assert.match(schedule,/classBanner/);
- assert.match(schedule,/Open class/);
+ assert.match(schedule,/Open course/);
  assert.match(schedule,/teacherLabel/);
+ assert.match(schedule,/character_portal_preferences/);
+ assert.match(schedule,/class_banner_colors/);
  assert.doesNotMatch(schedule,/is_test_data/);
 });
 
@@ -30,9 +32,9 @@ test("Owner and Admin use a schoolwide Classroom card hub",()=>{
  assert.match(admin,/Manage roster & faculty/);
 });
 
-test("Classroom layout is responsive and card-based",()=>{
+test("Course card layout is responsive and adaptive",()=>{
  assert.match(shared,/classroom-card-banner/);
- assert.match(scheduleCss,/grid-template-columns:repeat\(3/);
- assert.match(scheduleCss,/@media\(max-width:980px\)/);
+ assert.match(scheduleCss,/grid-template-columns:repeat\(auto-fit,minmax\(235px,1fr\)\)/);
  assert.match(scheduleCss,/@media\(max-width:620px\)/);
+ assert.match(scheduleCss,/classroomGrid\{grid-template-columns:1fr/);
 });
