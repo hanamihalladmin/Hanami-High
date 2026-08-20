@@ -1,5 +1,5 @@
-HANAMI_FINAL_CI=FAIL
-exit_code=2
+HANAMI_FINAL_CI=PASS
+exit_code=0
 --- lint ---
 
 > hanami-high@0.1.0 lint
@@ -42,32 +42,6 @@ exit_code=2
 ✖ 15 problems (0 errors, 15 warnings)
 
 --- failing checks ---
-MISSING ROUTE: out/index.html
-MISSING ROUTE: out/about/index.html
-MISSING ROUTE: out/academics/index.html
-MISSING ROUTE: out/apply/index.html
-MISSING ROUTE: out/calendar/index.html
-MISSING ROUTE: out/campus-life/index.html
-MISSING ROUTE: out/changelog/index.html
-MISSING ROUTE: out/elections/index.html
-MISSING ROUTE: out/homeroom/index.html
-MISSING ROUTE: out/organizations/index.html
-MISSING ROUTE: out/portal/index.html
-MISSING ROUTE: out/portal/admin/index.html
-MISSING ROUTE: out/portal/city/index.html
-MISSING ROUTE: out/portal/faculty/index.html
-MISSING ROUTE: out/portal/help/index.html
-MISSING ROUTE: out/portal/lore/index.html
-MISSING ROUTE: out/portal/owner/index.html
-MISSING ROUTE: out/portal/owner/student-viewer/index.html
-MISSING ROUTE: out/portal/roadmap/index.html
-MISSING ROUTE: out/portal/student/index.html
-MISSING ROUTE: out/portal/student/class/index.html
-MISSING ROUTE: out/rooms/index.html
-MISSING ROUTE: out/rules/index.html
-MISSING ROUTE: out/sports/index.html
-MISSING ROUTE: out/traditions/index.html
-MISSING ROUTE: out/updates/index.html
 --- test summary ---
 # tests 238
 # pass 238
@@ -77,127 +51,115 @@ MISSING ROUTE: out/updates/index.html
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.133283
-  type: 'test'
-  ...
-# Subtest: normal School Resources never loads or renders form submission history
-ok 219 - normal School Resources never loads or renders form submission history
-  ---
-  duration_ms: 1.119578
-  type: 'test'
-  ...
-# Subtest: normal users can still submit school forms without reading history
-ok 220 - normal users can still submit school forms without reading history
-  ---
-  duration_ms: 0.249872
+  duration_ms: 0.181899
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 221 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.305663
+  duration_ms: 1.095086
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 222 - people results expose one-click profile opening
   ---
-  duration_ms: 0.244344
+  duration_ms: 0.208199
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 223 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 6.590593
+  duration_ms: 5.606336
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 224 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 0.779345
+  duration_ms: 1.288347
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 225 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.182846
+  duration_ms: 0.320108
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 226 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.117453
+  duration_ms: 0.28348
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 227 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.107024
+  duration_ms: 0.231783
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 228 - student activities are loaded for the active character
   ---
-  duration_ms: 1.244054
+  duration_ms: 1.403343
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 229 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.223643
+  duration_ms: 0.243636
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 230 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.321074
+  duration_ms: 0.403954
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 231 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.155476
+  duration_ms: 0.257512
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 232 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.70349
+  duration_ms: 1.084296
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 233 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.222836
+  duration_ms: 0.316401
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 234 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 8.70221
+  duration_ms: 6.076855
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 235 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.154995
+  duration_ms: 1.458535
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 236 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.109212
+  duration_ms: 1.654071
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 237 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.780978
+  duration_ms: 1.936288
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 238 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.176129
+  duration_ms: 1.371613
   type: 'test'
   ...
 1..238
@@ -208,14 +170,14 @@ ok 238 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1298.194493
+# duration_ms 1482.283522
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 22ms
+✓ Running next.config.ts took 26ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -224,35 +186,47 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.7s
+✓ Compiled successfully in 5.9s
   Running TypeScript ...
-app/components/ProfileOpenBridge.tsx(24,5): error TS18049: 'section' is possibly 'null' or 'undefined'.
-Failed to type check.
+  Finished TypeScript in 9.7s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/28) ...
+  Generating static pages using 3 workers (7/28) 
+  Generating static pages using 3 workers (14/28) 
+  Generating static pages using 3 workers (21/28) 
+✓ Generating static pages using 3 workers (28/28) in 606ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ○ /academics
+├ ○ /apply
+├ ○ /calendar
+├ ○ /campus-life
+├ ○ /changelog
+├ ○ /elections
+├ ○ /homeroom
+├ ○ /organizations
+├ ○ /portal
+├ ○ /portal/admin
+├ ○ /portal/city
+├ ○ /portal/faculty
+├ ○ /portal/help
+├ ○ /portal/lore
+├ ○ /portal/owner
+├ ○ /portal/owner/student-viewer
+├ ○ /portal/roadmap
+├ ○ /portal/student
+├ ○ /portal/student/class
+├ ○ /rooms
+├ ○ /rules
+├ ○ /sports
+├ ○ /traditions
+└ ○ /updates
+
+
+○  (Static)  prerendered as static content
 
 === routes ===
-MISSING ROUTE: out/index.html
-MISSING ROUTE: out/about/index.html
-MISSING ROUTE: out/academics/index.html
-MISSING ROUTE: out/apply/index.html
-MISSING ROUTE: out/calendar/index.html
-MISSING ROUTE: out/campus-life/index.html
-MISSING ROUTE: out/changelog/index.html
-MISSING ROUTE: out/elections/index.html
-MISSING ROUTE: out/homeroom/index.html
-MISSING ROUTE: out/organizations/index.html
-MISSING ROUTE: out/portal/index.html
-MISSING ROUTE: out/portal/admin/index.html
-MISSING ROUTE: out/portal/city/index.html
-MISSING ROUTE: out/portal/faculty/index.html
-MISSING ROUTE: out/portal/help/index.html
-MISSING ROUTE: out/portal/lore/index.html
-MISSING ROUTE: out/portal/owner/index.html
-MISSING ROUTE: out/portal/owner/student-viewer/index.html
-MISSING ROUTE: out/portal/roadmap/index.html
-MISSING ROUTE: out/portal/student/index.html
-MISSING ROUTE: out/portal/student/class/index.html
-MISSING ROUTE: out/rooms/index.html
-MISSING ROUTE: out/rules/index.html
-MISSING ROUTE: out/sports/index.html
-MISSING ROUTE: out/traditions/index.html
-MISSING ROUTE: out/updates/index.html
