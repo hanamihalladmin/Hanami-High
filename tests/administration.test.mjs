@@ -9,12 +9,13 @@ const statusManager=await readFile(new URL("../app/portal/admin/AdminSchoolStatu
 const manager=await readFile(new URL("../app/portal/admin/AdminAnnouncementManager.tsx",import.meta.url),"utf8");
 const eventManager=await readFile(new URL("../app/portal/admin/AdminEventManager.tsx",import.meta.url),"utf8");
 const directory=await readFile(new URL("../app/portal/admin/AdminCharacterDirectory.tsx",import.meta.url),"utf8");
-const academics=await readFile(new URL("../app/portal/admin/AdminAcademicManager.tsx",import.meta.url),"utf8");
+const academics=await readFile(new URL("../app/portal/admin/AdminScheduleManager.tsx",import.meta.url),"utf8");
 const adminPage=await readFile(new URL("../app/portal/admin/page.tsx",import.meta.url),"utf8");
 const migration=await readFile(new URL("../supabase/migrations/20260818163000_administration_and_live_announcements_foundation.sql",import.meta.url),"utf8");
 const hardening=await readFile(new URL("../supabase/migrations/20260818165000_harden_administration_rpc_boundaries.sql",import.meta.url),"utf8");
 const directoryMigration=await readFile(new URL("../supabase/migrations/20260818170000_administration_character_directory.sql",import.meta.url),"utf8");
 const academicMigration=await readFile(new URL("../supabase/migrations/20260818171500_administration_academic_management_permissions.sql",import.meta.url),"utf8");
+const scheduleMigration=await readFile(new URL("../supabase/migrations/20260820214500_homeroom_period_schedule_system.sql",import.meta.url),"utf8");
 const calendarMigration=await readFile(new URL("../supabase/migrations/20260818173000_school_calendar_events_foundation.sql",import.meta.url),"utf8");
 const statusMigration=await readFile(new URL("../supabase/migrations/20260818174500_live_school_status_foundation.sql",import.meta.url),"utf8");
 const claimMigration=await readFile(new URL("../supabase/migrations/20260818195549_allow_owner_created_unclaimed_admin_logins.sql",import.meta.url),"utf8");
@@ -96,16 +97,24 @@ test("moderators have a private character directory rather than global profile e
   assert.match(directoryMigration,/limit 100/);
 });
 
-test("Site Admin academic management preserves role separation",()=>{
-  assert.match(workspace,/access\.site_admin&&<AdminAcademicManager/);
+test("Admin and Owner academic management supports future homerooms periods and conflict-aware schedules",()=>{
+  assert.match(workspace,/access\.site_admin&&<AdminScheduleManager/);
   assert.match(academics,/academic_courses/);
   assert.match(academics,/class_sections/);
-  assert.match(academics,/section_meetings/);
+  assert.match(academics,/school_homerooms/);
+  assert.match(academics,/school_periods/);
+  assert.match(academics,/school_schedule_assignments/);
   assert.match(academics,/admin_assign_character_to_section/);
-  assert.match(academicMigration,/site admins manage academic courses/);
+  assert.match(academics,/Course Catalog/);
+  assert.match(academics,/Weekly Schedule/);
+  assert.match(academics,/Faculty Assignments/);
+  assert.match(scheduleMigration,/academic_manager_authorized/);
+  assert.match(scheduleMigration,/private\.is_owner_discord_user\(\)/);
+  assert.match(scheduleMigration,/unique \(homeroom_id, weekday, period_id\)/);
+  assert.match(scheduleMigration,/school_schedule_teacher_conflict_idx/);
+  assert.match(scheduleMigration,/school_schedule_room_conflict_idx/);
   assert.match(academicMigration,/student membership requires a student character/);
   assert.match(academicMigration,/instructor membership requires a faculty character/);
-  assert.match(academicMigration,/security invoker/);
 });
 
 test("Administration is a full-screen Canvas-style application section",()=>{
@@ -120,5 +129,5 @@ test("Administration is a full-screen Canvas-style application section",()=>{
   assert.match(workspace,/AdminEventManager/);
   assert.match(workspace,/AdminModerationManager/);
   assert.match(workspace,/AdminCharacterDirectory/);
-  assert.match(workspace,/AdminAcademicManager/);
+  assert.match(workspace,/AdminScheduleManager/);
 });
