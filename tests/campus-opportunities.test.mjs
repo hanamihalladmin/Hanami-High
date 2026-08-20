@@ -6,6 +6,7 @@ const student=await readFile(new URL("../app/portal/StudentOpportunityPanel.tsx"
 const dashboard=await readFile(new URL("../app/portal/DashboardShell.tsx",import.meta.url),"utf8");
 const admin=await readFile(new URL("../app/portal/admin/AdminOpportunityManager.tsx",import.meta.url),"utf8");
 const adminClient=await readFile(new URL("../app/portal/admin/AdminPortalClient.tsx",import.meta.url),"utf8");
+const adminWorkspace=await readFile(new URL("../app/portal/admin/AdminWorkspace.tsx",import.meta.url),"utf8");
 const migration=await readFile(new URL("../supabase/migrations/20260818190031_campus_opportunities_foundation.sql",import.meta.url),"utf8");
 const queueMigration=await readFile(new URL("../supabase/migrations/20260818190216_campus_opportunity_application_queue.sql",import.meta.url),"utf8");
 
@@ -36,7 +37,8 @@ test("Administration manages opportunities and reviews applications",()=>{
   assert.match(admin,/Under review/);
   assert.match(admin,/Accept/);
   assert.match(admin,/Decline/);
-  assert.match(adminClient,/AdminOpportunityManager/);
+  assert.match(adminClient,/AdminWorkspace/);
+  assert.match(adminWorkspace,/AdminOpportunityManager/);
 });
 
 test("Applicant identity is exposed only through a permission-gated queue",()=>{
