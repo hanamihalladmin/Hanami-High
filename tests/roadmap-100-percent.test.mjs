@@ -38,9 +38,10 @@ test("class competitions Exams Week and honors are fully wired",async()=>{
  assert.match(runtime,/current_exam_week_mode/);assert.match(runtime,/hanamiExamWeek/);assert.match(layout,/ExamWeekRuntime/);assert.match(layout,/exam-week\.css/);
 });
 
-test("tester-only flags require tester release membership",async()=>{
+test("production feature flags no longer depend on tester release infrastructure",async()=>{
  const runtime=await read("app/components/RuntimeOperationsBridge.tsx");
- assert.match(runtime,/tester_release_channels/);assert.match(runtime,/tester_release_memberships/);assert.match(runtime,/hanamiTesterPreview/);assert.match(runtime,/flag\.tester_only\?\(tester\?"on":"off"\):"on"/);
+ assert.match(runtime,/feature_flags/);assert.match(runtime,/hanami-feature-flags/);
+ assert.doesNotMatch(runtime,/tester_release_channels|tester_release_memberships|hanamiTesterPreview|tester_only/);
 });
 
 test("profile templates use moderated approval before publication",async()=>{
