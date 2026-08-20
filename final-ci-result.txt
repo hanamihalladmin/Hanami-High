@@ -9,16 +9,23 @@ exit_code=0
 /home/runner/work/Hanami-High/Hanami-High/app/components/OwnerWebsiteAccess.tsx
   19:1262  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
+/home/runner/work/Hanami-High/Hanami-High/app/portal/DashboardShell.tsx
+  64:382  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
 /home/runner/work/Hanami-High/Hanami-High/app/portal/InboxPanel.tsx
   38:76    warning  The 'selectedParticipants' conditional could make the dependencies of useMemo Hook (at line 38) change on every render. To fix this, wrap the initialization of 'selectedParticipants' in its own useMemo() Hook                                                                         react-hooks/exhaustive-deps
   39:3668  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/PortalAppearancePanel.tsx
+  50:324  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/ProfileDesignWorkspace.tsx
   33:5  warning  React Hook useEffect has a missing dependency: 'refreshStudio'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/ProfileLookupPanel.tsx
-  37:51   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-  41:196  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+   38:51   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+   42:196  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  125:88   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/ProfileStudioPanel.tsx
   530:11  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
@@ -42,7 +49,7 @@ exit_code=0
 /home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminPortalClient.tsx
   32:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
-✖ 16 problems (0 errors, 16 warnings)
+✖ 19 problems (0 errors, 19 warnings)
 
 --- failing checks ---
 --- test summary ---
@@ -54,115 +61,115 @@ exit_code=0
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.221953
+  duration_ms: 0.233804
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 239 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.194394
+  duration_ms: 1.279672
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 240 - people results expose one-click profile opening
   ---
-  duration_ms: 0.237873
+  duration_ms: 0.261675
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 241 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 5.158346
+  duration_ms: 4.763769
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 242 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.26165
+  duration_ms: 1.124474
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 243 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.318263
+  duration_ms: 0.295986
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 244 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.232773
+  duration_ms: 0.206023
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 245 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.264243
+  duration_ms: 0.236318
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 246 - student activities are loaded for the active character
   ---
-  duration_ms: 1.226875
+  duration_ms: 0.814128
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 247 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.221703
+  duration_ms: 0.213724
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 248 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.374247
+  duration_ms: 0.370265
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 249 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.255055
+  duration_ms: 0.22442
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 250 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.129624
+  duration_ms: 1.014643
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 251 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.347317
+  duration_ms: 0.293122
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 252 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.500554
+  duration_ms: 4.966427
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 253 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.388666
+  duration_ms: 1.242648
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 254 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.233787
+  duration_ms: 1.125175
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 255 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.735762
+  duration_ms: 1.567026
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 256 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.248615
+  duration_ms: 1.091266
   type: 'test'
   ...
 1..256
@@ -173,14 +180,14 @@ ok 256 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1573.860202
+# duration_ms 1515.745199
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 23ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -189,15 +196,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.6s
+✓ Compiled successfully in 5.3s
   Running TypeScript ...
-  Finished TypeScript in 9.5s ...
+  Finished TypeScript in 9.1s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 645ms
+✓ Generating static pages using 3 workers (28/28) in 548ms
   Finalizing page optimization ...
 
 Route (app)
