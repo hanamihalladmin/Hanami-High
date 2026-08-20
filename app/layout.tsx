@@ -8,6 +8,7 @@ import "./mobile.css";
 import "./accessibility.css";
 import "./readability.css";
 import "./profile-studio-overrides.css";
+import "./school-resources-fix.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
