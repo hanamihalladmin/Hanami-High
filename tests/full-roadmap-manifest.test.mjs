@@ -36,12 +36,12 @@ test("full Profile Studio roadmap remains wired",async()=>{
 });
 
 test("full community and moderation roadmap remains wired",async()=>{
- const community=await read("app/portal/CommunityCenterPanel.tsx");
+ const dashboard=await read("app/portal/DashboardShell.tsx");
  const rumors=await read("app/portal/RumorsBoardPanel.tsx");
  const approval=await read("app/portal/admin/AdminContentApprovalPanel.tsx");
  const operations=await read("app/portal/admin/AdminCommunityOperationsPanel.tsx");
- contains(community,["RumorsBoardPanel"]);
- contains(rumors,["rumor"]);
+ contains(dashboard,["RumorsBoardPanel","Rumors Board"]);
+ contains(rumors,["school_rumors","content_approval_queue","Submit for review"]);
  contains(approval,["content_approval_queue"]);
  contains(operations,["organization","election"]);
 });
@@ -54,10 +54,10 @@ test("full worldbuilding roadmap remains wired",async()=>{
  const city=await read("app/portal/city/HanamiCityClient.tsx");
  const lore=await read("app/portal/lore/LoreCanonExplorerClient.tsx");
  contains(layout,["SiteThemeRuntime","RoleplayWeatherEffects","ExamWeekRuntime"]);
- contains(theme,["2006"]);
- contains(weather,["sakura","rain","typhoon","winter"]);
+ contains(theme,["2006","current_school_theme"]);
+ contains(weather,["sakura","rainy","typhoon","winter"]);
  contains(examRuntime,["current_exam_week_mode"]);
- contains(city,["transit","schedule","commute","station","neighborhood"]);
+ contains(city,["city_transit_lines","city_transit_services","city_commute_routes","station_description","city_neighborhoods"]);
  contains(lore,["Lore","Canon"]);
 });
 
@@ -91,7 +91,7 @@ test("full staff Owner operations roadmap remains wired",async()=>{
 test("full messaging roadmap remains wired",async()=>{
  const inbox=await read("app/portal/InboxPanel.tsx");
  const center=await read("app/portal/MessageCenterPanel.tsx");
- contains(inbox,["create_group_conversation","conversation_participant_directory","message-media-sign"]);
+ contains(inbox,["start_direct_conversation","start_group_conversation","conversation_participant_directory","message-media-sign","mark_conversation_read"]);
  contains(center,["InboxPanel"]);
 });
 
