@@ -10,12 +10,12 @@ test("Academics contains all approved public requirements",()=>{
   for(const expected of ["ACADEMIC DEPARTMENTS","COURSE CATALOG","GRADUATION REQUIREMENTS","ACADEMIC CALENDAR","HONORS & ADVANCED STUDY","GUIDANCE COUNSELING"]) assert.match(`${academics}\n${catalog}`,new RegExp(expected));
 });
 
-test("course catalog supports search and useful filters",()=>{
-  assert.match(catalog,/type="search"/); assert.match(catalog,/Department/); assert.match(catalog,/Level/); assert.match(catalog,/aria-live="polite"/);
+test("course catalog supports live search and department filtering",()=>{
+  assert.match(catalog,/type="search"/); assert.match(catalog,/Department/); assert.match(catalog,/aria-live="polite"/); assert.match(catalog,/rest\/v1\/academic_courses/); assert.match(catalog,/No courses have been published yet/);
 });
 
-test("development course records are clearly identified as test data",()=>{
-  assert.match(catalog,/DEVELOPMENT DATA/); assert.match(catalog,/not official roleplay enrollments or academic records/);
+test("launch course catalog contains no development or test-data presentation",()=>{
+  assert.doesNotMatch(catalog,/DEVELOPMENT DATA/); assert.doesNotMatch(catalog,/TEST DATA/); assert.doesNotMatch(catalog,/is_test_data/);
 });
 
 test("academics uses the Tokyo 2006–07 roleplay calendar and 32-credit graduation",()=>{
