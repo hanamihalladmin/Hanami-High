@@ -6,6 +6,24 @@ exit_code=1
 
 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
 
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminContinuityArchiveManager.tsx:12:650
+  10 | export default function AdminContinuityArchiveManager({accessToken,userId}:{accessToken:string;userId:string}){
+  11 |  const [sessions,setSessions]=useState<Session[]>([]);const [entries,setEntries]=useState<Entry[]>([]);const [sessionId,setSessionId]=useState("");const [type,setType]=useState("session_milestone");const [title,setTitle]=useState("");const [summary,setSummary]=useState("");const [sortDate,setSortDate]=useState("");const [notice,setNotice]=useState("Loading continuity archive…");const [busy,setBusy]=useState(false);
+> 12 |  const load=useCallback(async()=>{const [s,e]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/roleplay_sessions?select=id,code,title,status&order=created_at.desc&limit=50`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/roleplay_continuity_archive?select=id,session_id,entry_type,title,summary,sort_date,created_at&order=sort_date.desc.nullslast,created_at.desc&limit=100`,{headers:headers(accessToken)})]);if(s.ok){const rows=await s.json() as Session[];setSessions(rows);setSessionId(v=>v||rows[0]?.id||"");}if(e.ok)setEntries(await e.json() as Entry[]);setNotice("Continuity archive ready.");},[accessToken]);useEffect(()=>{void load();},[load]);
+     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^^^^ Avoid calling setState() directly within an effect
+  13 |  async function create(e:FormEvent){e.preventDefault();if(!title.trim())return;setBusy(true);try{const r=await fetch(`${SUPABASE_URL}/rest/v1/roleplay_continuity_archive`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({session_id:sessionId||null,entry_type:type,title:title.trim(),summary:summary.trim(),payload:{source:"admin_continuity_archive"},sort_date:sortDate||null,created_by:userId})});if(!r.ok)throw new Error("Continuity entry could not be archived.");setTitle("");setSummary("");setSortDate("");setNotice("Continuity entry archived and available to members.");await load();}catch(error){setNotice(error instanceof Error?error.message:"Continuity entry could not be archived.");}finally{setBusy(false);}}
+  14 |  async function remove(id:string){if(!confirm("Delete this continuity archive entry?"))return;const r=await fetch(`${SUPABASE_URL}/rest/v1/roleplay_continuity_archive?id=eq.${id}`,{method:"DELETE",headers:headers(accessToken)});setNotice(r.ok?"Continuity entry deleted.":"Continuity entry could not be deleted.");if(r.ok)await load();}
+  15 |  return <section style={{margin:"16px 0",border:"1px solid #9eacbb",background:"#f4f7fa",padding:14}} aria-label="Roleplay continuity archive manager"><div><p className="eyebrow">ROLEPLAY CONTINUITY</p><h3 style={{margin:"4px 0",font:"400:24px Georgia,serif"}}>Continuity Archive Manager</h3><small>{notice}</small></div><div style={{display:"grid",gridTemplateColumns:"minmax(280px,.8fr) minmax(320px,1.2fr)",gap:12,marginTop:12}}><form onSubmit={create} style={{display:"grid",gap:6,border:"1px solid #c7d0d9",background:"#fff",padding:10}}><select value={sessionId} onChange={e=>setSessionId(e.target.value)}><option value="">General / no session</option>{sessions.map(s=><option key={s.id} value={s.id}>{s.code} • {s.title} • {s.status}</option>)}</select><select value={type} onChange={e=>setType(e.target.value)}>{["session_milestone","event_outcome","character_milestone","school_history","city_history","graduation","canon_update","other"].map(v=><option key={v} value={v}>{v.replaceAll("_"," ")}</option>)}</select><input value={title} onChange={e=>setTitle(e.target.value)} placeholder="Continuity title" required/><textarea value={summary} onChange={e=>setSummary(e.target.value)} placeholder="Confirmed outcome / fact to preserve" rows={4}/><input type="date" value={sortDate} onChange={e=>setSortDate(e.target.value)}/><button disabled={busy}>{busy?"Archiving…":"Archive continuity entry"}</button></form><div style={{border:"1px solid #c7d0d9",background:"#fff",padding:10,maxHeight:420,overflow:"auto"}}>{entries.map(row=><div key={row.id} style={{borderBottom:"1px solid #e2e7ec",padding:"7px 0"}}><strong>{row.title}</strong><small style={{display:"block"}}>{row.entry_type.replaceAll("_"," ")} • {row.sort_date??new Date(row.created_at).toLocaleDateString()}</small><p style={{fontSize:9}}>{row.summary}</p><button type="button" onClick={()=>void remove(row.id)}>Delete</button></div>)}{!entries.length&&<p>No continuity entries yet.</p>}</div></div></section>;  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminCourseRegistrationManager.tsx
+  11:953  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
 /home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminCourseRegistrationManager.tsx:11:953
    9 | type Request={id:string;student_character_id:string;section_id:string;note:string;status:string;faculty_note:string;admin_note:string;created_at:string};type Section={id:string;course_id:string;section_code:string;term:string;capacity:number};type Course={id:string;code:string;title:string};type Character={id:string;display_name:string;handle:string};
   10 | export default function AdminCourseRegistrationManager({accessToken}:{accessToken:string}){const [requests,setRequests]=useState<Request[]>([]);const [sections,setSections]=useState<Section[]>([]);const [courses,setCourses]=useState<Course[]>([]);const [characters,setCharacters]=useState<Character[]>([]);const [notes,setNotes]=useState<Record<string,string>>({});const [notice,setNotice]=useState("Loading course registration requests…");const [saving,setSaving]=useState(false);
@@ -87,24 +105,6 @@ Calling setState synchronously within an effect body causes cascading renders th
   22 |  async function patch(table:string,id:string,body:Record<string,unknown>){const r=await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({...body,updated_at:new Date().toISOString()})});setStatus(r.ok?"Record updated.":"Record could not be updated.");if(r.ok)await load();}
   23 |  async function saveEligibility(){if(!eligibilityDraft.student_character_id)return;const r=await fetch(`${SUPABASE_URL}/rest/v1/athletics_eligibility?on_conflict=student_character_id`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"}),body:JSON.stringify({...eligibilityDraft,reviewed_by:userId,reviewed_at:new Date().toISOString()})});setStatus(r.ok?"Athletics eligibility saved.":"Athletics eligibility could not be saved.");if(r.ok)await load();}  react-hooks/set-state-in-effect
 
-/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminOpportunityManager.tsx
-  18:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
-
-Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
-* Update external systems with the latest state from React.
-* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
-
-Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminOpportunityManager.tsx:18:17
-  16 |  const [rows,setRows]=useState<Opportunity[]>([]);const [queue,setQueue]=useState<QueueRow[]>([]);const [type,setType]=useState<OpportunityType>("job");const [title,setTitle]=useState("");const [department,setDepartment]=useState("");const [description,setDescription]=useState("");const [location,setLocation]=useState("");const [responses,setResponses]=useState<Record<string,string>>({});const [status,setStatus]=useState("Loading Campus Opportunities…");const [saving,setSaving]=useState(false);
-  17 |  const load=useCallback(async()=>{const [oppResponse,queueResponse]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/campus_opportunities?select=id,opportunity_type,title,department,description,location,status,opens_at,closes_at,is_test_data&order=created_at.desc`,{headers:headers(accessToken),cache:"no-store"}),fetch(`${SUPABASE_URL}/rest/v1/rpc/administration_campus_application_queue`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:"{}",cache:"no-store"})]);if(!oppResponse.ok||!queueResponse.ok)throw new Error("Campus Opportunities administration could not be loaded.");setRows(await oppResponse.json() as Opportunity[]);setQueue(await queueResponse.json() as QueueRow[]);setStatus("Campus Opportunities administration loaded.");},[accessToken]);
-> 18 |  useEffect(()=>{load().catch(error=>setStatus(error instanceof Error?error.message:"Campus Opportunities administration could not be loaded."));},[load]);
-     |                 ^^^^ Avoid calling setState() directly within an effect
-  19 |  async function createOpportunity(event:FormEvent<HTMLFormElement>){event.preventDefault();if(!title.trim()||!department.trim()||!description.trim()){setStatus("Add a title, department, and description first.");return;}const submitter=(event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement|null;const initialStatus=submitter?.value==="published"?"published":"draft";setSaving(true);setStatus(initialStatus==="published"?"Publishing opportunity…":"Saving draft opportunity…");try{const now=new Date().toISOString();const response=await fetch(`${SUPABASE_URL}/rest/v1/campus_opportunities`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({opportunity_type:type,title:title.trim(),department:department.trim(),description:description.trim(),location:location.trim()||null,status:initialStatus,opens_at:initialStatus==="published"?now:null,created_by:userId})});if(!response.ok)throw new Error(initialStatus==="published"?"Opportunity could not be published.":"Opportunity draft could not be created.");setTitle("");setDepartment("");setDescription("");setLocation("");await load();setStatus(initialStatus==="published"?"Opportunity published and now visible in the live Jobs, Internships & Service feed.":"Draft opportunity saved. It stays hidden until published.");}catch(error){setStatus(error instanceof Error?error.message:"Opportunity could not be saved.");}finally{setSaving(false);}}
-  20 |  async function changeOpportunity(row:Opportunity,next:"published"|"closed"){setSaving(true);setStatus(next==="published"?`Publishing ${row.title}…`:`Closing ${row.title}…`);try{const now=new Date().toISOString();const response=await fetch(`${SUPABASE_URL}/rest/v1/campus_opportunities?id=eq.${encodeURIComponent(row.id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status:next,opens_at:next==="published"?(row.opens_at??now):row.opens_at,closes_at:next==="closed"?(row.closes_at??now):null,updated_at:now})});if(!response.ok)throw new Error("Opportunity status could not be updated.");await load();setStatus(next==="published"?`${row.title} is published and visible to students.`:`${row.title} is closed.`);}catch(error){setStatus(error instanceof Error?error.message:"Opportunity status could not be updated.");}finally{setSaving(false);}}
-  21 |  async function review(application:QueueRow,next:"under_review"|"accepted"|"declined"){setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/campus_opportunity_applications?id=eq.${encodeURIComponent(application.application_id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status:next,staff_response:(responses[application.application_id]??application.staff_response??"").trim()||null,reviewed_by:userId,reviewed_at:new Date().toISOString(),updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Application review could not be saved.");await load();setStatus(`Application marked ${next.replace("_"," ")}.`);}catch(error){setStatus(error instanceof Error?error.message:"Application review could not be saved.");}finally{setSaving(false);}}  react-hooks/set-state-in-effect
-
 /home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminPortalClient.tsx
   30:17   error    Error: Calling setState synchronously within an effect can trigger cascading renders
 
@@ -179,7 +179,7 @@ Calling setState synchronously within an effect body causes cascading renders th
   20 |  async function createSession(event:FormEvent){event.preventDefault();if(!access.site_admin||saving)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/roleplay_sessions`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({code:code.trim(),title:title.trim(),school_year:schoolYear.trim(),chapter_number:chapter,season,status:"planning",summary:summary.trim(),graduation_year_level:graduationLevel.trim()||null,starts_at:startsAt?new Date(startsAt).toISOString():null,ends_at:endsAt?new Date(endsAt).toISOString():null})});if(!response.ok)throw new Error("Session could not be created.");setCode("");setTitle("");setSummary("");setStartsAt("");setEndsAt("");await load();setNotice("Roleplay session created in planning state.");}catch(error){setNotice(error instanceof Error?error.message:"Session could not be created.");}finally{setSaving(false);}}
   21 |  async function setSessionStatus(item:Session,status:string){setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/roleplay_sessions?id=eq.${item.id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Session status could not be changed.");await load();setNotice(`${item.title} is now ${status}.`);}catch(error){setNotice(error instanceof Error?error.message:"Session could not be changed.");}finally{setSaving(false);}}  react-hooks/set-state-in-effect
 
-✖ 77 problems (62 errors, 15 warnings)
+✖ 76 problems (61 errors, 15 warnings)
 
 --- failing checks ---
 --- test summary ---
@@ -191,115 +191,115 @@ Calling setState synchronously within an effect body causes cascading renders th
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.144772
+  duration_ms: 0.239268
   type: 'test'
   ...
 # Subtest: normal School Resources never loads or renders form submission history
 ok 219 - normal School Resources never loads or renders form submission history
   ---
-  duration_ms: 1.371707
+  duration_ms: 1.252984
   type: 'test'
   ...
 # Subtest: normal users can still submit school forms without reading history
 ok 220 - normal users can still submit school forms without reading history
   ---
-  duration_ms: 0.284695
+  duration_ms: 0.28346
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 221 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 7.977783
+  duration_ms: 5.774394
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 222 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.083896
+  duration_ms: 0.893121
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 223 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.229731
+  duration_ms: 0.252522
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 224 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.151926
+  duration_ms: 0.160891
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 225 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.150332
+  duration_ms: 0.150942
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 226 - student activities are loaded for the active character
   ---
-  duration_ms: 0.933654
+  duration_ms: 1.327965
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 227 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.162726
+  duration_ms: 0.252052
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 228 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.25559
+  duration_ms: 0.37927
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 229 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.138651
+  duration_ms: 0.224049
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 230 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.189044
+  duration_ms: 1.297337
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 231 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.340369
+  duration_ms: 0.354674
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 232 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 6.372381
+  duration_ms: 5.556406
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 233 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.700765
+  duration_ms: 1.375013
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 234 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.584957
+  duration_ms: 1.256592
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 235 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.855897
+  duration_ms: 1.706974
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 236 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.57064
+  duration_ms: 1.289042
   type: 'test'
   ...
 1..236
@@ -310,7 +310,7 @@ ok 236 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1388.323862
+# duration_ms 1417.573076
 === build ===
 
 > hanami-high@0.1.0 build
@@ -326,7 +326,7 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.4s
+✓ Compiled successfully in 5.7s
   Running TypeScript ...
   Finished TypeScript in 9.4s ...
   Collecting page data using 3 workers ...
@@ -334,7 +334,7 @@ https://nextjs.org/telemetry
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 651ms
+✓ Generating static pages using 3 workers (28/28) in 604ms
   Finalizing page optimization ...
 
 Route (app)
