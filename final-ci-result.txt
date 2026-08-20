@@ -36,151 +36,154 @@ exit_code=1
 /home/runner/work/Hanami-High/Hanami-High/app/portal/RolePortalClient.tsx
   25:361  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminAcademicManager.tsx
+  28:595  warning  'index' is defined but never used  @typescript-eslint/no-unused-vars
+
 /home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminPortalClient.tsx
   32:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
-✖ 15 problems (0 errors, 15 warnings)
+✖ 16 problems (0 errors, 16 warnings)
 
 --- failing checks ---
-not ok 61 - faculty written late policies are supported
+not ok 65 - faculty written late policies are supported
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
 --- test summary ---
-# tests 252
-# pass 251
+# tests 256
+# pass 255
 # fail 1
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.287796
+  duration_ms: 0.214681
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
-ok 235 - Search Everything includes the shipped website and portal page index
+ok 239 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.279705
+  duration_ms: 1.546451
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
-ok 236 - people results expose one-click profile opening
+ok 240 - people results expose one-click profile opening
   ---
-  duration_ms: 0.22513
+  duration_ms: 0.254075
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
-ok 237 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
+ok 241 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 8.528999
+  duration_ms: 6.878338
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
-ok 238 - Owner receives system health and aggregate staff analytics
+ok 242 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.290916
+  duration_ms: 1.065221
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
-ok 239 - Admin workspace includes storyline incident and evidence operations
+ok 243 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.321209
+  duration_ms: 0.216515
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
-ok 240 - Faculty dashboard includes a private lounge workflow
+ok 244 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.240338
+  duration_ms: 0.153857
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 241 - dark mode controls are absent from Hanami accessibility settings
+ok 245 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.229157
+  duration_ms: 0.151804
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 242 - student activities are loaded for the active character
+ok 246 - student activities are loaded for the active character
   ---
-  duration_ms: 1.342662
+  duration_ms: 1.154819
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 243 - campus activity membership reads remain owner scoped
+ok 247 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.222504
+  duration_ms: 0.201236
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 244 - student dashboard has no remaining placeholder modules
+ok 248 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.324736
+  duration_ms: 0.348241
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
-ok 245 - Student activity UI contains no launch test-data labels
+ok 249 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.256438
+  duration_ms: 0.238506
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 246 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 250 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.927719
+  duration_ms: 0.809233
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 247 - Student life feeds validate owned Student character even for privileged accounts
+ok 251 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.244636
+  duration_ms: 0.234949
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 248 - accessibility and notification preferences bind to signed-in user automatically
+ok 252 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 6.325811
+  duration_ms: 5.82428
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 249 - group chat creation uses a validated private helper and creator management
+ok 253 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.879534
+  duration_ms: 1.774927
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 250 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 254 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.843182
+  duration_ms: 1.608257
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 251 - School Office separates staff action waiting member and archive queues
+ok 255 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.879123
+  duration_ms: 2.013474
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 252 - Help has a direct router and support anchor
+ok 256 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.38949
+  duration_ms: 1.561119
   type: 'test'
   ...
-1..252
-# tests 252
+1..256
+# tests 256
 # suites 0
-# pass 251
+# pass 255
 # fail 1
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1633.774253
+# duration_ms 1565.092478
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 27ms
+✓ Running next.config.ts took 23ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -189,15 +192,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.4s
+✓ Compiled successfully in 5.4s
   Running TypeScript ...
-  Finished TypeScript in 10.0s ...
+  Finished TypeScript in 9.3s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 670ms
+✓ Generating static pages using 3 workers (28/28) in 585ms
   Finalizing page optimization ...
 
 Route (app)
