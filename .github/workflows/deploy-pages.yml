@@ -1,5 +1,5 @@
 name: Deploy Hanami High
-# Deployment refresh: School Resources layout + CI regression fixes
+# Deployment refresh: final regression cleared + School Resources layout fix
 
 on:
   push:
