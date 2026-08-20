@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability -- This component intentionally edits contentEditable DOM text nodes in Owner Edit Mode. */
 "use client";
 
 import {useEffect,useMemo,useRef,useState} from "react";
