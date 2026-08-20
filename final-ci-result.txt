@@ -42,9 +42,6 @@ exit_code=2
 ✖ 15 problems (0 errors, 15 warnings)
 
 --- failing checks ---
-not ok 91 - full Roadmap Hub social-program roadmap remains wired
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 MISSING ROUTE: out/index.html
 MISSING ROUTE: out/about/index.html
 MISSING ROUTE: out/academics/index.html
@@ -73,152 +70,152 @@ MISSING ROUTE: out/traditions/index.html
 MISSING ROUTE: out/updates/index.html
 --- test summary ---
 # tests 238
-# pass 237
-# fail 1
+# pass 238
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.125175
+  duration_ms: 0.161894
   type: 'test'
   ...
 # Subtest: normal School Resources never loads or renders form submission history
 ok 219 - normal School Resources never loads or renders form submission history
   ---
-  duration_ms: 1.209299
+  duration_ms: 0.804455
   type: 'test'
   ...
 # Subtest: normal users can still submit school forms without reading history
 ok 220 - normal users can still submit school forms without reading history
   ---
-  duration_ms: 0.245543
+  duration_ms: 0.159962
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 221 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.375915
+  duration_ms: 1.037597
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 222 - people results expose one-click profile opening
   ---
-  duration_ms: 0.28438
+  duration_ms: 0.19159
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 223 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 6.071609
+  duration_ms: 4.112663
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 224 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 0.896335
+  duration_ms: 0.644814
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 225 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.242088
+  duration_ms: 0.163958
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 226 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.151404
+  duration_ms: 0.106751
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 227 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.137794
+  duration_ms: 0.101293
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 228 - student activities are loaded for the active character
   ---
-  duration_ms: 1.167757
+  duration_ms: 0.870926
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 229 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.252995
+  duration_ms: 0.166402
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 230 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.347885
+  duration_ms: 0.296348
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 231 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.278242
+  duration_ms: 0.191059
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 232 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.089941
+  duration_ms: 0.923385
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 233 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.376827
+  duration_ms: 0.229066
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 234 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.577348
+  duration_ms: 4.564906
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 235 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.35878
+  duration_ms: 1.108685
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 236 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.21101
+  duration_ms: 0.943275
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 237 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.884457
+  duration_ms: 1.547317
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 238 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.193074
+  duration_ms: 0.958638
   type: 'test'
   ...
 1..238
 # tests 238
 # suites 0
-# pass 237
-# fail 1
+# pass 238
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1485.983987
+# duration_ms 1086.410309
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 28ms
+✓ Running next.config.ts took 20ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -227,7 +224,7 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.1s
+✓ Compiled successfully in 4.8s
   Running TypeScript ...
 app/components/ProfileOpenBridge.tsx(24,5): error TS18049: 'section' is possibly 'null' or 'undefined'.
 Failed to type check.
