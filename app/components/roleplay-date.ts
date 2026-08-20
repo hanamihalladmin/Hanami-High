@@ -1,10 +1,16 @@
 export const HANAMI_ROLEPLAY_YEAR=2006;
 export const HANAMI_SCHOOL_YEAR="2006–07";
+export const HANAMI_FIRST_DAY_ISO="2006-04-07T12:00:00+09:00";
 
-export function hanamiRoleplayDate(now=new Date()){
-  const parts=new Intl.DateTimeFormat("en-CA",{month:"2-digit",day:"2-digit",timeZone:"Asia/Tokyo"}).formatToParts(now);
-  const month=parts.find(part=>part.type==="month")?.value??"01";
-  const day=parts.find(part=>part.type==="day")?.value??"01";
-  const anchored=new Date(`${HANAMI_ROLEPLAY_YEAR}-${month}-${day}T12:00:00+09:00`);
-  return new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric",timeZone:"Asia/Tokyo"}).format(anchored);
+export function hanamiRoleplayNow(){
+  return new Date(HANAMI_FIRST_DAY_ISO);
+}
+
+export function hanamiRoleplayDate(){
+  return new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric",timeZone:"Asia/Tokyo"}).format(hanamiRoleplayNow());
+}
+
+export function hanamiRoleplayMonthDay(){
+  const date=hanamiRoleplayNow();
+  return {month:Number(new Intl.DateTimeFormat("en-US",{month:"numeric",timeZone:"Asia/Tokyo"}).format(date)),day:Number(new Intl.DateTimeFormat("en-US",{day:"numeric",timeZone:"Asia/Tokyo"}).format(date))};
 }
