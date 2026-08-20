@@ -47,9 +47,9 @@ test("Profile Studio includes duplication shape choice and private backgrounds",
   assert.match(profileWorkspace,/Upload background/);assert.match(profileWorkspace,/Clear background/);assert.match(profileWorkspace,/background_storage_path/);assert.match(lookup,/background_storage_path/);
 });
 
-test("public chronology is anchored to 2006 and calendar stays in-universe",()=>{
-  assert.match(roleplayDate,/HANAMI_ROLEPLAY_YEAR=2006/);assert.match(roleplayDate,/HANAMI_SCHOOL_YEAR="2006–07"/);assert.match(roleplayDate,/Asia\/Tokyo/);
-  assert.match(calendar,/HANAMI_ROLEPLAY_YEAR/);assert.match(calendar,/LIVE CMS • 2006 • JST/);
+test("public chronology is anchored to April 7 2006 and calendar stays in-universe",()=>{
+  assert.match(roleplayDate,/HANAMI_ROLEPLAY_YEAR=2006/);assert.match(roleplayDate,/HANAMI_SCHOOL_YEAR="2006–07"/);assert.match(roleplayDate,/HANAMI_FIRST_DAY_ISO="2006-04-07T12:00:00\+09:00"/);assert.match(roleplayDate,/Asia\/Tokyo/);
+  assert.match(calendar,/HANAMI_ROLEPLAY_YEAR/);assert.match(calendar,/LIVE CMS • \{HANAMI_ROLEPLAY_YEAR\} • JST/);assert.match(calendar,/status=eq\.published/);
 });
 
 test("site-wide responsive layer is loaded and includes phone/tablet QA breakpoints",()=>{
