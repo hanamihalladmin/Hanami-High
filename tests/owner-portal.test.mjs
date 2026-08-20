@@ -12,8 +12,9 @@ const ownerAdminAccessMigration=await readFile(new URL("../supabase/migrations/2
 const helperGrantMigration=await readFile(new URL("../supabase/migrations/20260818202431_restore_privileged_session_helper_execute.sql",import.meta.url),"utf8");
 
 test("Owner has a separate exported portal section",()=>{
-  assert.match(page,/OWNER CONTROL NETWORK/);
+  assert.match(page,/PortalAppPage\.module\.css/);
   assert.match(page,/OwnerPortalClient/);
+  assert.doesNotMatch(page,/OWNER CONTROL NETWORK/);
   assert.match(workflow,/out\/portal\/owner\/index\.html/);
 });
 
@@ -36,14 +37,16 @@ test("privileged session wrapper can execute its private helper",()=>{
   assert.match(helperGrantMigration,/grant execute on function private\.has_privileged_portal_session_internal\(text\) to authenticated/);
 });
 
-test("Owner Control Center remains distinct while inheriting all Administration operations",()=>{
-  assert.match(owner,/Owner Control Center/);
+test("Owner controls are integrated into the shared Canvas administration shell",()=>{
   assert.match(owner,/NETWORK OVERVIEW/);
-  assert.match(owner,/PORTAL ACCESS/);
   assert.match(owner,/ADMINISTRATOR PROVISIONING/);
   assert.match(owner,/AdminWorkspace/);
   assert.match(owner,/OWNER_ADMIN_ACCESS/);
-  assert.match(owner,/\.\.\/admin\//);
+  assert.match(owner,/ownerOverview=\{ownerOverview\}/);
+  assert.match(owner,/actions=\{railActions\}/);
+  assert.doesNotMatch(owner,/Owner Control Center/);
+  assert.doesNotMatch(owner,/PORTAL ACCESS/);
+  assert.match(workspace,/ownerMode/);
   assert.match(workspace,/AdminAnnouncementManager/);
   assert.match(workspace,/AdminAcademicManager/);
   assert.match(workspace,/AdminHallPassManager/);
@@ -60,7 +63,6 @@ test("Owner can create bound or claimable Administrator logins",()=>{
   assert.match(owner,/owner_create_admin_credential/);
   assert.match(owner,/target_discord_user_id:cleanTarget\|\|null/);
   assert.match(owner,/ADMIN DISCORD USER ID • OPTIONAL/);
-  assert.match(owner,/first Discord account that successfully signs in with it/);
   assert.match(owner,/ADMIN PASSWORD • 12\+ CHARACTERS/);
   assert.match(claimMigration,/bound_discord_user_id is null/);
   assert.match(claimMigration,/claimed_at = now\(\)/);
