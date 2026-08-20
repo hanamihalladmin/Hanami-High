@@ -1,0 +1,17 @@
+alter table public.city_transit_stops add column if not exists station_description text not null default '';
+alter table public.city_transit_stops add column if not exists school_commute_note text not null default '';
+create table if not exists public.city_transit_services(id uuid primary key default gen_random_uuid(),line_id uuid not null references public.city_transit_lines(id) on delete cascade,service_name text not null default 'Regular Service',weekday_scope text not null default 'weekdays' check (weekday_scope in ('weekdays','weekends','daily','school_days')),first_departure time not null,last_departure time not null,headway_minutes integer not null default 10 check (headway_minutes between 1 and 180),note text not null default '',is_active boolean not null default true,created_at timestamptz not null default now());
+alter table public.city_transit_services enable row level security;
+create policy "members read active transit services" on public.city_transit_services for select to authenticated using (is_active or private.can_manage_school_operations(auth.uid()));
+create policy "operations manage transit services" on public.city_transit_services for all to authenticated using (private.can_manage_school_operations(auth.uid())) with check (private.can_manage_school_operations(auth.uid()));
+grant select,insert,update,delete on public.city_transit_services to authenticated;
+create table if not exists public.city_commute_routes(id uuid primary key default gen_random_uuid(),title text not null,from_stop_id uuid references public.city_transit_stops(id) on delete set null,to_stop_id uuid references public.city_transit_stops(id) on delete set null,route_description text not null default '',typical_minutes integer check (typical_minutes is null or typical_minutes between 1 and 240),is_school_route boolean not null default true,is_active boolean not null default true,created_at timestamptz not null default now());
+alter table public.city_commute_routes enable row level security;
+create policy "members read active commute routes" on public.city_commute_routes for select to authenticated using (is_active or private.can_manage_school_operations(auth.uid()));
+create policy "operations manage commute routes" on public.city_commute_routes for all to authenticated using (private.can_manage_school_operations(auth.uid())) with check (private.can_manage_school_operations(auth.uid()));
+grant select,insert,update,delete on public.city_commute_routes to authenticated;
+create table if not exists public.city_neighborhoods(id uuid primary key default gen_random_uuid(),name text not null unique,slug text not null unique,summary text not null default '',landmarks text[] not null default '{}',map_x integer not null default 50 check(map_x between 0 and 100),map_y integer not null default 50 check(map_y between 0 and 100),is_active boolean not null default true,created_at timestamptz not null default now(),updated_at timestamptz not null default now());
+alter table public.city_neighborhoods enable row level security;
+create policy "members read active neighborhoods" on public.city_neighborhoods for select to authenticated using (is_active or private.can_manage_school_operations(auth.uid()));
+create policy "operations manage neighborhoods" on public.city_neighborhoods for all to authenticated using (private.can_manage_school_operations(auth.uid())) with check (private.can_manage_school_operations(auth.uid()));
+grant select,insert,update,delete on public.city_neighborhoods to authenticated;
