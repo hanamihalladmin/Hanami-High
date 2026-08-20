@@ -109,11 +109,13 @@ test("Site Admin academic management preserves role separation",()=>{
   assert.match(academicMigration,/security invoker/);
 });
 
-test("Administration has its own website section and shared workspace",()=>{
-  assert.match(adminPage,/ADMINISTRATION NETWORK/);
+test("Administration is a full-screen Canvas-style application section",()=>{
+  assert.match(adminPage,/PortalAppPage\.module\.css/);
   assert.match(adminPage,/AdminPortalClient/);
-  assert.match(adminPage,/Character roles cannot unlock admin tools/);
+  assert.doesNotMatch(adminPage,/ADMINISTRATION NETWORK/);
+  assert.doesNotMatch(adminPage,/Character roles cannot unlock admin tools/);
   assert.match(adminClient,/AdminWorkspace/);
+  assert.match(workspace,/hanami-high-portal-icon\.png/);
   assert.match(workspace,/AdminSchoolStatusManager/);
   assert.match(workspace,/AdminAnnouncementManager/);
   assert.match(workspace,/AdminEventManager/);
