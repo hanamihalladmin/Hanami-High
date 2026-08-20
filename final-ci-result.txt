@@ -1,15 +1,13 @@
 HANAMI_FINAL_CI=PASS
 exit_code=0
 --- failing tests / errors ---
-# Subtest: character deletion requires explicit permanent confirmation
-# Subtest: shared message and coursework history no longer blocks character deletion
-# Subtest: database remains the final authority for the two-slot rule
-# Subtest: profile editor reads and saves only the active character record
-# Subtest: profile save uses an upsert and updates privacy separately
 # Subtest: character profile table is owner scoped by RLS
 # Subtest: both role dashboards render the profile editor
+# Subtest: Hanami City content can be published and hidden without deletion
 # Subtest: application never opens an external email client
 # Subtest: communication architecture requires authenticated in-site messaging
+# Subtest: Admin and Owner have complete organization and election operations
+# Subtest: active election ballots show safe approved candidate identities
 # Subtest: student coursework is scoped to the active character enrollments
 # Subtest: student dashboard uses real coursework instead of a coursework placeholder
 # Subtest: coursework RLS separates students and instructors
@@ -72,6 +70,8 @@ exit_code=0
 # Subtest: public chronology is anchored to 2006 and calendar stays in-universe
 # Subtest: site-wide responsive layer is loaded and includes phone/tablet QA breakpoints
 # Subtest: launch client source contains no service-role credential
+# Subtest: Lore Wiki supports full editorial updates
+# Subtest: Canon Tracker supports reclassification retcons and source notes
 # Subtest: mobile layer contains portal-safe overflow and form hardening
 # Subtest: visible profiles expose a character-scoped report action
 # Subtest: report creation is owner scoped and cannot be self reported
@@ -183,93 +183,93 @@ exit_code=0
 # Subtest: Help has a direct router and support anchor
 --- tail ---
 # Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 206 - dark mode controls are absent from Hanami accessibility settings
+ok 213 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.197165
+  duration_ms: 0.139642
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 207 - student activities are loaded for the active character
+ok 214 - student activities are loaded for the active character
   ---
-  duration_ms: 1.103286
+  duration_ms: 0.827633
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 208 - campus activity membership reads remain owner scoped
+ok 215 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.239013
+  duration_ms: 0.144168
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 209 - student dashboard has no remaining placeholder modules
+ok 216 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.403299
+  duration_ms: 0.203622
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
-ok 210 - test activity data stays visibly labeled
+ok 217 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.193098
+  duration_ms: 0.126523
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 211 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 218 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.080915
+  duration_ms: 0.970422
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 212 - Student life feeds validate owned Student character even for privileged accounts
+ok 219 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.296619
+  duration_ms: 0.296188
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 213 - accessibility and notification preferences bind to signed-in user automatically
+ok 220 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.566974
+  duration_ms: 4.625265
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 214 - group chat creation uses a validated private helper and creator management
+ok 221 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.597843
+  duration_ms: 1.094031
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 215 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 222 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.438428
+  duration_ms: 0.991791
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 216 - School Office separates staff action waiting member and archive queues
+ok 223 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.804506
+  duration_ms: 1.521752
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 217 - Help has a direct router and support anchor
+ok 224 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.437947
+  duration_ms: 1.059627
   type: 'test'
   ...
-1..217
-# tests 217
+1..224
+# tests 224
 # suites 0
-# pass 217
+# pass 224
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1174.631909
+# duration_ms 1078.327275
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 25ms
+✓ Running next.config.ts took 22ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -278,15 +278,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.2s
+✓ Compiled successfully in 5.0s
   Running TypeScript ...
-  Finished TypeScript in 8.9s ...
+  Finished TypeScript in 7.9s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 550ms
+✓ Generating static pages using 3 workers (28/28) in 536ms
   Finalizing page optimization ...
 
 Route (app)
