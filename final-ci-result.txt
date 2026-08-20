@@ -182,79 +182,79 @@ not ok 103 - messaging launch feature set includes unread state attachments and 
 # Subtest: School Office separates staff action waiting member and archive queues
 # Subtest: Help has a direct router and support anchor
 --- tail ---
-  duration_ms: 1.125252
+  duration_ms: 1.146961
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 189 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.27686
+  duration_ms: 0.316481
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 190 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.203683
+  duration_ms: 0.204452
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 191 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.220744
+  duration_ms: 0.231402
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 192 - student activities are loaded for the active character
   ---
-  duration_ms: 1.265866
+  duration_ms: 1.00721
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 193 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.239609
+  duration_ms: 0.212927
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 194 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.402906
+  duration_ms: 0.309829
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 195 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.214243
+  duration_ms: 0.141214
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 196 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 6.270699
+  duration_ms: 5.611115
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 197 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.557924
+  duration_ms: 1.561295
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 198 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.312183
+  duration_ms: 1.405263
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 199 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.612046
+  duration_ms: 1.847359
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 200 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.299439
+  duration_ms: 1.425952
   type: 'test'
   ...
 1..200
@@ -265,14 +265,14 @@ ok 200 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1010.749596
+# duration_ms 1042.972845
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 23ms
+✓ Running next.config.ts took 29ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -281,7 +281,7 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.1s
+✓ Compiled successfully in 5.3s
   Running TypeScript ...
   Finished TypeScript in 8.2s ...
   Collecting page data using 3 workers ...
@@ -289,7 +289,7 @@ https://nextjs.org/telemetry
   Generating static pages using 3 workers (6/25) 
   Generating static pages using 3 workers (12/25) 
   Generating static pages using 3 workers (18/25) 
-✓ Generating static pages using 3 workers (25/25) in 580ms
+✓ Generating static pages using 3 workers (25/25) in 627ms
   Finalizing page optimization ...
 
 Route (app)
