@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 
 const read=path=>readFile(new URL(`../${path}`,import.meta.url),"utf8");
-const [gateway,rolePortal,admin,owner,governance,inbox,signer,dashboard,facultyCourses,studio,workspace,lookup,mobile,layout,roleplayDate,calendar,accountGate,discordSync]=await Promise.all([
-  read("app/portal/PortalAuthPanel.tsx"),read("app/portal/RolePortalClient.tsx"),read("app/portal/admin/AdminPortalClient.tsx"),read("app/portal/owner/OwnerPortalClient.tsx"),read("app/portal/admin/AdminGovernancePanel.tsx"),read("app/portal/InboxPanel.tsx"),read("supabase/functions/message-media-sign/index.ts"),read("app/portal/DashboardShell.tsx"),read("app/portal/FacultyCourseManager.tsx"),read("app/portal/ProfileStudioPanel.tsx"),read("app/portal/ProfileDesignWorkspace.tsx"),read("app/portal/ProfileLookupPanel.tsx"),read("app/mobile.css"),read("app/layout.tsx"),read("app/components/roleplay-date.ts"),read("app/calendar/page.tsx"),read("supabase/migrations/20260818213000_enforce_account_status_at_portal_gate.sql"),read("supabase/functions/discord-role-sync/index.ts")
+const [gateway,rolePortal,admin,owner,workspace,governance,inbox,signer,dashboard,facultyCourses,studio,profileWorkspace,lookup,mobile,layout,roleplayDate,calendar,accountGate,discordSync]=await Promise.all([
+  read("app/portal/PortalAuthPanel.tsx"),read("app/portal/RolePortalClient.tsx"),read("app/portal/admin/AdminPortalClient.tsx"),read("app/portal/owner/OwnerPortalClient.tsx"),read("app/portal/admin/AdminWorkspace.tsx"),read("app/portal/admin/AdminGovernancePanel.tsx"),read("app/portal/InboxPanel.tsx"),read("supabase/functions/message-media-sign/index.ts"),read("app/portal/DashboardShell.tsx"),read("app/portal/FacultyCourseManager.tsx"),read("app/portal/ProfileStudioPanel.tsx"),read("app/portal/ProfileDesignWorkspace.tsx"),read("app/portal/ProfileLookupPanel.tsx"),read("app/mobile.css"),read("app/layout.tsx"),read("app/components/roleplay-date.ts"),read("app/calendar/page.tsx"),read("supabase/migrations/20260818213000_enforce_account_status_at_portal_gate.sql"),read("supabase/functions/discord-role-sync/index.ts")
 ]);
 
 test("launch gate synchronizes Discord roles through signed-in OAuth without exposing a bot token",()=>{
@@ -28,7 +28,7 @@ test("Owner TEST Faculty fixture remains usable after Discord role sync is enabl
 test("suspended accounts are blocked and governance is audited",()=>{
   assert.match(accountGate,/current_account_status/);assert.match(rolePortal,/current_account_status/);assert.match(admin,/current_account_status/);
   assert.match(governance,/account_governance_directory/);assert.match(governance,/set_account_status/);assert.match(governance,/system_audit_log_feed/);assert.match(governance,/Suspend/);assert.match(governance,/Reactivate/);
-  assert.match(owner,/AdminGovernancePanel/);assert.match(admin,/AdminGovernancePanel/);
+  assert.match(admin,/AdminWorkspace/);assert.match(owner,/AdminWorkspace/);assert.match(workspace,/AdminGovernancePanel/);
 });
 
 test("messaging launch feature set includes unread state attachments and group management",()=>{
@@ -44,7 +44,7 @@ test("academic launch feature set includes attendance report cards and weighted 
 
 test("Profile Studio includes duplication shape choice and private backgrounds",()=>{
   assert.match(studio,/Duplicate/);assert.match(studio,/Corner radius/);assert.match(studio,/borderRadius/);
-  assert.match(workspace,/Upload background/);assert.match(workspace,/Clear background/);assert.match(workspace,/background_storage_path/);assert.match(lookup,/background_storage_path/);
+  assert.match(profileWorkspace,/Upload background/);assert.match(profileWorkspace,/Clear background/);assert.match(profileWorkspace,/background_storage_path/);assert.match(lookup,/background_storage_path/);
 });
 
 test("public chronology is anchored to 2006 and calendar stays in-universe",()=>{
@@ -57,5 +57,5 @@ test("site-wide responsive layer is loaded and includes phone/tablet QA breakpoi
 });
 
 test("launch client source contains no service-role credential",()=>{
-  for(const source of [gateway,rolePortal,admin,owner,governance,inbox,dashboard,facultyCourses,studio,workspace,lookup])assert.doesNotMatch(source,/service[_-]?role/i);
+  for(const source of [gateway,rolePortal,admin,owner,workspace,governance,inbox,dashboard,facultyCourses,studio,profileWorkspace,lookup])assert.doesNotMatch(source,/service[_-]?role/i);
 });
