@@ -30,9 +30,12 @@ test("class competitions Exams Week and honors are fully wired",async()=>{
  const member=await read("app/portal/ClassCompetitionExamPanel.tsx");
  const admin=await read("app/portal/admin/AdminCompetitionExamManager.tsx");
  const dashboard=await read("app/portal/DashboardShell.tsx");
+ const runtime=await read("app/components/ExamWeekRuntime.tsx");
+ const layout=await read("app/layout.tsx");
  for(const token of ["class_competitions","class_competition_points","exam_week_config","exam_assignments"])assert.match(member,new RegExp(token));
  for(const token of ["class_competitions","exam_week_config","student_honors"])assert.match(admin,new RegExp(token));
  assert.match(admin,/show_rank_publicly/);assert.match(dashboard,/ClassCompetitionExamPanel/);assert.match(dashboard,/Competitions & Exams Week/);
+ assert.match(runtime,/current_exam_week_mode/);assert.match(runtime,/hanamiExamWeek/);assert.match(layout,/ExamWeekRuntime/);assert.match(layout,/exam-week\.css/);
 });
 
 test("tester-only flags require tester release membership",async()=>{
@@ -57,7 +60,18 @@ test("character archive export and continuity archive have member and Admin work
  assert.match(migration,/where id=viewer_character_id and owner_user_id=auth\.uid\(\)/);assert.match(migration,/character_profile_widgets/);
 });
 
+test("Hanami City transit includes schedules commute routes station pages and neighborhood maps",async()=>{
+ const city=await read("app/portal/city/HanamiCityClient.tsx");
+ const admin=await read("app/portal/admin/AdminCityTransitManager.tsx");
+ const migration=await read("supabase/migrations/20260821005000_complete_hanami_city_transit.sql");
+ const workflow=await read(".github/workflows/deploy-pages.yml");
+ for(const token of ["city_transit_services","city_commute_routes","city_neighborhoods","Station Page","Neighborhood Map"])assert.match(city,new RegExp(token));
+ for(const phrase of ["Line Schedule","School Commute Route","Station Page","Neighborhood Map"])assert.match(admin,new RegExp(phrase));
+ assert.match(migration,/enable row level security/);assert.match(workflow,/out\/portal\/city\/index\.html/);
+});
+
 test("Roadmap Hub exposes all completion modules",async()=>{
  const hub=await read("app/portal/roadmap/RoadmapHubClient.tsx");
  for(const component of ["RoadmapHubPanel","RoadmapSocialProgramsPanel","ProfileTemplateMarketplacePanel","CharacterArchiveExportPanel"])assert.match(hub,new RegExp(component));
+ assert.match(hub,/Hanami City Transit/);assert.match(hub,/\.\.\/city\//);
 });
