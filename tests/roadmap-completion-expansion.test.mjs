@@ -8,6 +8,7 @@ const tour=await readFile(new URL("../app/portal/GuidedFirstLoginTour.tsx",impor
 const rolePortal=await readFile(new URL("../app/portal/RolePortalClient.tsx",import.meta.url),"utf8");
 const themeRuntime=await readFile(new URL("../app/components/SiteThemeRuntime.tsx",import.meta.url),"utf8");
 const themeCss=await readFile(new URL("../app/site-themes.css",import.meta.url),"utf8");
+const retroCss=await readFile(new URL("../app/retro-ui.css",import.meta.url),"utf8");
 const changelog=await readFile(new URL("../app/changelog/page.tsx",import.meta.url),"utf8");
 const globalNotice=await readFile(new URL("../app/components/GlobalRulesNotice.tsx",import.meta.url),"utf8");
 const layout=await readFile(new URL("../app/layout.tsx",import.meta.url),"utf8");
@@ -31,12 +32,16 @@ test("Student and Faculty portals include replayable first-login tours",()=>{
  assert.match(tour,/hanami\.first-login-tour/);
 });
 
-test("scheduled seasonal themes and optional 2006 mode are active without dark mode",()=>{
+test("scheduled seasonal themes and permanent 2006-era typography are active without dark mode",()=>{
  assert.match(layout,/SiteThemeRuntime/);
  assert.match(layout,/site-themes\.css/);
+ assert.match(layout,/retro-ui\.css/);
  assert.match(themeRuntime,/current_school_theme/);
- assert.match(themeRuntime,/Use 2006 web mode/);
- assert.match(themeCss,/data-hanami-web-mode="2006"/);
+ assert.doesNotMatch(themeRuntime,/Use 2006 web mode/);
+ assert.doesNotMatch(themeCss,/data-hanami-web-mode="2006"/);
+ assert.match(retroCss,/Verdana,Tahoma,Arial,sans-serif/);
+ assert.match(retroCss,/Trebuchet MS/);
+ assert.match(retroCss,/Courier New/);
  assert.match(themeCss,/data-hanami-school-theme="sakura"/);
  assert.doesNotMatch(themeCss,/dark mode|hanamiTheme="dark"|data-hanami-theme="dark"/i);
  assert.match(themeMigration,/Asia\/Tokyo/);
