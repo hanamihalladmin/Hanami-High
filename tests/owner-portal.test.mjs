@@ -4,6 +4,7 @@ import {readFile} from "node:fs/promises";
 
 const page=await readFile(new URL("../app/portal/owner/page.tsx",import.meta.url),"utf8");
 const owner=await readFile(new URL("../app/portal/owner/OwnerPortalClient.tsx",import.meta.url),"utf8");
+const workspace=await readFile(new URL("../app/portal/admin/AdminWorkspace.tsx",import.meta.url),"utf8");
 const gateway=await readFile(new URL("../app/portal/PortalAuthPanel.tsx",import.meta.url),"utf8");
 const workflow=await readFile(new URL("../.github/workflows/deploy-pages.yml",import.meta.url),"utf8");
 const claimMigration=await readFile(new URL("../supabase/migrations/20260818195549_allow_owner_created_unclaimed_admin_logins.sql",import.meta.url),"utf8");
@@ -35,15 +36,17 @@ test("privileged session wrapper can execute its private helper",()=>{
   assert.match(helperGrantMigration,/grant execute on function private\.has_privileged_portal_session_internal\(text\) to authenticated/);
 });
 
-test("Owner Control Center stays separate from Administration operations",()=>{
+test("Owner Control Center remains distinct while inheriting all Administration operations",()=>{
   assert.match(owner,/Owner Control Center/);
   assert.match(owner,/NETWORK OVERVIEW/);
   assert.match(owner,/PORTAL ACCESS/);
   assert.match(owner,/ADMINISTRATOR PROVISIONING/);
-  assert.match(owner,/OWNER TESTING/);
+  assert.match(owner,/AdminWorkspace/);
+  assert.match(owner,/OWNER_ADMIN_ACCESS/);
   assert.match(owner,/\.\.\/admin\//);
-  assert.doesNotMatch(owner,/AdminAnnouncementManager/);
-  assert.doesNotMatch(owner,/AdminAcademicManager/);
+  assert.match(workspace,/AdminAnnouncementManager/);
+  assert.match(workspace,/AdminAcademicManager/);
+  assert.match(workspace,/AdminHallPassManager/);
 });
 
 test("Owner gateway handoff is returned only after server Owner verification",()=>{
@@ -57,7 +60,7 @@ test("Owner can create bound or claimable Administrator logins",()=>{
   assert.match(owner,/owner_create_admin_credential/);
   assert.match(owner,/target_discord_user_id:cleanTarget\|\|null/);
   assert.match(owner,/ADMIN DISCORD USER ID • OPTIONAL/);
-  assert.match(owner,/first Discord account that successfully uses it will claim it permanently/);
+  assert.match(owner,/first Discord account that successfully signs in with it/);
   assert.match(owner,/ADMIN PASSWORD • 12\+ CHARACTERS/);
   assert.match(claimMigration,/bound_discord_user_id is null/);
   assert.match(claimMigration,/claimed_at = now\(\)/);
