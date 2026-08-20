@@ -185,73 +185,73 @@ exit_code=0
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 213 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.139642
+  duration_ms: 0.229209
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 214 - student activities are loaded for the active character
   ---
-  duration_ms: 0.827633
+  duration_ms: 1.128903
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 215 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.144168
+  duration_ms: 0.212999
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 216 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.203622
+  duration_ms: 0.341539
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 217 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.126523
+  duration_ms: 0.186018
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 218 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.970422
+  duration_ms: 0.858266
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 219 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.296188
+  duration_ms: 0.246441
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 220 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 4.625265
+  duration_ms: 5.470388
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 221 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.094031
+  duration_ms: 1.322265
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 222 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 0.991791
+  duration_ms: 1.464501
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 223 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.521752
+  duration_ms: 2.042904
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 224 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.059627
+  duration_ms: 1.193434
   type: 'test'
   ...
 1..224
@@ -262,14 +262,14 @@ ok 224 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1078.327275
+# duration_ms 1303.18881
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 22ms
+✓ Running next.config.ts took 26ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -278,15 +278,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.0s
+✓ Compiled successfully in 5.5s
   Running TypeScript ...
-  Finished TypeScript in 7.9s ...
+  Finished TypeScript in 9.2s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 536ms
+✓ Generating static pages using 3 workers (28/28) in 630ms
   Finalizing page optimization ...
 
 Route (app)
