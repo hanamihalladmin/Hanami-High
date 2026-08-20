@@ -8,11 +8,12 @@ test("student schedule cards open a dedicated class workspace",async()=>{
   const page=await read("app/portal/student/class/page.tsx");
   const client=await read("app/portal/student/class/StudentClassPageClient.tsx");
   assert.match(schedule,/\.\/class\/\?section=/);
-  assert.match(schedule,/Open class/);
+  assert.match(schedule,/Open course/);
   assert.match(page,/StudentClassPageClient/);
   assert.match(client,/rpc\/student_class_detail/);
   assert.match(client,/Assignments & feedback/);
   assert.match(client,/Teacher comment/);
+  assert.match(client,/Course Info/);
   assert.match(client,/Attendance/);
 });
 

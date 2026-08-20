@@ -8,6 +8,7 @@ const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlq
 const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
 
 type VisibleProfile={character_id:string;display_name:string;handle:string;role:"student"|"faculty";visibility:"public"|"friends_only"|"private";headline:string;bio:string;status_message:string};
+type VisibleIdentity={character_id:string;profile_image_path:string|null};
 type Canvas={canvas_width:number;canvas_height:number;background:string;background_image_url:string|null;background_storage_path:string|null};
 type WidgetType="text"|"image"|"card"|"link"|"divider"|"sticker"|"quote"|"playlist"|"photo_strip"|"badge"|"marquee"|"guestbook";
 type Widget={id:string;widget_type:WidgetType;x:number;y:number;width:number;height:number;z_index:number;rotation:number;opacity:number;content:Record<string,string>;style:Record<string,string|number>};
@@ -56,41 +57,54 @@ export default function ProfileLookupPanel({accessToken,viewerCharacterId}:Props
   const [design,setDesign]=useState<Design|null>(null);
   const [social,setSocial]=useState<SocialProfile|null>(null);
   const [mediaUrls,setMediaUrls]=useState<Record<string,string>>({});
+  const [profileImageUrl,setProfileImageUrl]=useState("");
   const [message,setMessage]=useState("Search an exact Hanami handle to view an available character profile.");
   const [loading,setLoading]=useState(false);
 
-  async function signDesignMedia(targetCharacterId:string,nextDesign:Design|null){
-    const paths=[...new Set([...(nextDesign?.widgets??[]).flatMap(widget=>[widget.content.storage_path,...photoPaths(widget)]).filter(Boolean),nextDesign?.canvas.background_storage_path].filter(Boolean))] as string[];
-    if(!paths.length){setMediaUrls({});return;}
+  async function signedMedia(targetCharacterId:string,paths:string[]){
+    if(!paths.length)return {} as Record<string,string>;
     const response=await fetch(`${SUPABASE_URL}/functions/v1/profile-media-sign`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({viewer_character_id:viewerCharacterId,target_character_id:targetCharacterId,paths})});
-    if(!response.ok){setMediaUrls({});return;}
+    if(!response.ok)return {} as Record<string,string>;
     const payload=await response.json() as {files?:Array<{path?:string;signedUrl?:string;signedURL?:string;signed_url?:string;error?:string}>};
     const next:Record<string,string>={};
     for(const file of payload.files??[]){const url=file.signedUrl??file.signedURL??file.signed_url;if(file.path&&url&&!file.error)next[file.path]=url;}
-    setMediaUrls(next);
+    return next;
+  }
+
+  async function signDesignMedia(targetCharacterId:string,nextDesign:Design|null){
+    const paths=[...new Set([...(nextDesign?.widgets??[]).flatMap(widget=>[widget.content.storage_path,...photoPaths(widget)]).filter(Boolean),nextDesign?.canvas.background_storage_path].filter(Boolean))] as string[];
+    setMediaUrls(await signedMedia(targetCharacterId,paths));
+  }
+
+  async function signProfileImage(targetCharacterId:string,path:string|null){
+    if(!path){setProfileImageUrl("");return;}
+    const signed=await signedMedia(targetCharacterId,[path]);setProfileImageUrl(signed[path]??"");
   }
 
   async function search(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
     const clean=handle.trim().replace(/^@/,"").toLowerCase();
-    if(!/^[a-z0-9_]{3,24}$/.test(clean)){setProfile(null);setDesign(null);setSocial(null);setMediaUrls({});setMessage("Enter a valid Hanami handle using lowercase letters, numbers, or underscores.");return;}
-    setLoading(true);setProfile(null);setDesign(null);setSocial(null);setMediaUrls({});setMessage(`Checking profile visibility for @${clean}…`);
+    if(!/^[a-z0-9_]{3,24}$/.test(clean)){setProfile(null);setDesign(null);setSocial(null);setMediaUrls({});setProfileImageUrl("");setMessage("Enter a valid Hanami handle using lowercase letters, numbers, or underscores.");return;}
+    setLoading(true);setProfile(null);setDesign(null);setSocial(null);setMediaUrls({});setProfileImageUrl("");setMessage(`Checking profile visibility for @${clean}…`);
     try{
       const payload=JSON.stringify({viewer_character_id:viewerCharacterId,target_handle:clean});
-      const [profileResponse,designResponse,socialResponse]=await Promise.all([
+      const [profileResponse,designResponse,socialResponse,identityResponse]=await Promise.all([
         fetch(`${SUPABASE_URL}/rest/v1/rpc/lookup_visible_character_profile`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:payload}),
         fetch(`${SUPABASE_URL}/rest/v1/rpc/lookup_visible_profile_design`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:payload}),
-        fetch(`${SUPABASE_URL}/rest/v1/rpc/lookup_visible_profile_social`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:payload})
+        fetch(`${SUPABASE_URL}/rest/v1/rpc/lookup_visible_profile_social`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:payload}),
+        fetch(`${SUPABASE_URL}/rest/v1/rpc/lookup_visible_profile_identity`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:payload})
       ]);
-      if(!profileResponse.ok||!designResponse.ok||!socialResponse.ok)throw new Error("The Hanami profile lookup could not be completed.");
+      if(!profileResponse.ok||!designResponse.ok||!socialResponse.ok||!identityResponse.ok)throw new Error("The Hanami profile lookup could not be completed.");
       const profileRows=await profileResponse.json() as VisibleProfile[];
       const designRows=await designResponse.json() as Design[];
+      const identityRows=await identityResponse.json() as VisibleIdentity[];
       const result=profileRows[0]??null;
       const nextDesign=designRows[0]??null;
+      const nextIdentity=identityRows[0]??null;
       const nextSocial=await socialResponse.json() as SocialProfile|null;
       setProfile(result);setDesign(nextDesign);setSocial(nextSocial);
       if(result){
-        await signDesignMedia(result.character_id,nextDesign);
+        await Promise.all([signDesignMedia(result.character_id,nextDesign),signProfileImage(result.character_id,nextIdentity?.profile_image_path??null)]);
         const visitResponse=await fetch(`${SUPABASE_URL}/rest/v1/rpc/record_profile_visit`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({target_character_id:result.character_id,viewer_character_id:viewerCharacterId})});
         if(visitResponse.ok&&nextSocial?.show_visit_counter){const total=Number(await visitResponse.json());setSocial({...nextSocial,total_visits:total});}
       }
@@ -108,7 +122,7 @@ export default function ProfileLookupPanel({accessToken,viewerCharacterId}:Props
     <form className={styles.search} onSubmit={search}><label><span>Exact Hanami handle</span><div><b>@</b><input value={handle} onChange={event=>setHandle(event.target.value)} maxLength={24} placeholder="character_handle" autoComplete="off"/><button type="submit" disabled={loading}>{loading?"Checking…":"View profile"}</button></div></label></form>
     <div className={styles.status} aria-live="polite">{message}</div>
     {profile&&<>
-      <article className={styles.card}><div className={styles.avatar}>花</div><div className={styles.identity}><p className="eyebrow">{profile.role.toUpperCase()} • {profile.visibility.replace("_"," ").toUpperCase()}</p><h5>{profile.display_name}</h5><span>@{profile.handle}</span>{social?.show_status&&<blockquote>{statusLabel(social.status_kind)}{social.status_message?` • ${social.status_message}`:""}</blockquote>}{!social?.show_status&&profile.status_message&&<blockquote>{profile.status_message}</blockquote>}</div><div className={styles.copy}><strong>{profile.headline||"Hanami character profile"}</strong><p>{profile.bio||"This character has not added a biography yet."}</p>{social?.show_visit_counter&&<small>PROFILE VIEWS • {social.total_visits??0}</small>}</div></article>
+      <article className={styles.card}><div className={styles.avatar}>{profileImageUrl?<img src={profileImageUrl} alt={`${profile.display_name} profile`}/>:profile.display_name.slice(0,1).toUpperCase()}</div><div className={styles.identity}><p className="eyebrow">{profile.role.toUpperCase()} • {profile.visibility.replace("_"," ").toUpperCase()}</p><h5>{profile.display_name}</h5><span>@{profile.handle}</span>{social?.show_status&&<blockquote>{statusLabel(social.status_kind)}{social.status_message?` • ${social.status_message}`:""}</blockquote>}{!social?.show_status&&profile.status_message&&<blockquote>{profile.status_message}</blockquote>}</div><div className={styles.copy}><strong>{profile.headline||"Hanami character profile"}</strong><p>{profile.bio||"This character has not added a biography yet."}</p>{social?.show_visit_counter&&<small>PROFILE VIEWS • {social.total_visits??0}</small>}</div></article>
       {social&&((social.top_friends?.length??0)>0||(social.badges?.length??0)>0)&&<section style={{margin:"12px 0",display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:10}} aria-label="Profile social details">
         <article style={{border:"1px solid #c6b6c1",background:"#fff7fb",padding:12}}><p className="eyebrow">TOP FRIENDS</p><h5 style={{margin:"4px 0 10px",font:"400 20px Georgia,serif"}}>Top Friends • platonic only</h5>{social.top_friends?.length?<div style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:7}}>{social.top_friends.map(friend=><div key={`${friend.position}-${friend.character_id}`} style={{border:"1px solid #e1d5dc",background:"#fff",padding:8,minHeight:58}}><small>#{friend.position}</small><strong style={{display:"block"}}>{friend.display_name}</strong><span style={{fontSize:9}}>@{friend.handle} • {friend.role}</span></div>)}</div>:<p>No Top Friends selected yet.</p>}</article>
         <article style={{border:"1px solid #c6b6c1",background:"#fff7fb",padding:12}}><p className="eyebrow">PROFILE BADGES</p><h5 style={{margin:"4px 0 10px",font:"400 20px Georgia,serif"}}>Hanami badges</h5>{social.badges?.length?social.badges.map(badge=><div key={badge.id} style={{borderBottom:"1px solid #e1d5dc",padding:"6px 0"}}><strong>{badge.icon_text} {badge.label}</strong><small style={{display:"block"}}>{badge.badge_type.replaceAll("_"," ")}{badge.description?` • ${badge.description}`:""}</small></div>):<p>No visible badges yet.</p>}</article>
@@ -116,6 +130,6 @@ export default function ProfileLookupPanel({accessToken,viewerCharacterId}:Props
       {design&&<div className={styles.designWrap}><div className={styles.designLabel}><strong>CUSTOM PROFILE DESIGN</strong><span>{design.canvas.canvas_width}×{design.canvas.canvas_height} • {design.widgets.length} WIDGET{design.widgets.length===1?"":"S"}</span></div><div className={styles.previewScroller}><div className={styles.preview} style={{width:design.canvas.canvas_width*scale,height:design.canvas.canvas_height*scale,background:design.canvas.background,backgroundImage:visibleBackground?`url(${visibleBackground})`:undefined,backgroundSize:"cover",backgroundPosition:"center"}}>{design.widgets.map(widget=><div key={widget.id} className={styles.previewWidget} style={{left:widget.x*scale,top:widget.y*scale,width:widget.width*scale,height:widget.height*scale,zIndex:widget.z_index,opacity:widget.opacity,transform:`rotate(${widget.rotation}deg)`}}>{widgetView(widget,mediaUrls)}</div>)}</div></div></div>}
       <ProfileReportPanel accessToken={accessToken} viewerCharacterId={viewerCharacterId} targetCharacterId={profile.character_id} targetHandle={profile.handle}/>
     </>}
-    <div className={styles.privacy}><strong>VISIBILITY RULE</strong><span>Public profiles can be viewed by signed-in Hanami members. Friends-only profiles can be viewed by accepted character friends. Private profiles remain owner-only. Top Friends, visible badges, status, and visit counts are shown only after the same profile visibility check succeeds. Private Hanami uploads and uploaded backgrounds use short-lived signed media links after that check.</span></div>
+    <div className={styles.privacy}><strong>VISIBILITY RULE</strong><span>Public profiles can be viewed by signed-in Hanami members. Friends-only profiles can be viewed by accepted character friends. Private profiles remain owner-only. Top Friends, visible badges, status, visit counts, and the chosen profile image are shown only after the same profile visibility check succeeds. Private Hanami uploads and uploaded backgrounds use short-lived signed media links after that check.</span></div>
   </section>;
 }
