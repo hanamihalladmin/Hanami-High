@@ -1,0 +1,21 @@
+"use client";
+
+import {useEffect,useState} from "react";
+import RoadmapHubPanel from "../RoadmapHubPanel";
+
+const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
+const SESSION_KEY="hanami.portal.session.v1";
+const CHARACTER_KEY="hanami.portal.character.v1";
+type PortalSession={accessToken:string;refreshToken:string;expiresAt:number;tokenType:string};
+type Character={id:string;role:"student"|"faculty";display_name:string;handle:string};
+function headers(token:string){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${token}`};}
+function readSession():PortalSession|null{try{const raw=localStorage.getItem(SESSION_KEY);if(!raw)return null;const value=JSON.parse(raw) as Partial<PortalSession>;return typeof value.accessToken==="string"&&typeof value.refreshToken==="string"&&typeof value.expiresAt==="number"?{accessToken:value.accessToken,refreshToken:value.refreshToken,expiresAt:value.expiresAt,tokenType:value.tokenType??"bearer"}:null;}catch{return null;}}
+async function refreshSession(session:PortalSession){if(session.expiresAt-Date.now()>120000)return session;const response=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,{method:"POST",headers:{apikey:SUPABASE_PUBLISHABLE_KEY,"Content-Type":"application/json"},body:JSON.stringify({refresh_token:session.refreshToken})});if(!response.ok)return null;const data=await response.json() as {access_token?:string;refresh_token?:string;expires_in?:number;token_type?:string};if(!data.access_token||!data.refresh_token)return null;const next={accessToken:data.access_token,refreshToken:data.refresh_token,expiresAt:Date.now()+(data.expires_in??3600)*1000,tokenType:data.token_type??"bearer"};localStorage.setItem(SESSION_KEY,JSON.stringify(next));return next;}
+
+export default function RoadmapHubClient(){
+ const [session,setSession]=useState<PortalSession|null>(null);const [character,setCharacter]=useState<Character|null>(null);const [status,setStatus]=useState("Checking your Hanami session…");
+ useEffect(()=>{void(async()=>{try{let current=readSession();if(!current){setStatus("Sign in through the Portal Gateway to open the Roadmap Hub.");return;}current=await refreshSession(current);if(!current){localStorage.removeItem(SESSION_KEY);setStatus("Your Hanami session expired. Sign in again through the Portal Gateway.");return;}const characterId=localStorage.getItem(CHARACTER_KEY)??"";if(!characterId){setStatus("Select an active Student or Faculty character in the Portal Gateway first.");setSession(current);return;}const response=await fetch(`${SUPABASE_URL}/rest/v1/characters?select=id,role,display_name,handle&id=eq.${encodeURIComponent(characterId)}&limit=1`,{headers:headers(current.accessToken)});if(!response.ok)throw new Error("Your active character could not be verified.");const rows=await response.json() as Character[];const active=rows[0]??null;if(!active||!["student","faculty"].includes(active.role)){setStatus("This Roadmap Hub is available to active Student and Faculty characters.");setSession(current);return;}setSession(current);setCharacter(active);setStatus("Roadmap Hub ready.");}catch(error){setStatus(error instanceof Error?error.message:"Roadmap Hub could not be opened.");}})();},[]);
+ if(!session||!character)return <main style={{maxWidth:900,margin:"42px auto",padding:"0 18px"}}><p className="eyebrow">HANAMI ROADMAP</p><h1 style={{font:"400 34px Georgia,serif",color:"#17375f"}}>Roadmap Hub</h1><p>{status}</p><a href="../">Return to Portal Gateway</a></main>;
+ return <main style={{maxWidth:1240,margin:"26px auto",padding:"0 18px 44px"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,flexWrap:"wrap",marginBottom:16}}><div><p className="eyebrow">HANAMI ROADMAP</p><h1 style={{margin:"4px 0",font:"400 32px Georgia,serif",color:"#17375f"}}>Roadmap Hub</h1><p style={{margin:0}}>{character.display_name} • @{character.handle} • {character.role}</p></div><a href={`../${character.role}/`}>Return to {character.role} desk</a></div><RoadmapHubPanel accessToken={session.accessToken} characterId={character.id} role={character.role}/></main>;
+}
