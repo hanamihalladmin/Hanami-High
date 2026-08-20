@@ -2,6 +2,7 @@
 
 import {FormEvent,useEffect,useState} from "react";
 import styles from "./CharacterProfilePanel.module.css";
+import ProfileSocialControlsPanel from "./ProfileSocialControlsPanel";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
@@ -51,7 +52,8 @@ export default function CharacterProfilePanel({accessToken,characterId,currentVi
     finally{setSaving(false);}
   }
 
-  return <section className={styles.panel} aria-labelledby="profile-title">
+  return <>
+   <section className={styles.panel} aria-labelledby="profile-title">
     <div className={styles.heading}><div><p className="eyebrow">PROFILE & PRIVACY</p><h4 id="profile-title">Character profile card</h4></div><span>{visibility.replace("_"," ").toUpperCase()}</span></div>
     <div className={styles.status} aria-live="polite">{message}</div>
     <form className={styles.form} onSubmit={save}>
@@ -59,5 +61,7 @@ export default function CharacterProfilePanel({accessToken,characterId,currentVi
       <div className={styles.privacy}><strong>PRIVACY DEFAULT</strong><p>New characters start private. Changing this setting controls future profile visibility; private account/session data is never made public by this setting.</p></div>
       <button type="submit" disabled={saving}>{saving?"Saving…":"Save profile & privacy"}</button>
     </form>
-  </section>;
+   </section>
+   <ProfileSocialControlsPanel accessToken={accessToken} characterId={characterId}/>
+  </>;
 }
