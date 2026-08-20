@@ -14,18 +14,18 @@ const academicMigration=await readFile(new URL("../supabase/migrations/202608181
 
 test("dashboard is driven by the active character role",()=>{
   assert.match(dashboard,/character\.role==="student"/);
-  assert.match(dashboard,/STUDENT QUICK LINKS/);
-  assert.match(dashboard,/FACULTY QUICK LINKS/);
+  assert.match(dashboard,/STUDENT STREAM/);
+  assert.match(dashboard,/FACULTY STREAM/);
   assert.match(dashboard,/Student/);
   assert.match(dashboard,/Faculty/);
 });
 
 test("role dashboards use live authenticated modules without placeholder cards",()=>{
-  assert.match(dashboard,/LIVE DASHBOARD/);
+  assert.match(dashboard,/HANAMI CLASSROOM/);
   assert.match(dashboard,/SchoolStatusPanel accessToken=\{accessToken\}/);
   assert.match(dashboard,/SchoolNoticesPanel accessToken=\{accessToken\}/);
   assert.match(dashboard,/SchoolCalendarPanel accessToken=\{accessToken\}/);
-  assert.match(dashboard,/SchedulePanel accessToken=\{accessToken\} characterId=\{character\.id\}/);
+  assert.match(dashboard,/SchedulePanel accessToken=\{accessToken\} characterId=\{character\.id\} role=\{character\.role\}/);
   assert.match(dashboard,/CourseworkPanel/);
   assert.match(dashboard,/StudentActivitiesPanel/);
   assert.match(dashboard,/FacultyCourseManager/);
