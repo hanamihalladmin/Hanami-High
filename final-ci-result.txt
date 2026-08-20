@@ -1,13 +1,6 @@
 HANAMI_FINAL_CI=FAIL
 exit_code=1
 --- failing tests / errors ---
-# Subtest: Campus Life returns signed-in students to real portal routes
-# Subtest: Campus Opportunities are published content with character-owned Student applications
-# Subtest: Student portal exposes the website-native Campus Opportunities application desk
-# Subtest: Administration manages opportunities and reviews applications
-not ok 30 - Administration manages opportunities and reviews applications
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 # Subtest: Applicant identity is exposed only through a permission-gated queue
 # Subtest: ordinary Faculty role does not get school-wide opportunity review access
 # Subtest: character manager loads only authenticated account data
@@ -172,6 +165,13 @@ not ok 130 - Owner can create bound or claimable Administrator logins
 # Subtest: role portal logout clears character and account session
 # Subtest: normal School Resources never loads or renders form submission history
 # Subtest: normal users can still submit school forms without reading history
+# Subtest: Owner receives system health and aggregate staff analytics
+# Subtest: Admin workspace includes storyline incident and evidence operations
+# Subtest: Faculty dashboard includes a private lounge workflow
+# Subtest: dark mode is absent from Hanami accessibility controls
+not ok 183 - dark mode is absent from Hanami accessibility controls
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 # Subtest: student activities are loaded for the active character
 # Subtest: campus activity membership reads remain owner scoped
 # Subtest: student dashboard has no remaining placeholder modules
@@ -182,98 +182,98 @@ not ok 130 - Owner can create bound or claimable Administrator logins
 # Subtest: School Office separates staff action waiting member and archive queues
 # Subtest: Help has a direct router and support anchor
 --- tail ---
-  ---
-  duration_ms: 0.174427
-  type: 'test'
-  ...
-# Subtest: role portal logout clears character and account session
-ok 177 - role portal logout clears character and account session
-  ---
-  duration_ms: 0.135506
-  type: 'test'
-  ...
-# Subtest: normal School Resources never loads or renders form submission history
-ok 178 - normal School Resources never loads or renders form submission history
-  ---
-  duration_ms: 0.904757
-  type: 'test'
-  ...
-# Subtest: normal users can still submit school forms without reading history
-ok 179 - normal users can still submit school forms without reading history
-  ---
-  duration_ms: 0.171287
-  type: 'test'
+     const unread=useMemo(()=>notifications.filter(item=>!item.is_read).length,[notifications]);
+     const applyAccessibility=useCallback((next:Accessibility)=>{const root=document.documentElement;root.style.setProperty("--hanami-user-font-scale",String(next.font_scale));root.style.setProperty("--hanami-user-brightness",String(next.brightness));root.dataset.hanamiContrast=next.high_contrast?"high":next.soft_contrast?"soft":"normal";root.dataset.hanamiDyslexia=next.dyslexia_friendly?"on":"off";root.dataset.hanamiMotion=next.reduce_motion?"reduced":"normal";root.dataset.hanamiGlitter=next.disable_glitter?"off":"on";root.dataset.hanamiCursor=next.custom_cursor_disabled?"standard":"custom";root.dataset.hanamiMusic=next.music_muted?"muted":"enabled";root.dataset.hanamiStudio=next.simplified_profile_studio?"simplified":"full";delete root.dataset.hanamiTheme;window.dispatchEvent(new CustomEvent("hanami-accessibility-changed",{detail:next}));},[]);
+     const load=useCallback(async()=>{const [n,s,p,a]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/notifications?select=id,category,title,body,href,is_read,created_at&order=created_at.desc&limit=50`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/system_announcements?select=id,title,body,severity,created_at&order=created_at.desc&limit=10`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/notification_preferences?select=*&limit=1`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/accessibility_preferences?select=*&limit=1`,{headers:headers(accessToken)})]);if(n.ok)setNotifications(await n.json());if(s.ok)setSystemNotices(await s.json());if(p.ok){const rows=await p.json();if(rows[0])setPrefs(rows[0]);}if(a.ok){const rows=await a.json();if(rows[0]){const row=rows[0];const next:Accessibility={font_scale:Number(row.font_scale??1),high_contrast:Boolean(row.high_contrast),dyslexia_friendly:Boolean(row.dyslexia_friendly),reduce_motion:Boolean(row.reduce_motion),disable_glitter:Boolean(row.disable_glitter),simplified_profile_studio:Boolean(row.simplified_profile_studio),custom_cursor_disabled:Boolean(row.custom_cursor_disabled),music_muted:Boolean(row.music_muted),music_volume:Number(row.music_volume??.55),soft_contrast:Boolean(row.soft_contrast),brightness:Number(row.brightness??1)};setAccess(next);applyAccessibility(next);}}setNotice("Notification Center ready.");},[accessToken,applyAccessibility]);
+     useEffect(()=>{load().catch(()=>setNotice("Notifications could not be loaded."));},[load]);
+     async function markRead(id:string){await fetch(`${SUPABASE_URL}/rest/v1/notifications?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({is_read:true})});setNotifications(items=>items.map(item=>item.id===id?{...item,is_read:true}:item));}
+     async function markAllRead(){const response=await fetch(`${SUPABASE_URL}/rest/v1/notifications?is_read=eq.false`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({is_read:true})});if(response.ok){setNotifications(items=>items.map(item=>({...item,is_read:true})));setNotice("All notifications marked read.");}}
+     async function savePrefs(next:Preferences){setPrefs(next);const response=await fetch(`${SUPABASE_URL}/rest/v1/notification_preferences?on_conflict=user_id`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"}),body:JSON.stringify(next)});setNotice(response.ok?"Notification preferences saved.":"Notification preferences could not be saved.");}
+     async function saveAccess(next:Accessibility){setAccess(next);applyAccessibility(next);const response=await fetch(`${SUPABASE_URL}/rest/v1/accessibility_preferences?on_conflict=user_id`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"}),body:JSON.stringify(next)});setNotice(response.ok?"Accessibility settings saved and applied.":"Accessibility settings could not be saved.");}
+     const toggles:Array<[string,keyof Accessibility,string]>=[["Higher contrast","high_contrast","Increase separation between page elements."],["Soft contrast","soft_contrast","Reduce harsh contrast while keeping Hanami's standard light design."],["Dyslexia-friendly text","dyslexia_friendly","Use a simpler, more open reading style."],["Reduce animations","reduce_motion","Reduce transitions, movement, marquees, and animated profile effects."],["Disable glitter effects","disable_glitter","Hide decorative glitter and sparkle animation while keeping layouts intact."],["Use simplified Profile Studio","simplified_profile_studio","Prefer a reduced-control editor that is easier on phones and smaller screens."],["Disable custom cursors","custom_cursor_disabled","Always use your browser/system cursor instead of profile cursors."],["Mute profile music","music_muted","Prevent profile music from playing automatically."]];
+     return <section style={{marginTop:16,border:"1px solid #aab7c6",background:"#fff"}} aria-label="Notifications and accessibility"><div style={{display:"flex",justifyContent:"space-between",gap:12,padding:"12px 14px",background:"#eef3f8",borderBottom:"1px solid #c5ced8",alignItems:"center",flexWrap:"wrap"}}><div><p className="eyebrow">HANAMI NETWORK</p><h4 style={{margin:"3px 0",font:"400 20px Georgia,serif"}}>Notification Center</h4><small>{notice}</small></div><div style={{display:"flex",gap:8,flexWrap:"wrap"}}><button type="button" onClick={()=>setOpen(v=>!v)} style={{minHeight:34}}>🔔 Notifications {unread?`(${unread})`:""}</button>{unread>0&&<button type="button" onClick={markAllRead} style={{minHeight:34}}>Mark all read</button>}<button type="button" onClick={()=>setSettingsOpen(v=>!v)} style={{minHeight:34}}>Accessibility & Preferences</button></div></div>{systemNotices.length>0&&<div style={{padding:"10px 14px",background:"#fff8dc",borderBottom:"1px solid #dbc981"}}>{systemNotices.map(item=><article key={item.id} style={{marginBottom:6}}><strong>[{item.severity.toUpperCase()}] {item.title}</strong><div style={{fontSize:10,marginTop:2}}>{item.body}</div></article>)}</div>}{open&&<div style={{padding:14,display:"grid",gap:8}}>{notifications.length?notifications.map(item=><article key={item.id} style={{padding:10,border:"1px solid #ccd4dc",background:item.is_read?"#fff":"#f3f8ff"}}><div style={{display:"flex",justifyContent:"space-between",gap:8}}><strong>{item.title}</strong><small>{item.category.replaceAll("_"," ")}</small></div><p style={{margin:"5px 0",fontSize:10}}>{item.body}</p>{item.href&&<a href={item.href} style={{fontSize:9}}>Open related item →</a>}{!item.is_read&&<button type="button" onClick={()=>markRead(item.id)}>Mark read</button>}</article>):<p>No notifications yet.</p>}</div>}{settingsOpen&&<div style={{padding:14,display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:14}}><div><h5>Accessibility & Profile Effects</h5><label style={{display:"block",marginBottom:8}}>Font size <select value={access.font_scale} onChange={e=>saveAccess({...access,font_scale:Number(e.target.value)})}><option value={0.9}>Smaller</option><option value={1}>Standard</option><option value={1.1}>Large</option><option value={1.2}>Extra large</option><option value={1.3}>Maximum</option></select></label><label style={{display:"block",marginBottom:9}}>Display brightness <input type="range" min="0.7" max="1.15" step="0.05" value={access.brightness} onChange={e=>saveAccess({...access,brightness:Number(e.target.value)})}/></label><label style={{display:"block",marginBottom:9}}>Profile music volume <input type="range" min="0" max="1" step="0.05" disabled={access.music_muted} value={access.music_volume} onChange={e=>saveAccess({...access,music_volume:Number(e.target.value)})}/></label>{toggles.map(([label,key,help])=><label key={key} style={{display:"grid",gridTemplateColumns:"auto 1fr",gap:"2px 7px",marginBottom:8,alignItems:"start"}}><input type="checkbox" checked={Boolean(access[key])} onChange={e=>saveAccess({...access,[key]:e.target.checked})}/><span>{label}<small style={{display:"block",color:"#6d7987",fontSize:8,marginTop:2}}>{help}</small></span></label>)}</div><div><h5>Notification Preferences</h5><p style={{fontSize:9,color:"#66758a"}}>Control which categories should create a bell notification. Critical account or safety notices may still appear as required banners.</p>{Object.entries(prefs).map(([key,value])=><label key={key} style={{display:"block",marginBottom:6}}><input type="checkbox" checked={Boolean(value)} onChange={e=>savePrefs({...prefs,[key]:e.target.checked})}/> {key.replaceAll("_"," ")}</label>)}</div></div>}</section>;
+    }
+    
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/Hanami-High/Hanami-High/tests/staff-operations-expansion.test.mjs:42:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
 # Subtest: student activities are loaded for the active character
-ok 180 - student activities are loaded for the active character
+ok 184 - student activities are loaded for the active character
   ---
-  duration_ms: 0.582714
+  duration_ms: 0.86262
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 181 - campus activity membership reads remain owner scoped
+ok 185 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.110777
+  duration_ms: 0.184835
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 182 - student dashboard has no remaining placeholder modules
+ok 186 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.159722
+  duration_ms: 0.274272
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
-ok 183 - test activity data stays visibly labeled
+ok 187 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.084668
+  duration_ms: 0.196828
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 184 - accessibility and notification preferences bind to signed-in user automatically
+ok 188 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 3.986159
+  duration_ms: 5.518246
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 185 - group chat creation uses a validated private helper and creator management
+ok 189 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 0.980871
+  duration_ms: 1.309353
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 186 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 190 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 0.917379
+  duration_ms: 1.313381
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 187 - School Office separates staff action waiting member and archive queues
+ok 191 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.385292
+  duration_ms: 1.915745
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 188 - Help has a direct router and support anchor
+ok 192 - Help has a direct router and support anchor
   ---
-  duration_ms: 0.925218
+  duration_ms: 1.311697
   type: 'test'
   ...
-1..188
-# tests 188
+1..192
+# tests 192
 # suites 0
-# pass 178
-# fail 10
+# pass 181
+# fail 11
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 685.06465
+# duration_ms 960.082333
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 22ms
+✓ Running next.config.ts took 27ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -282,15 +282,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 4.0s
+✓ Compiled successfully in 5.2s
   Running TypeScript ...
-  Finished TypeScript in 5.2s ...
+  Finished TypeScript in 7.5s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/24) ...
   Generating static pages using 3 workers (6/24) 
   Generating static pages using 3 workers (12/24) 
   Generating static pages using 3 workers (18/24) 
-✓ Generating static pages using 3 workers (24/24) in 396ms
+✓ Generating static pages using 3 workers (24/24) in 550ms
   Finalizing page optimization ...
 
 Route (app)
