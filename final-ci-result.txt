@@ -1,6 +1,24 @@
 HANAMI_FINAL_CI=FAIL
 exit_code=1
 --- failing tests / errors ---
+# Subtest: public Administration RPCs are security-invoker wrappers around private helpers
+# Subtest: school status is public-read and content-editor managed
+# Subtest: announcement management is protected by permission-aware RLS
+# Subtest: school calendar management is content-editor scoped and Tokyo based
+# Subtest: moderators have a private character directory rather than global profile exposure
+# Subtest: Site Admin academic management preserves role separation
+# Subtest: Administration has its own website section and shared workspace
+# Subtest: Campus Life includes every approved public requirement
+# Subtest: campus directory is searchable and filterable
+# Subtest: campus keeps fixture directory data labeled while public opportunities use the live portal flow
+# Subtest: Campus Life uses the Tokyo 2006 roleplay clock
+# Subtest: Campus Life returns signed-in students to real portal routes
+# Subtest: Campus Opportunities are published content with character-owned Student applications
+# Subtest: Student portal exposes the website-native Campus Opportunities application desk
+# Subtest: Administration manages opportunities and reviews applications
+not ok 30 - Administration manages opportunities and reviews applications
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 # Subtest: Applicant identity is exposed only through a permission-gated queue
 # Subtest: ordinary Faculty role does not get school-wide opportunity review access
 # Subtest: character manager loads only authenticated account data
@@ -44,9 +62,6 @@ exit_code=1
 # Subtest: Discord role sync uses member OAuth authorization without a bot token
 # Subtest: Owner Discord server configuration stays Owner-gated
 # Subtest: Admin support desk can respond assign tag close and reopen tickets
-not ok 73 - Admin support desk can respond assign tag close and reopen tickets
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 # Subtest: new public school RPCs use invoker wrappers after hardening
 # Subtest: Next.js is pinned to the patched 16.3.1 release
 # Subtest: friend requests are exact-handle and active-character scoped
@@ -71,9 +86,6 @@ not ok 73 - Admin support desk can respond assign tag close and reopen tickets
 # Subtest: launch gate synchronizes Discord roles through signed-in OAuth without exposing a bot token
 # Subtest: Owner TEST Faculty fixture remains usable after Discord role sync is enabled
 # Subtest: suspended accounts are blocked and governance is audited
-not ok 97 - suspended accounts are blocked and governance is audited
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 # Subtest: messaging launch feature set includes unread state attachments and group management
 # Subtest: academic launch feature set includes attendance report cards and weighted grading
 # Subtest: Profile Studio includes duplication shape choice and private backgrounds
@@ -94,9 +106,6 @@ not ok 97 - suspended accounts are blocked and governance is audited
 # Subtest: members can only follow up when the Office requests more information
 # Subtest: Office request types and lifecycle are complete
 # Subtest: Office staff queue stays permission scoped
-not ok 117 - Office staff queue stays permission scoped
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 # Subtest: anonymous users have no direct School Office table grants
 # Subtest: both Student and Faculty dashboards expose the shared Office desk
 # Subtest: Owner portal renders the Bug Detector only inside Owner Control Center
@@ -107,15 +116,9 @@ not ok 117 - Office staff queue stays permission scoped
 # Subtest: Owner portal requires both Discord Owner identity and privileged credentials
 # Subtest: Owner automatically satisfies the Administrator privileged gate
 # Subtest: privileged session wrapper can execute its private helper
-# Subtest: Owner Control Center stays separate from Administration operations
-not ok 128 - Owner Control Center stays separate from Administration operations
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
+# Subtest: Owner Control Center remains distinct while inheriting all Administration operations
 # Subtest: Owner gateway handoff is returned only after server Owner verification
 # Subtest: Owner can create bound or claimable Administrator logins
-not ok 130 - Owner can create bound or claimable Administrator logins
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 # Subtest: portal starts Discord OAuth and returns to the current portal path
 # Subtest: portal restores and refreshes a browser session
 # Subtest: signed-in profile is loaded through bearer auth and RLS
@@ -168,10 +171,7 @@ not ok 130 - Owner can create bound or claimable Administrator logins
 # Subtest: Owner receives system health and aggregate staff analytics
 # Subtest: Admin workspace includes storyline incident and evidence operations
 # Subtest: Faculty dashboard includes a private lounge workflow
-# Subtest: dark mode is absent from Hanami accessibility controls
-not ok 183 - dark mode is absent from Hanami accessibility controls
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
+# Subtest: dark mode controls are absent from Hanami accessibility settings
 # Subtest: student activities are loaded for the active character
 # Subtest: campus activity membership reads remain owner scoped
 # Subtest: student dashboard has no remaining placeholder modules
@@ -182,98 +182,98 @@ not ok 183 - dark mode is absent from Hanami accessibility controls
 # Subtest: School Office separates staff action waiting member and archive queues
 # Subtest: Help has a direct router and support anchor
 --- tail ---
-     const suppressed=dndActive?notifications.length-visibleNotifications.length:0;
-     const applyAccessibility=useCallback((next:Accessibility)=>{const root=document.documentElement;root.style.setProperty("--hanami-user-font-scale",String(next.font_scale));root.style.setProperty("--hanami-user-brightness",String(next.brightness));root.dataset.hanamiContrast=next.high_contrast?"high":next.soft_contrast?"soft":"normal";root.dataset.hanamiDyslexia=next.dyslexia_friendly?"on":"off";root.dataset.hanamiMotion=next.reduce_motion?"reduced":"normal";root.dataset.hanamiGlitter=next.disable_glitter?"off":"on";root.dataset.hanamiCursor=next.custom_cursor_disabled?"standard":"custom";root.dataset.hanamiMusic=next.music_muted?"muted":"enabled";root.dataset.hanamiStudio=next.simplified_profile_studio?"simplified":"full";delete root.dataset.hanamiTheme;window.dispatchEvent(new CustomEvent("hanami-accessibility-changed",{detail:next}));},[]);
-     const load=useCallback(async()=>{const resolvedCharacterId=characterId||activeCharacterId();const presenceRequest=resolvedCharacterId?fetch(`${SUPABASE_URL}/rest/v1/character_presence?select=do_not_disturb,dnd_until&character_id=eq.${encodeURIComponent(resolvedCharacterId)}&limit=1`,{headers:headers(accessToken)}):Promise.resolve(null);const [n,s,p,a,d]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/notifications?select=id,category,title,body,href,is_read,created_at,priority&order=created_at.desc&limit=50`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/system_announcements?select=id,title,body,severity,created_at&order=created_at.desc&limit=10`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/notification_preferences?select=*&limit=1`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/accessibility_preferences?select=*&limit=1`,{headers:headers(accessToken)}),presenceRequest]);if(n.ok)setNotifications(await n.json());if(s.ok)setSystemNotices(await s.json());if(p.ok){const rows=await p.json();if(rows[0])setPrefs(rows[0]);}if(a.ok){const rows=await a.json();if(rows[0]){const row=rows[0];const next:Accessibility={font_scale:Number(row.font_scale??1),high_contrast:Boolean(row.high_contrast),dyslexia_friendly:Boolean(row.dyslexia_friendly),reduce_motion:Boolean(row.reduce_motion),disable_glitter:Boolean(row.disable_glitter),simplified_profile_studio:Boolean(row.simplified_profile_studio),custom_cursor_disabled:Boolean(row.custom_cursor_disabled),music_muted:Boolean(row.music_muted),music_volume:Number(row.music_volume??.55),soft_contrast:Boolean(row.soft_contrast),brightness:Number(row.brightness??1)};setAccess(next);applyAccessibility(next);}}if(d&&d.ok){const rows=await d.json() as Presence[];setPresence(rows[0]??{do_not_disturb:false,dnd_until:null});}else setPresence({do_not_disturb:false,dnd_until:null});setNotice("Notification Center ready.");},[accessToken,characterId,applyAccessibility]);
-     useEffect(()=>{load().catch(()=>setNotice("Notifications could not be loaded."));const refresh=()=>void load();window.addEventListener("hanami-presence-changed",refresh);return()=>window.removeEventListener("hanami-presence-changed",refresh);},[load]);
-     async function markRead(id:string){await fetch(`${SUPABASE_URL}/rest/v1/notifications?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({is_read:true})});setNotifications(items=>items.map(item=>item.id===id?{...item,is_read:true}:item));}
-     async function markAllRead(){const ids=visibleNotifications.filter(item=>!item.is_read).map(item=>item.id);await Promise.all(ids.map(id=>fetch(`${SUPABASE_URL}/rest/v1/notifications?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({is_read:true})})));setNotifications(items=>items.map(item=>ids.includes(item.id)?{...item,is_read:true}:item));setNotice("Visible notifications marked read.");}
-     async function savePrefs(next:Preferences){setPrefs(next);const response=await fetch(`${SUPABASE_URL}/rest/v1/notification_preferences?on_conflict=user_id`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"}),body:JSON.stringify(next)});setNotice(response.ok?"Notification preferences saved.":"Notification preferences could not be saved.");}
-     async function saveAccess(next:Accessibility){setAccess(next);applyAccessibility(next);const response=await fetch(`${SUPABASE_URL}/rest/v1/accessibility_preferences?on_conflict=user_id`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"}),body:JSON.stringify(next)});setNotice(response.ok?"Accessibility settings saved and applied.":"Accessibility settings could not be saved.");}
-     const toggles:Array<[string,keyof Accessibility,string]>=[["Higher contrast","high_contrast","Increase separation between page elements."],["Soft contrast","soft_contrast","Reduce harsh contrast while keeping Hanami's standard light design."],["Dyslexia-friendly text","dyslexia_friendly","Use a simpler, more open reading style."],["Reduce animations","reduce_motion","Reduce transitions, movement, marquees, and animated profile effects."],["Disable glitter effects","disable_glitter","Hide decorative glitter and sparkle animation while keeping layouts intact."],["Use simplified Profile Studio","simplified_profile_studio","Prefer a reduced-control editor that is easier on phones and smaller screens."],["Disable custom cursors","custom_cursor_disabled","Always use your browser/system cursor instead of profile cursors."],["Mute profile music","music_muted","Prevent profile music from playing automatically."]];
-     return <section style={{marginTop:16,border:"1px solid #aab7c6",background:"#fff"}} aria-label="Notifications and accessibility"><div style={{display:"flex",justifyContent:"space-between",gap:12,padding:"12px 14px",background:"#eef3f8",borderBottom:"1px solid #c5ced8",alignItems:"center",flexWrap:"wrap"}}><div><p className="eyebrow">HANAMI NETWORK</p><h4 style={{margin:"3px 0",font:"400 20px Georgia,serif"}}>Notification Center</h4><small>{dndActive?`Do Not Disturb active${suppressed?` • ${suppressed} routine notification${suppressed===1?"":"s"} suppressed`:""}. Safety and administrative notices remain visible.`:notice}</small></div><div style={{display:"flex",gap:8,flexWrap:"wrap"}}><button type="button" onClick={()=>setOpen(v=>!v)} style={{minHeight:34}}>🔔 Notifications {unread?`(${unread})`:""}</button>{unread>0&&<button type="button" onClick={markAllRead} style={{minHeight:34}}>Mark visible read</button>}<button type="button" onClick={()=>setSettingsOpen(v=>!v)} style={{minHeight:34}}>Accessibility & Preferences</button></div></div>{systemNotices.length>0&&<div style={{padding:"10px 14px",background:"#fff8dc",borderBottom:"1px solid #dbc981"}}>{systemNotices.map(item=><article key={item.id} style={{marginBottom:6}}><strong>[{item.severity.toUpperCase()}] {item.title}</strong><div style={{fontSize:10,marginTop:2}}>{item.body}</div></article>)}</div>}{open&&<div style={{padding:14,display:"grid",gap:8}}>{visibleNotifications.length?visibleNotifications.map(item=><article key={item.id} style={{padding:10,border:"1px solid #ccd4dc",background:item.is_read?"#fff":"#f3f8ff"}}><div style={{display:"flex",justifyContent:"space-between",gap:8}}><strong>{item.title}</strong><small>{item.category.replaceAll("_"," ")}</small></div><p style={{margin:"5px 0",fontSize:10}}>{item.body}</p>{item.href&&<a href={item.href} style={{fontSize:9}}>Open related item →</a>}{!item.is_read&&<button type="button" onClick={()=>markRead(item.id)}>Mark read</button>}</article>):<p>{dndActive?"No essential notifications are waiting while Do Not Disturb is active.":"No notifications yet."}</p>}</div>}{settingsOpen&&<div style={{padding:14,display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:14}}><div><h5>Accessibility & Profile Effects</h5><label style={{display:"block",marginBottom:8}}>Font size <select value={access.font_scale} onChange={e=>saveAccess({...access,font_scale:Number(e.target.value)})}><option value={0.9}>Smaller</option><option value={1}>Standard</option><option value={1.1}>Large</option><option value={1.2}>Extra large</option><option value={1.3}>Maximum</option></select></label><label style={{display:"block",marginBottom:9}}>Display brightness <input type="range" min="0.7" max="1.15" step="0.05" value={access.brightness} onChange={e=>saveAccess({...access,brightness:Number(e.target.value)})}/></label><label style={{display:"block",marginBottom:9}}>Profile music volume <input type="range" min="0" max="1" step="0.05" disabled={access.music_muted} value={access.music_volume} onChange={e=>saveAccess({...access,music_volume:Number(e.target.value)})}/></label>{toggles.map(([label,key,help])=><label key={key} style={{display:"grid",gridTemplateColumns:"auto 1fr",gap:"2px 7px",marginBottom:8,alignItems:"start"}}><input type="checkbox" checked={Boolean(access[key])} onChange={e=>saveAccess({...access,[key]:e.target.checked})}/><span>{label}<small style={{display:"block",color:"#6d7987",fontSize:8,marginTop:2}}>{help}</small></span></label>)}</div><div><h5>Notification Preferences</h5><p style={{fontSize:9,color:"#66758a"}}>Control which categories should create a bell notification. Critical account or safety notices may still appear as required banners.</p>{Object.entries(prefs).map(([key,value])=><label key={key} style={{display:"block",marginBottom:6}}><input type="checkbox" checked={Boolean(value)} onChange={e=>savePrefs({...prefs,[key]:e.target.checked})}/> {key.replaceAll("_"," ")}</label>)}</div></div>}</section>;
-    }
-    
-  operator: 'doesNotMatch'
-  stack: |-
-    TestContext.<anonymous> (file:///home/runner/work/Hanami-High/Hanami-High/tests/staff-operations-expansion.test.mjs:42:9)
-    Test.runInAsyncScope (node:async_hooks:214:14)
-    Test.run (node:internal/test_runner/test:1047:25)
-    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
-    Test.postRun (node:internal/test_runner/test:1173:19)
-    Test.run (node:internal/test_runner/test:1101:12)
-    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ---
+  duration_ms: 0.460622
+  type: 'test'
+  ...
+# Subtest: Admin workspace includes storyline incident and evidence operations
+ok 181 - Admin workspace includes storyline incident and evidence operations
+  ---
+  duration_ms: 0.115173
+  type: 'test'
+  ...
+# Subtest: Faculty dashboard includes a private lounge workflow
+ok 182 - Faculty dashboard includes a private lounge workflow
+  ---
+  duration_ms: 0.067631
+  type: 'test'
+  ...
+# Subtest: dark mode controls are absent from Hanami accessibility settings
+ok 183 - dark mode controls are absent from Hanami accessibility settings
+  ---
+  duration_ms: 0.064007
+  type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 184 - student activities are loaded for the active character
   ---
-  duration_ms: 0.754384
+  duration_ms: 0.586903
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 185 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.175231
+  duration_ms: 0.139369
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 186 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.237224
+  duration_ms: 0.179149
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 187 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.130084
+  duration_ms: 0.092569
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 188 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 4.380652
+  duration_ms: 3.954566
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 189 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 0.974793
+  duration_ms: 0.949538
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 190 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 0.896236
+  duration_ms: 3.439712
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 191 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.369232
+  duration_ms: 1.576861
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 192 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.051257
+  duration_ms: 0.796748
   type: 'test'
   ...
 1..192
 # tests 192
 # suites 0
-# pass 181
-# fail 11
+# pass 191
+# fail 1
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 767.516963
+# duration_ms 575.200811
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 20ms
+✓ Running next.config.ts took 16ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -282,15 +282,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 4.5s
+✓ Compiled successfully in 3.2s
   Running TypeScript ...
-  Finished TypeScript in 6.3s ...
+  Finished TypeScript in 4.3s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/24) ...
   Generating static pages using 3 workers (6/24) 
   Generating static pages using 3 workers (12/24) 
   Generating static pages using 3 workers (18/24) 
-✓ Generating static pages using 3 workers (24/24) in 442ms
+✓ Generating static pages using 3 workers (24/24) in 338ms
   Finalizing page optimization ...
 
 Route (app)
