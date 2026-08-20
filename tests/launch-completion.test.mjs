@@ -34,7 +34,7 @@ test("suspended accounts are blocked and governance is audited",()=>{
 test("messaging launch feature set includes unread state attachments and group management",()=>{
   assert.match(inbox,/conversation_unread_counts/);assert.match(inbox,/mark_conversation_read/);assert.match(inbox,/message_attachments/);assert.match(inbox,/message-media-sign/);assert.match(inbox,/8\*1024\*1024/);
   for(const action of ["add_group_participant","remove_group_participant","rename_group_conversation","leave_group_conversation"])assert.match(inbox,new RegExp(action));
-  assert.match(signer,/conversation_participants/);assert.match(signer,/message_attachments/);assert.match(signer,/expiresIn:300/);
+  assert.match(signer,/conversation_participants/);assert.match(signer,/message_attachments/);assert.match(signer,/expiresIn:900/);assert.match(signer,/expires_in:900/);
 });
 
 test("academic launch feature set includes attendance report cards and weighted grading",()=>{
