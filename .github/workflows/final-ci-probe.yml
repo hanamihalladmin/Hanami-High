@@ -42,16 +42,31 @@ jobs:
           echo '=== routes ===' >>"$LOG"
           for route in \
             out/index.html \
+            out/about/index.html \
+            out/academics/index.html \
+            out/apply/index.html \
             out/calendar/index.html \
+            out/campus-life/index.html \
+            out/changelog/index.html \
+            out/elections/index.html \
+            out/homeroom/index.html \
+            out/organizations/index.html \
             out/portal/index.html \
-            out/portal/student/index.html \
-            out/portal/student/class/index.html \
+            out/portal/admin/index.html \
+            out/portal/city/index.html \
             out/portal/faculty/index.html \
             out/portal/help/index.html \
-            out/portal/admin/index.html \
+            out/portal/lore/index.html \
             out/portal/owner/index.html \
-            out/updates/index.html \
-            out/traditions/index.html; do
+            out/portal/owner/student-viewer/index.html \
+            out/portal/roadmap/index.html \
+            out/portal/student/index.html \
+            out/portal/student/class/index.html \
+            out/rooms/index.html \
+            out/rules/index.html \
+            out/sports/index.html \
+            out/traditions/index.html \
+            out/updates/index.html; do
             if [ ! -f "$route" ]; then
               echo "MISSING ROUTE: $route" >>"$LOG"
               [ "$CODE" -eq 0 ] && CODE=1
