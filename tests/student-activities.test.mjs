@@ -21,12 +21,12 @@ test("campus activity membership reads remain owner scoped",()=>{
 
 test("student dashboard has no remaining placeholder modules",()=>{
   assert.match(dashboard,/StudentActivitiesPanel accessToken=\{accessToken\} characterId=\{character\.id\}/);
-  assert.match(dashboard,/Student Action & Support/);
+  assert.match(dashboard,/StudentActionSupportPanel accessToken=\{accessToken\} characterId=\{character\.id\}/);
   assert.match(dashboard,/NotificationAccessibilityPanel accessToken=\{accessToken\}/);
   assert.match(dashboard,/CommunityCenterPanel accessToken=\{accessToken\}/);
   assert.match(dashboard,/SchoolResourcesPanel accessToken=\{accessToken\}/);
-  assert.match(dashboard,/Messages/);
-  assert.match(dashboard,/Profile Studio/);
+  assert.match(dashboard,/MessageCenterPanel/);
+  assert.match(dashboard,/ProfileDesignWorkspace/);
   assert.doesNotMatch(dashboard,/Module coming next/);
 });
 
