@@ -6,6 +6,7 @@ import PublicPageTextEditor from "./components/PublicPageTextEditor";
 import OwnerWebsiteAccess from "./components/OwnerWebsiteAccess";
 import PortalViewModeToggle from "./components/PortalViewModeToggle";
 import ProfileOpenBridge from "./components/ProfileOpenBridge";
+import PortalThemeRuntime from "./components/PortalThemeRuntime";
 import GlobalRulesNotice from "./components/GlobalRulesNotice";
 import SiteThemeRuntime from "./components/SiteThemeRuntime";
 import RoleplayWeatherEffects from "./components/RoleplayWeatherEffects";
@@ -28,5 +29,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><OwnerWebsiteAccess/><PortalViewModeToggle/><ProfileOpenBridge/><SiteThemeRuntime/><ExamWeekRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/>{children}</body></html>;
+  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><OwnerWebsiteAccess/><PortalViewModeToggle/><ProfileOpenBridge/><PortalThemeRuntime/><SiteThemeRuntime/><ExamWeekRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/>{children}</body></html>;
 }
