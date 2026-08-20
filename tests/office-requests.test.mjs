@@ -6,6 +6,7 @@ const member=await readFile(new URL("../app/portal/OfficeRequestPanel.tsx",impor
 const admin=await readFile(new URL("../app/portal/admin/AdminOfficeRequestManager.tsx",import.meta.url),"utf8");
 const dashboard=await readFile(new URL("../app/portal/DashboardShell.tsx",import.meta.url),"utf8");
 const adminPortal=await readFile(new URL("../app/portal/admin/AdminPortalClient.tsx",import.meta.url),"utf8");
+const workspace=await readFile(new URL("../app/portal/admin/AdminWorkspace.tsx",import.meta.url),"utf8");
 const migration=await readFile(new URL("../supabase/migrations/20260818165932_school_office_requests_foundation.sql",import.meta.url),"utf8");
 const grants=await readFile(new URL("../supabase/migrations/20260818181600_tighten_school_office_request_grants.sql",import.meta.url),"utf8");
 
@@ -44,8 +45,9 @@ test("Office staff queue stays permission scoped",()=>{
   assert.match(migration,/content_editor/);
   assert.match(migration,/security invoker/);
   assert.match(admin,/rpc\/office_request_queue/);
-  assert.match(adminPortal,/canEditContent/);
-  assert.match(adminPortal,/AdminOfficeRequestManager/);
+  assert.match(adminPortal,/AdminWorkspace/);
+  assert.match(workspace,/canEditContent/);
+  assert.match(workspace,/AdminOfficeRequestManager/);
 });
 
 test("anonymous users have no direct School Office table grants",()=>{
