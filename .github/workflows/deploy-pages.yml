@@ -1,5 +1,5 @@
 name: Deploy Hanami High
-# Deployment refresh: rules, profile fixes, privacy, and owner moderation release
+# Deployment refresh: School Resources layout + CI regression fixes
 
 on:
   push:
