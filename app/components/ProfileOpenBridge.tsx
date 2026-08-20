@@ -11,9 +11,10 @@ export default function ProfileOpenBridge(){
    if(!handle)return;
    const heading=document.getElementById("profile-search-title");
    const section=heading?.closest("section");
-   const details=section?.closest("details");
+   if(!(section instanceof HTMLElement))return;
+   const details=section.closest("details");
    if(details instanceof HTMLDetailsElement)details.open=true;
-   const input=section?.querySelector<HTMLInputElement>('input[placeholder="character_handle"]');
+   const input=section.querySelector<HTMLInputElement>('input[placeholder="character_handle"]');
    const form=input?.closest("form");
    if(!input||!form)return;
    const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value")?.set;
