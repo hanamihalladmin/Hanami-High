@@ -43,141 +43,141 @@ exit_code=0
 
 --- failing checks ---
 --- test summary ---
-# tests 247
-# pass 247
+# tests 249
+# pass 249
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.244866
+  duration_ms: 0.172331
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
-ok 230 - Search Everything includes the shipped website and portal page index
+ok 232 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.215454
+  duration_ms: 1.291939
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
-ok 231 - people results expose one-click profile opening
+ok 233 - people results expose one-click profile opening
   ---
-  duration_ms: 0.216564
+  duration_ms: 0.21995
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
-ok 232 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
+ok 234 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 6.841988
+  duration_ms: 6.829313
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
-ok 233 - Owner receives system health and aggregate staff analytics
+ok 235 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 0.915085
+  duration_ms: 1.058984
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
-ok 234 - Admin workspace includes storyline incident and evidence operations
+ok 236 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.23607
+  duration_ms: 0.270344
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
-ok 235 - Faculty dashboard includes a private lounge workflow
+ok 237 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.179264
+  duration_ms: 0.194543
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 236 - dark mode controls are absent from Hanami accessibility settings
+ok 238 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.156371
+  duration_ms: 0.221913
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 237 - student activities are loaded for the active character
+ok 239 - student activities are loaded for the active character
   ---
-  duration_ms: 1.240291
+  duration_ms: 1.029409
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 238 - campus activity membership reads remain owner scoped
+ok 240 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.229518
+  duration_ms: 0.263331
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 239 - student dashboard has no remaining placeholder modules
+ok 241 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.383274
+  duration_ms: 0.373056
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
-ok 240 - Student activity UI contains no launch test-data labels
+ok 242 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.262919
+  duration_ms: 0.237823
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 241 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 243 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.856646
+  duration_ms: 1.234342
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 242 - Student life feeds validate owned Student character even for privileged accounts
+ok 244 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.252461
+  duration_ms: 0.233154
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 243 - accessibility and notification preferences bind to signed-in user automatically
+ok 245 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.684391
+  duration_ms: 5.402973
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 244 - group chat creation uses a validated private helper and creator management
+ok 246 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.39536
+  duration_ms: 1.452859
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 245 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 247 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.28821
+  duration_ms: 1.483506
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 246 - School Office separates staff action waiting member and archive queues
+ok 248 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.683977
+  duration_ms: 1.910332
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 247 - Help has a direct router and support anchor
+ok 249 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.331411
+  duration_ms: 1.499956
   type: 'test'
   ...
-1..247
-# tests 247
+1..249
+# tests 249
 # suites 0
-# pass 247
+# pass 249
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1586.303444
+# duration_ms 1553.49614
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 25ms
+✓ Running next.config.ts took 26ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -186,15 +186,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.9s
+✓ Compiled successfully in 5.8s
   Running TypeScript ...
-  Finished TypeScript in 9.3s ...
+  Finished TypeScript in 9.1s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 640ms
+✓ Generating static pages using 3 workers (28/28) in 618ms
   Finalizing page optimization ...
 
 Route (app)
