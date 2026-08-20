@@ -34,7 +34,7 @@ test("class competitions Exams Week and honors are fully wired",async()=>{
  const layout=await read("app/layout.tsx");
  for(const token of ["class_competitions","class_competition_points","exam_week_config","exam_assignments"])assert.match(member,new RegExp(token));
  for(const token of ["class_competitions","exam_week_config","student_honors"])assert.match(admin,new RegExp(token));
- assert.match(admin,/show_rank_publicly/);assert.match(dashboard,/ClassCompetitionExamPanel/);assert.match(dashboard,/Competitions & Exams Week/);
+ assert.match(admin,/show_rank_publicly/);assert.match(dashboard,/ClassCompetitionExamPanel/);assert.match(dashboard,/view==="classes"/);
  assert.match(runtime,/current_exam_week_mode/);assert.match(runtime,/hanamiExamWeek/);assert.match(layout,/ExamWeekRuntime/);assert.match(layout,/exam-week\.css/);
 });
 
