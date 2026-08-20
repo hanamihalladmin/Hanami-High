@@ -31,8 +31,8 @@ test("faculty written late policies are supported",async()=>{
   const faculty=await read("app/portal/FacultyCourseManager.tsx");
   assert.match(migration,/drop constraint if exists course_assignments_late_policy_check/);
   assert.match(migration,/char_length\(late_policy\) <= 500/);
-  assert.match(faculty,/latePolicy\.trim\(\)\|\|null/);
-  assert.match(faculty,/10% deduction/);
+  assert.match(faculty,/late_policy:latePolicy\.trim\(\)\|\|null/);
+  assert.match(faculty,/<span>Late policy<\/span>/);
 });
 
 test("opportunity editor distinguishes drafts from immediate publishing",async()=>{
