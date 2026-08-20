@@ -49,12 +49,14 @@ test("full community and moderation roadmap remains wired",async()=>{
 test("full worldbuilding roadmap remains wired",async()=>{
  const layout=await read("app/layout.tsx");
  const theme=await read("app/components/SiteThemeRuntime.tsx");
+ const retro=await read("app/retro-ui.css");
  const weather=await read("app/components/RoleplayWeatherEffects.tsx");
  const examRuntime=await read("app/components/ExamWeekRuntime.tsx");
  const city=await read("app/portal/city/HanamiCityClient.tsx");
  const lore=await read("app/portal/lore/LoreCanonExplorerClient.tsx");
- contains(layout,["SiteThemeRuntime","RoleplayWeatherEffects","ExamWeekRuntime"]);
- contains(theme,["2006","current_school_theme"]);
+ contains(layout,["SiteThemeRuntime","RoleplayWeatherEffects","ExamWeekRuntime","retro-ui.css"]);
+ contains(theme,["current_school_theme"]);
+ contains(retro,["Verdana","Trebuchet MS","Courier New"]);
  contains(weather,["sakura","rainy","typhoon","winter"]);
  contains(examRuntime,["current_exam_week_mode"]);
  contains(city,["city_transit_lines","city_transit_services","city_commute_routes","station_description","city_neighborhoods"]);
