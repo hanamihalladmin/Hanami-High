@@ -9,9 +9,12 @@
   .about-layout,.academic-page-layout,.campus-page-layout{grid-template-columns:1fr!important}
   .about-nav,.academic-side,.campus-side{position:static!important}
   .portal-gateway{grid-template-columns:1fr!important}
+  main,section,article,details,form,fieldset,label{min-width:0}
+  table{max-width:100%}
+  img,video,canvas,svg{max-width:100%}
 }
 @media(max-width:640px){
-  body{font-size:12px;background-size:14px 14px}
+  body{font-size:12px;background-size:14px 14px;overflow-x:hidden}
   .site-page{width:100%;margin:0;border-left:0;border-right:0;box-shadow:none}
   .network-strip{font-size:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .brand-row{display:grid;grid-template-columns:1fr;gap:10px}
@@ -38,7 +41,18 @@
   .portal-features,.portal-rules{margin-left:10px!important;margin-right:10px!important}
   .school-header+*{scroll-margin-top:8px}
   button,input,select,textarea,a.primary-action,a.secondary-action{touch-action:manipulation}
-  input,select,textarea{font-size:16px!important}
+  input,select,textarea{font-size:16px!important;max-width:100%;box-sizing:border-box}
+  textarea{resize:vertical}
+  button{max-width:100%;white-space:normal}
+  pre,code{overflow-wrap:anywhere;word-break:break-word}
+  table{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  th,td{white-space:normal;overflow-wrap:anywhere}
+  main,section,article,details,form,fieldset,label,div{max-width:100%;box-sizing:border-box}
+  img,video,canvas,iframe{max-width:100%;height:auto}
+  [style*="grid-template-columns"]{min-width:0}
+  [style*="display:flex"],[style*="display: flex"]{min-width:0}
+  [style*="gap:"]{min-width:0}
+  a{overflow-wrap:anywhere}
 }
 @media(max-width:420px){
   .brand-lockup h1,.brand-name{font-size:22px!important}
