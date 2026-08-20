@@ -149,9 +149,9 @@ test("profile background uploads persist and use privacy-aware media signing",()
 
 test("both role dashboards expose the shared Profile Design Workspace",()=>{
   assert.match(dashboard,/ProfileDesignWorkspace accessToken=\{accessToken\} characterId=\{character\.id\}/);
-  assert.match(dashboard,/Profile & Privacy/);
-  assert.match(dashboard,/Profile Templates/);
-  assert.match(dashboard,/Profile Studio/);
+  assert.match(dashboard,/CharacterProfilePanel/);
+  assert.match(dashboard,/ProfileLookupPanel/);
+  assert.match(dashboard,/view==="profile"/);
 });
 
 test("TEST Faculty fixture is explicit test data, owner scoped, and Owner only",()=>{
