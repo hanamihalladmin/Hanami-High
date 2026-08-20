@@ -156,49 +156,49 @@ not ok 248 - student dashboard has no remaining placeholder modules
 # Subtest: Student activity UI contains no launch test-data labels
 ok 249 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.271932
+  duration_ms: 0.243276
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 250 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.907908
+  duration_ms: 1.10282
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 251 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.258397
+  duration_ms: 0.304018
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 252 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.87709
+  duration_ms: 5.369972
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 253 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.454898
+  duration_ms: 1.537724
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 254 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.296741
+  duration_ms: 1.437854
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 255 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.890447
+  duration_ms: 1.819829
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 256 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.267355
+  duration_ms: 1.465896
   type: 'test'
   ...
 1..256
@@ -209,14 +209,14 @@ ok 256 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1809.909086
+# duration_ms 1563.44487
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 32ms
+✓ Running next.config.ts took 25ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -225,15 +225,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.8s
+✓ Compiled successfully in 5.5s
   Running TypeScript ...
-  Finished TypeScript in 11.1s ...
+  Finished TypeScript in 9.0s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 702ms
+✓ Generating static pages using 3 workers (28/28) in 582ms
   Finalizing page optimization ...
 
 Route (app)
