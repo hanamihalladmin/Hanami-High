@@ -1,12 +1,21 @@
 HANAMI_FINAL_CI=FAIL
 exit_code=1
 --- lint ---
-  18 |  async function save(event:FormEvent<HTMLFormElement>){event.preventDefault();if(!canEdit||saving)return;setSaving(true);setNotice("Updating school status…");try{const response=await fetch(`${SUPABASE_URL}/rest/v1/school_status_config?key=eq.main`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status,message:message.trim(),updated_by:userId,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("School status could not be updated.");await load();setNotice("School status updated across the Hanami network.");}catch(error){setNotice(error instanceof Error?error.message:"School status could not be updated.");}finally{setSaving(false);}}
-  19 |  return <section className={styles.panel} aria-labelledby="school-status-admin-title"><div className={styles.heading}><div><p className="eyebrow">SCHOOL OPERATIONS</p><h3 id="school-status-admin-title">School Status</h3></div><span>{canEdit?"EDITOR ACCESS":"READ ONLY"}</span></div><div className={styles.notice} aria-live="polite">{notice}</div><form className={styles.form} onSubmit={save}><div className={styles.row}><label><span>Operating status</span><select value={status} onChange={e=>setStatus(e.target.value as Status)} disabled={!canEdit}><option value="open">Open</option><option value="delayed">Delayed</option><option value="closed">Closed</option><option value="holiday">Holiday</option><option value="emergency">Emergency</option></select></label><label><span>Last updated</span><input value={updatedAt?new Intl.DateTimeFormat("en-US",{dateStyle:"medium",timeStyle:"short",timeZone:"Asia/Tokyo"}).format(new Date(updatedAt)):"—"} readOnly/></label></div><label><span>Status message</span><textarea value={message} maxLength={500} onChange={e=>setMessage(e.target.value)} disabled={!canEdit}/></label>{canEdit&&<button type="submit" disabled={saving}>{saving?"Updating…":"Update school status"}</button>}</form></section>;
-  20 | }  react-hooks/set-state-in-effect
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
 
-/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminStaffAnalyticsPanel.tsx
-  9:584  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminLoreCanonEditor.tsx:14:22
+  12 |  const [loreEdits,setLoreEdits]=useState<Record<string,Lore>>({}),[canonEdits,setCanonEdits]=useState<Record<string,Canon>>({});
+  13 |  const load=useCallback(async()=>{try{const [lr,cr]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/lore_pages?select=id,title,slug,category,summary,body,status&order=updated_at.desc`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/canon_facts?select=id,subject,fact,classification,source_note&order=created_at.desc`,{headers:headers(accessToken)})]);if(!lr.ok||!cr.ok)throw new Error("Editorial data could not be loaded.");const l=await lr.json() as Lore[],c=await cr.json() as Canon[];setLore(l);setCanon(c);setLoreEdits(Object.fromEntries(l.map(x=>[x.id,{...x}])));setCanonEdits(Object.fromEntries(c.map(x=>[x.id,{...x}])));setNotice("Lore and canon editorial workspace ready.");}catch(error){setNotice(error instanceof Error?error.message:"Editorial workspace could not be loaded.");}},[accessToken]);
+> 14 |  useEffect(()=>{void load();},[load]);
+     |                      ^^^^ Avoid calling setState() directly within an effect
+  15 |  async function saveLore(id:string){const row=loreEdits[id];if(!row)return;setBusy(true);try{const r=await fetch(`${SUPABASE_URL}/rest/v1/lore_pages?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({title:row.title.trim(),category:row.category,summary:row.summary.trim(),body:row.body.trim(),status:row.status,updated_at:new Date().toISOString()})});if(!r.ok)throw new Error("Lore article could not be saved.");setNotice(`Saved ${row.title}.`);await load();}catch(error){setNotice(error instanceof Error?error.message:"Lore article could not be saved.");}finally{setBusy(false);}}
+  16 |  async function saveCanon(id:string){const row=canonEdits[id];if(!row)return;setBusy(true);try{const r=await fetch(`${SUPABASE_URL}/rest/v1/canon_facts?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({subject:row.subject.trim(),fact:row.fact.trim(),classification:row.classification,source_note:row.source_note.trim()})});if(!r.ok)throw new Error("Canon entry could not be saved.");setNotice(`Updated canon entry for ${row.subject}.`);await load();}catch(error){setNotice(error instanceof Error?error.message:"Canon entry could not be saved.");}finally{setBusy(false);}}
+  17 |  return <section style={{margin:"16px 0",border:"1px solid #9eacbb",background:"#f4f7fa",padding:14}} aria-label="Lore and canon editor"><p className="eyebrow">LORE & CANON EDITORIAL</p><h3 style={{margin:"4px 0",font:"400:24px Georgia,serif"}}>Living Wiki & Canon Desk</h3><small>{notice}</small><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(320px,1fr))",gap:12,marginTop:12}}>  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminModerationManager.tsx
+  17:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
 
 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
 * Update external systems with the latest state from React.
@@ -14,14 +23,16 @@ Effects are intended to synchronize state between React and external systems suc
 
 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
 
-/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminStaffAnalyticsPanel.tsx:9:584
-   7 | function headers(token:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${token}`,...extra};}
-   8 | type Metric={metric:string;value:number};
->  9 | export default function AdminStaffAnalyticsPanel({accessToken}:{accessToken:string}){const [rows,setRows]=useState<Metric[]>([]);const [notice,setNotice]=useState("Loading aggregate school analytics…");const load=useCallback(async()=>{const r=await fetch(`${SUPABASE_URL}/rest/v1/rpc/staff_analytics_summary`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:"{}"});if(r.ok){setRows(await r.json());setNotice("Aggregate analytics updated.");}else setNotice("Analytics could not be loaded for this staff role.");},[accessToken]);useEffect(()=>{void load();},[load]);const label=(v:string)=>v.replaceAll("_"," ").replace(/\b\w/g,m=>m.toUpperCase());return <section style={{marginTop:18,border:"1px solid #aab7c6",background:"#fff"}}><div style={{padding:12,background:"#eef3f8",borderBottom:"1px solid #c5ced8",display:"flex",justifyContent:"space-between",gap:8,flexWrap:"wrap"}}><div><p className="eyebrow">STAFF ANALYTICS</p><h3 style={{margin:"3px 0",font:"400:21px Georgia,serif"}}>Aggregate School Activity</h3><small>{notice}</small></div><button type="button" onClick={()=>void load()}>Refresh</button></div><div style={{padding:12,display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:8}}>{rows.map(row=><article key={row.metric} style={{padding:10,border:"1px solid #d3dae1"}}><small>{label(row.metric)}</small><strong style={{display:"block",fontSize:20}}>{row.value}</strong></article>)}</div><p style={{padding:"0 12px 12px",fontSize:9,color:"#667789"}}>Aggregate only: no private message contents, browsing histories, profile-view identities, or per-user behavior reports are collected for this dashboard.</p></section>;}
-     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^^^^ Avoid calling setState() directly within an effect
-  10 |  react-hooks/set-state-in-effect
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminModerationManager.tsx:17:17
+  15 |  const [items,setItems]=useState<Report[]>([]);const [notes,setNotes]=useState<Record<string,string>>({});const [notice,setNotice]=useState("Loading moderation reports…");const [saving,setSaving]=useState(false);const canModerate=access.site_admin||access.moderator;
+  16 |  const load=useCallback(async()=>{if(!canModerate){setItems([]);setNotice("This account does not have moderation permission.");return;}const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/moderation_report_queue`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:"{}"});if(!response.ok)throw new Error("The moderation queue could not be loaded.");const rows=await response.json() as Report[];setItems(rows);setNotes(Object.fromEntries(rows.map(item=>[item.report_id,item.review_note??""])));setNotice(rows.length?`${rows.length} report${rows.length===1?"":"s"} in the moderation queue.`:"No character reports are currently in the queue.");},[accessToken,canModerate]);
+> 17 |  useEffect(()=>{load().catch(error=>setNotice(error instanceof Error?error.message:"The moderation queue could not be loaded."));},[load]);
+     |                 ^^^^ Avoid calling setState() directly within an effect
+  18 |  async function updateReport(report:Report,status:Status){if(!canModerate||saving)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/character_reports?id=eq.${encodeURIComponent(report.report_id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status,reviewed_by:userId,review_note:notes[report.report_id]??"",updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("The report could not be updated.");await load();setNotice(`Report moved to ${status}.`);}catch(error){setNotice(error instanceof Error?error.message:"The report could not be updated.");}finally{setSaving(false);}}
+  19 |  return <section className={styles.panel} aria-labelledby="moderation-title"><div className={styles.heading}><div><p className="eyebrow">SAFETY & MODERATION</p><h3 id="moderation-title">Character Report Queue</h3></div><span>{canModerate?"MODERATOR ACCESS":"NO ACCESS"}</span></div><div className={styles.notice} aria-live="polite">{notice}</div>{canModerate&&<div className={styles.list}>{items.map(item=><article key={item.report_id} className={styles.item}><div className={styles.top}><div><p className="eyebrow">{item.reason.replaceAll("_"," ").toUpperCase()} • {item.status.toUpperCase()}</p><h4>{item.target_display_name} <span>@{item.target_handle}</span></h4><small>Reported by {item.reporter_display_name} (@{item.reporter_handle}) • {new Date(item.created_at).toLocaleString()}</small></div><b>{item.target_role.toUpperCase()}</b></div><p>{item.details||"No additional details were supplied."}</p><label><span>Internal review note</span><textarea value={notes[item.report_id]??""} maxLength={3000} onChange={e=>setNotes(current=>({...current,[item.report_id]:e.target.value}))}/></label><div className={styles.actions}><button type="button" onClick={()=>updateReport(item,"reviewing")} disabled={saving}>Reviewing</button><button type="button" onClick={()=>updateReport(item,"resolved")} disabled={saving}>Resolve</button><button type="button" onClick={()=>updateReport(item,"dismissed")} disabled={saving}>Dismiss</button></div></article>)}</div>}</section>;
+  20 | }  react-hooks/set-state-in-effect
 
-/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminSupportTicketManager.tsx
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminNarrativeModerationPanel.tsx
   18:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
 
 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
@@ -30,122 +41,53 @@ Effects are intended to synchronize state between React and external systems suc
 
 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
 
-/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminSupportTicketManager.tsx:18:22
-  16 |  const visible=useMemo(()=>tickets.filter(t=>filter==="all"?true:filter==="closed"?["resolved","closed"].includes(t.status):!["resolved","closed"].includes(t.status)),[tickets,filter]);
-  17 |  const load=useCallback(async()=>{try{const [ticketResponse,messageResponse]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/support_tickets?select=id,requester_user_id,requester_character_id,category,subject,body,status,priority,tags,assigned_to,created_at,updated_at&order=updated_at.desc&limit=150`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/support_ticket_messages?select=id,ticket_id,author_user_id,body,is_staff_reply,created_at&order=created_at.asc&limit=500`,{headers:headers(accessToken)})]);if(!ticketResponse.ok||!messageResponse.ok)throw new Error("Support ticket queue could not be loaded.");const ticketRows=await ticketResponse.json() as Ticket[];setTickets(ticketRows);setMessages(await messageResponse.json() as Message[]);setSelectedId(current=>current&&ticketRows.some(t=>t.id===current)?current:(ticketRows[0]?.id??""));setNotice(`${ticketRows.length} support ticket${ticketRows.length===1?"":"s"} loaded.`);}catch(error){setNotice(error instanceof Error?error.message:"Support ticket queue could not be loaded.");}},[accessToken]);
-> 18 |  useEffect(()=>{void load();},[load]);
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminNarrativeModerationPanel.tsx:18:22
+  16 |  const [query,setQuery]=useState("");const [characters,setCharacters]=useState<CharacterRow[]>([]);const [selected,setSelected]=useState<CharacterRow|null>(null);const [timeline,setTimeline]=useState<Timeline[]>([]);const [cases,setCases]=useState<Conduct[]>([]);const [appeals,setAppeals]=useState<Appeal[]>([]);const [referenceType,setReferenceType]=useState<"case"|"appeal">("case");const [referenceId,setReferenceId]=useState("");const [evidenceDescription,setEvidenceDescription]=useState("");const [evidenceLink,setEvidenceLink]=useState("");const [evidenceFile,setEvidenceFile]=useState<File|null>(null);
+  17 |  const loadStories=useCallback(async()=>{const r=await fetch(`${SUPABASE_URL}/rest/v1/storyline_arcs?select=id,title,summary,status,priority,starts_at,target_end_at,private_notes&order=created_at.desc`,{headers:headers(accessToken)});if(r.ok)setStories(await r.json());},[accessToken]);
+> 18 |  useEffect(()=>{void loadStories();},[loadStories]);
+     |                      ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  19 |  async function createStory(){if(title.trim().length<3)return;const r=await fetch(`${SUPABASE_URL}/rest/v1/storyline_arcs`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({title:title.trim(),summary:summary.trim(),priority})});if(r.ok){setTitle("");setSummary("");setNotice("Private storyline created.");await loadStories();}else setNotice("Storyline could not be created.");}
+  20 |  async function updateStory(id:string,status:string){const r=await fetch(`${SUPABASE_URL}/rest/v1/storyline_arcs?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status,updated_at:new Date().toISOString()})});if(r.ok){setNotice(`Storyline moved to ${status}.`);await loadStories();}}
+  21 |  async function searchCharacters(){const r=await fetch(`${SUPABASE_URL}/rest/v1/rpc/administration_character_directory`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({search_term:query.trim()||null})});if(r.ok)setCharacters((await r.json() as CharacterRow[]).slice(0,12));}  react-hooks/set-state-in-effect
+  29:13  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-explicit-any
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminOfficeRequestManager.tsx
+  20:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminOfficeRequestManager.tsx:20:17
+  18 |  const archiveRows=useMemo(()=>rows.filter(row=>row.status==="resolved"||row.status==="closed"),[rows]);
+  19 |  const load=useCallback(async()=>{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/office_request_queue`,{method:"POST",cache:"no-store",headers:headers(accessToken,{"Content-Type":"application/json"}),body:"{}"});if(!response.ok)throw new Error("School Office queue could not be loaded.");const data=await response.json() as Row[];setRows(data);setNotes(current=>{const next={...current};for(const row of data)if(next[row.request_id]===undefined)next[row.request_id]=row.staff_note;return next;});const actionCount=data.filter(row=>row.status==="submitted"||row.status==="in_review").length;setMessage(actionCount?`${actionCount} request${actionCount===1?"":"s"} need staff action.`:"No School Office requests need staff action.");},[accessToken]);
+> 20 |  useEffect(()=>{load().catch(error=>setMessage(error instanceof Error?error.message:"School Office queue could not be loaded."));},[load]);
+     |                 ^^^^ Avoid calling setState() directly within an effect
+  21 |  async function update(row:Row,status:Status){setSaving(row.request_id);try{const note=(notes[row.request_id]??"").trim();const response=await fetch(`${SUPABASE_URL}/rest/v1/school_office_requests?id=eq.${encodeURIComponent(row.request_id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status,staff_note:note,assigned_to:status==="closed"||status==="waiting_on_member"?null:userId,closed_at:status==="closed"?new Date().toISOString():null,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("The School Office request could not be updated.");await load();setMessage(status==="waiting_on_member"?"Request sent back to the member and removed from the active staff queue.":`Request moved to ${status.replaceAll("_"," ")}.`);}catch(error){setMessage(error instanceof Error?error.message:"The School Office request could not be updated.");}finally{setSaving("");}}
+  22 |  function renderRows(items:Row[],mode:"active"|"waiting"|"archive"){return <div className={styles.list}>{items.length?items.map(row=><article key={row.request_id}><div className={styles.top}><div><strong>{row.subject}</strong><span>@{row.handle} • {row.display_name} • {row.role.toUpperCase()} • {row.request_type.replaceAll("_"," ").toUpperCase()}</span></div><b data-status={row.status}>{row.status.replaceAll("_"," ").toUpperCase()}</b></div><p>{row.body}</p><small>Opened {timeLabel(row.created_at)} • Updated {timeLabel(row.updated_at)}</small>{mode!=="archive"&&<label><span>Staff response shown to member</span><textarea value={notes[row.request_id]??""} onChange={event=>setNotes(current=>({...current,[row.request_id]:event.target.value}))} maxLength={5000} placeholder="Type the School Office response here…"/></label>}{mode==="active"&&<div className={styles.actions}><button type="button" onClick={()=>update(row,"in_review")} disabled={Boolean(saving)}>In review</button><button type="button" onClick={()=>update(row,"waiting_on_member")} disabled={Boolean(saving)}>Need member reply</button><button type="button" onClick={()=>update(row,"resolved")} disabled={Boolean(saving)}>Resolve</button><button type="button" onClick={()=>update(row,"closed")} disabled={Boolean(saving)}>Close</button></div>}{mode==="waiting"&&<div className={styles.actions}><span>Waiting for the member to send a follow-up. This item is not in the active staff queue.</span><button type="button" onClick={()=>update(row,"in_review")} disabled={Boolean(saving)}>Return to staff review</button></div>}</article>):<p className={styles.empty}>No requests in this section.</p>}</div>;}
+  23 |  return <section className={styles.panel} aria-labelledby="admin-office-title"><div className={styles.heading}><div><p className="eyebrow">SCHOOL OFFICE QUEUE</p><h3 id="admin-office-title">Member requests</h3></div><span>{activeRows.length} NEED ACTION</span></div><div className={styles.status} aria-live="polite">{message}</div><div className={styles.sectionHead}><strong>NEEDS STAFF ACTION</strong><span>{activeRows.length}</span></div>{renderRows(activeRows,"active")}<div className={styles.sectionHead}><strong>AWAITING MEMBER RESPONSE</strong><span>{waitingRows.length}</span></div>{renderRows(waitingRows,"waiting")}<details className={styles.archive}><summary>Completed / archive ({archiveRows.length})</summary>{renderRows(archiveRows,"archive")}</details></section>;  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminOperationsExpansionPanel.tsx
+  20:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminOperationsExpansionPanel.tsx:20:22
+  18 |   q("homerooms?select=id,code,grade_level,room_label,is_active&order=code"),q("school_rooms?select=id,room_number,building,floor_label,purpose,department,availability_status&order=building,floor_label,room_number"),q("section_waitlist_entries?select=id,section_id,student_character_id,position,status&status=in.(waiting,offered)&order=position"),q("counseling_appointments?select=id,student_character_id,request_type,status,counselor_name,appointment_at,student_note,staff_note&status=in.(requested,scheduled)&order=created_at"),q("health_office_visits?select=id,student_character_id,reason,status,staff_response&status=in.(requested,scheduled)&order=created_at"),q("support_tickets?select=id,subject,category,status,priority,tags,assigned_to,created_at&status=not.in.(resolved,closed)&order=created_at.desc"),q("student_conduct_cases?select=id,student_character_id,case_type,title,status,appeal_status,details&order=created_at.desc&limit=25"),q("sports_teams?select=id,name,sport,season,coach_character_id,is_active&order=name"),q("sports_team_roster?select=team_id,student_character_id,position,jersey_number,roster_status&order=joined_at"),q("sports_practices?select=id,team_id,starts_at,ends_at,location,note&order=starts_at.desc&limit=30"),q("sports_fixtures?select=id,team_id,opponent,starts_at,location,home_away,status,hanami_score,opponent_score&order=starts_at.desc&limit=40"),q("athletics_eligibility?select=student_character_id,eligible,academic_status,attendance_status,note&order=reviewed_at.desc&limit=40"),q("school_elections?select=id,title,status,school_year&order=created_at.desc"),q("organization_profiles?select=activity_id,recruitment_status,application_required")
+  19 |  ]);setStats(s[0]??null);setHomerooms(h as Homeroom[]);setRooms(r as Room[]);setWaits(w as Wait[]);setCounseling(c as Counseling[]);setHealth(hv as Health[]);setTickets(t as Ticket[]);setConduct(co as Conduct[]);setTeams(st as Team[]);setRosters(sr as Roster[]);setPractices(sp as Practice[]);setFixtures(sf as Fixture[]);setEligibility(ae as Eligibility[]);setElections(e as Election[]);setOrganizations(o as Organization[]);setStatus("School operations updated.");}catch{setStatus("Some school operations could not be loaded. Your permissions may limit this console.");}},[accessToken]);
+> 20 |  useEffect(()=>{void load();},[load]);
      |                      ^^^^ Avoid calling setState() directly within an effect
-  19 |  useEffect(()=>{setTagsDraft(selected?.tags.join(", ")??"");},[selectedId,selected?.tags]);
-  20 |  async function patchTicket(body:Record<string,unknown>){if(!selected)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/support_tickets?id=eq.${encodeURIComponent(selected.id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({...body,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Ticket could not be updated.");await load();setNotice("Support ticket updated.");}catch(error){setNotice(error instanceof Error?error.message:"Ticket could not be updated.");}finally{setSaving(false);}}
-  21 |  async function submitReply(event:FormEvent){event.preventDefault();if(!selected||reply.trim().length<1)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/support_ticket_messages`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({ticket_id:selected.id,author_user_id:userId,body:reply.trim()})});if(!response.ok)throw new Error("Staff reply could not be posted.");setReply("");if(selected.status==="open")await patchTicket({status:"assigned",assigned_to:userId});else await load();setNotice("Staff reply posted.");}catch(error){setNotice(error instanceof Error?error.message:"Staff reply could not be posted.");}finally{setSaving(false);}}  react-hooks/set-state-in-effect
-  19:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+  21 |  async function insert(table:string,body:Record<string,unknown>){const r=await fetch(`${SUPABASE_URL}/rest/v1/${table}`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify(body)});setStatus(r.ok?`${table.replaceAll("_"," ")} record created.`:`${table.replaceAll("_"," ")} record could not be created.`);if(r.ok)await load();}
+  22 |  async function patch(table:string,id:string,body:Record<string,unknown>){const r=await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({...body,updated_at:new Date().toISOString()})});setStatus(r.ok?"Record updated.":"Record could not be updated.");if(r.ok)await load();}
+  23 |  async function saveEligibility(){if(!eligibilityDraft.student_character_id)return;const r=await fetch(`${SUPABASE_URL}/rest/v1/athletics_eligibility?on_conflict=student_character_id`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"}),body:JSON.stringify({...eligibilityDraft,reviewed_by:userId,reviewed_at:new Date().toISOString()})});setStatus(r.ok?"Athletics eligibility saved.":"Athletics eligibility could not be saved.");if(r.ok)await load();}  react-hooks/set-state-in-effect
 
-Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
-* Update external systems with the latest state from React.
-* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
-
-Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminSupportTicketManager.tsx:19:17
-  17 |  const load=useCallback(async()=>{try{const [ticketResponse,messageResponse]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/support_tickets?select=id,requester_user_id,requester_character_id,category,subject,body,status,priority,tags,assigned_to,created_at,updated_at&order=updated_at.desc&limit=150`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/support_ticket_messages?select=id,ticket_id,author_user_id,body,is_staff_reply,created_at&order=created_at.asc&limit=500`,{headers:headers(accessToken)})]);if(!ticketResponse.ok||!messageResponse.ok)throw new Error("Support ticket queue could not be loaded.");const ticketRows=await ticketResponse.json() as Ticket[];setTickets(ticketRows);setMessages(await messageResponse.json() as Message[]);setSelectedId(current=>current&&ticketRows.some(t=>t.id===current)?current:(ticketRows[0]?.id??""));setNotice(`${ticketRows.length} support ticket${ticketRows.length===1?"":"s"} loaded.`);}catch(error){setNotice(error instanceof Error?error.message:"Support ticket queue could not be loaded.");}},[accessToken]);
-  18 |  useEffect(()=>{void load();},[load]);
-> 19 |  useEffect(()=>{setTagsDraft(selected?.tags.join(", ")??"");},[selectedId,selected?.tags]);
-     |                 ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
-  20 |  async function patchTicket(body:Record<string,unknown>){if(!selected)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/support_tickets?id=eq.${encodeURIComponent(selected.id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({...body,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Ticket could not be updated.");await load();setNotice("Support ticket updated.");}catch(error){setNotice(error instanceof Error?error.message:"Ticket could not be updated.");}finally{setSaving(false);}}
-  21 |  async function submitReply(event:FormEvent){event.preventDefault();if(!selected||reply.trim().length<1)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/support_ticket_messages`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({ticket_id:selected.id,author_user_id:userId,body:reply.trim()})});if(!response.ok)throw new Error("Staff reply could not be posted.");setReply("");if(selected.status==="open")await patchTicket({status:"assigned",assigned_to:userId});else await load();setNotice("Staff reply posted.");}catch(error){setNotice(error instanceof Error?error.message:"Staff reply could not be posted.");}finally{setSaving(false);}}
-  22 |  const ticketMessages=selected?messages.filter(m=>m.ticket_id===selected.id):[];                                                                                                        react-hooks/set-state-in-effect
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerBugDetectorPanel.tsx
-  15:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
-
-Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
-* Update external systems with the latest state from React.
-* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
-
-Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerBugDetectorPanel.tsx:15:22
-  13 |  const load=useCallback(async()=>{try{await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_capture_bug_support_tickets`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:"{}"});const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_bug_detector_feed`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:"{}"});if(!response.ok)throw new Error("Owner Bug Detector could not be loaded.");const rows=await response.json() as Bug[];setBugs(rows);setNotes(Object.fromEntries(rows.map(row=>[row.id,row.owner_notes])));setStatus(`${rows.filter(row=>row.status==="detected"||row.status==="investigating").length} active detector finding${rows.filter(row=>row.status==="detected"||row.status==="investigating").length===1?"":"s"}.`);}catch(error){setStatus(error instanceof Error?error.message:"Owner Bug Detector could not be loaded.");}
-  14 |   try{const gh=await fetch("https://api.github.com/repos/hanamihalladmin/Hanami-High/actions/runs?per_page=1",{headers:{Accept:"application/vnd.github+json"}});if(gh.ok){const data=await gh.json() as {workflow_runs?:WorkflowRun[]};setWorkflow(data.workflow_runs?.[0]??null);}else setWorkflow(null);}catch{setWorkflow(null);}},[accessToken]);
-> 15 |  useEffect(()=>{void load();},[load]);
-     |                      ^^^^ Avoid calling setState() directly within an effect
-  16 |  async function updateBug(id:string,nextStatus:Bug["status"]){const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_update_bug_report`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({target_bug_id:id,new_status:nextStatus,new_notes:notes[id]??""})});if(response.ok){setStatus("Bug record updated.");await load();}else setStatus("Bug record could not be updated.");}
-  17 |  const active=useMemo(()=>bugs.filter(b=>b.status==="detected"||b.status==="investigating"),[bugs]);const critical=active.filter(b=>b.severity==="critical").length;const high=active.filter(b=>b.severity==="high").length;
-  18 |  const fmt=(v:string)=>new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}).format(new Date(v));  react-hooks/set-state-in-effect
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerDiscordRoleSyncPanel.tsx
-  13:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
-
-Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
-* Update external systems with the latest state from React.
-* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
-
-Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerDiscordRoleSyncPanel.tsx:13:22
-  11 |  const [guildId,setGuildId]=useState("");const [savedGuildId,setSavedGuildId]=useState("");const [notice,setNotice]=useState("Loading Discord server configuration…");const [saving,setSaving]=useState(false);
-  12 |  const load=useCallback(async()=>{try{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_discord_guild_configuration`,{method:"POST",headers:headers(accessToken),body:"{}"});if(!response.ok)throw new Error("Discord server configuration could not be loaded.");const rows=await response.json() as {guild_id:string}[];const value=rows[0]?.guild_id??"";setGuildId(value);setSavedGuildId(value);setNotice(value?"Discord server ID configured. Members can synchronize roles after signing in with the expanded Discord permissions.":"Enter the Hanami Discord server ID to activate automatic role synchronization.");}catch(error){setNotice(error instanceof Error?error.message:"Discord server configuration could not be loaded.");}},[accessToken]);
-> 13 |  useEffect(()=>{void load();},[load]);
-     |                      ^^^^ Avoid calling setState() directly within an effect
-  14 |  async function save(event:FormEvent){event.preventDefault();const clean=guildId.trim();if(!/^\d{16,22}$/.test(clean)){setNotice("Enter a valid numeric Discord server ID.");return;}setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_set_discord_guild_id`,{method:"POST",headers:headers(accessToken),body:JSON.stringify({requested_guild_id:clean})});if(!response.ok)throw new Error("Discord server ID could not be saved.");setSavedGuildId(clean);setNotice("Discord server ID saved. Existing members should sign out and sign back in once so Discord can grant the role-reading scope, then use Resync roles in the Portal Gateway.");}catch(error){setNotice(error instanceof Error?error.message:"Discord server ID could not be saved.");}finally{setSaving(false);}}
-  15 |  return <section className={styles.panel} aria-labelledby="owner-discord-sync-title"><div className={styles.heading}><div><p className="eyebrow">DISCORD ROLE SYNCHRONIZATION</p><h3 id="owner-discord-sync-title">Server role authority</h3></div><span>{savedGuildId?"CONFIGURED":"SETUP REQUIRED"}</span></div><p>Hanami verifies Student, Faculty, and Administrator roles from each member&apos;s own Discord authorization. No Discord bot token is required.</p><form onSubmit={save}><label><span>HANAMI DISCORD SERVER ID</span><input value={guildId} onChange={event=>setGuildId(event.target.value)} inputMode="numeric" placeholder="Example: 123456789012345678" maxLength={22}/></label><button disabled={saving} type="submit">{saving?"Saving…":"Save Server ID"}</button></form><div className={styles.notice} aria-live="polite">{notice}</div><small>To copy the server ID in Discord, enable Developer Mode, then right-click the Hanami server and choose Copy Server ID. The ID is an identifier, not a private credential.</small></section>;
-  16 | }  react-hooks/set-state-in-effect
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerOperationsPanel.tsx
-  24:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
-
-Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
-* Update external systems with the latest state from React.
-* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
-
-Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerOperationsPanel.tsx:24:22
-  22 |   fetch(`${SUPABASE_URL}/rest/v1/rpc/account_governance_directory`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({search_text:""})})
-  23 |  ]);if(!f.ok||!r.ok||!s.ok||!a.ok)throw new Error("Owner operations data could not be loaded.");const [flagRows,runtimeRows,sanctionRows,accountRows]=await Promise.all([f.json() as Promise<Flag[]>,r.json() as Promise<Array<{value:Maintenance}>>,s.json() as Promise<Sanction[]>,a.json() as Promise<Account[]>]);setFlags(flagRows);setMaintenance(runtimeRows[0]?.value??{enabled:false});setSanctions(sanctionRows);setAccounts(accountRows);setTargetUser(current=>current||accountRows[0]?.user_id||"");setNotice(`${flagRows.length} feature flags • ${sanctionRows.length} active sanction${sanctionRows.length===1?"":"s"}.`);}catch(error){setNotice(error instanceof Error?error.message:"Owner operations could not be loaded.");}},[accessToken]);
-> 24 |  useEffect(()=>{void load();},[load]);
-     |                      ^^^^ Avoid calling setState() directly within an effect
-  25 |  async function saveFlag(flag:Flag,patch:Partial<Flag>){setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/feature_flags?key=eq.${encodeURIComponent(flag.key)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({...patch,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Feature flag could not be changed.");await load();setNotice(`${flag.key} updated.`);}catch(error){setNotice(error instanceof Error?error.message:"Feature flag could not be changed.");}finally{setSaving(false);}}
-  26 |  async function saveMaintenance(next:Maintenance){setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/site_runtime_config?key=eq.maintenance`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({value:next,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Maintenance setting could not be changed.");setMaintenance(next);setNotice(next.enabled?"Maintenance mode enabled for the Hanami network.":"Maintenance mode disabled.");}catch(error){setNotice(error instanceof Error?error.message:"Maintenance setting could not be changed.");}finally{setSaving(false);}}
-  27 |  async function createSanction(event:FormEvent){event.preventDefault();if(!targetUser||reason.trim().length<3)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/account_sanctions`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({user_id:targetUser,sanction_type:sanctionType,reason:reason.trim(),ends_at:endAt?new Date(endAt).toISOString():null})});if(!response.ok)throw new Error("Sanction could not be created.");setReason("");setEndAt("");await load();setNotice("Granular account sanction applied.");}catch(error){setNotice(error instanceof Error?error.message:"Sanction could not be created.");}finally{setSaving(false);}}  react-hooks/set-state-in-effect
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerPortalClient.tsx
-  25:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
-
-Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
-* Update external systems with the latest state from React.
-* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
-
-Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerPortalClient.tsx:25:17
-  23 |  const [adminHandle,setAdminHandle]=useState("");const [adminPassword,setAdminPassword]=useState("");const [adminDiscordId,setAdminDiscordId]=useState("");const [saving,setSaving]=useState(false);
-  24 |  const initialize=useCallback(async()=>{const stored=readSession();if(!stored){setState("blocked");setMessage("Sign in through the Hanami Portal Gateway first.");return;}setSession(stored);const [ownerResponse,privilegedResponse,userResponse]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/rpc/current_owner_status`,{method:"POST",headers:headers(stored.accessToken,{"Content-Type":"application/json"}),body:"{}"}),fetch(`${SUPABASE_URL}/rest/v1/rpc/has_privileged_portal_session`,{method:"POST",headers:headers(stored.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({requested_portal:"owner"})}),fetch(`${SUPABASE_URL}/auth/v1/user`,{headers:headers(stored.accessToken)})]);if(!ownerResponse.ok||!privilegedResponse.ok||!userResponse.ok){setState("blocked");setMessage("Owner access could not be verified.");return;}const isOwner=Boolean(await ownerResponse.json());if(!isOwner){setState("blocked");setMessage("This Discord account is not the configured Hanami Owner account.");return;}const user=await userResponse.json() as {id?:string};if(!user.id){setState("blocked");setMessage("Owner account ID could not be loaded.");return;}setUserId(user.id);const privileged=Boolean(await privilegedResponse.json());if(!privileged){setState("signin");setMessage("Owner identity confirmed. Enter the separate Owner credentials.");return;}setState("ready");setMessage("Owner identity and privileged sign-in verified. Full Administration workspace is enabled.");},[]);
-> 25 |  useEffect(()=>{initialize();},[initialize]);
-     |                 ^^^^^^^^^^ Avoid calling setState() directly within an effect
-  26 |  async function createAdmin(event:FormEvent<HTMLFormElement>){event.preventDefault();if(!session||saving)return;const cleanTarget=adminDiscordId.trim();setSaving(true);setMessage("Creating administrator credential…");try{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_create_admin_credential`,{method:"POST",headers:headers(session.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({requested_handle:adminHandle.trim().toLowerCase(),requested_password:adminPassword,target_discord_user_id:cleanTarget||null})});if(!response.ok)throw new Error("Administrator credential could not be created. Use a unique handle and a 12+ character password. A Discord user ID is optional.");setAdminHandle("");setAdminPassword("");setAdminDiscordId("");setMessage(cleanTarget?"Administrator credential created and bound to that Discord user ID.":"Administrator login created. It will bind permanently to the first Discord account that successfully signs in with it.");}catch(error){setMessage(error instanceof Error?error.message:"Administrator credential could not be created.");}finally{setSaving(false);}}
-  27 |  async function lockOwner(){if(session)await fetch(`${SUPABASE_URL}/rest/v1/rpc/end_privileged_portal_session`,{method:"POST",headers:headers(session.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({requested_portal:"owner"})});setState("signin");setMessage("Owner portal locked. Normal Hanami sign-in remains active.");}
-  28 |  if(state==="signin")return <PrivilegedPortalLogin portalKind="owner" allowOwnerBootstrap onUnlocked={initialize}/>;  react-hooks/set-state-in-effect
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerSystemHealthAnalyticsPanel.tsx
-  22:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
-
-Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
-* Update external systems with the latest state from React.
-* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
-
-Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerSystemHealthAnalyticsPanel.tsx:22:22
-  20 |   fetch(`${SUPABASE_URL}/rest/v1/changelog_entries?select=version,title,published_at&status=eq.published&order=published_at.desc&limit=1`,{headers:headers(accessToken)})
-  21 |  ]);setOnline(ping.ok);if(a.ok)setMetrics(await a.json());if(h.ok)setHealth(await h.json());if(b.ok)setBugs(await b.json());if(v.ok){const rows=await v.json() as Change[];setVersion(rows[0]??null);}setNotice(ping.ok?"Supabase connection healthy. Owner telemetry refreshed.":"Supabase health check failed.");},[accessToken]);
-> 22 |  useEffect(()=>{void load();const timer=setInterval(()=>void load(),60000);return()=>clearInterval(timer);},[load]);
-     |                      ^^^^ Avoid calling setState() directly within an effect
-  23 |  const label=(key:string)=>key.replaceAll("_"," ").replace(/\b\w/g,m=>m.toUpperCase());
-  24 |  return <section style={{marginTop:18,border:"1px solid #9ba9b7",background:"#fff"}}><div style={{padding:14,background:"#eef3f8",borderBottom:"1px solid #c5ced8",display:"flex",justifyContent:"space-between",gap:12,flexWrap:"wrap"}}><div><p className="eyebrow">OWNER OPERATIONS</p><h3 style={{margin:"3px 0",font:"400:22px Georgia,serif"}}>System Health & Staff Analytics</h3><small>{notice}</small></div><button type="button" onClick={()=>void load()}>Refresh</button></div><div style={{padding:14,display:"grid",gap:14}}><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:8}}><article style={{padding:10,border:"1px solid #cbd4dc"}}><small>SUPABASE</small><strong style={{display:"block",fontSize:18}}>{online?"HEALTHY":"ERROR"}</strong></article><article style={{padding:10,border:"1px solid #cbd4dc"}}><small>DEPLOYMENT VERSION</small><strong style={{display:"block",fontSize:18}}>{process.env.NEXT_PUBLIC_HANAMI_VERSION??version?.version??"development"}</strong><span style={{fontSize:9}}>{version?.title??"No published changelog entry"}</span></article>{metrics.map(m=><article key={m.metric} style={{padding:10,border:"1px solid #cbd4dc"}}><small>{label(m.metric)}</small><strong style={{display:"block",fontSize:18}}>{m.value}</strong></article>)}</div><details open><summary><strong>Recent client/network failures</strong></summary><div style={{display:"grid",gap:6,marginTop:8}}>{health.length?health.map(e=><div key={e.id} style={{padding:8,border:"1px solid #e0e4e8"}}><strong>{label(e.event_type)}</strong> • {e.summary}<div style={{fontSize:8,color:"#69798a"}}>{e.page_path??"Unknown route"} • {new Date(e.created_at).toLocaleString()}</div></div>):<p>No recorded client health failures.</p>}</div></details><details><summary><strong>Recent bug reports</strong></summary><div style={{display:"grid",gap:6,marginTop:8}}>{bugs.length?bugs.map(b=><div key={b.id} style={{padding:8,border:"1px solid #e0e4e8"}}><strong>{b.severity.toUpperCase()} • {b.status}</strong><div>{b.description.slice(0,180)}{b.description.length>180?"…":""}</div><small>{b.page_path} • {new Date(b.created_at).toLocaleString()}</small></div>):<p>No bug reports.</p>}</div></details><p style={{fontSize:9,color:"#687789"}}>Analytics are aggregate-only. This panel does not expose browsing histories, private message contents, or invasive per-user activity tracking.</p></div></section>;
-  25 | }  react-hooks/set-state-in-effect
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/student-viewer/OwnerStudentPortalViewer.tsx
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminOpportunityManager.tsx
   18:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
 
 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
@@ -154,15 +96,17 @@ Effects are intended to synchronize state between React and external systems suc
 
 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
 
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/student-viewer/OwnerStudentPortalViewer.tsx:18:17
-  16 |  const [session,setSession]=useState<PortalSession|null>(null);const [students,setStudents]=useState<Student[]>([]);const [selected,setSelected]=useState("");const [snapshot,setSnapshot]=useState<Snapshot|null>(null);const [status,setStatus]=useState("Verifying Owner access…");
-  17 |  const initialize=useCallback(async()=>{const stored=readSession();if(!stored){setStatus("Open the Owner Portal and sign in first.");return;}setSession(stored);const [owner,gate]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/rpc/current_owner_status`,{method:"POST",headers:headers(stored.accessToken),body:"{}"}),fetch(`${SUPABASE_URL}/rest/v1/rpc/has_privileged_portal_session`,{method:"POST",headers:headers(stored.accessToken),body:JSON.stringify({requested_portal:"owner"})})]);if(!owner.ok||!gate.ok||!Boolean(await owner.json())||!Boolean(await gate.json())){setStatus("Owner identity and privileged Owner sign-in are required.");return;}const directory=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_student_portal_directory`,{method:"POST",headers:headers(stored.accessToken),body:"{}"});if(!directory.ok){setStatus("Student directory could not be loaded.");return;}const rows=await directory.json() as Student[];setStudents(rows);if(rows[0])setSelected(rows[0].character_id);setStatus(rows.length?"Read-only moderation view ready.":"No Student characters found.");},[]);
-> 18 |  useEffect(()=>{initialize();},[initialize]);
-     |                 ^^^^^^^^^^ Avoid calling setState() directly within an effect
-  19 |  useEffect(()=>{if(!session||!selected)return;setStatus("Loading Student portal snapshot…");fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_student_portal_snapshot`,{method:"POST",headers:headers(session.accessToken),body:JSON.stringify({target_character_id:selected})}).then(async r=>{if(!r.ok)throw new Error();setSnapshot(await r.json() as Snapshot);setStatus("Read-only moderation view ready.");}).catch(()=>{setSnapshot(null);setStatus("Student portal snapshot could not be loaded.");});},[session,selected]);
-  20 |  return <section style={{border:"1px solid #9babc0",background:"#fff",padding:16}}>
-  21 |   <p className="eyebrow">OWNER • STUDENT PORTAL VIEWER</p><h2 style={{margin:"4px 0:8px",font:"400 28px Georgia,serif"}}>Moderation view</h2><p style={{maxWidth:820}}>Inspect a Student character&apos;s school portal data without impersonating them or changing their active session. This view is Owner-only and read-only.</p><div style={{padding:10,background:"#fff7d8",border:"1px solid #d9c576",marginBottom:14}}>{status}</div>                                                                       react-hooks/set-state-in-effect
-  19:47  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminOpportunityManager.tsx:18:17
+  16 |  const [rows,setRows]=useState<Opportunity[]>([]);const [queue,setQueue]=useState<QueueRow[]>([]);const [type,setType]=useState<OpportunityType>("job");const [title,setTitle]=useState("");const [department,setDepartment]=useState("");const [description,setDescription]=useState("");const [location,setLocation]=useState("");const [responses,setResponses]=useState<Record<string,string>>({});const [status,setStatus]=useState("Loading Campus Opportunities…");const [saving,setSaving]=useState(false);
+  17 |  const load=useCallback(async()=>{const [oppResponse,queueResponse]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/campus_opportunities?select=id,opportunity_type,title,department,description,location,status,opens_at,closes_at,is_test_data&order=created_at.desc`,{headers:headers(accessToken),cache:"no-store"}),fetch(`${SUPABASE_URL}/rest/v1/rpc/administration_campus_application_queue`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:"{}",cache:"no-store"})]);if(!oppResponse.ok||!queueResponse.ok)throw new Error("Campus Opportunities administration could not be loaded.");setRows(await oppResponse.json() as Opportunity[]);setQueue(await queueResponse.json() as QueueRow[]);setStatus("Campus Opportunities administration loaded.");},[accessToken]);
+> 18 |  useEffect(()=>{load().catch(error=>setStatus(error instanceof Error?error.message:"Campus Opportunities administration could not be loaded."));},[load]);
+     |                 ^^^^ Avoid calling setState() directly within an effect
+  19 |  async function createOpportunity(event:FormEvent<HTMLFormElement>){event.preventDefault();if(!title.trim()||!department.trim()||!description.trim()){setStatus("Add a title, department, and description first.");return;}const submitter=(event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement|null;const initialStatus=submitter?.value==="published"?"published":"draft";setSaving(true);setStatus(initialStatus==="published"?"Publishing opportunity…":"Saving draft opportunity…");try{const now=new Date().toISOString();const response=await fetch(`${SUPABASE_URL}/rest/v1/campus_opportunities`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({opportunity_type:type,title:title.trim(),department:department.trim(),description:description.trim(),location:location.trim()||null,status:initialStatus,opens_at:initialStatus==="published"?now:null,created_by:userId})});if(!response.ok)throw new Error(initialStatus==="published"?"Opportunity could not be published.":"Opportunity draft could not be created.");setTitle("");setDepartment("");setDescription("");setLocation("");await load();setStatus(initialStatus==="published"?"Opportunity published and now visible in the live Jobs, Internships & Service feed.":"Draft opportunity saved. It stays hidden until published.");}catch(error){setStatus(error instanceof Error?error.message:"Opportunity could not be saved.");}finally{setSaving(false);}}
+  20 |  async function changeOpportunity(row:Opportunity,next:"published"|"closed"){setSaving(true);setStatus(next==="published"?`Publishing ${row.title}…`:`Closing ${row.title}…`);try{const now=new Date().toISOString();const response=await fetch(`${SUPABASE_URL}/rest/v1/campus_opportunities?id=eq.${encodeURIComponent(row.id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status:next,opens_at:next==="published"?(row.opens_at??now):row.opens_at,closes_at:next==="closed"?(row.closes_at??now):null,updated_at:now})});if(!response.ok)throw new Error("Opportunity status could not be updated.");await load();setStatus(next==="published"?`${row.title} is published and visible to students.`:`${row.title} is closed.`);}catch(error){setStatus(error instanceof Error?error.message:"Opportunity status could not be updated.");}finally{setSaving(false);}}
+  21 |  async function review(application:QueueRow,next:"under_review"|"accepted"|"declined"){setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/campus_opportunity_applications?id=eq.${encodeURIComponent(application.application_id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status:next,staff_response:(responses[application.application_id]??application.staff_response??"").trim()||null,reviewed_by:userId,reviewed_at:new Date().toISOString(),updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Application review could not be saved.");await load();setStatus(`Application marked ${next.replace("_"," ")}.`);}catch(error){setStatus(error instanceof Error?error.message:"Application review could not be saved.");}finally{setSaving(false);}}  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminPortalClient.tsx
+  30:17   error    Error: Calling setState synchronously within an effect can trigger cascading renders
 
 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
 * Update external systems with the latest state from React.
@@ -170,16 +114,72 @@ Effects are intended to synchronize state between React and external systems suc
 
 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
 
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/student-viewer/OwnerStudentPortalViewer.tsx:19:47
-  17 |  const initialize=useCallback(async()=>{const stored=readSession();if(!stored){setStatus("Open the Owner Portal and sign in first.");return;}setSession(stored);const [owner,gate]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/rpc/current_owner_status`,{method:"POST",headers:headers(stored.accessToken),body:"{}"}),fetch(`${SUPABASE_URL}/rest/v1/rpc/has_privileged_portal_session`,{method:"POST",headers:headers(stored.accessToken),body:JSON.stringify({requested_portal:"owner"})})]);if(!owner.ok||!gate.ok||!Boolean(await owner.json())||!Boolean(await gate.json())){setStatus("Owner identity and privileged Owner sign-in are required.");return;}const directory=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_student_portal_directory`,{method:"POST",headers:headers(stored.accessToken),body:"{}"});if(!directory.ok){setStatus("Student directory could not be loaded.");return;}const rows=await directory.json() as Student[];setStudents(rows);if(rows[0])setSelected(rows[0].character_id);setStatus(rows.length?"Read-only moderation view ready.":"No Student characters found.");},[]);
-  18 |  useEffect(()=>{initialize();},[initialize]);
-> 19 |  useEffect(()=>{if(!session||!selected)return;setStatus("Loading Student portal snapshot…");fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_student_portal_snapshot`,{method:"POST",headers:headers(session.accessToken),body:JSON.stringify({target_character_id:selected})}).then(async r=>{if(!r.ok)throw new Error();setSnapshot(await r.json() as Snapshot);setStatus("Read-only moderation view ready.");}).catch(()=>{setSnapshot(null);setStatus("Student portal snapshot could not be loaded.");});},[session,selected]);
-     |                                               ^^^^^^^^^ Avoid calling setState() directly within an effect
-  20 |  return <section style={{border:"1px solid #9babc0",background:"#fff",padding:16}}>
-  21 |   <p className="eyebrow">OWNER • STUDENT PORTAL VIEWER</p><h2 style={{margin:"4px 0:8px",font:"400 28px Georgia,serif"}}>Moderation view</h2><p style={{maxWidth:820}}>Inspect a Student character&apos;s school portal data without impersonating them or changing their active session. This view is Owner-only and read-only.</p><div style={{padding:10,background:"#fff7d8",border:"1px solid #d9c576",marginBottom:14}}>{status}</div>
-  22 |   {students.length>0&&<label style={{display:"grid",gap:5,maxWidth:520,marginBottom:16}}><strong>Student character</strong><select value={selected} onChange={e=>setSelected(e.target.value)}>{students.map(s=><option key={s.character_id} value={s.character_id}>{s.display_name} (@{s.handle})</option>)}</select></label>}  react-hooks/set-state-in-effect
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminPortalClient.tsx:30:17
+  28 |   setState("ready");setMessage(`Administrator authorization verified${roles?.sync_status==="synced"?" with synchronized Discord role":" in fallback role mode"}.`);}
+  29 |   catch(error){setState("blocked");setMessage(error instanceof Error?error.message:"Administration access could not be verified.");}},[]);
+> 30 |  useEffect(()=>{initialize();},[initialize]);
+     |                 ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  31 |  async function privilegedLogout(){if(session)await fetch(`${SUPABASE_URL}/rest/v1/rpc/end_privileged_portal_session`,{method:"POST",headers:headers(session.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({requested_portal:"administrator"})});setState("signin");setMessage("Administrator portal locked. Your normal Hanami session remains signed in.");}
+  32 |  function logout(){localStorage.removeItem(SESSION_KEY);localStorage.removeItem("hanami.portal.character.v1");window.location.assign("../");}
+  33 |  if(state==="signin")return <PrivilegedPortalLogin portalKind="administrator" onUnlocked={initialize}/>;  react-hooks/set-state-in-effect
+  32:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @next/next/no-location-assign-relative-destination
 
-✖ 93 problems (78 errors, 15 warnings)
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminRoadmapManager.tsx
+  34:110  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-explicit-any
+  35:22   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminRoadmapManager.tsx:35:22
+  33 |   fetch(`${SUPABASE_URL}/rest/v1/feature_feedback_items?select=id,title,description,item_type,status&order=created_at.desc&limit=100`,{headers:headers(accessToken)})
+  34 |  ]);const setters=[setThemes,setTransit,setLore,setCanon,setSignups,setChannels,setFeedback] as Array<(value:any)=>void>;for(let i=0;i<rs.length;i++)if(rs[i].ok)setters[i](await rs[i].json());setNotice("Roadmap administration ready.");}catch{setNotice("Roadmap administration could not be fully loaded.");}},[accessToken]);
+> 35 |  useEffect(()=>{void load();},[load]);
+     |                      ^^^^ Avoid calling setState() directly within an effect
+  36 |  async function post(table:string,body:Record<string,unknown>,success:string){const response=await fetch(`${SUPABASE_URL}/rest/v1/${table}`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify(body)});setNotice(response.ok?success:`${success.replace(/\.$/,"")} failed.`);if(response.ok)void load();}
+  37 |  async function patch(table:string,id:string,body:Record<string,unknown>,success:string){const response=await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify(body)});setNotice(response.ok?success:"Update failed.");if(response.ok)void load();}
+  38 |  function slugify(value:string){return value.toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"")||`lore-${Date.now()}`;}  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminRoadmapOperationsPanel.tsx
+  36:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminRoadmapOperationsPanel.tsx:36:22
+  34 |  ]);setStudents(studentRows);if(lineResponse.ok)setLines(await lineResponse.json() as Line[]);if(stopResponse.ok)setStops(await stopResponse.json() as Stop[]);if(shiftResponse.ok)setShifts(await shiftResponse.json() as Shift[]);if(hourResponse.ok)setHours(await hourResponse.json() as Volunteer[]);setRsvpSummary(rsvps);if(!lineId&&lineResponse.ok){const rows=await fetch(`${SUPABASE_URL}/rest/v1/city_transit_lines?select=id&order=display_order&limit=1`,{headers:headers(accessToken)}).then(r=>r.ok?r.json():[] as unknown);const first=(rows as Array<{id:string}>)[0];if(first)setLineId(first.id);}if(!shiftStudent&&studentRows[0])setShiftStudent(studentRows[0].character_id);if(!volunteerStudent&&studentRows[0])setVolunteerStudent(studentRows[0].character_id);
+  35 |  if(canModerate){const response=await fetch(`${SUPABASE_URL}/rest/v1/mentorship_requests?select=id,mentee_character_id,mentor_character_id,topic,note,status,created_at&order=created_at.desc&limit=80`,{headers:headers(accessToken)});if(response.ok)setMentorRequests(await response.json() as MentorReq[]);}setNotice("Roadmap operations ready.");}catch(error){setNotice(error instanceof Error?error.message:"Roadmap operations could not be loaded.");}},[accessToken,canModerate,lineId,shiftStudent,volunteerStudent]);
+> 36 |  useEffect(()=>{void load();},[load]);
+     |                      ^^^^ Avoid calling setState() directly within an effect
+  37 |  async function post(table:string,body:Record<string,unknown>,success:string){setBusy(true);try{const r=await fetch(`${SUPABASE_URL}/rest/v1/${table}`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify(body)});if(!r.ok)throw new Error(`${success.replace(/\.$/,"")} failed.`);setNotice(success);await load();}catch(error){setNotice(error instanceof Error?error.message:"Roadmap operation failed.");}finally{setBusy(false);}}
+  38 |  async function patch(table:string,id:string,body:Record<string,unknown>,success:string){setBusy(true);try{const r=await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify(body)});if(!r.ok)throw new Error("Update failed.");setNotice(success);await load();}catch(error){setNotice(error instanceof Error?error.message:"Update failed.");}finally{setBusy(false);}}
+  39 |  async function addStop(e:FormEvent){e.preventDefault();if(!lineId||!stopName.trim())return;await post("city_transit_stops",{line_id:lineId,stop_name:stopName.trim(),neighborhood:neighborhood.trim(),stop_order:Number(stopOrder)||1,notes:stopNotes.trim()},"Transit stop added.");setStopName("");setNeighborhood("");setStopNotes("");}  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminRoleplaySystemsManager.tsx
+  18:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminRoleplaySystemsManager.tsx:18:22
+  16 |  const canReview=access.site_admin||access.moderator;
+  17 |  const load=useCallback(async()=>{const [s,a,c]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/roleplay_sessions?select=id,code,title,school_year,chapter_number,season,status,starts_at,ends_at,summary,graduation_year_level&order=created_at.desc`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/character_applications?select=id,character_id,application_type,statement,status,reviewer_note,reviewed_at,created_at&order=created_at.desc`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/characters?select=id,display_name,handle,role&order=display_name.asc`,{headers:headers(accessToken)})]);if(s.ok)setSessions(await s.json());if(a.ok){const rows=await a.json() as Application[];setApplications(rows);setNotes(Object.fromEntries(rows.map(x=>[x.id,x.reviewer_note??""])));}if(c.ok)setCharacters(await c.json());setNotice("Roleplay session and character review tools ready.");},[accessToken]);
+> 18 |  useEffect(()=>{void load();},[load]);
+     |                      ^^^^ Avoid calling setState() directly within an effect
+  19 |  const name=(id:string)=>{const c=characters.find(x=>x.id===id);return c?`${c.display_name} (@${c.handle}) • ${c.role}`:id.slice(0,8);};
+  20 |  async function createSession(event:FormEvent){event.preventDefault();if(!access.site_admin||saving)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/roleplay_sessions`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({code:code.trim(),title:title.trim(),school_year:schoolYear.trim(),chapter_number:chapter,season,status:"planning",summary:summary.trim(),graduation_year_level:graduationLevel.trim()||null,starts_at:startsAt?new Date(startsAt).toISOString():null,ends_at:endsAt?new Date(endsAt).toISOString():null})});if(!response.ok)throw new Error("Session could not be created.");setCode("");setTitle("");setSummary("");setStartsAt("");setEndsAt("");await load();setNotice("Roleplay session created in planning state.");}catch(error){setNotice(error instanceof Error?error.message:"Session could not be created.");}finally{setSaving(false);}}
+  21 |  async function setSessionStatus(item:Session,status:string){setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/roleplay_sessions?id=eq.${item.id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Session status could not be changed.");await load();setNotice(`${item.title} is now ${status}.`);}catch(error){setNotice(error instanceof Error?error.message:"Session could not be changed.");}finally{setSaving(false);}}  react-hooks/set-state-in-effect
+
+✖ 82 problems (67 errors, 15 warnings)
 
 --- failing checks ---
 --- test summary ---
@@ -191,115 +191,115 @@ Calling setState synchronously within an effect body causes cascading renders th
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.153729
+  duration_ms: 0.147136
   type: 'test'
   ...
 # Subtest: normal School Resources never loads or renders form submission history
 ok 219 - normal School Resources never loads or renders form submission history
   ---
-  duration_ms: 0.933061
+  duration_ms: 0.757818
   type: 'test'
   ...
 # Subtest: normal users can still submit school forms without reading history
 ok 220 - normal users can still submit school forms without reading history
   ---
-  duration_ms: 0.175769
+  duration_ms: 0.148242
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 221 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 7.575495
+  duration_ms: 6.45315
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 222 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.650217
+  duration_ms: 0.675642
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 223 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.328737
+  duration_ms: 0.28059
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 224 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.232427
+  duration_ms: 0.178884
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 225 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.268294
+  duration_ms: 0.162252
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 226 - student activities are loaded for the active character
   ---
-  duration_ms: 0.869763
+  duration_ms: 0.995867
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 227 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.176401
+  duration_ms: 0.200945
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 228 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.254417
+  duration_ms: 0.342034
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 229 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.187281
+  duration_ms: 0.14046
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 230 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.245408
+  duration_ms: 0.666788
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 231 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.347261
+  duration_ms: 0.19719
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 232 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 8.137289
+  duration_ms: 4.518774
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 233 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 2.537295
+  duration_ms: 1.059126
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 234 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.635479
+  duration_ms: 0.957956
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 235 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.972481
+  duration_ms: 1.570112
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 236 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.712413
+  duration_ms: 1.030747
   type: 'test'
   ...
 1..236
@@ -310,14 +310,14 @@ ok 236 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1421.438175
+# duration_ms 1153.08547
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 22ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -326,15 +326,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.9s
+✓ Compiled successfully in 5.1s
   Running TypeScript ...
-  Finished TypeScript in 9.4s ...
+  Finished TypeScript in 8.0s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 579ms
+✓ Generating static pages using 3 workers (28/28) in 499ms
   Finalizing page optimization ...
 
 Route (app)
