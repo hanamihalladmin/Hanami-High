@@ -1,10 +1,36 @@
-HANAMI_FINAL_CI=PASS
-exit_code=0
+HANAMI_FINAL_CI=FAIL
+exit_code=1
 --- lint ---
 
 > hanami-high@0.1.0 lint
 > eslint . --ignore-pattern .next --ignore-pattern out
 
+
+/home/runner/work/Hanami-High/Hanami-High/app/components/PublicPageTextEditor.tsx
+  24:594  error  Error: This value cannot be modified
+
+Modifying a value returned from 'useState()', which should not be modified directly. Use the setter function to update instead.
+
+/home/runner/work/Hanami-High/Hanami-High/app/components/PublicPageTextEditor.tsx:24:594
+  22 |  if(!cancelled)setItems(detected);}void init();return()=>{cancelled=true;};},[page]);
+  23 |  useEffect(()=>{applyEditableState(items,editing);return()=>applyEditableState(items,false);},[editing,items]);
+> 24 |  async function save(){if(!token)return;setStatus("Saving page text…");let changed=0;for(const item of items){const content=(item.element.textContent??"").trim();if(content===item.baseline)continue;const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_save_public_page_text`,{method:"POST",headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${token}`,"Content-Type":"application/json"},body:JSON.stringify({requested_page_path:page,requested_block_key:item.key,requested_content:content})});if(!response.ok){setStatus("One or more text blocks could not be saved.");return;}item.baseline=content;changed++;}setEditing(false);setStatus(changed?`${changed} text block${changed===1?"":"s"} published.`:"No text changes to publish.");}
+     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^^^^ `items` cannot be modified
+  25 |  function cancel(){for(const item of items)item.element.textContent=item.baseline;setEditing(false);setStatus("Changes cancelled.");}
+  26 |  if(!owner||page.startsWith("/portal"))return null;
+  27 |  return <div style={{position:"fixed",right:14,bottom:14,zIndex:10050,width:"min(360px,calc(100vw - 28px))",border:"1px solid #7f2c4d",background:"#fff",boxShadow:"0:8px 28px rgba(0,0,0,.2)",padding:10,fontFamily:"Arial,sans-serif",fontSize:12}} aria-label="Owner public page editor"><div style={{display:"flex",justifyContent:"space-between",gap:8,alignItems:"center"}}><strong>OWNER PAGE EDITOR</strong><span>{page}</span></div><p style={{margin:"6px 0",fontSize:11}}>Edit plain text blocks directly on this public page. Dynamic school data stays managed by its normal Admin tools.</p><div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{!editing?<button type="button" onClick={()=>{setEditing(true);setStatus("Click outlined text and type your changes.");}}>Edit page text</button>:<><button type="button" onClick={()=>void save()}>Publish changes</button><button type="button" onClick={cancel}>Cancel</button></>}</div>{status&&<small style={{display:"block",marginTop:6}}>{status}</small>}</div>;  react-hooks/immutability
+  25:44   error  Error: This value cannot be modified
+
+Modifying a value returned from 'useState()', which should not be modified directly. Use the setter function to update instead.
+
+/home/runner/work/Hanami-High/Hanami-High/app/components/PublicPageTextEditor.tsx:25:44
+  23 |  useEffect(()=>{applyEditableState(items,editing);return()=>applyEditableState(items,false);},[editing,items]);
+  24 |  async function save(){if(!token)return;setStatus("Saving page text…");let changed=0;for(const item of items){const content=(item.element.textContent??"").trim();if(content===item.baseline)continue;const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_save_public_page_text`,{method:"POST",headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${token}`,"Content-Type":"application/json"},body:JSON.stringify({requested_page_path:page,requested_block_key:item.key,requested_content:content})});if(!response.ok){setStatus("One or more text blocks could not be saved.");return;}item.baseline=content;changed++;}setEditing(false);setStatus(changed?`${changed} text block${changed===1?"":"s"} published.`:"No text changes to publish.");}
+> 25 |  function cancel(){for(const item of items)item.element.textContent=item.baseline;setEditing(false);setStatus("Changes cancelled.");}
+     |                                            ^^^^^^^^^^^^ `items` cannot be modified
+  26 |  if(!owner||page.startsWith("/portal"))return null;
+  27 |  return <div style={{position:"fixed",right:14,bottom:14,zIndex:10050,width:"min(360px,calc(100vw - 28px))",border:"1px solid #7f2c4d",background:"#fff",boxShadow:"0:8px 28px rgba(0,0,0,.2)",padding:10,fontFamily:"Arial,sans-serif",fontSize:12}} aria-label="Owner public page editor"><div style={{display:"flex",justifyContent:"space-between",gap:8,alignItems:"center"}}><strong>OWNER PAGE EDITOR</strong><span>{page}</span></div><p style={{margin:"6px 0",fontSize:11}}>Edit plain text blocks directly on this public page. Dynamic school data stays managed by its normal Admin tools.</p><div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{!editing?<button type="button" onClick={()=>{setEditing(true);setStatus("Click outlined text and type your changes.");}}>Edit page text</button>:<><button type="button" onClick={()=>void save()}>Publish changes</button><button type="button" onClick={cancel}>Cancel</button></>}</div>{status&&<small style={{display:"block",marginTop:6}}>{status}</small>}</div>;
+  28 | }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-hooks/immutability
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/InboxPanel.tsx
   38:76    warning  The 'selectedParticipants' conditional could make the dependencies of useMemo Hook (at line 38) change on every render. To fix this, wrap the initialization of 'selectedParticipants' in its own useMemo() Hook                                                                         react-hooks/exhaustive-deps
@@ -39,145 +65,151 @@ exit_code=0
 /home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminPortalClient.tsx
   32:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
-✖ 15 problems (0 errors, 15 warnings)
+✖ 17 problems (2 errors, 15 warnings)
 
 --- failing checks ---
+not ok 110 - public announcements use live Supabase data with a labeled fallback
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+not ok 111 - public next event uses the live school calendar with a labeled fallback
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 --- test summary ---
 # tests 236
-# pass 236
-# fail 0
+# pass 234
+# fail 2
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.20627
+  duration_ms: 0.165899
   type: 'test'
   ...
 # Subtest: normal School Resources never loads or renders form submission history
 ok 219 - normal School Resources never loads or renders form submission history
   ---
-  duration_ms: 1.194088
+  duration_ms: 0.913545
   type: 'test'
   ...
 # Subtest: normal users can still submit school forms without reading history
 ok 220 - normal users can still submit school forms without reading history
   ---
-  duration_ms: 0.234292
+  duration_ms: 0.176946
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 221 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 4.925538
+  duration_ms: 4.692894
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 222 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.159997
+  duration_ms: 0.712101
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 223 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.215775
+  duration_ms: 0.185319
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 224 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.134652
+  duration_ms: 0.108324
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 225 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.128634
+  duration_ms: 0.129135
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 226 - student activities are loaded for the active character
   ---
-  duration_ms: 1.345066
+  duration_ms: 0.89745
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 227 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.262535
+  duration_ms: 0.157167
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 228 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.452471
+  duration_ms: 0.283346
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 229 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.19215
+  duration_ms: 0.143706
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 230 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.243242
+  duration_ms: 0.898101
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 231 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.384459
+  duration_ms: 0.239551
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 232 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.680315
+  duration_ms: 5.296332
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 233 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.510255
+  duration_ms: 1.519036
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 234 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.388121
+  duration_ms: 1.538215
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 235 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.928354
+  duration_ms: 2.410288
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 236 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.30809
+  duration_ms: 1.599487
   type: 'test'
   ...
 1..236
 # tests 236
 # suites 0
-# pass 236
-# fail 0
+# pass 234
+# fail 2
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1382.764577
+# duration_ms 1048.188523
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 21ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -186,15 +218,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.5s
+✓ Compiled successfully in 4.4s
   Running TypeScript ...
-  Finished TypeScript in 8.9s ...
+  Finished TypeScript in 7.1s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 569ms
+✓ Generating static pages using 3 workers (28/28) in 451ms
   Finalizing page optimization ...
 
 Route (app)
