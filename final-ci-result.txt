@@ -1,6 +1,17 @@
 HANAMI_FINAL_CI=FAIL
-exit_code=2
+exit_code=1
 --- failing tests / errors ---
+# Subtest: Applicant identity is exposed only through a permission-gated queue
+# Subtest: ordinary Faculty role does not get school-wide opportunity review access
+# Subtest: character manager loads only authenticated account data
+# Subtest: character creation uses the next open slot and starts private
+# Subtest: character switching updates and remembers the active character
+# Subtest: character selection restores across refreshes
+# Subtest: test faculty character uses the signed-in account and receives TEST-101
+# Subtest: character deletion requires explicit permanent confirmation
+# Subtest: shared message and coursework history no longer blocks character deletion
+# Subtest: database remains the final authority for the two-slot rule
+# Subtest: profile editor reads and saves only the active character record
 # Subtest: profile save uses an upsert and updates privacy separately
 # Subtest: character profile table is owner scoped by RLS
 # Subtest: both role dashboards render the profile editor
@@ -170,43 +181,10 @@ not ok 183 - dark mode is absent from Hanami accessibility controls
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 # Subtest: School Office separates staff action waiting member and archive queues
 # Subtest: Help has a direct router and support anchor
-MISSING ROUTE: out/index.html
-MISSING ROUTE: out/calendar/index.html
-MISSING ROUTE: out/portal/index.html
-MISSING ROUTE: out/portal/student/index.html
-MISSING ROUTE: out/portal/student/class/index.html
-MISSING ROUTE: out/portal/faculty/index.html
-MISSING ROUTE: out/portal/help/index.html
-MISSING ROUTE: out/portal/admin/index.html
-MISSING ROUTE: out/portal/owner/index.html
-MISSING ROUTE: out/updates/index.html
-MISSING ROUTE: out/traditions/index.html
 --- tail ---
-    "use client";
-    
-    import {useCallback,useEffect,useMemo,useState} from "react";
-    
-    const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
-    function headers(token:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${token}`,...extra};}
-    
-    type Notification={id:string;category:string;title:string;body:string;href:string|null;is_read:boolean;created_at:string;priority:string|null};
-    type SystemNotice={id:string;title:string;body:string;severity:string;created_at:string};
-    type Preferences={unread_messages:boolean;grades:boolean;assignments:boolean;friend_requests:boolean;office_requests:boolean;organization_updates:boolean;event_reminders:boolean;application_decisions:boolean;account_notices:boolean;admin_announcements:boolean};
-    type Accessibility={font_scale:number;high_contrast:boolean;dyslexia_friendly:boolean;reduce_motion:boolean;disable_glitter:boolean;simplified_profile_studio:boolean;custom_cursor_disabled:boolean;music_muted:boolean;music_volume:number;soft_contrast:boolean;brightness:number};
-    type Presence={do_not_disturb:boolean;dnd_until:string|null};
-    const defaultPrefs:Preferences={unread_messages:true,grades:true,assignments:true,friend_requests:true,office_requests:true,organization_updates:true,event_reminders:true,application_decisions:true,account_notices:true,admin_announcements:true};
-    const defaultAccess:Accessibility={font_scale:1,high_contrast:false,dyslexia_friendly:false,reduce_motion:false,disable_glitter:false,simplified_profile_studio:false,custom_cursor_disabled:false,music_muted:false,music_volume:.55,soft_contrast:false,brightness:1};
-    function essential(item:Notification){const value=`${item.category} ${item.priority??""}`.toLowerCase();return ["safety","emergency","moderation","admin","account","critical","urgent"].some(key=>value.includes(key));}
-    
-    export default function NotificationAccessibilityPanel({accessToken,characterId}:{accessToken:string;characterId:string}){
-     const [notifications,setNotifications]=useState<Notification[]>([]);const [systemNotices,setSystemNotices]=useState<SystemNotice[]>([]);const [prefs,setPrefs]=useState<Preferences>(defaultPrefs);const [access,setAccess]=useState<Accessibility>(defaultAccess);const [presence,setPresence]=useState<Presence>({do_not_disturb:false,dnd_until:null});const [open,setOpen]=useState(false);const [settingsOpen,setSettingsOpen]=useState(false);const [notice,setNotice]=useState("Loading notifications…");
-     const dndActive=presence.do_not_disturb&&(!presence.dnd_until||new Date(presence.dnd_until).getTime()>Date.now());
-     const visibleNotifications=useMemo(()=>dndActive?notifications.filter(essential):notifications,[dndActive,notifications]);
-     const unread=useMemo(()=>visibleNotifications.filter(item=>!item.is_read).length,[visibleNotifications]);
      const suppressed=dndActive?notifications.length-visibleNotifications.length:0;
      const applyAccessibility=useCallback((next:Accessibility)=>{const root=document.documentElement;root.style.setProperty("--hanami-user-font-scale",String(next.font_scale));root.style.setProperty("--hanami-user-brightness",String(next.brightness));root.dataset.hanamiContrast=next.high_contrast?"high":next.soft_contrast?"soft":"normal";root.dataset.hanamiDyslexia=next.dyslexia_friendly?"on":"off";root.dataset.hanamiMotion=next.reduce_motion?"reduced":"normal";root.dataset.hanamiGlitter=next.disable_glitter?"off":"on";root.dataset.hanamiCursor=next.custom_cursor_disabled?"standard":"custom";root.dataset.hanamiMusic=next.music_muted?"muted":"enabled";root.dataset.hanamiStudio=next.simplified_profile_studio?"simplified":"full";delete root.dataset.hanamiTheme;window.dispatchEvent(new CustomEvent("hanami-accessibility-changed",{detail:next}));},[]);
-     const load=useCallback(async()=>{const [n,s,p,a,d]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/notifications?select=id,category,title,body,href,is_read,created_at,priority&order=created_at.desc&limit=50`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/system_announcements?select=id,title,body,severity,created_at&order=created_at.desc&limit=10`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/notification_preferences?select=*&limit=1`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/accessibility_preferences?select=*&limit=1`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/character_presence?select=do_not_disturb,dnd_until&character_id=eq.${encodeURIComponent(characterId)}&limit=1`,{headers:headers(accessToken)})]);if(n.ok)setNotifications(await n.json());if(s.ok)setSystemNotices(await s.json());if(p.ok){const rows=await p.json();if(rows[0])setPrefs(rows[0]);}if(a.ok){const rows=await a.json();if(rows[0]){const row=rows[0];const next:Accessibility={font_scale:Number(row.font_scale??1),high_contrast:Boolean(row.high_contrast),dyslexia_friendly:Boolean(row.dyslexia_friendly),reduce_motion:Boolean(row.reduce_motion),disable_glitter:Boolean(row.disable_glitter),simplified_profile_studio:Boolean(row.simplified_profile_studio),custom_cursor_disabled:Boolean(row.custom_cursor_disabled),music_muted:Boolean(row.music_muted),music_volume:Number(row.music_volume??.55),soft_contrast:Boolean(row.soft_contrast),brightness:Number(row.brightness??1)};setAccess(next);applyAccessibility(next);}}if(d.ok){const rows=await d.json() as Presence[];setPresence(rows[0]??{do_not_disturb:false,dnd_until:null});}setNotice("Notification Center ready.");},[accessToken,characterId,applyAccessibility]);
+     const load=useCallback(async()=>{const resolvedCharacterId=characterId||activeCharacterId();const presenceRequest=resolvedCharacterId?fetch(`${SUPABASE_URL}/rest/v1/character_presence?select=do_not_disturb,dnd_until&character_id=eq.${encodeURIComponent(resolvedCharacterId)}&limit=1`,{headers:headers(accessToken)}):Promise.resolve(null);const [n,s,p,a,d]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/notifications?select=id,category,title,body,href,is_read,created_at,priority&order=created_at.desc&limit=50`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/system_announcements?select=id,title,body,severity,created_at&order=created_at.desc&limit=10`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/notification_preferences?select=*&limit=1`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/accessibility_preferences?select=*&limit=1`,{headers:headers(accessToken)}),presenceRequest]);if(n.ok)setNotifications(await n.json());if(s.ok)setSystemNotices(await s.json());if(p.ok){const rows=await p.json();if(rows[0])setPrefs(rows[0]);}if(a.ok){const rows=await a.json();if(rows[0]){const row=rows[0];const next:Accessibility={font_scale:Number(row.font_scale??1),high_contrast:Boolean(row.high_contrast),dyslexia_friendly:Boolean(row.dyslexia_friendly),reduce_motion:Boolean(row.reduce_motion),disable_glitter:Boolean(row.disable_glitter),simplified_profile_studio:Boolean(row.simplified_profile_studio),custom_cursor_disabled:Boolean(row.custom_cursor_disabled),music_muted:Boolean(row.music_muted),music_volume:Number(row.music_volume??.55),soft_contrast:Boolean(row.soft_contrast),brightness:Number(row.brightness??1)};setAccess(next);applyAccessibility(next);}}if(d&&d.ok){const rows=await d.json() as Presence[];setPresence(rows[0]??{do_not_disturb:false,dnd_until:null});}else setPresence({do_not_disturb:false,dnd_until:null});setNotice("Notification Center ready.");},[accessToken,characterId,applyAccessibility]);
      useEffect(()=>{load().catch(()=>setNotice("Notifications could not be loaded."));const refresh=()=>void load();window.addEventListener("hanami-presence-changed",refresh);return()=>window.removeEventListener("hanami-presence-changed",refresh);},[load]);
      async function markRead(id:string){await fetch(`${SUPABASE_URL}/rest/v1/notifications?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({is_read:true})});setNotifications(items=>items.map(item=>item.id===id?{...item,is_read:true}:item));}
      async function markAllRead(){const ids=visibleNotifications.filter(item=>!item.is_read).map(item=>item.id);await Promise.all(ids.map(id=>fetch(`${SUPABASE_URL}/rest/v1/notifications?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({is_read:true})})));setNotifications(items=>items.map(item=>ids.includes(item.id)?{...item,is_read:true}:item));setNotice("Visible notifications marked read.");}
@@ -229,55 +207,55 @@ MISSING ROUTE: out/traditions/index.html
 # Subtest: student activities are loaded for the active character
 ok 184 - student activities are loaded for the active character
   ---
-  duration_ms: 1.186887
+  duration_ms: 0.842384
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 185 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.244767
+  duration_ms: 0.186897
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 186 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.377755
+  duration_ms: 0.268079
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 187 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.210503
+  duration_ms: 0.151911
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 188 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 6.214678
+  duration_ms: 5.994057
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 189 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.473482
+  duration_ms: 1.542573
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 190 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.410104
+  duration_ms: 1.079676
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 191 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 2.576222
+  duration_ms: 1.54178
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 192 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.993103
+  duration_ms: 1.008742
   type: 'test'
   ...
 1..192
@@ -288,14 +266,14 @@ ok 192 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1030.219574
+# duration_ms 719.97749
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 28ms
+✓ Running next.config.ts took 18ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -304,21 +282,43 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.2s
+✓ Compiled successfully in 4.2s
   Running TypeScript ...
-app/portal/DashboardShell.tsx(53,596): error TS2741: Property 'characterId' is missing in type '{ accessToken: string; }' but required in type '{ accessToken: string; characterId: string; }'.
-app/portal/FacultyNurseDashboard.tsx(39,171): error TS2741: Property 'characterId' is missing in type '{ accessToken: string; }' but required in type '{ accessToken: string; characterId: string; }'.
-Failed to type check.
+  Finished TypeScript in 6.1s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/24) ...
+  Generating static pages using 3 workers (6/24) 
+  Generating static pages using 3 workers (12/24) 
+  Generating static pages using 3 workers (18/24) 
+✓ Generating static pages using 3 workers (24/24) in 471ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ○ /academics
+├ ○ /apply
+├ ○ /calendar
+├ ○ /campus-life
+├ ○ /elections
+├ ○ /homeroom
+├ ○ /organizations
+├ ○ /portal
+├ ○ /portal/admin
+├ ○ /portal/faculty
+├ ○ /portal/help
+├ ○ /portal/owner
+├ ○ /portal/owner/student-viewer
+├ ○ /portal/student
+├ ○ /portal/student/class
+├ ○ /rooms
+├ ○ /rules
+├ ○ /sports
+├ ○ /traditions
+└ ○ /updates
+
+
+○  (Static)  prerendered as static content
 
 === routes ===
-MISSING ROUTE: out/index.html
-MISSING ROUTE: out/calendar/index.html
-MISSING ROUTE: out/portal/index.html
-MISSING ROUTE: out/portal/student/index.html
-MISSING ROUTE: out/portal/student/class/index.html
-MISSING ROUTE: out/portal/faculty/index.html
-MISSING ROUTE: out/portal/help/index.html
-MISSING ROUTE: out/portal/admin/index.html
-MISSING ROUTE: out/portal/owner/index.html
-MISSING ROUTE: out/updates/index.html
-MISSING ROUTE: out/traditions/index.html
