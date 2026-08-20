@@ -23,7 +23,7 @@ export default function AdminRoadmapManager({accessToken,userId}:{accessToken:st
  const [canonSubject,setCanonSubject]=useState("");const [canonFact,setCanonFact]=useState("");const [canonClass,setCanonClass]=useState("confirmed");
  const [signupTitle,setSignupTitle]=useState("");const [signupType,setSignupType]=useState("volunteer");const [signupCapacity,setSignupCapacity]=useState("");
  const [channelKey,setChannelKey]=useState("preview");const [channelTitle,setChannelTitle]=useState("Hanami Preview");const [channelDescription,setChannelDescription]=useState("");
- const load=useCallback(async()=>{try{const rs=await Promise.all([
+ const load=useCallback(async()=>{try{const [themesResponse,transitResponse,loreResponse,canonResponse,signupResponse,channelResponse,feedbackResponse]=await Promise.all([
   fetch(`${SUPABASE_URL}/rest/v1/school_theme_schedule?select=id,theme_key,title,starts_on,ends_on,enabled&order=starts_on.desc`,{headers:headers(accessToken)}),
   fetch(`${SUPABASE_URL}/rest/v1/city_transit_lines?select=id,code,name,mode,description,is_active&order=display_order`,{headers:headers(accessToken)}),
   fetch(`${SUPABASE_URL}/rest/v1/lore_pages?select=id,title,slug,category,summary,status&order=updated_at.desc`,{headers:headers(accessToken)}),
@@ -31,8 +31,8 @@ export default function AdminRoadmapManager({accessToken,userId}:{accessToken:st
   fetch(`${SUPABASE_URL}/rest/v1/activity_signup_sheets?select=id,title,signup_type,capacity,is_open&order=created_at.desc`,{headers:headers(accessToken)}),
   fetch(`${SUPABASE_URL}/rest/v1/tester_release_channels?select=id,title,channel_key,description,is_active&order=created_at.desc`,{headers:headers(accessToken)}),
   fetch(`${SUPABASE_URL}/rest/v1/feature_feedback_items?select=id,title,description,item_type,status&order=created_at.desc&limit=100`,{headers:headers(accessToken)})
- ]);const setters=[setThemes,setTransit,setLore,setCanon,setSignups,setChannels,setFeedback] as Array<(value:any)=>void>;for(let i=0;i<rs.length;i++)if(rs[i].ok)setters[i](await rs[i].json());setNotice("Roadmap administration ready.");}catch{setNotice("Roadmap administration could not be fully loaded.");}},[accessToken]);
- useEffect(()=>{void load();},[load]);
+ ]);if(themesResponse.ok)setThemes(await themesResponse.json() as Theme[]);if(transitResponse.ok)setTransit(await transitResponse.json() as Transit[]);if(loreResponse.ok)setLore(await loreResponse.json() as Lore[]);if(canonResponse.ok)setCanon(await canonResponse.json() as Canon[]);if(signupResponse.ok)setSignups(await signupResponse.json() as Signup[]);if(channelResponse.ok)setChannels(await channelResponse.json() as Channel[]);if(feedbackResponse.ok)setFeedback(await feedbackResponse.json() as Feedback[]);setNotice("Roadmap administration ready.");}catch{setNotice("Roadmap administration could not be fully loaded.");}},[accessToken]);
+ useEffect(()=>{const task=setTimeout(()=>{void load();},0);return()=>clearTimeout(task);},[load]);
  async function post(table:string,body:Record<string,unknown>,success:string){const response=await fetch(`${SUPABASE_URL}/rest/v1/${table}`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify(body)});setNotice(response.ok?success:`${success.replace(/\.$/,"")} failed.`);if(response.ok)void load();}
  async function patch(table:string,id:string,body:Record<string,unknown>,success:string){const response=await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify(body)});setNotice(response.ok?success:"Update failed.");if(response.ok)void load();}
  function slugify(value:string){return value.toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"")||`lore-${Date.now()}`;}
