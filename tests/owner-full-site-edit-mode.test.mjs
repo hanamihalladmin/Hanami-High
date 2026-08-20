@@ -27,7 +27,7 @@ test("Owner website tokens are hashed, expiring, and isolated from portal impers
  assert.match(migration,/extensions\.gen_random_bytes\(32\)/);
  assert.match(migration,/extensions\.digest\(raw_token,'sha256'\)/);
  assert.match(migration,/interval '8 hours'/);
- assert.match(migration,/failed_count>=5/);
+ assert.match(migration,/next_failed>=5/);
  assert.match(migration,/interval '15 minutes'/);
  assert.doesNotMatch(access,/characters\?/);
  assert.doesNotMatch(access,/is_active=eq\.true/);
