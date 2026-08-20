@@ -1,355 +1,323 @@
 HANAMI_FINAL_CI=FAIL
 exit_code=1
---- failing tests / errors ---
-# Subtest: Owner-issued unclaimed Administrator login can bind on first successful sign-in
-# Subtest: ordinary authenticated users cannot self grant Administration permissions without a valid Owner-issued credential
-# Subtest: public Administration RPCs are security-invoker wrappers around private helpers
-# Subtest: school status is public-read and content-editor managed
-# Subtest: announcement management is protected by permission-aware RLS
-# Subtest: school calendar management is content-editor scoped and Tokyo based
-# Subtest: moderators have a private character directory rather than global profile exposure
-# Subtest: Site Admin academic management preserves role separation
-# Subtest: Administration has its own website section and shared workspace
-# Subtest: Campus Life includes every approved public requirement
-# Subtest: campus directory is searchable and filterable
-# Subtest: campus keeps fixture directory data labeled while public opportunities use the live portal flow
-# Subtest: Campus Life uses the Tokyo 2006 roleplay clock
-# Subtest: Campus Life returns signed-in students to real portal routes
-# Subtest: Campus Opportunities are published content with character-owned Student applications
-# Subtest: Student portal exposes the website-native Campus Opportunities application desk
-# Subtest: Administration manages opportunities and reviews applications
-# Subtest: Applicant identity is exposed only through a permission-gated queue
-# Subtest: ordinary Faculty role does not get school-wide opportunity review access
-# Subtest: character manager loads only authenticated account data
-# Subtest: character creation uses the next open slot and starts private
-# Subtest: character switching updates and remembers the active character
-# Subtest: character selection restores across refreshes
-# Subtest: test faculty character uses the signed-in account and receives TEST-101
-# Subtest: character deletion requires explicit permanent confirmation
-# Subtest: shared message and coursework history no longer blocks character deletion
-# Subtest: database remains the final authority for the two-slot rule
-# Subtest: profile editor reads and saves only the active character record
-# Subtest: profile save uses an upsert and updates privacy separately
-# Subtest: character profile table is owner scoped by RLS
-# Subtest: both role dashboards render the profile editor
-# Subtest: Hanami City content can be published and hidden without deletion
-# Subtest: application never opens an external email client
-# Subtest: communication architecture requires authenticated in-site messaging
-# Subtest: Admin and Owner have complete organization and election operations
-# Subtest: active election ballots show safe approved candidate identities
-# Subtest: student coursework is scoped to the active character enrollments
-# Subtest: student dashboard uses real coursework instead of a coursework placeholder
-# Subtest: coursework RLS separates students and instructors
-# Subtest: student submissions cannot spoof grading or keep editing after submit
-# Subtest: coursework keeps test data visibly labeled
-# Subtest: student schedule cards open a dedicated class workspace
-# Subtest: student class detail remains enrollment validated and private
-# Subtest: faculty written late policies are supported
-# Subtest: opportunity editor distinguishes drafts from immediate publishing
-# Subtest: system announcements are visible outside the notification drawer
-# Subtest: homepage surfaces a multi-event upcoming school feed
-# Subtest: dashboard is driven by the active character role
-# Subtest: role dashboards use live authenticated modules without placeholder cards
-# Subtest: role dashboards read school status notices and calendar from Administration
-# Subtest: academic database keeps membership reads owner scoped
-# Subtest: active character flows from gateway into role-specific dashboard
-# Subtest: faculty advising roster is loaded through controlled RPC
-# Subtest: advising roster only includes students from taught sections
-# Subtest: public advising RPC is security invoker with private internal helper
-# Subtest: faculty dashboard renders advising without a placeholder
-# Subtest: faculty grading is scoped to instructor-owned sections
-# Subtest: faculty can create assignments only through assigned instructor sections
-# Subtest: grading enforces assignment point maximum before returning
-# Subtest: faculty dashboard renders both course management and grading
-# Subtest: Discord role sync uses member OAuth authorization without a bot token
-# Subtest: Owner Discord server configuration stays Owner-gated
-# Subtest: Admin support desk can respond assign tag close and reopen tickets
-# Subtest: new public school RPCs use invoker wrappers after hardening
-# Subtest: Next.js is pinned to the patched 16.3.1 release
-# Subtest: friend requests are exact-handle and active-character scoped
-# Subtest: incoming requests require the owned addressee character
-# Subtest: friendship mutation stays behind controlled RPCs
-# Subtest: Students can only friend Students and Faculty can only friend Faculty
-# Subtest: Friends-only visibility requires an accepted same-role character friendship
-# Subtest: full Hanami school-day and academic roadmap remains wired
-# Subtest: full profile social privacy roadmap remains wired
-# Subtest: full Profile Studio roadmap remains wired
-# Subtest: full community and moderation roadmap remains wired
-# Subtest: full worldbuilding roadmap remains wired
-# Subtest: full Roadmap Hub social-program roadmap remains wired
-# Subtest: full onboarding changelog tester and release roadmap remains wired
-# Subtest: full staff Owner operations roadmap remains wired
-# Subtest: full messaging roadmap remains wired
-# Subtest: roadmap exclusions remain enforced
-# Subtest: group chat creation does not create a selectedId-driven inbox refresh loop
-# Subtest: group chat create action is single-flight and updates in place
-# Subtest: Hanami Inbox is website-native and character scoped
-# Subtest: direct messages start by exact Hanami handle through a hardened controlled RPC
-# Subtest: direct thread labels resolve the other participant instead of generic Direct
-# Subtest: switching many direct messages is stable and ignores stale message requests
-# Subtest: group chats use exact handles, cap invites, and support membership management
-# Subtest: messaging RLS requires conversation participation and character ownership
-# Subtest: completed messaging supports unread state and private attachments
-# Subtest: image and file attachments obtain a fresh signed URL when opened
-# Subtest: message center exposes unread notifications and reopenable sent messages
-# Subtest: privileged messaging helpers are kept out of the public API schema
-# Subtest: both role dashboards render the real message center instead of a placeholder
-# Subtest: homepage includes every approved public-home requirement
-# Subtest: public announcements use live Supabase data with a labeled fallback
-# Subtest: public next event uses the live school calendar with a labeled fallback
-# Subtest: public school status reads the Administration status record
-# Subtest: roleplay locale is Tokyo and public chronology is fixed to 2006
-# Subtest: Supabase secrets are not committed
-# Subtest: launch gate synchronizes Discord roles through signed-in OAuth without exposing a bot token
-# Subtest: Owner TEST Faculty fixture remains usable after Discord role sync is enabled
-# Subtest: suspended accounts are blocked and governance is audited
-# Subtest: messaging launch feature set includes unread state attachments and group management
-# Subtest: academic launch feature set includes attendance report cards and weighted grading
-# Subtest: Profile Studio includes duplication shape choice and private backgrounds
-# Subtest: public chronology is anchored to 2006 and calendar stays in-universe
-# Subtest: site-wide responsive layer is loaded and includes phone/tablet QA breakpoints
-# Subtest: launch client source contains no service-role credential
-# Subtest: Lore Wiki supports full editorial updates
-# Subtest: Canon Tracker supports reclassification retcons and source notes
-# Subtest: mobile layer contains portal-safe overflow and form hardening
-# Subtest: visible profiles expose a character-scoped report action
-# Subtest: report creation is owner scoped and cannot be self reported
-# Subtest: moderation queue is permission gated
-# Subtest: Hanami High does not collect or store birthdays
-# Subtest: Hanami navigation contains no dead placeholder links
-# Subtest: Faculty dashboard verifies Nurse eligibility before exposing the alternate dashboard
-# Subtest: Nurse Dashboard is a dedicated Health Office workspace
-# Subtest: Nurse special role is Faculty scoped and does not grant Site Admin
-# Subtest: Owner QA pack includes realistic TEST classes and BOT Faculty
-# Subtest: TEST Faculty QA attachment remains Owner-only
-# Subtest: BOT Faculty directory and assignments are Owner-only
-# Subtest: Nurse feed validates ownership and special-role assignment
-# Subtest: School Office requests are character-owned and website-native
-# Subtest: members can only follow up when the Office requests more information
-# Subtest: Office request types and lifecycle are complete
-# Subtest: Office staff queue stays permission scoped
-# Subtest: anonymous users have no direct School Office table grants
-# Subtest: both Student and Faculty dashboards expose the shared Office desk
-# Subtest: Owner portal renders the Bug Detector only inside Owner Control Center
-# Subtest: runtime reporter can only submit bugs and cannot read Owner findings
-# Subtest: Owner detector UI uses Owner-only feed and lifecycle RPC
-# Subtest: Bug Detector migration enforces verified Owner reads and updates
-# Subtest: Owner has a separate exported portal section
-# Subtest: Owner portal requires both Discord Owner identity and privileged credentials
-# Subtest: Owner automatically satisfies the Administrator privileged gate
-# Subtest: privileged session wrapper can execute its private helper
-# Subtest: Owner Control Center remains distinct while inheriting all Administration operations
-# Subtest: Owner gateway handoff is returned only after server Owner verification
-# Subtest: Owner can create bound or claimable Administrator logins
-# Subtest: portal starts Discord OAuth and returns to the current portal path
-# Subtest: portal restores and refreshes a browser session
-# Subtest: signed-in profile is loaded through bearer auth and RLS
-# Subtest: portal does not expose privileged keys or render an email field
-# Subtest: logout ends both account and active character sessions
-# Subtest: active character hands off into a dedicated role portal
-# Subtest: portal gateway explains authentication, privacy, and two-character rule
-# Subtest: database enforces two character slots and allowed roles
-# Subtest: portal foundation enables RLS and owner-scoped policies
-# Subtest: Profile Studio offers a broad divider preset library
-# Subtest: cute decorative symbols are editable profile widgets
-# Subtest: decorative library keeps multiple badges and cards
-# Subtest: visible profile renderer includes Top Friends badges status and visit counter
-# Subtest: Top Friends remain strictly accepted-friend and platonic controls
-# Subtest: profile visit RPC verifies viewer ownership and target visibility
-# Subtest: Profile Studio keeps image upload controls visible
-# Subtest: Profile Studio exposes a decorative preset library
-# Subtest: decorative presets are saved as character-owned profile widgets
-# Subtest: Design Your Character uses Profile Studio V2
-# Subtest: Profile Studio V2 provides stronger Canva-style editing controls
-# Subtest: Profile Studio V2 remains upload-first and privately stored
-# Subtest: Profile Studio V2 supports explicit shape and presentation styling
-# Subtest: Profile Studio uses independent saved widgets instead of a fixed profile template
-# Subtest: Profile Studio supports Canva-style multi-select history alignment and duplication
-# Subtest: widgets support sharp or curved corners and duplication preserves styling
-# Subtest: profile canvas and widgets remain owner scoped
-# Subtest: Profile Studio includes expanded personal-site widgets
-# Subtest: profile templates are optional editable starting points
-# Subtest: profile capacity is limited by page area rather than an arbitrary widget count
-# Subtest: locked widgets remain selectable and recoverable
-# Subtest: image widgets do not steal Profile Studio drag gestures
-# Subtest: profile widget deletion is server confirmed and cannot silently reappear
-# Subtest: private profile media is owner uploaded and privacy signed
-# Subtest: Profile Studio presents image editing as file upload instead of pasted image links
-# Subtest: profile background uploads persist and use privacy-aware media signing
-# Subtest: both role dashboards expose the shared Profile Design Workspace
-# Subtest: TEST Faculty fixture is explicit test data, owner scoped, and Owner only
-# Subtest: profile lookup is exact-handle and active-character scoped
-# Subtest: public and accepted Friends-only profiles are visible while private stays owner only
-# Subtest: profile lookup keeps private helpers behind security-invoker wrappers
-# Subtest: both role dashboards expose privacy-aware profile lookup
-# Subtest: Profile Studio allows freeform overlap and caps each character at 40 widgets
-# Subtest: public community pages share the persistent Hanami browser session
-# Subtest: public browsing refreshes the stored session instead of forcing another Discord login
-# Subtest: public portal button returns an active character to the correct dashboard
-# Subtest: signed-in public pages no longer have to present themselves as logged out
-# Subtest: Profile Studio precision roadmap is complete
-# Subtest: study matching and optional event RSVP are active-character systems
-# Subtest: roadmap staff operations cover transit shifts volunteer mentorship and RSVPs
-# Subtest: class competitions Exams Week and honors are fully wired
-# Subtest: tester-only flags require tester release membership
-# Subtest: profile templates use moderated approval before publication
-# Subtest: character archive export and continuity archive have member and Admin workflows
-# Subtest: Hanami City transit includes schedules commute routes station pages and neighborhood maps
-# Subtest: Roadmap Hub exposes all completion modules
-# Subtest: Profile Studio roadmap tools are wired into the live workspace
-# Subtest: Student and Faculty portals include replayable first-login tours
-# Subtest: scheduled seasonal themes and optional 2006 mode are active without dark mode
-# Subtest: public version and changelog are discoverable site-wide
-# Subtest: student and faculty have separate website sections
-# Subtest: role portal restores the selected character session
-# Subtest: direct navigation cannot bypass role matching
-# Subtest: role portal logout clears character and account session
-# Subtest: normal School Resources never loads or renders form submission history
-# Subtest: normal users can still submit school forms without reading history
-# Subtest: Owner receives system health and aggregate staff analytics
-# Subtest: Admin workspace includes storyline incident and evidence operations
-# Subtest: Faculty dashboard includes a private lounge workflow
-# Subtest: dark mode controls are absent from Hanami accessibility settings
-# Subtest: student activities are loaded for the active character
-# Subtest: campus activity membership reads remain owner scoped
-# Subtest: student dashboard has no remaining placeholder modules
-# Subtest: test activity data stays visibly labeled
-# Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-# Subtest: Student life feeds validate owned Student character even for privileged accounts
-# Subtest: accessibility and notification preferences bind to signed-in user automatically
-# Subtest: group chat creation uses a validated private helper and creator management
-# Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-# Subtest: School Office separates staff action waiting member and archive queues
-# Subtest: Help has a direct router and support anchor
+--- lint ---
+  18 |  async function save(event:FormEvent<HTMLFormElement>){event.preventDefault();if(!canEdit||saving)return;setSaving(true);setNotice("Updating school status…");try{const response=await fetch(`${SUPABASE_URL}/rest/v1/school_status_config?key=eq.main`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status,message:message.trim(),updated_by:userId,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("School status could not be updated.");await load();setNotice("School status updated across the Hanami network.");}catch(error){setNotice(error instanceof Error?error.message:"School status could not be updated.");}finally{setSaving(false);}}
+  19 |  return <section className={styles.panel} aria-labelledby="school-status-admin-title"><div className={styles.heading}><div><p className="eyebrow">SCHOOL OPERATIONS</p><h3 id="school-status-admin-title">School Status</h3></div><span>{canEdit?"EDITOR ACCESS":"READ ONLY"}</span></div><div className={styles.notice} aria-live="polite">{notice}</div><form className={styles.form} onSubmit={save}><div className={styles.row}><label><span>Operating status</span><select value={status} onChange={e=>setStatus(e.target.value as Status)} disabled={!canEdit}><option value="open">Open</option><option value="delayed">Delayed</option><option value="closed">Closed</option><option value="holiday">Holiday</option><option value="emergency">Emergency</option></select></label><label><span>Last updated</span><input value={updatedAt?new Intl.DateTimeFormat("en-US",{dateStyle:"medium",timeStyle:"short",timeZone:"Asia/Tokyo"}).format(new Date(updatedAt)):"—"} readOnly/></label></div><label><span>Status message</span><textarea value={message} maxLength={500} onChange={e=>setMessage(e.target.value)} disabled={!canEdit}/></label>{canEdit&&<button type="submit" disabled={saving}>{saving?"Updating…":"Update school status"}</button>}</form></section>;
+  20 | }  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminStaffAnalyticsPanel.tsx
+  9:584  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminStaffAnalyticsPanel.tsx:9:584
+   7 | function headers(token:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${token}`,...extra};}
+   8 | type Metric={metric:string;value:number};
+>  9 | export default function AdminStaffAnalyticsPanel({accessToken}:{accessToken:string}){const [rows,setRows]=useState<Metric[]>([]);const [notice,setNotice]=useState("Loading aggregate school analytics…");const load=useCallback(async()=>{const r=await fetch(`${SUPABASE_URL}/rest/v1/rpc/staff_analytics_summary`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:"{}"});if(r.ok){setRows(await r.json());setNotice("Aggregate analytics updated.");}else setNotice("Analytics could not be loaded for this staff role.");},[accessToken]);useEffect(()=>{void load();},[load]);const label=(v:string)=>v.replaceAll("_"," ").replace(/\b\w/g,m=>m.toUpperCase());return <section style={{marginTop:18,border:"1px solid #aab7c6",background:"#fff"}}><div style={{padding:12,background:"#eef3f8",borderBottom:"1px solid #c5ced8",display:"flex",justifyContent:"space-between",gap:8,flexWrap:"wrap"}}><div><p className="eyebrow">STAFF ANALYTICS</p><h3 style={{margin:"3px 0",font:"400:21px Georgia,serif"}}>Aggregate School Activity</h3><small>{notice}</small></div><button type="button" onClick={()=>void load()}>Refresh</button></div><div style={{padding:12,display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:8}}>{rows.map(row=><article key={row.metric} style={{padding:10,border:"1px solid #d3dae1"}}><small>{label(row.metric)}</small><strong style={{display:"block",fontSize:20}}>{row.value}</strong></article>)}</div><p style={{padding:"0 12px 12px",fontSize:9,color:"#667789"}}>Aggregate only: no private message contents, browsing histories, profile-view identities, or per-user behavior reports are collected for this dashboard.</p></section>;}
+     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^^^^ Avoid calling setState() directly within an effect
+  10 |  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminSupportTicketManager.tsx
+  18:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminSupportTicketManager.tsx:18:22
+  16 |  const visible=useMemo(()=>tickets.filter(t=>filter==="all"?true:filter==="closed"?["resolved","closed"].includes(t.status):!["resolved","closed"].includes(t.status)),[tickets,filter]);
+  17 |  const load=useCallback(async()=>{try{const [ticketResponse,messageResponse]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/support_tickets?select=id,requester_user_id,requester_character_id,category,subject,body,status,priority,tags,assigned_to,created_at,updated_at&order=updated_at.desc&limit=150`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/support_ticket_messages?select=id,ticket_id,author_user_id,body,is_staff_reply,created_at&order=created_at.asc&limit=500`,{headers:headers(accessToken)})]);if(!ticketResponse.ok||!messageResponse.ok)throw new Error("Support ticket queue could not be loaded.");const ticketRows=await ticketResponse.json() as Ticket[];setTickets(ticketRows);setMessages(await messageResponse.json() as Message[]);setSelectedId(current=>current&&ticketRows.some(t=>t.id===current)?current:(ticketRows[0]?.id??""));setNotice(`${ticketRows.length} support ticket${ticketRows.length===1?"":"s"} loaded.`);}catch(error){setNotice(error instanceof Error?error.message:"Support ticket queue could not be loaded.");}},[accessToken]);
+> 18 |  useEffect(()=>{void load();},[load]);
+     |                      ^^^^ Avoid calling setState() directly within an effect
+  19 |  useEffect(()=>{setTagsDraft(selected?.tags.join(", ")??"");},[selectedId,selected?.tags]);
+  20 |  async function patchTicket(body:Record<string,unknown>){if(!selected)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/support_tickets?id=eq.${encodeURIComponent(selected.id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({...body,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Ticket could not be updated.");await load();setNotice("Support ticket updated.");}catch(error){setNotice(error instanceof Error?error.message:"Ticket could not be updated.");}finally{setSaving(false);}}
+  21 |  async function submitReply(event:FormEvent){event.preventDefault();if(!selected||reply.trim().length<1)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/support_ticket_messages`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({ticket_id:selected.id,author_user_id:userId,body:reply.trim()})});if(!response.ok)throw new Error("Staff reply could not be posted.");setReply("");if(selected.status==="open")await patchTicket({status:"assigned",assigned_to:userId});else await load();setNotice("Staff reply posted.");}catch(error){setNotice(error instanceof Error?error.message:"Staff reply could not be posted.");}finally{setSaving(false);}}  react-hooks/set-state-in-effect
+  19:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminSupportTicketManager.tsx:19:17
+  17 |  const load=useCallback(async()=>{try{const [ticketResponse,messageResponse]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/support_tickets?select=id,requester_user_id,requester_character_id,category,subject,body,status,priority,tags,assigned_to,created_at,updated_at&order=updated_at.desc&limit=150`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/support_ticket_messages?select=id,ticket_id,author_user_id,body,is_staff_reply,created_at&order=created_at.asc&limit=500`,{headers:headers(accessToken)})]);if(!ticketResponse.ok||!messageResponse.ok)throw new Error("Support ticket queue could not be loaded.");const ticketRows=await ticketResponse.json() as Ticket[];setTickets(ticketRows);setMessages(await messageResponse.json() as Message[]);setSelectedId(current=>current&&ticketRows.some(t=>t.id===current)?current:(ticketRows[0]?.id??""));setNotice(`${ticketRows.length} support ticket${ticketRows.length===1?"":"s"} loaded.`);}catch(error){setNotice(error instanceof Error?error.message:"Support ticket queue could not be loaded.");}},[accessToken]);
+  18 |  useEffect(()=>{void load();},[load]);
+> 19 |  useEffect(()=>{setTagsDraft(selected?.tags.join(", ")??"");},[selectedId,selected?.tags]);
+     |                 ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |  async function patchTicket(body:Record<string,unknown>){if(!selected)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/support_tickets?id=eq.${encodeURIComponent(selected.id)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({...body,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Ticket could not be updated.");await load();setNotice("Support ticket updated.");}catch(error){setNotice(error instanceof Error?error.message:"Ticket could not be updated.");}finally{setSaving(false);}}
+  21 |  async function submitReply(event:FormEvent){event.preventDefault();if(!selected||reply.trim().length<1)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/support_ticket_messages`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({ticket_id:selected.id,author_user_id:userId,body:reply.trim()})});if(!response.ok)throw new Error("Staff reply could not be posted.");setReply("");if(selected.status==="open")await patchTicket({status:"assigned",assigned_to:userId});else await load();setNotice("Staff reply posted.");}catch(error){setNotice(error instanceof Error?error.message:"Staff reply could not be posted.");}finally{setSaving(false);}}
+  22 |  const ticketMessages=selected?messages.filter(m=>m.ticket_id===selected.id):[];                                                                                                        react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerBugDetectorPanel.tsx
+  15:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerBugDetectorPanel.tsx:15:22
+  13 |  const load=useCallback(async()=>{try{await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_capture_bug_support_tickets`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:"{}"});const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_bug_detector_feed`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:"{}"});if(!response.ok)throw new Error("Owner Bug Detector could not be loaded.");const rows=await response.json() as Bug[];setBugs(rows);setNotes(Object.fromEntries(rows.map(row=>[row.id,row.owner_notes])));setStatus(`${rows.filter(row=>row.status==="detected"||row.status==="investigating").length} active detector finding${rows.filter(row=>row.status==="detected"||row.status==="investigating").length===1?"":"s"}.`);}catch(error){setStatus(error instanceof Error?error.message:"Owner Bug Detector could not be loaded.");}
+  14 |   try{const gh=await fetch("https://api.github.com/repos/hanamihalladmin/Hanami-High/actions/runs?per_page=1",{headers:{Accept:"application/vnd.github+json"}});if(gh.ok){const data=await gh.json() as {workflow_runs?:WorkflowRun[]};setWorkflow(data.workflow_runs?.[0]??null);}else setWorkflow(null);}catch{setWorkflow(null);}},[accessToken]);
+> 15 |  useEffect(()=>{void load();},[load]);
+     |                      ^^^^ Avoid calling setState() directly within an effect
+  16 |  async function updateBug(id:string,nextStatus:Bug["status"]){const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_update_bug_report`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({target_bug_id:id,new_status:nextStatus,new_notes:notes[id]??""})});if(response.ok){setStatus("Bug record updated.");await load();}else setStatus("Bug record could not be updated.");}
+  17 |  const active=useMemo(()=>bugs.filter(b=>b.status==="detected"||b.status==="investigating"),[bugs]);const critical=active.filter(b=>b.severity==="critical").length;const high=active.filter(b=>b.severity==="high").length;
+  18 |  const fmt=(v:string)=>new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}).format(new Date(v));  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerDiscordRoleSyncPanel.tsx
+  13:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerDiscordRoleSyncPanel.tsx:13:22
+  11 |  const [guildId,setGuildId]=useState("");const [savedGuildId,setSavedGuildId]=useState("");const [notice,setNotice]=useState("Loading Discord server configuration…");const [saving,setSaving]=useState(false);
+  12 |  const load=useCallback(async()=>{try{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_discord_guild_configuration`,{method:"POST",headers:headers(accessToken),body:"{}"});if(!response.ok)throw new Error("Discord server configuration could not be loaded.");const rows=await response.json() as {guild_id:string}[];const value=rows[0]?.guild_id??"";setGuildId(value);setSavedGuildId(value);setNotice(value?"Discord server ID configured. Members can synchronize roles after signing in with the expanded Discord permissions.":"Enter the Hanami Discord server ID to activate automatic role synchronization.");}catch(error){setNotice(error instanceof Error?error.message:"Discord server configuration could not be loaded.");}},[accessToken]);
+> 13 |  useEffect(()=>{void load();},[load]);
+     |                      ^^^^ Avoid calling setState() directly within an effect
+  14 |  async function save(event:FormEvent){event.preventDefault();const clean=guildId.trim();if(!/^\d{16,22}$/.test(clean)){setNotice("Enter a valid numeric Discord server ID.");return;}setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_set_discord_guild_id`,{method:"POST",headers:headers(accessToken),body:JSON.stringify({requested_guild_id:clean})});if(!response.ok)throw new Error("Discord server ID could not be saved.");setSavedGuildId(clean);setNotice("Discord server ID saved. Existing members should sign out and sign back in once so Discord can grant the role-reading scope, then use Resync roles in the Portal Gateway.");}catch(error){setNotice(error instanceof Error?error.message:"Discord server ID could not be saved.");}finally{setSaving(false);}}
+  15 |  return <section className={styles.panel} aria-labelledby="owner-discord-sync-title"><div className={styles.heading}><div><p className="eyebrow">DISCORD ROLE SYNCHRONIZATION</p><h3 id="owner-discord-sync-title">Server role authority</h3></div><span>{savedGuildId?"CONFIGURED":"SETUP REQUIRED"}</span></div><p>Hanami verifies Student, Faculty, and Administrator roles from each member&apos;s own Discord authorization. No Discord bot token is required.</p><form onSubmit={save}><label><span>HANAMI DISCORD SERVER ID</span><input value={guildId} onChange={event=>setGuildId(event.target.value)} inputMode="numeric" placeholder="Example: 123456789012345678" maxLength={22}/></label><button disabled={saving} type="submit">{saving?"Saving…":"Save Server ID"}</button></form><div className={styles.notice} aria-live="polite">{notice}</div><small>To copy the server ID in Discord, enable Developer Mode, then right-click the Hanami server and choose Copy Server ID. The ID is an identifier, not a private credential.</small></section>;
+  16 | }  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerOperationsPanel.tsx
+  24:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerOperationsPanel.tsx:24:22
+  22 |   fetch(`${SUPABASE_URL}/rest/v1/rpc/account_governance_directory`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({search_text:""})})
+  23 |  ]);if(!f.ok||!r.ok||!s.ok||!a.ok)throw new Error("Owner operations data could not be loaded.");const [flagRows,runtimeRows,sanctionRows,accountRows]=await Promise.all([f.json() as Promise<Flag[]>,r.json() as Promise<Array<{value:Maintenance}>>,s.json() as Promise<Sanction[]>,a.json() as Promise<Account[]>]);setFlags(flagRows);setMaintenance(runtimeRows[0]?.value??{enabled:false});setSanctions(sanctionRows);setAccounts(accountRows);setTargetUser(current=>current||accountRows[0]?.user_id||"");setNotice(`${flagRows.length} feature flags • ${sanctionRows.length} active sanction${sanctionRows.length===1?"":"s"}.`);}catch(error){setNotice(error instanceof Error?error.message:"Owner operations could not be loaded.");}},[accessToken]);
+> 24 |  useEffect(()=>{void load();},[load]);
+     |                      ^^^^ Avoid calling setState() directly within an effect
+  25 |  async function saveFlag(flag:Flag,patch:Partial<Flag>){setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/feature_flags?key=eq.${encodeURIComponent(flag.key)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({...patch,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Feature flag could not be changed.");await load();setNotice(`${flag.key} updated.`);}catch(error){setNotice(error instanceof Error?error.message:"Feature flag could not be changed.");}finally{setSaving(false);}}
+  26 |  async function saveMaintenance(next:Maintenance){setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/site_runtime_config?key=eq.maintenance`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({value:next,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Maintenance setting could not be changed.");setMaintenance(next);setNotice(next.enabled?"Maintenance mode enabled for the Hanami network.":"Maintenance mode disabled.");}catch(error){setNotice(error instanceof Error?error.message:"Maintenance setting could not be changed.");}finally{setSaving(false);}}
+  27 |  async function createSanction(event:FormEvent){event.preventDefault();if(!targetUser||reason.trim().length<3)return;setSaving(true);try{const response=await fetch(`${SUPABASE_URL}/rest/v1/account_sanctions`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({user_id:targetUser,sanction_type:sanctionType,reason:reason.trim(),ends_at:endAt?new Date(endAt).toISOString():null})});if(!response.ok)throw new Error("Sanction could not be created.");setReason("");setEndAt("");await load();setNotice("Granular account sanction applied.");}catch(error){setNotice(error instanceof Error?error.message:"Sanction could not be created.");}finally{setSaving(false);}}  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerPortalClient.tsx
+  25:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerPortalClient.tsx:25:17
+  23 |  const [adminHandle,setAdminHandle]=useState("");const [adminPassword,setAdminPassword]=useState("");const [adminDiscordId,setAdminDiscordId]=useState("");const [saving,setSaving]=useState(false);
+  24 |  const initialize=useCallback(async()=>{const stored=readSession();if(!stored){setState("blocked");setMessage("Sign in through the Hanami Portal Gateway first.");return;}setSession(stored);const [ownerResponse,privilegedResponse,userResponse]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/rpc/current_owner_status`,{method:"POST",headers:headers(stored.accessToken,{"Content-Type":"application/json"}),body:"{}"}),fetch(`${SUPABASE_URL}/rest/v1/rpc/has_privileged_portal_session`,{method:"POST",headers:headers(stored.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({requested_portal:"owner"})}),fetch(`${SUPABASE_URL}/auth/v1/user`,{headers:headers(stored.accessToken)})]);if(!ownerResponse.ok||!privilegedResponse.ok||!userResponse.ok){setState("blocked");setMessage("Owner access could not be verified.");return;}const isOwner=Boolean(await ownerResponse.json());if(!isOwner){setState("blocked");setMessage("This Discord account is not the configured Hanami Owner account.");return;}const user=await userResponse.json() as {id?:string};if(!user.id){setState("blocked");setMessage("Owner account ID could not be loaded.");return;}setUserId(user.id);const privileged=Boolean(await privilegedResponse.json());if(!privileged){setState("signin");setMessage("Owner identity confirmed. Enter the separate Owner credentials.");return;}setState("ready");setMessage("Owner identity and privileged sign-in verified. Full Administration workspace is enabled.");},[]);
+> 25 |  useEffect(()=>{initialize();},[initialize]);
+     |                 ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  26 |  async function createAdmin(event:FormEvent<HTMLFormElement>){event.preventDefault();if(!session||saving)return;const cleanTarget=adminDiscordId.trim();setSaving(true);setMessage("Creating administrator credential…");try{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_create_admin_credential`,{method:"POST",headers:headers(session.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({requested_handle:adminHandle.trim().toLowerCase(),requested_password:adminPassword,target_discord_user_id:cleanTarget||null})});if(!response.ok)throw new Error("Administrator credential could not be created. Use a unique handle and a 12+ character password. A Discord user ID is optional.");setAdminHandle("");setAdminPassword("");setAdminDiscordId("");setMessage(cleanTarget?"Administrator credential created and bound to that Discord user ID.":"Administrator login created. It will bind permanently to the first Discord account that successfully signs in with it.");}catch(error){setMessage(error instanceof Error?error.message:"Administrator credential could not be created.");}finally{setSaving(false);}}
+  27 |  async function lockOwner(){if(session)await fetch(`${SUPABASE_URL}/rest/v1/rpc/end_privileged_portal_session`,{method:"POST",headers:headers(session.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({requested_portal:"owner"})});setState("signin");setMessage("Owner portal locked. Normal Hanami sign-in remains active.");}
+  28 |  if(state==="signin")return <PrivilegedPortalLogin portalKind="owner" allowOwnerBootstrap onUnlocked={initialize}/>;  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerSystemHealthAnalyticsPanel.tsx
+  22:22  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerSystemHealthAnalyticsPanel.tsx:22:22
+  20 |   fetch(`${SUPABASE_URL}/rest/v1/changelog_entries?select=version,title,published_at&status=eq.published&order=published_at.desc&limit=1`,{headers:headers(accessToken)})
+  21 |  ]);setOnline(ping.ok);if(a.ok)setMetrics(await a.json());if(h.ok)setHealth(await h.json());if(b.ok)setBugs(await b.json());if(v.ok){const rows=await v.json() as Change[];setVersion(rows[0]??null);}setNotice(ping.ok?"Supabase connection healthy. Owner telemetry refreshed.":"Supabase health check failed.");},[accessToken]);
+> 22 |  useEffect(()=>{void load();const timer=setInterval(()=>void load(),60000);return()=>clearInterval(timer);},[load]);
+     |                      ^^^^ Avoid calling setState() directly within an effect
+  23 |  const label=(key:string)=>key.replaceAll("_"," ").replace(/\b\w/g,m=>m.toUpperCase());
+  24 |  return <section style={{marginTop:18,border:"1px solid #9ba9b7",background:"#fff"}}><div style={{padding:14,background:"#eef3f8",borderBottom:"1px solid #c5ced8",display:"flex",justifyContent:"space-between",gap:12,flexWrap:"wrap"}}><div><p className="eyebrow">OWNER OPERATIONS</p><h3 style={{margin:"3px 0",font:"400:22px Georgia,serif"}}>System Health & Staff Analytics</h3><small>{notice}</small></div><button type="button" onClick={()=>void load()}>Refresh</button></div><div style={{padding:14,display:"grid",gap:14}}><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:8}}><article style={{padding:10,border:"1px solid #cbd4dc"}}><small>SUPABASE</small><strong style={{display:"block",fontSize:18}}>{online?"HEALTHY":"ERROR"}</strong></article><article style={{padding:10,border:"1px solid #cbd4dc"}}><small>DEPLOYMENT VERSION</small><strong style={{display:"block",fontSize:18}}>{process.env.NEXT_PUBLIC_HANAMI_VERSION??version?.version??"development"}</strong><span style={{fontSize:9}}>{version?.title??"No published changelog entry"}</span></article>{metrics.map(m=><article key={m.metric} style={{padding:10,border:"1px solid #cbd4dc"}}><small>{label(m.metric)}</small><strong style={{display:"block",fontSize:18}}>{m.value}</strong></article>)}</div><details open><summary><strong>Recent client/network failures</strong></summary><div style={{display:"grid",gap:6,marginTop:8}}>{health.length?health.map(e=><div key={e.id} style={{padding:8,border:"1px solid #e0e4e8"}}><strong>{label(e.event_type)}</strong> • {e.summary}<div style={{fontSize:8,color:"#69798a"}}>{e.page_path??"Unknown route"} • {new Date(e.created_at).toLocaleString()}</div></div>):<p>No recorded client health failures.</p>}</div></details><details><summary><strong>Recent bug reports</strong></summary><div style={{display:"grid",gap:6,marginTop:8}}>{bugs.length?bugs.map(b=><div key={b.id} style={{padding:8,border:"1px solid #e0e4e8"}}><strong>{b.severity.toUpperCase()} • {b.status}</strong><div>{b.description.slice(0,180)}{b.description.length>180?"…":""}</div><small>{b.page_path} • {new Date(b.created_at).toLocaleString()}</small></div>):<p>No bug reports.</p>}</div></details><p style={{fontSize:9,color:"#687789"}}>Analytics are aggregate-only. This panel does not expose browsing histories, private message contents, or invasive per-user activity tracking.</p></div></section>;
+  25 | }  react-hooks/set-state-in-effect
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/student-viewer/OwnerStudentPortalViewer.tsx
+  18:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/student-viewer/OwnerStudentPortalViewer.tsx:18:17
+  16 |  const [session,setSession]=useState<PortalSession|null>(null);const [students,setStudents]=useState<Student[]>([]);const [selected,setSelected]=useState("");const [snapshot,setSnapshot]=useState<Snapshot|null>(null);const [status,setStatus]=useState("Verifying Owner access…");
+  17 |  const initialize=useCallback(async()=>{const stored=readSession();if(!stored){setStatus("Open the Owner Portal and sign in first.");return;}setSession(stored);const [owner,gate]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/rpc/current_owner_status`,{method:"POST",headers:headers(stored.accessToken),body:"{}"}),fetch(`${SUPABASE_URL}/rest/v1/rpc/has_privileged_portal_session`,{method:"POST",headers:headers(stored.accessToken),body:JSON.stringify({requested_portal:"owner"})})]);if(!owner.ok||!gate.ok||!Boolean(await owner.json())||!Boolean(await gate.json())){setStatus("Owner identity and privileged Owner sign-in are required.");return;}const directory=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_student_portal_directory`,{method:"POST",headers:headers(stored.accessToken),body:"{}"});if(!directory.ok){setStatus("Student directory could not be loaded.");return;}const rows=await directory.json() as Student[];setStudents(rows);if(rows[0])setSelected(rows[0].character_id);setStatus(rows.length?"Read-only moderation view ready.":"No Student characters found.");},[]);
+> 18 |  useEffect(()=>{initialize();},[initialize]);
+     |                 ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  19 |  useEffect(()=>{if(!session||!selected)return;setStatus("Loading Student portal snapshot…");fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_student_portal_snapshot`,{method:"POST",headers:headers(session.accessToken),body:JSON.stringify({target_character_id:selected})}).then(async r=>{if(!r.ok)throw new Error();setSnapshot(await r.json() as Snapshot);setStatus("Read-only moderation view ready.");}).catch(()=>{setSnapshot(null);setStatus("Student portal snapshot could not be loaded.");});},[session,selected]);
+  20 |  return <section style={{border:"1px solid #9babc0",background:"#fff",padding:16}}>
+  21 |   <p className="eyebrow">OWNER • STUDENT PORTAL VIEWER</p><h2 style={{margin:"4px 0:8px",font:"400 28px Georgia,serif"}}>Moderation view</h2><p style={{maxWidth:820}}>Inspect a Student character&apos;s school portal data without impersonating them or changing their active session. This view is Owner-only and read-only.</p><div style={{padding:10,background:"#fff7d8",border:"1px solid #d9c576",marginBottom:14}}>{status}</div>                                                                       react-hooks/set-state-in-effect
+  19:47  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/student-viewer/OwnerStudentPortalViewer.tsx:19:47
+  17 |  const initialize=useCallback(async()=>{const stored=readSession();if(!stored){setStatus("Open the Owner Portal and sign in first.");return;}setSession(stored);const [owner,gate]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/rpc/current_owner_status`,{method:"POST",headers:headers(stored.accessToken),body:"{}"}),fetch(`${SUPABASE_URL}/rest/v1/rpc/has_privileged_portal_session`,{method:"POST",headers:headers(stored.accessToken),body:JSON.stringify({requested_portal:"owner"})})]);if(!owner.ok||!gate.ok||!Boolean(await owner.json())||!Boolean(await gate.json())){setStatus("Owner identity and privileged Owner sign-in are required.");return;}const directory=await fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_student_portal_directory`,{method:"POST",headers:headers(stored.accessToken),body:"{}"});if(!directory.ok){setStatus("Student directory could not be loaded.");return;}const rows=await directory.json() as Student[];setStudents(rows);if(rows[0])setSelected(rows[0].character_id);setStatus(rows.length?"Read-only moderation view ready.":"No Student characters found.");},[]);
+  18 |  useEffect(()=>{initialize();},[initialize]);
+> 19 |  useEffect(()=>{if(!session||!selected)return;setStatus("Loading Student portal snapshot…");fetch(`${SUPABASE_URL}/rest/v1/rpc/owner_student_portal_snapshot`,{method:"POST",headers:headers(session.accessToken),body:JSON.stringify({target_character_id:selected})}).then(async r=>{if(!r.ok)throw new Error();setSnapshot(await r.json() as Snapshot);setStatus("Read-only moderation view ready.");}).catch(()=>{setSnapshot(null);setStatus("Student portal snapshot could not be loaded.");});},[session,selected]);
+     |                                               ^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |  return <section style={{border:"1px solid #9babc0",background:"#fff",padding:16}}>
+  21 |   <p className="eyebrow">OWNER • STUDENT PORTAL VIEWER</p><h2 style={{margin:"4px 0:8px",font:"400 28px Georgia,serif"}}>Moderation view</h2><p style={{maxWidth:820}}>Inspect a Student character&apos;s school portal data without impersonating them or changing their active session. This view is Owner-only and read-only.</p><div style={{padding:10,background:"#fff7d8",border:"1px solid #d9c576",marginBottom:14}}>{status}</div>
+  22 |   {students.length>0&&<label style={{display:"grid",gap:5,maxWidth:520,marginBottom:16}}><strong>Student character</strong><select value={selected} onChange={e=>setSelected(e.target.value)}>{students.map(s=><option key={s.character_id} value={s.character_id}>{s.display_name} (@{s.handle})</option>)}</select></label>}  react-hooks/set-state-in-effect
+
+✖ 93 problems (78 errors, 15 warnings)
+
+--- failing checks ---
+--- test summary ---
+# tests 236
+# pass 236
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
 --- tail ---
   ---
-  duration_ms: 0.215854
-  type: 'test'
-  ...
-# Subtest: role portal logout clears character and account session
-ok 218 - role portal logout clears character and account session
-  ---
-  duration_ms: 0.219902
+  duration_ms: 0.153729
   type: 'test'
   ...
 # Subtest: normal School Resources never loads or renders form submission history
 ok 219 - normal School Resources never loads or renders form submission history
   ---
-  duration_ms: 1.4421
+  duration_ms: 0.933061
   type: 'test'
   ...
 # Subtest: normal users can still submit school forms without reading history
 ok 220 - normal users can still submit school forms without reading history
   ---
-  duration_ms: 0.307977
+  duration_ms: 0.175769
+  type: 'test'
+  ...
+# Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
+ok 221 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
+  ---
+  duration_ms: 7.575495
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
-ok 221 - Owner receives system health and aggregate staff analytics
+ok 222 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.003007
+  duration_ms: 1.650217
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
-ok 222 - Admin workspace includes storyline incident and evidence operations
+ok 223 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.29922
+  duration_ms: 0.328737
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
-ok 223 - Faculty dashboard includes a private lounge workflow
+ok 224 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.172863
+  duration_ms: 0.232427
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 224 - dark mode controls are absent from Hanami accessibility settings
+ok 225 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.167062
+  duration_ms: 0.268294
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 225 - student activities are loaded for the active character
+ok 226 - student activities are loaded for the active character
   ---
-  duration_ms: 0.970527
+  duration_ms: 0.869763
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 226 - campus activity membership reads remain owner scoped
+ok 227 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.189345
+  duration_ms: 0.176401
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 227 - student dashboard has no remaining placeholder modules
+ok 228 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.291766
+  duration_ms: 0.254417
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
-ok 228 - test activity data stays visibly labeled
+ok 229 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.179516
+  duration_ms: 0.187281
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 229 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 230 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.914312
+  duration_ms: 1.245408
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 230 - Student life feeds validate owned Student character even for privileged accounts
+ok 231 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.293961
+  duration_ms: 0.347261
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 231 - accessibility and notification preferences bind to signed-in user automatically
+ok 232 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.87488
+  duration_ms: 8.137289
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 232 - group chat creation uses a validated private helper and creator management
+ok 233 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.507251
+  duration_ms: 2.537295
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 233 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 234 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.369023
+  duration_ms: 1.635479
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 234 - School Office separates staff action waiting member and archive queues
+ok 235 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.781586
+  duration_ms: 1.972481
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 235 - Help has a direct router and support anchor
+ok 236 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.487264
+  duration_ms: 1.712413
   type: 'test'
   ...
-1..235
-# tests 235
+1..236
+# tests 236
 # suites 0
-# pass 235
+# pass 236
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1540.292428
+# duration_ms 1421.438175
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 27ms
+✓ Running next.config.ts took 24ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -358,15 +326,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.6s
+✓ Compiled successfully in 5.9s
   Running TypeScript ...
-  Finished TypeScript in 9.8s ...
+  Finished TypeScript in 9.4s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 638ms
+✓ Generating static pages using 3 workers (28/28) in 579ms
   Finalizing page optimization ...
 
 Route (app)
