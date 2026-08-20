@@ -2,6 +2,7 @@
 
 import {useCallback,useEffect,useState} from "react";
 import DashboardShell,{type ActiveCharacter} from "./DashboardShell";
+import GuidedFirstLoginTour from "./GuidedFirstLoginTour";
 import styles from "./RolePortalClient.module.css";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
@@ -31,5 +32,5 @@ export default function RolePortalClient({role}:Props){
   if(roleSync?.sync_status==="synced"&&!roleSync[role]&&!ownerTestFaculty){if(!cancelled){setSession(stored);setState("blocked");setMessage(`Your Discord account does not currently have the Hanami ${role==="student"?"Student":"Faculty"} role required for this portal.`);}return;}
   localStorage.setItem(CHARACTER_SESSION_KEY,activeCharacter.id);const syncNote=ownerTestFaculty?" Owner TEST Faculty authorization verified.":roleSync?.sync_status==="pending"?" Discord role synchronization is waiting for server configuration.":"";if(!cancelled){setSession(stored);setCharacter(activeCharacter);setState("ready");setMessage(`${activeCharacter.display_name} restored as your active character.${syncNote}`);}}catch(error){if(!cancelled){setState("blocked");setMessage(error instanceof Error?error.message:"The portal session could not be restored.");}}}initialize();return()=>{cancelled=true;};},[role]);
  if(state!=="ready"||!session||!character)return <section className={styles.gate}><p className="eyebrow">{role.toUpperCase()} PORTAL</p><h2>{state==="loading"?"Opening your school desk…":"Portal access paused"}</h2><p>{message}</p><div className={styles.actions}><a href="../">Return to character gateway</a>{session&&<button type="button" onClick={logout}>Logout</button>}</div></section>;
- return <div className={styles.portal}><div className={styles.sessionBar}><div><strong>{role==="student"?"STUDENT PORTAL":"FACULTY PORTAL"}</strong><span>{message}</span></div><div className={styles.actions}><a href="../">Switch character</a><button type="button" onClick={logout}>Logout</button></div></div><DashboardShell character={character} accessToken={session.accessToken}/></div>;
+ return <div className={styles.portal}><div className={styles.sessionBar}><div><strong>{role==="student"?"STUDENT PORTAL":"FACULTY PORTAL"}</strong><span>{message}</span></div><div className={styles.actions}><a href="../">Switch character</a><button type="button" onClick={logout}>Logout</button></div></div><DashboardShell character={character} accessToken={session.accessToken}/><GuidedFirstLoginTour characterId={character.id} role={role}/></div>;
 }
