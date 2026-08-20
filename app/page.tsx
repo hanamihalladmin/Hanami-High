@@ -14,7 +14,7 @@ export default function Home() {
     <main id="home" className="site-page">
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <header className="school-header" aria-label="Hanami High header">
-        <div className="network-strip"><a href="./portal/" style={{color:"inherit",textDecoration:"none"}}>HANAMI HIGH SCHOOL • PUBLIC SCHOOL NETWORK • EST. 2006</a></div>
+        <div className="network-strip"><a href="./portal/" style={{color:"inherit",textDecoration:"none"}}>HANAMI HIGH SCHOOL • PUBLIC SCHOOL NETWORK • EST. 1836</a></div>
         <div className="brand-row">
           <div className="brand-lockup"><div className="school-mark" aria-hidden="true"><span>花</span></div><div><p className="jp-name">花見高等学校</p><h1>HANAMI HIGH SCHOOL</h1><p className="brand-subtitle">Knowledge • Character • Community</p></div></div>
           <div className="school-clock" aria-label={`Hanami roleplay date is ${currentDate}`}><strong>{currentDate.toUpperCase()}</strong><LiveSchoolStatus/></div>
@@ -36,7 +36,7 @@ export default function Home() {
           <SiteSearch />
           <section className="info-section" id="academics"><div className="section-heading"><h2>ACADEMIC HIGHLIGHTS</h2><a href="./academics/">Course guide</a></div><div className="academic-grid"><article><span>01</span><h3>Arts & Humanities</h3><p>Literature, history, languages, visual art, and music.</p></article><article><span>02</span><h3>Science & Technology</h3><p>Laboratory science, mathematics, computing, and design.</p></article><article><span>03</span><h3>Guidance & Pathways</h3><p>Graduation planning, counseling, internships, and careers.</p></article></div></section>
           <section className="info-section campus-preview" id="campus-life"><div className="section-heading"><h2>CAMPUS LIFE</h2><a href="./campus-life/">Browse activities</a></div><div className="campus-columns"><article id="clubs"><b>THE CLUB DIRECTORY</b><h3>Find your place after the bell.</h3><p>Browse active sports, academic, arts, service, and special-interest clubs.</p><a href="./campus-life/#directory">View club roster →</a></article><article id="jobs"><b>CAMPUS OPPORTUNITIES</b><h3>Build experience beyond class.</h3><p>Jobs, volunteering, internships, and student leadership opportunities are published through Hanami.</p><a href="./campus-life/#jobs">See opportunities →</a></article></div></section>
-          <section className="quiet-sections" aria-label="Additional public information"><div id="about"><h2>About Hanami</h2><p>Founded in 2006, Hanami High values knowledge, character, and a lively student community.</p></div><div id="people"><h2>People</h2><p>Meet school leadership, faculty, staff, and student representatives.</p></div><div id="gallery"><h2>Gallery</h2><p>School photographs and student work are collected through the campus network.</p></div></section>
+          <section className="quiet-sections" aria-label="Additional public information"><div id="about"><h2>About Hanami</h2><p>Established in 1836, Hanami High carries a long school history into its current 2006 academic year.</p></div><div id="people"><h2>People</h2><p>Meet school leadership, faculty, staff, and student representatives.</p></div><div id="gallery"><h2>Gallery</h2><p>School photographs and student work are collected through the campus network.</p></div></section>
         </div>
 
         <aside className="right-rail" aria-label="Today at Hanami">
