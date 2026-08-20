@@ -1,5 +1,5 @@
-HANAMI_FINAL_CI=FAIL
-exit_code=1
+HANAMI_FINAL_CI=PASS
+exit_code=0
 --- lint ---
 
 > hanami-high@0.1.0 lint
@@ -42,138 +42,135 @@ exit_code=1
 ✖ 15 problems (0 errors, 15 warnings)
 
 --- failing checks ---
-not ok 146 - Owner can unlock full-site editing before normal portal sign-in
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 --- test summary ---
 # tests 238
-# pass 237
-# fail 1
+# pass 238
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.241383
+  duration_ms: 0.239006
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 221 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.462024
+  duration_ms: 1.468937
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 222 - people results expose one-click profile opening
   ---
-  duration_ms: 0.258705
+  duration_ms: 0.248954
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 223 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 5.27546
+  duration_ms: 4.973175
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 224 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.271587
+  duration_ms: 0.978513
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 225 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.30359
+  duration_ms: 0.243834
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 226 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.254498
+  duration_ms: 0.2198
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 227 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.215444
+  duration_ms: 0.195274
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 228 - student activities are loaded for the active character
   ---
-  duration_ms: 1.254615
+  duration_ms: 1.280075
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 229 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.232677
+  duration_ms: 0.266437
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 230 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.376015
+  duration_ms: 0.396298
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 231 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.246923
+  duration_ms: 0.256198
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 232 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.813867
+  duration_ms: 1.283211
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 233 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.230202
+  duration_ms: 0.341286
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 234 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.245373
+  duration_ms: 5.352742
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 235 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.286815
+  duration_ms: 1.283311
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 236 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.223035
+  duration_ms: 1.275627
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 237 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.533058
+  duration_ms: 1.628865
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 238 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.132254
+  duration_ms: 1.288841
   type: 'test'
   ...
 1..238
 # tests 238
 # suites 0
-# pass 237
-# fail 1
+# pass 238
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1411.405145
+# duration_ms 1439.247459
 === build ===
 
 > hanami-high@0.1.0 build
@@ -189,15 +186,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.4s
+✓ Compiled successfully in 5.7s
   Running TypeScript ...
-  Finished TypeScript in 9.0s ...
+  Finished TypeScript in 9.1s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 586ms
+✓ Generating static pages using 3 workers (28/28) in 604ms
   Finalizing page optimization ...
 
 Route (app)
