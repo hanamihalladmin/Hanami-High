@@ -77,39 +77,53 @@ not ok 7 - development course records are clearly identified as test data
 not ok 27 - campus keeps fixture directory data labeled while public opportunities use the live portal flow
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
+not ok 65 - role dashboards read school status notices and calendar from Administration
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 not ok 110 - public announcements use live Supabase data with a labeled fallback
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
 not ok 111 - public next event uses the live school calendar with a labeled fallback
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 229 - test activity data stays visibly labeled
+not ok 31 - tests/nurse-dashboard.test.mjs
+not ok 223 - test activity data stays visibly labeled
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
+MISSING ROUTE: out/index.html
+MISSING ROUTE: out/about/index.html
+MISSING ROUTE: out/academics/index.html
+MISSING ROUTE: out/apply/index.html
+MISSING ROUTE: out/calendar/index.html
+MISSING ROUTE: out/campus-life/index.html
+MISSING ROUTE: out/changelog/index.html
+MISSING ROUTE: out/elections/index.html
+MISSING ROUTE: out/homeroom/index.html
+MISSING ROUTE: out/organizations/index.html
+MISSING ROUTE: out/portal/index.html
+MISSING ROUTE: out/portal/admin/index.html
+MISSING ROUTE: out/portal/city/index.html
+MISSING ROUTE: out/portal/faculty/index.html
+MISSING ROUTE: out/portal/help/index.html
+MISSING ROUTE: out/portal/lore/index.html
+MISSING ROUTE: out/portal/owner/index.html
+MISSING ROUTE: out/portal/owner/student-viewer/index.html
+MISSING ROUTE: out/portal/roadmap/index.html
+MISSING ROUTE: out/portal/student/index.html
+MISSING ROUTE: out/portal/student/class/index.html
+MISSING ROUTE: out/rooms/index.html
+MISSING ROUTE: out/rules/index.html
+MISSING ROUTE: out/sports/index.html
+MISSING ROUTE: out/traditions/index.html
+MISSING ROUTE: out/updates/index.html
 --- test summary ---
-# tests 236
-# pass 230
-# fail 6
+# tests 230
+# pass 222
+# fail 8
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
-  actual: |-
-    "use client";
-    
-    import {useEffect,useMemo,useState} from "react";
-    import styles from "./StudentActivitiesPanel.module.css";
-    
-    const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
-    
-    type Activity={id:string;kind:"club"|"student_government"|"event"|"committee";name:string;description:string;meeting_location:string|null;meeting_schedule:string|null};
-    type Membership={activity_id:string;status:"member"|"officer"|"advisor"};
-    type Event={id:string;activity_id:string|null;title:string;description:string;starts_at:string;ends_at:string|null;location:string|null};
-    type Props={accessToken:string;characterId:string};
-    
-    function headers(accessToken:string){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`};}
-    function dateLabel(value:string){return new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZone:"Asia/Tokyo",timeZoneName:"short"}).format(new Date(value));}
     
     export default function StudentActivitiesPanel({accessToken,characterId}:Props){
       const [activities,setActivities]=useState<Activity[]>([]);
@@ -165,63 +179,63 @@ not ok 229 - test activity data stays visibly labeled
     async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 230 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 224 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.976892
+  duration_ms: 1.190796
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 231 - Student life feeds validate owned Student character even for privileged accounts
+ok 225 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.32537
+  duration_ms: 0.386005
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 232 - accessibility and notification preferences bind to signed-in user automatically
+ok 226 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 4.995006
+  duration_ms: 7.731212
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 233 - group chat creation uses a validated private helper and creator management
+ok 227 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.224565
+  duration_ms: 1.978325
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 234 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 228 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.131104
+  duration_ms: 1.872067
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 235 - School Office separates staff action waiting member and archive queues
+ok 229 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.492799
+  duration_ms: 2.049981
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 236 - Help has a direct router and support anchor
+ok 230 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.071945
+  duration_ms: 1.284653
   type: 'test'
   ...
-1..236
-# tests 236
+1..230
+# tests 230
 # suites 0
-# pass 230
-# fail 6
+# pass 222
+# fail 8
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1383.6002
+# duration_ms 1356.147596
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 26ms
+✓ Running next.config.ts took 24ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -230,47 +244,63 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.2s
-  Running TypeScript ...
-  Finished TypeScript in 8.8s ...
-  Collecting page data using 3 workers ...
-  Generating static pages using 3 workers (0/28) ...
-  Generating static pages using 3 workers (7/28) 
-  Generating static pages using 3 workers (14/28) 
-  Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 539ms
-  Finalizing page optimization ...
 
-Route (app)
-┌ ○ /
-├ ○ /_not-found
-├ ○ /about
-├ ○ /academics
-├ ○ /apply
-├ ○ /calendar
-├ ○ /campus-life
-├ ○ /changelog
-├ ○ /elections
-├ ○ /homeroom
-├ ○ /organizations
-├ ○ /portal
-├ ○ /portal/admin
-├ ○ /portal/city
-├ ○ /portal/faculty
-├ ○ /portal/help
-├ ○ /portal/lore
-├ ○ /portal/owner
-├ ○ /portal/owner/student-viewer
-├ ○ /portal/roadmap
-├ ○ /portal/student
-├ ○ /portal/student/class
-├ ○ /rooms
-├ ○ /rules
-├ ○ /sports
-├ ○ /traditions
-└ ○ /updates
+> Build error occurred
+Error: Turbopack build failed with 1 error:
+./app/portal/DashboardShell.tsx:20:1
+Error: Module not found: Can't resolve './OwnerFacultyQaPanel'
+  [90m18 |[0m [36mimport[0m [33mFacultyNurseDashboard[0m [36mfrom[0m [32m"./FacultyNurseDashboard"[0m;
+  [90m19 |[0m [36mimport[0m [33mFacultyLoungePanel[0m [36mfrom[0m [32m"./FacultyLoungePanel"[0m;
+[31m[1m>[0m [90m20 |[0m [36mimport[0m [33mOwnerFacultyQaPanel[0m [36mfrom[0m [32m"./OwnerFacultyQaPanel"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m21 |[0m [36mimport[0m [33mMessageCenterPanel[0m [36mfrom[0m [32m"./MessageCenterPanel"[0m;
+  [90m22 |[0m [36mimport[0m [33mMessageNotificationBadge[0m [36mfrom[0m [32m"./MessageNotificationBadge"[0m;
+  [90m23 |[0m [36mimport[0m [33mStudentActivitiesPanel[0m [36mfrom[0m [32m"./StudentActivitiesPanel"[0m;
 
 
-○  (Static)  prerendered as static content
 
+Import traces:
+  Client Component Browser:
+    ./app/portal/DashboardShell.tsx [Client Component Browser]
+    ./app/portal/RolePortalClient.tsx [Client Component Browser]
+    ./app/portal/RolePortalClient.tsx [Server Component]
+    ./app/portal/student/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/portal/DashboardShell.tsx [Client Component SSR]
+    ./app/portal/RolePortalClient.tsx [Client Component SSR]
+    ./app/portal/RolePortalClient.tsx [Server Component]
+    ./app/portal/student/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (./app/portal/DashboardShell.tsx:20:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
 === routes ===
+MISSING ROUTE: out/index.html
+MISSING ROUTE: out/about/index.html
+MISSING ROUTE: out/academics/index.html
+MISSING ROUTE: out/apply/index.html
+MISSING ROUTE: out/calendar/index.html
+MISSING ROUTE: out/campus-life/index.html
+MISSING ROUTE: out/changelog/index.html
+MISSING ROUTE: out/elections/index.html
+MISSING ROUTE: out/homeroom/index.html
+MISSING ROUTE: out/organizations/index.html
+MISSING ROUTE: out/portal/index.html
+MISSING ROUTE: out/portal/admin/index.html
+MISSING ROUTE: out/portal/city/index.html
+MISSING ROUTE: out/portal/faculty/index.html
+MISSING ROUTE: out/portal/help/index.html
+MISSING ROUTE: out/portal/lore/index.html
+MISSING ROUTE: out/portal/owner/index.html
+MISSING ROUTE: out/portal/owner/student-viewer/index.html
+MISSING ROUTE: out/portal/roadmap/index.html
+MISSING ROUTE: out/portal/student/index.html
+MISSING ROUTE: out/portal/student/class/index.html
+MISSING ROUTE: out/rooms/index.html
+MISSING ROUTE: out/rules/index.html
+MISSING ROUTE: out/sports/index.html
+MISSING ROUTE: out/traditions/index.html
+MISSING ROUTE: out/updates/index.html
