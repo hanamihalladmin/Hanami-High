@@ -5,6 +5,7 @@ import PublicSessionBridge from "./components/PublicSessionBridge";
 import GlobalRulesNotice from "./components/GlobalRulesNotice";
 import SiteThemeRuntime from "./components/SiteThemeRuntime";
 import RoleplayWeatherEffects from "./components/RoleplayWeatherEffects";
+import ExamWeekRuntime from "./components/ExamWeekRuntime";
 import "./globals.css";
 import "./mobile.css";
 import "./accessibility.css";
@@ -12,6 +13,7 @@ import "./readability.css";
 import "./profile-studio-overrides.css";
 import "./school-resources-fix.css";
 import "./site-themes.css";
+import "./exam-week.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
@@ -20,5 +22,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><SiteThemeRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/>{children}</body></html>;
+  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><SiteThemeRuntime/><ExamWeekRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/>{children}</body></html>;
 }
