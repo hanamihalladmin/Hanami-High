@@ -54,7 +54,7 @@ test("character archive export and continuity archive have member and Admin work
  const workspace=await read("app/portal/admin/AdminWorkspace.tsx");
  assert.match(member,/archive_my_character/);assert.match(member,/Download JSON export/);assert.match(member,/roleplay_continuity_archive/);
  assert.match(admin,/roleplay_continuity_archive/);assert.match(admin,/Archive continuity entry/);assert.match(workspace,/AdminContinuityArchiveManager/);
- assert.match(migration,/c\.id=viewer_character_id and owner_user_id=auth\.uid\(\)/);assert.match(migration,/character_profile_widgets/);
+ assert.match(migration,/where id=viewer_character_id and owner_user_id=auth\.uid\(\)/);assert.match(migration,/character_profile_widgets/);
 });
 
 test("Roadmap Hub exposes all completion modules",async()=>{
