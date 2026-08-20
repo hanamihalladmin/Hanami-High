@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 
 const adminClient=await readFile(new URL("../app/portal/admin/AdminPortalClient.tsx",import.meta.url),"utf8");
+const workspace=await readFile(new URL("../app/portal/admin/AdminWorkspace.tsx",import.meta.url),"utf8");
 const privilegedLogin=await readFile(new URL("../app/portal/PrivilegedPortalLogin.tsx",import.meta.url),"utf8");
 const statusManager=await readFile(new URL("../app/portal/admin/AdminSchoolStatusManager.tsx",import.meta.url),"utf8");
 const manager=await readFile(new URL("../app/portal/admin/AdminAnnouncementManager.tsx",import.meta.url),"utf8");
@@ -61,7 +62,7 @@ test("school status is public-read and content-editor managed",()=>{
   assert.match(statusManager,/school_status_config/);
   assert.match(statusManager,/Update school status/);
   assert.match(statusManager,/timeZone:"Asia\/Tokyo"/);
-  assert.match(adminClient,/AdminSchoolStatusManager/);
+  assert.match(workspace,/AdminSchoolStatusManager/);
 });
 
 test("announcement management is protected by permission-aware RLS",()=>{
@@ -85,7 +86,7 @@ test("school calendar management is content-editor scoped and Tokyo based",()=>{
   assert.match(eventManager,/\+09:00/);
   assert.match(eventManager,/Publish/);
   assert.match(eventManager,/Cancel event/);
-  assert.match(adminClient,/AdminEventManager/);
+  assert.match(workspace,/AdminEventManager/);
 });
 
 test("moderators have a private character directory rather than global profile exposure",()=>{
@@ -97,7 +98,7 @@ test("moderators have a private character directory rather than global profile e
 });
 
 test("Site Admin academic management preserves role separation",()=>{
-  assert.match(adminClient,/access\.site_admin&&<AdminAcademicManager/);
+  assert.match(workspace,/access\.site_admin&&<AdminAcademicManager/);
   assert.match(academics,/academic_courses/);
   assert.match(academics,/class_sections/);
   assert.match(academics,/section_meetings/);
@@ -108,14 +109,15 @@ test("Site Admin academic management preserves role separation",()=>{
   assert.match(academicMigration,/security invoker/);
 });
 
-test("Administration has its own website section",()=>{
+test("Administration has its own website section and shared workspace",()=>{
   assert.match(adminPage,/ADMINISTRATION NETWORK/);
   assert.match(adminPage,/AdminPortalClient/);
   assert.match(adminPage,/Character roles cannot unlock admin tools/);
-  assert.match(adminClient,/AdminSchoolStatusManager/);
-  assert.match(adminClient,/AdminAnnouncementManager/);
-  assert.match(adminClient,/AdminEventManager/);
-  assert.match(adminClient,/AdminModerationManager/);
-  assert.match(adminClient,/AdminCharacterDirectory/);
-  assert.match(adminClient,/AdminAcademicManager/);
+  assert.match(adminClient,/AdminWorkspace/);
+  assert.match(workspace,/AdminSchoolStatusManager/);
+  assert.match(workspace,/AdminAnnouncementManager/);
+  assert.match(workspace,/AdminEventManager/);
+  assert.match(workspace,/AdminModerationManager/);
+  assert.match(workspace,/AdminCharacterDirectory/);
+  assert.match(workspace,/AdminAcademicManager/);
 });
