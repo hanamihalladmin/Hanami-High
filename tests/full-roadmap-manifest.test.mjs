@@ -20,7 +20,7 @@ test("full profile social privacy roadmap remains wired",async()=>{
  const social=await read("app/portal/ProfileSocialControlsPanel.tsx");
  const lookup=await read("app/portal/ProfileLookupPanel.tsx");
  const notifications=await read("app/portal/NotificationAccessibilityPanel.tsx");
- contains(social,["Top Friends","profile badges","status","visit"]);
+ contains(social,["Top Friends","character_profile_badges","status_message","show_visit_counter"]);
  contains(lookup,["lookup_visible_profile_social","record_profile_visit","TOP FRIENDS","PROFILE VIEWS"]);
  contains(notifications,["Do Not Disturb"]);
  assert.doesNotMatch(notifications,/dark_mode/i);
