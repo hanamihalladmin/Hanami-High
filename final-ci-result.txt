@@ -1,7 +1,6 @@
 HANAMI_FINAL_CI=PASS
 exit_code=0
 --- failing tests / errors ---
-# Subtest: test faculty character uses the signed-in account and receives TEST-101
 # Subtest: character deletion requires explicit permanent confirmation
 # Subtest: shared message and coursework history no longer blocks character deletion
 # Subtest: database remains the final authority for the two-slot rule
@@ -73,6 +72,7 @@ exit_code=0
 # Subtest: public chronology is anchored to 2006 and calendar stays in-universe
 # Subtest: site-wide responsive layer is loaded and includes phone/tablet QA breakpoints
 # Subtest: launch client source contains no service-role credential
+# Subtest: mobile layer contains portal-safe overflow and form hardening
 # Subtest: visible profiles expose a character-scoped report action
 # Subtest: report creation is owner scoped and cannot be self reported
 # Subtest: moderation queue is permission gated
@@ -183,93 +183,93 @@ exit_code=0
 # Subtest: Help has a direct router and support anchor
 --- tail ---
 # Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 205 - dark mode controls are absent from Hanami accessibility settings
+ok 206 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.208779
+  duration_ms: 0.197165
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 206 - student activities are loaded for the active character
+ok 207 - student activities are loaded for the active character
   ---
-  duration_ms: 1.309756
+  duration_ms: 1.103286
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 207 - campus activity membership reads remain owner scoped
+ok 208 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.239367
+  duration_ms: 0.239013
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 208 - student dashboard has no remaining placeholder modules
+ok 209 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.336248
+  duration_ms: 0.403299
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
-ok 209 - test activity data stays visibly labeled
+ok 210 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.179806
+  duration_ms: 0.193098
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 210 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 211 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.010638
+  duration_ms: 1.080915
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 211 - Student life feeds validate owned Student character even for privileged accounts
+ok 212 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.236242
+  duration_ms: 0.296619
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 212 - accessibility and notification preferences bind to signed-in user automatically
+ok 213 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.563933
+  duration_ms: 5.566974
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 213 - group chat creation uses a validated private helper and creator management
+ok 214 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.45119
+  duration_ms: 1.597843
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 214 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 215 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.284459
+  duration_ms: 1.438428
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 215 - School Office separates staff action waiting member and archive queues
+ok 216 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.681681
+  duration_ms: 1.804506
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 216 - Help has a direct router and support anchor
+ok 217 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.227473
+  duration_ms: 1.437947
   type: 'test'
   ...
-1..216
-# tests 216
+1..217
+# tests 217
 # suites 0
-# pass 216
+# pass 217
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1201.849159
+# duration_ms 1174.631909
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 27ms
+✓ Running next.config.ts took 25ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -278,15 +278,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.6s
+✓ Compiled successfully in 5.2s
   Running TypeScript ...
-  Finished TypeScript in 9.2s ...
+  Finished TypeScript in 8.9s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 634ms
+✓ Generating static pages using 3 workers (28/28) in 550ms
   Finalizing page optimization ...
 
 Route (app)
