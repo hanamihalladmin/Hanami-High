@@ -30,7 +30,7 @@ test("student dashboard has no remaining placeholder modules",()=>{
   assert.doesNotMatch(dashboard,/Module coming next/);
 });
 
-test("test activity data stays visibly labeled",()=>{
-  assert.match(panel,/TEST/);
-  assert.match(panel,/is_test_data/);
+test("Student activity UI contains no launch test-data labels",()=>{
+  assert.match(panel,/campus_activities/);
+  assert.doesNotMatch(panel,/TEST|is_test_data/);
 });
