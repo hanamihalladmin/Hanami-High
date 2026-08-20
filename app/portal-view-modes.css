@@ -1,6 +1,6 @@
 .portal-view-mode-bar{position:relative;z-index:10035;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;border-bottom:1px solid #aebccc;background:#f8fafc;color:#17375f;font-family:Arial,sans-serif}.portal-view-mode-bar>div:first-child{display:grid;gap:2px}.portal-view-mode-bar strong{font-size:9px;letter-spacing:.08em}.portal-view-mode-bar span{font-size:9px;color:#66758a}.portal-view-mode-actions{display:flex;gap:4px}.portal-view-mode-actions button{min-width:82px;padding:6px 10px;border:1px solid #17375f;background:#fff;color:#17375f;font:700 9px Arial,sans-serif;cursor:pointer}.portal-view-mode-actions button[aria-pressed="true"]{background:#17375f;color:#fff}
 
-html[data-portal-mode="simplified"] body{background:#f4f6f8!important;font-family:Arial,Helvetica,sans-serif!important}
+html[data-portal-mode="simplified"] body{background:#f4f6f8!important;font-family:Arial,Helvetica,sans-serif!important;color:#24364a!important}
 html[data-portal-mode="simplified"] body *{text-shadow:none!important}
 html[data-portal-mode="simplified"] body section,html[data-portal-mode="simplified"] body article,html[data-portal-mode="simplified"] body aside{box-shadow:none!important;background-image:none!important}
 html[data-portal-mode="simplified"] body [class*="panel" i],html[data-portal-mode="simplified"] body [class*="card" i],html[data-portal-mode="simplified"] body [class*="shell" i],html[data-portal-mode="simplified"] body [class*="workspace" i]{border-radius:0!important;box-shadow:none!important}
@@ -9,10 +9,22 @@ html[data-portal-mode="simplified"] body h1,html[data-portal-mode="simplified"] 
 html[data-portal-mode="simplified"] body button,html[data-portal-mode="simplified"] body input,html[data-portal-mode="simplified"] body select,html[data-portal-mode="simplified"] body textarea{font-family:Arial,Helvetica,sans-serif!important;border-radius:2px!important}
 html[data-portal-mode="simplified"] body [class*="heading" i]{background:#eef2f6!important;background-image:none!important}
 html[data-portal-mode="simplified"] body [class*="notice" i],html[data-portal-mode="simplified"] body [class*="status" i]{background:#f8fafc!important}
-html[data-portal-mode="simplified"] body details{margin-block:5px!important}
+html[data-portal-mode="simplified"] body details{margin-block:5px!important;border-radius:0!important}
 html[data-portal-mode="simplified"] body details>summary{padding:8px 10px!important;background:#eef2f6!important;font-family:Arial,Helvetica,sans-serif!important;font-weight:700!important}
 html[data-portal-mode="simplified"] body [class*="decor" i],html[data-portal-mode="simplified"] body [class*="ornament" i]{display:none!important}
 html[data-portal-mode="simplified"] body [class*="grid" i]{gap:8px!important}
 html[data-portal-mode="simplified"] body [class*="panel" i],html[data-portal-mode="simplified"] body [class*="card" i]{padding-top:min(var(--simple-pad,12px),12px);padding-bottom:min(var(--simple-pad,12px),12px)}
+
+/* Simplified role desks keep every tool but remove the most verbose/decorative dashboard chrome. */
+html[data-portal-mode="simplified"] body [class*="dashboard" i] [class*="notice" i]{display:none!important}
+html[data-portal-mode="simplified"] body [class*="dashboard" i] [class*="quickbar" i]{display:none!important}
+html[data-portal-mode="simplified"] body [class*="dashboard" i] [class*="hero" i]{padding:10px 12px!important;background:#fff!important;border:1px solid #c6d0db!important}
+html[data-portal-mode="simplified"] body [class*="dashboard" i] [class*="hero" i] p:not(.eyebrow){margin:2px 0!important;font-size:10px!important}
+html[data-portal-mode="simplified"] body [class*="identity" i]{padding:6px 8px!important;background:#f4f6f8!important;border:1px solid #d3dbe4!important}
+html[data-portal-mode="simplified"] body [class*="collapseBody" i]{padding:8px!important}
+html[data-portal-mode="simplified"] body [class*="collapseSummary" i] small{font-size:8px!important;color:#687789!important}
+html[data-portal-mode="simplified"] body [class*="topBar" i],html[data-portal-mode="simplified"] body [class*="header" i]{box-shadow:none!important;background-image:none!important}
+html[data-portal-mode="simplified"] body [class*="portalGrid" i],html[data-portal-mode="simplified"] body [class*="columns" i]{gap:8px!important}
+html[data-portal-mode="simplified"] body table{font-family:Arial,Helvetica,sans-serif!important}
 
 @media(max-width:720px){.portal-view-mode-bar{align-items:flex-start;flex-direction:column}.portal-view-mode-actions{width:100%}.portal-view-mode-actions button{flex:1}}
