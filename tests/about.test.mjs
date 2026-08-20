@@ -17,11 +17,12 @@ test("faculty directory supports search and department filters", () => {
   assert.match(directory, /aria-live="polite"/);
 });
 
-test("About dates use the shared Tokyo 2006 roleplay clock", () => {
+test("About keeps the shared Tokyo 2006 roleplay clock while preserving 1836 school history", () => {
   assert.match(about, /hanamiRoleplayDate/);
   assert.match(roleplayDate, /HANAMI_ROLEPLAY_YEAR=2006/);
   assert.match(roleplayDate, /timeZone:"Asia\/Tokyo"/);
-  assert.match(about, /INAUGURAL YEAR • 2006/);
+  assert.match(about, /EST\. 1836/);
+  assert.doesNotMatch(about, /INAUGURAL YEAR • 2006/);
 });
 
 test("About and Contact use real portal routes",()=>{
