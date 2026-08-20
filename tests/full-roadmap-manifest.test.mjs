@@ -65,12 +65,13 @@ test("full Roadmap Hub social-program roadmap remains wired",async()=>{
  const hub=await read("app/portal/RoadmapHubPanel.tsx");
  const social=await read("app/portal/RoadmapSocialProgramsPanel.tsx");
  const route=await read("app/portal/roadmap/RoadmapHubClient.tsx");
- contains(hub,["Onboarding","Tester Release Channel","Feedback Voting","Volunteer Hours","Part-time Work Schedule","Mentorship Program"]);
+ contains(hub,["Onboarding","Feedback Voting","Volunteer Hours","Part-time Work Schedule","Mentorship Program"]);
+ assert.doesNotMatch(hub,/Tester Release Channel/);
  contains(social,["Study Group","event_rsvps","study_group_matches"]);
  contains(route,["RoadmapHubPanel","RoadmapSocialProgramsPanel","ProfileTemplateMarketplacePanel","CharacterArchiveExportPanel"]);
 });
 
-test("full onboarding changelog tester and release roadmap remains wired",async()=>{
+test("full onboarding changelog and production release roadmap remains wired",async()=>{
  const tour=await read("app/portal/GuidedFirstLoginTour.tsx");
  const rolePortal=await read("app/portal/RolePortalClient.tsx");
  const changelog=await read("app/changelog/page.tsx");
@@ -78,7 +79,8 @@ test("full onboarding changelog tester and release roadmap remains wired",async(
  contains(rolePortal,["GuidedFirstLoginTour"]);
  contains(tour,["student","faculty"]);
  contains(changelog,["Changelog"]);
- contains(runtime,["tester_release_channels","tester_release_memberships","hanamiTesterPreview"]);
+ contains(runtime,["feature_flags","hanami-feature-flags"]);
+ assert.doesNotMatch(runtime,/tester_release_channels|tester_release_memberships|hanamiTesterPreview/);
 });
 
 test("full staff Owner operations roadmap remains wired",async()=>{
