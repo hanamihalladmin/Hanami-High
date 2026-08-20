@@ -27,8 +27,11 @@ test("Owner Discord server configuration stays Owner-gated",async()=>{
 
 test("Admin support desk can respond assign tag close and reopen tickets",async()=>{
   const support=await read("app/portal/admin/AdminSupportTicketManager.tsx");
+  const workspace=await read("app/portal/admin/AdminWorkspace.tsx");
   const admin=await read("app/portal/admin/AdminPortalClient.tsx");
-  assert.match(admin,/AdminSupportTicketManager/);
+  assert.match(admin,/AdminWorkspace/);
+  assert.match(workspace,/AdminSupportTicketManager/);
+  assert.match(workspace,/canModerate/);
   assert.match(support,/Post staff reply/);
   assert.match(support,/Assign to me/);
   assert.match(support,/Save tags/);
