@@ -7,7 +7,7 @@ exit_code=0
 
 
 /home/runner/work/Hanami-High/Hanami-High/app/components/OwnerWebsiteAccess.tsx
-  19:1262  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+  11:24  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/DashboardShell.tsx
   60:82   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
@@ -57,7 +57,7 @@ exit_code=0
   44:187  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerPortalClient.tsx
-  19:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+  20:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
 ✖ 25 problems (0 errors, 25 warnings)
 
@@ -71,115 +71,115 @@ exit_code=0
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.255376
+  duration_ms: 0.209492
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 239 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.339545
+  duration_ms: 1.044934
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 240 - people results expose one-click profile opening
   ---
-  duration_ms: 0.274531
+  duration_ms: 0.188603
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 241 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 6.492318
+  duration_ms: 6.359552
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 242 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 0.766031
+  duration_ms: 0.890395
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 243 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.201656
+  duration_ms: 0.217447
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 244 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.11631
+  duration_ms: 0.146183
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 245 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.122298
+  duration_ms: 0.157284
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 246 - student activities are loaded for the active character
   ---
-  duration_ms: 1.112573
+  duration_ms: 0.913559
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 247 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.216798
+  duration_ms: 0.161242
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 248 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.326629
+  duration_ms: 0.256379
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 249 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.246007
+  duration_ms: 0.17652
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 250 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.764946
+  duration_ms: 0.881669
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 251 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.234588
+  duration_ms: 0.310169
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 252 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.124642
+  duration_ms: 5.594582
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 253 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.231138
+  duration_ms: 1.425145
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 254 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.117223
+  duration_ms: 1.391743
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 255 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.563591
+  duration_ms: 1.758158
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 256 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.277114
+  duration_ms: 1.556541
   type: 'test'
   ...
 1..256
@@ -190,7 +190,7 @@ ok 256 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1481.527875
+# duration_ms 1550.248855
 === build ===
 
 > hanami-high@0.1.0 build
@@ -206,15 +206,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.9s
+✓ Compiled successfully in 5.6s
   Running TypeScript ...
-  Finished TypeScript in 9.5s ...
+  Finished TypeScript in 9.4s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 574ms
+✓ Generating static pages using 3 workers (28/28) in 615ms
   Finalizing page optimization ...
 
 Route (app)
