@@ -12,12 +12,16 @@ const notices=await readFile(new URL("../app/portal/SchoolNoticesPanel.tsx",impo
 const calendar=await readFile(new URL("../app/portal/SchoolCalendarPanel.tsx",import.meta.url),"utf8");
 const academicMigration=await readFile(new URL("../supabase/migrations/20260818140500_academic_schedule_foundation.sql",import.meta.url),"utf8");
 
-test("dashboard is driven by the active character role",()=>{
+test("dashboard is driven by the active character role and full Canvas shell",()=>{
   assert.match(dashboard,/character\.role==="student"/);
-  assert.match(dashboard,/STUDENT DASHBOARD/);
-  assert.match(dashboard,/FACULTY DASHBOARD/);
+  assert.match(dashboard,/canvasShell/);
+  assert.match(dashboard,/globalNav/);
+  assert.match(dashboard,/hanami-high-portal-icon\.png/);
+  for(const label of ["Account","Dashboard","Courses","Calendar","Inbox"])assert.match(dashboard,new RegExp(label));
   assert.match(dashboard,/Student/);
   assert.match(dashboard,/Faculty/);
+  assert.doesNotMatch(dashboard,/STUDENT DASHBOARD/);
+  assert.doesNotMatch(dashboard,/FACULTY DASHBOARD/);
 });
 
 test("role dashboards use live authenticated modules without placeholder cards",()=>{
@@ -67,5 +71,5 @@ test("active character flows from gateway into role-specific dashboard",()=>{
   assert.match(auth,/Enter Student Portal/);
   assert.match(auth,/Enter Faculty Portal/);
   assert.doesNotMatch(auth,/DashboardShell character=/);
-  assert.match(roleClient,/DashboardShell character=\{character\} accessToken=\{session\.accessToken\}/);
+  assert.match(roleClient,/DashboardShell character=\{character\} accessToken=\{session\.accessToken\} onLogout=\{logout\}/);
 });

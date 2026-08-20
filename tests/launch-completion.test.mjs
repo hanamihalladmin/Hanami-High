@@ -18,11 +18,9 @@ test("launch gate synchronizes Discord roles through signed-in OAuth without exp
 
 test("Owner TEST Faculty fixture remains usable after Discord role sync is enabled",()=>{
   assert.match(rolePortal,/current_owner_status/);
-  assert.match(rolePortal,/ownerTestFaculty/);
-  assert.match(rolePortal,/activeCharacter\.handle\.startsWith\("testfaculty_"\)/);
-  assert.match(rolePortal,/!roleSync\[role\]&&!ownerTestFaculty/);
+  assert.match(rolePortal,/const ownerTestFaculty=isOwner&&role==="faculty"&&activeCharacter\.handle\.startsWith\("testfaculty_"\)/);
   assert.match(rolePortal,/sync_status==="not_member"&&!ownerTestFaculty/);
-  assert.match(rolePortal,/Owner TEST Faculty authorization verified/);
+  assert.match(rolePortal,/!roleSync\[role\]&&!ownerTestFaculty/);
 });
 
 test("suspended accounts are blocked and governance is audited",()=>{

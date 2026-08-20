@@ -6,11 +6,13 @@ const roleClient=await readFile(new URL("../app/portal/RolePortalClient.tsx",imp
 const studentPage=await readFile(new URL("../app/portal/student/page.tsx",import.meta.url),"utf8");
 const facultyPage=await readFile(new URL("../app/portal/faculty/page.tsx",import.meta.url),"utf8");
 
-test("student and faculty have separate website sections",()=>{
-  assert.match(studentPage,/Student Portal/);
+test("student and faculty have separate full-screen portal application sections",()=>{
+  assert.match(studentPage,/PortalAppPage\.module\.css/);
   assert.match(studentPage,/RolePortalClient role="student"/);
-  assert.match(facultyPage,/Faculty Portal/);
+  assert.doesNotMatch(studentPage,/school-header|portal-gateway|portal-intro/);
+  assert.match(facultyPage,/PortalAppPage\.module\.css/);
   assert.match(facultyPage,/RolePortalClient role="faculty"/);
+  assert.doesNotMatch(facultyPage,/school-header|portal-gateway|portal-intro/);
 });
 
 test("role portal restores the selected character session",()=>{
