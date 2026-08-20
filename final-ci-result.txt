@@ -182,80 +182,79 @@ exit_code=0
 # Subtest: School Office separates staff action waiting member and archive queues
 # Subtest: Help has a direct router and support anchor
 --- tail ---
-  ---
-  duration_ms: 1.13901
+  duration_ms: 0.791797
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 181 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.319186
+  duration_ms: 0.212584
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 182 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.225106
+  duration_ms: 0.134579
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 183 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.250714
+  duration_ms: 0.133046
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 184 - student activities are loaded for the active character
   ---
-  duration_ms: 1.110948
+  duration_ms: 1.13903
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 185 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.218866
+  duration_ms: 0.215217
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 186 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.357093
+  duration_ms: 0.368043
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 187 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.216644
+  duration_ms: 0.187406
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 188 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.679124
+  duration_ms: 7.892778
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 189 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.484405
+  duration_ms: 1.863959
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 190 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.364165
+  duration_ms: 1.506211
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 191 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 2.886557
+  duration_ms: 1.943596
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 192 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.939013
+  duration_ms: 1.15267
   type: 'test'
   ...
 1..192
@@ -266,14 +265,14 @@ ok 192 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 961.691422
+# duration_ms 950.655413
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 23ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -282,15 +281,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.3s
+✓ Compiled successfully in 5.2s
   Running TypeScript ...
-  Finished TypeScript in 8.0s ...
+  Finished TypeScript in 7.9s ...
   Collecting page data using 3 workers ...
-  Generating static pages using 3 workers (0/24) ...
-  Generating static pages using 3 workers (6/24) 
-  Generating static pages using 3 workers (12/24) 
-  Generating static pages using 3 workers (18/24) 
-✓ Generating static pages using 3 workers (24/24) in 539ms
+  Generating static pages using 3 workers (0/25) ...
+  Generating static pages using 3 workers (6/25) 
+  Generating static pages using 3 workers (12/25) 
+  Generating static pages using 3 workers (18/25) 
+✓ Generating static pages using 3 workers (25/25) in 592ms
   Finalizing page optimization ...
 
 Route (app)
@@ -310,6 +309,7 @@ Route (app)
 ├ ○ /portal/help
 ├ ○ /portal/owner
 ├ ○ /portal/owner/student-viewer
+├ ○ /portal/roadmap
 ├ ○ /portal/student
 ├ ○ /portal/student/class
 ├ ○ /rooms
