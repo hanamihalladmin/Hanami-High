@@ -60,7 +60,7 @@ Modifying a value returned from 'useState()', which should not be modified direc
   25:361  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/SearchEverythingPanel.tsx
-  12:60  warning  'characterId' is defined but never used  @typescript-eslint/no-unused-vars
+  34:60  warning  'characterId' is defined but never used  @typescript-eslint/no-unused-vars
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminPortalClient.tsx
   32:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
@@ -190,43 +190,43 @@ MISSING ROUTE: out/updates/index.html
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 224 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.856623
+  duration_ms: 0.863613
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 225 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.239445
+  duration_ms: 0.233886
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 226 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 6.018251
+  duration_ms: 5.399976
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 227 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.761615
+  duration_ms: 1.443266
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 228 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.745756
+  duration_ms: 1.279259
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 229 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 2.201715
+  duration_ms: 1.615187
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 230 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.346794
+  duration_ms: 1.287004
   type: 'test'
   ...
 1..230
@@ -237,14 +237,14 @@ ok 230 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1442.323638
+# duration_ms 1366.934521
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 27ms
+✓ Running next.config.ts took 24ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
