@@ -68,148 +68,160 @@ Modifying a value returned from 'useState()', which should not be modified direc
 ✖ 17 problems (2 errors, 15 warnings)
 
 --- failing checks ---
+not ok 6 - course catalog supports search and useful filters
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+not ok 7 - development course records are clearly identified as test data
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+not ok 27 - campus keeps fixture directory data labeled while public opportunities use the live portal flow
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 not ok 110 - public announcements use live Supabase data with a labeled fallback
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
 not ok 111 - public next event uses the live school calendar with a labeled fallback
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
+not ok 229 - test activity data stays visibly labeled
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 --- test summary ---
 # tests 236
-# pass 234
-# fail 2
+# pass 230
+# fail 6
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
-  ---
-  duration_ms: 0.196587
-  type: 'test'
-  ...
-# Subtest: normal School Resources never loads or renders form submission history
-ok 219 - normal School Resources never loads or renders form submission history
-  ---
-  duration_ms: 0.996045
-  type: 'test'
-  ...
-# Subtest: normal users can still submit school forms without reading history
-ok 220 - normal users can still submit school forms without reading history
-  ---
-  duration_ms: 0.180286
-  type: 'test'
-  ...
-# Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
-ok 221 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
-  ---
-  duration_ms: 6.653612
-  type: 'test'
-  ...
-# Subtest: Owner receives system health and aggregate staff analytics
-ok 222 - Owner receives system health and aggregate staff analytics
-  ---
-  duration_ms: 0.893714
-  type: 'test'
-  ...
-# Subtest: Admin workspace includes storyline incident and evidence operations
-ok 223 - Admin workspace includes storyline incident and evidence operations
-  ---
-  duration_ms: 0.239145
-  type: 'test'
-  ...
-# Subtest: Faculty dashboard includes a private lounge workflow
-ok 224 - Faculty dashboard includes a private lounge workflow
-  ---
-  duration_ms: 0.156692
-  type: 'test'
-  ...
-# Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 225 - dark mode controls are absent from Hanami accessibility settings
-  ---
-  duration_ms: 0.155349
-  type: 'test'
-  ...
-# Subtest: student activities are loaded for the active character
-ok 226 - student activities are loaded for the active character
-  ---
-  duration_ms: 1.241091
-  type: 'test'
-  ...
-# Subtest: campus activity membership reads remain owner scoped
-ok 227 - campus activity membership reads remain owner scoped
-  ---
-  duration_ms: 0.234296
-  type: 'test'
-  ...
-# Subtest: student dashboard has no remaining placeholder modules
-ok 228 - student dashboard has no remaining placeholder modules
-  ---
-  duration_ms: 0.382272
-  type: 'test'
-  ...
-# Subtest: test activity data stays visibly labeled
-ok 229 - test activity data stays visibly labeled
-  ---
-  duration_ms: 0.240197
-  type: 'test'
+  actual: |-
+    "use client";
+    
+    import {useEffect,useMemo,useState} from "react";
+    import styles from "./StudentActivitiesPanel.module.css";
+    
+    const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
+    
+    type Activity={id:string;kind:"club"|"student_government"|"event"|"committee";name:string;description:string;meeting_location:string|null;meeting_schedule:string|null};
+    type Membership={activity_id:string;status:"member"|"officer"|"advisor"};
+    type Event={id:string;activity_id:string|null;title:string;description:string;starts_at:string;ends_at:string|null;location:string|null};
+    type Props={accessToken:string;characterId:string};
+    
+    function headers(accessToken:string){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`};}
+    function dateLabel(value:string){return new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZone:"Asia/Tokyo",timeZoneName:"short"}).format(new Date(value));}
+    
+    export default function StudentActivitiesPanel({accessToken,characterId}:Props){
+      const [activities,setActivities]=useState<Activity[]>([]);
+      const [memberships,setMemberships]=useState<Membership[]>([]);
+      const [events,setEvents]=useState<Event[]>([]);
+      const [message,setMessage]=useState("Loading campus activities…");
+    
+      useEffect(()=>{
+        let cancelled=false;
+        async function load(){
+          try{
+            const [activitiesResponse,membershipsResponse,eventsResponse]=await Promise.all([
+              fetch(`${SUPABASE_URL}/rest/v1/campus_activities?select=id,kind,name,description,meeting_location,meeting_schedule&is_active=eq.true&order=name.asc`,{headers:headers(accessToken)}),
+              fetch(`${SUPABASE_URL}/rest/v1/campus_activity_memberships?select=activity_id,status&character_id=eq.${encodeURIComponent(characterId)}`,{headers:headers(accessToken)}),
+              fetch(`${SUPABASE_URL}/rest/v1/campus_activity_events?select=id,activity_id,title,description,starts_at,ends_at,location&is_public=eq.true&starts_at=gte.${encodeURIComponent(new Date().toISOString())}&order=starts_at.asc&limit=8`,{headers:headers(accessToken)}),
+            ]);
+            if(!activitiesResponse.ok||!membershipsResponse.ok||!eventsResponse.ok)throw new Error("Campus activity data could not be loaded.");
+            const [activityRows,membershipRows,eventRows]=await Promise.all([
+              activitiesResponse.json() as Promise<Activity[]>,
+              membershipsResponse.json() as Promise<Membership[]>,
+              eventsResponse.json() as Promise<Event[]>,
+            ]);
+            if(cancelled)return;
+            setActivities(activityRows);setMemberships(membershipRows);setEvents(eventRows);
+            setMessage(`${membershipRows.length} joined activit${membershipRows.length===1?"y":"ies"} • ${eventRows.length} upcoming public event${eventRows.length===1?"":"s"}.`);
+          }catch(error){if(!cancelled)setMessage(error instanceof Error?error.message:"Campus activities could not be loaded.");}
+        }
+        load();
+        return()=>{cancelled=true;};
+      },[accessToken,characterId]);
+    
+      const activityMap=useMemo(()=>new Map(activities.map(item=>[item.id,item])),[activities]);
+      const joined=memberships.map(item=>({membership:item,activity:activityMap.get(item.activity_id)})).filter(item=>item.activity);
+    
+      return <section className={styles.panel} aria-labelledby="activities-title">
+        <div className={styles.heading}><div><p className="eyebrow">CAMPUS</p><h4 id="activities-title">Activities & events</h4></div><span>{joined.length} JOINED</span></div>
+        <div className={styles.status} aria-live="polite">{message}</div>
+        <div className={styles.columns}>
+          <div className={styles.block}><div className={styles.blockTitle}><strong>MY ACTIVITIES</strong><span>ACTIVE CHARACTER</span></div>{joined.length===0?<div className={styles.empty}><b>No joined activities yet</b><p>Clubs, committees, and student-government memberships assigned to this character will appear here.</p></div>:joined.map(({membership,activity})=><article key={activity!.id}><div className={styles.meta}><span>{activity!.kind.replace("_"," ").toUpperCase()} • {membership.status.toUpperCase()}</span></div><h5>{activity!.name}</h5><p>{activity!.description||"No description posted."}</p><dl><div><dt>Meeting</dt><dd>{activity!.meeting_schedule||"Not posted"}</dd></div><div><dt>Location</dt><dd>{activity!.meeting_location||"Not posted"}</dd></div></dl></article>)}</div>
+          <div className={styles.block}><div className={styles.blockTitle}><strong>UPCOMING EVENTS</strong><span>PUBLIC CAMPUS CALENDAR</span></div>{events.length===0?<div className={styles.empty}><b>No upcoming public events</b><p>New campus events will appear here automatically when they are published.</p></div>:events.map(event=><article key={event.id}><div className={styles.meta}><span>{dateLabel(event.starts_at)}</span></div><h5>{event.title}</h5><p>{event.description||"No event description posted."}</p><dl><div><dt>Location</dt><dd>{event.location||"To be announced"}</dd></div><div><dt>Hosted by</dt><dd>{event.activity_id?activityMap.get(event.activity_id)?.name||"Campus activity":"Hanami High"}</dd></div></dl></article>)}</div>
+        </div>
+      </section>;
+    }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/Hanami-High/Hanami-High/tests/student-activities.test.mjs:34:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 230 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.183364
+  duration_ms: 0.976892
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 231 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.333852
+  duration_ms: 0.32537
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 232 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.467032
+  duration_ms: 4.995006
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 233 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.350455
+  duration_ms: 1.224565
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 234 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.283241
+  duration_ms: 1.131104
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 235 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.704044
+  duration_ms: 1.492799
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 236 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.243336
+  duration_ms: 1.071945
   type: 'test'
   ...
 1..236
 # tests 236
 # suites 0
-# pass 234
-# fail 2
+# pass 230
+# fail 6
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1410.610015
+# duration_ms 1383.6002
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 23ms
+✓ Running next.config.ts took 26ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -218,15 +230,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.5s
+✓ Compiled successfully in 5.2s
   Running TypeScript ...
-  Finished TypeScript in 9.1s ...
+  Finished TypeScript in 8.8s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 634ms
+✓ Generating static pages using 3 workers (28/28) in 539ms
   Finalizing page optimization ...
 
 Route (app)
