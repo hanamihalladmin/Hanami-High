@@ -1,17 +1,6 @@
-HANAMI_FINAL_CI=PASS
-exit_code=0
+HANAMI_FINAL_CI=FAIL
+exit_code=2
 --- failing tests / errors ---
-# Subtest: Campus Life returns signed-in students to real portal routes
-# Subtest: Campus Opportunities are published content with character-owned Student applications
-# Subtest: Student portal exposes the website-native Campus Opportunities application desk
-# Subtest: Administration manages opportunities and reviews applications
-# Subtest: Applicant identity is exposed only through a permission-gated queue
-# Subtest: ordinary Faculty role does not get school-wide opportunity review access
-# Subtest: character manager loads only authenticated account data
-# Subtest: character creation uses the next open slot and starts private
-# Subtest: character switching updates and remembers the active character
-# Subtest: character selection restores across refreshes
-# Subtest: test faculty character uses the signed-in account and receives TEST-101
 # Subtest: character deletion requires explicit permanent confirmation
 # Subtest: shared message and coursework history no longer blocks character deletion
 # Subtest: database remains the final authority for the two-slot rule
@@ -181,78 +170,114 @@ exit_code=0
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 # Subtest: School Office separates staff action waiting member and archive queues
 # Subtest: Help has a direct router and support anchor
+MISSING ROUTE: out/index.html
+MISSING ROUTE: out/calendar/index.html
+MISSING ROUTE: out/portal/index.html
+MISSING ROUTE: out/portal/student/index.html
+MISSING ROUTE: out/portal/student/class/index.html
+MISSING ROUTE: out/portal/faculty/index.html
+MISSING ROUTE: out/portal/help/index.html
+MISSING ROUTE: out/portal/admin/index.html
+MISSING ROUTE: out/portal/owner/index.html
+MISSING ROUTE: out/updates/index.html
+MISSING ROUTE: out/traditions/index.html
 --- tail ---
+  type: 'test'
+  ...
+# Subtest: normal users can still submit school forms without reading history
+ok 191 - normal users can still submit school forms without reading history
+  ---
+  duration_ms: 0.239157
+  type: 'test'
+  ...
+# Subtest: Owner receives system health and aggregate staff analytics
+ok 192 - Owner receives system health and aggregate staff analytics
+  ---
+  duration_ms: 0.880716
+  type: 'test'
+  ...
+# Subtest: Admin workspace includes storyline incident and evidence operations
+ok 193 - Admin workspace includes storyline incident and evidence operations
+  ---
+  duration_ms: 0.230099
+  type: 'test'
+  ...
+# Subtest: Faculty dashboard includes a private lounge workflow
+ok 194 - Faculty dashboard includes a private lounge workflow
+  ---
+  duration_ms: 0.15511
+  type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 195 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.156062
+  duration_ms: 0.188552
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 196 - student activities are loaded for the active character
   ---
-  duration_ms: 1.194274
+  duration_ms: 1.352947
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 197 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.215473
+  duration_ms: 0.247422
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 198 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.378859
+  duration_ms: 0.379248
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
 ok 199 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.185156
+  duration_ms: 0.154729
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 200 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.836234
+  duration_ms: 0.865547
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 201 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.269114
+  duration_ms: 0.244186
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 202 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.689031
+  duration_ms: 5.821324
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 203 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.66806
+  duration_ms: 1.549214
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 204 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.473907
+  duration_ms: 2.228693
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 205 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.87078
+  duration_ms: 1.787699
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 206 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.49718
+  duration_ms: 1.342027
   type: 'test'
   ...
 1..206
@@ -263,14 +288,14 @@ ok 206 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1066.580433
+# duration_ms 1156.291328
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 27ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -279,46 +304,21 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.4s
+✓ Compiled successfully in 6.0s
   Running TypeScript ...
-  Finished TypeScript in 8.5s ...
-  Collecting page data using 3 workers ...
-  Generating static pages using 3 workers (0/27) ...
-  Generating static pages using 3 workers (6/27) 
-  Generating static pages using 3 workers (13/27) 
-  Generating static pages using 3 workers (20/27) 
-✓ Generating static pages using 3 workers (27/27) in 570ms
-  Finalizing page optimization ...
-
-Route (app)
-┌ ○ /
-├ ○ /_not-found
-├ ○ /about
-├ ○ /academics
-├ ○ /apply
-├ ○ /calendar
-├ ○ /campus-life
-├ ○ /changelog
-├ ○ /elections
-├ ○ /homeroom
-├ ○ /organizations
-├ ○ /portal
-├ ○ /portal/admin
-├ ○ /portal/faculty
-├ ○ /portal/help
-├ ○ /portal/lore
-├ ○ /portal/owner
-├ ○ /portal/owner/student-viewer
-├ ○ /portal/roadmap
-├ ○ /portal/student
-├ ○ /portal/student/class
-├ ○ /rooms
-├ ○ /rules
-├ ○ /sports
-├ ○ /traditions
-└ ○ /updates
-
-
-○  (Static)  prerendered as static content
+app/portal/ClassCompetitionExamPanel.tsx(28,1013): error TS2339: Property 'map' does not exist on type 'Set<{ section_id: string; }>'.
+app/portal/ClassCompetitionExamPanel.tsx(28,1017): error TS7006: Parameter 'x' implicitly has an 'any' type.
+Failed to type check.
 
 === routes ===
+MISSING ROUTE: out/index.html
+MISSING ROUTE: out/calendar/index.html
+MISSING ROUTE: out/portal/index.html
+MISSING ROUTE: out/portal/student/index.html
+MISSING ROUTE: out/portal/student/class/index.html
+MISSING ROUTE: out/portal/faculty/index.html
+MISSING ROUTE: out/portal/help/index.html
+MISSING ROUTE: out/portal/admin/index.html
+MISSING ROUTE: out/portal/owner/index.html
+MISSING ROUTE: out/updates/index.html
+MISSING ROUTE: out/traditions/index.html
