@@ -1,5 +1,5 @@
 name: Deploy Hanami High
-# Deployment refresh: stable queued Pages deployment
+# Deployment refresh: force Pages rebuild after Classroom portal rollout
 
 on:
   push:
