@@ -8,18 +8,23 @@ const layout=fs.readFileSync("app/layout.tsx","utf8");
 const migration=fs.readFileSync("supabase/migrations/20260821113000_owner_full_website_edit_login.sql","utf8");
 
 test("Owner can unlock full-site editing before normal portal sign-in",()=>{
- assert.match(access,/Owner Edit Login/);
+ assert.match(access,/Owner Edit/);
+ assert.match(access,/OWNER WEBSITE ACCESS/);
  assert.match(access,/owner_web_edit_login/);
  assert.match(access,/hanami\.owner\.web-edit\.v1/);
  assert.match(access,/Enter Owner Edit Mode/);
+ assert.match(access,/@hanamihigh\.edu/);
  assert.match(layout,/OwnerWebsiteAccess/);
 });
 
-test("public page editor accepts the short-lived Owner website session",()=>{
+test("public page editor accepts the short-lived Owner website session and rescans visible text",()=>{
  assert.match(editor,/owner_web_edit_session_valid/);
  assert.match(editor,/owner_web_save_public_page_text/);
  assert.match(editor,/OWNER PAGE EDITOR/);
  assert.match(editor,/normal website in Owner Edit Mode/);
+ assert.match(editor,/scanItems\(\)/);
+ assert.match(editor,/editable text block/);
+ assert.match(editor,/roleDeskPath/);
 });
 
 test("Owner website tokens are hashed, expiring, and isolated from portal impersonation",()=>{
