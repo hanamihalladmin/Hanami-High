@@ -3,6 +3,7 @@ import RuntimeBugReporter from "./components/RuntimeBugReporter";
 import RuntimeOperationsBridge from "./components/RuntimeOperationsBridge";
 import PublicSessionBridge from "./components/PublicSessionBridge";
 import PublicPageTextEditor from "./components/PublicPageTextEditor";
+import ProfileOpenBridge from "./components/ProfileOpenBridge";
 import GlobalRulesNotice from "./components/GlobalRulesNotice";
 import SiteThemeRuntime from "./components/SiteThemeRuntime";
 import RoleplayWeatherEffects from "./components/RoleplayWeatherEffects";
@@ -23,5 +24,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><SiteThemeRuntime/><ExamWeekRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/>{children}</body></html>;
+  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><ProfileOpenBridge/><SiteThemeRuntime/><ExamWeekRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/>{children}</body></html>;
 }
