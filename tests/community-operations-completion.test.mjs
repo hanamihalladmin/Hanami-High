@@ -8,6 +8,7 @@ test("Admin and Owner have complete organization and election operations",async(
  const workspace=await read("app/portal/admin/AdminWorkspace.tsx");
  for(const phrase of ["Election Lifecycle","Election Positions","Nomination Review","Organization Recruitment","Organization Applications","Open nominations","Open voting","Close voting"])assert.match(panel,new RegExp(phrase));
  assert.match(workspace,/AdminCommunityOperationsPanel/);
+ assert.match(panel,/patch\("election_nominations",row\.id,\{status\},false\)/);
 });
 
 test("active election ballots show safe approved candidate identities",async()=>{
