@@ -23,6 +23,21 @@ test("direct messages start by exact Hanami handle through a hardened controlled
   assert.match(inbox,/rpc\/start_direct_conversation/);assert.match(inbox,/target_handle:clean/);assert.match(directFix,/private\.start_direct_conversation_internal/);assert.match(directFix,/private\.user_owns_character\(sender_character_id\)/);assert.match(directFix,/private\.resolve_character_id_by_handle\(target_handle\)/);assert.match(directFix,/insert into public\.conversations/);assert.match(directFix,/insert into public\.conversation_participants/);assert.match(directFix,/create or replace function public\.start_direct_conversation/);assert.match(directFix,/security invoker/);
 });
 
+test("direct thread labels resolve the other participant instead of generic Direct",()=>{
+  assert.match(inbox,/conversation\.kind===\"direct\"/);
+  assert.match(inbox,/other\.display_name/);
+  assert.match(inbox,/other\.handle/);
+  assert.match(inbox,/rows\.map\(row=>loadDirectory\(row\.id\)/);
+});
+
+test("switching many direct messages is stable and ignores stale message requests",()=>{
+  assert.match(inbox,/selectedIdRef=useRef/);
+  assert.match(inbox,/messageRequestRef=useRef/);
+  assert.match(inbox,/requestId!==messageRequestRef\.current/);
+  assert.doesNotMatch(inbox,/loadUnread,selectedId\]/);
+  assert.match(inbox,/if\(id===selectedIdRef\.current\)return/);
+});
+
 test("group chats use exact handles, cap invites, and support membership management",()=>{
   assert.match(inbox,/rpc\/start_group_conversation/);assert.match(inbox,/target_handles:handles/);assert.match(inbox,/handles\.length<1\|\|handles\.length>7/);assert.match(groupMigration,/cardinality\(target_handles\) < 1 or cardinality\(target_handles\) > 7/);assert.match(groupMigration,/private\.resolve_character_id_by_handle/);assert.match(groupMigration,/security invoker/);
   for(const rpc of ["add_group_participant","remove_group_participant","rename_group_conversation","leave_group_conversation"])assert.match(inbox,new RegExp(rpc));
@@ -34,7 +49,16 @@ test("messaging RLS requires conversation participation and character ownership"
 
 test("completed messaging supports unread state and private attachments",()=>{
   assert.match(inbox,/conversation_unread_counts/);assert.match(inbox,/mark_conversation_read/);assert.match(inbox,/message_attachments/);assert.match(inbox,/message-media/);assert.match(inbox,/8\*1024\*1024/);assert.match(inbox,/message-media-sign/);
-  assert.match(signer,/Authentication required/);assert.match(signer,/conversation_participants/);assert.match(signer,/message_attachments/);assert.match(signer,/expiresIn:300/);
+  assert.match(signer,/Authentication required/);assert.match(signer,/conversation_participants/);assert.match(signer,/message_attachments/);assert.match(signer,/expiresIn:900/);
+});
+
+test("image and file attachments obtain a fresh signed URL when opened",()=>{
+  assert.match(inbox,/async function openAttachment/);
+  assert.match(inbox,/await signAttachment\(file\)/);
+  assert.match(inbox,/window\.open\(url,\"_blank\"/);
+  assert.match(inbox,/Open image/);
+  assert.match(signer,/participants\.some\(row=>owned\.has\(row\.character_id\)\)/);
+  assert.match(signer,/path\.startsWith\(\"\/storage\/v1\/\"\)/);
 });
 
 test("message center exposes unread notifications and reopenable sent messages",()=>{
