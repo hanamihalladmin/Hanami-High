@@ -30,7 +30,6 @@ export default function AdminWorkspace({accessToken,userId,access,ownerMode=fals
   {hasAdminAccess&&<><AdminStaffAnalyticsPanel accessToken={accessToken}/><AdminContentApprovalPanel accessToken={accessToken}/><AdminNarrativeModerationPanel accessToken={accessToken}/><AdminHallPassManager accessToken={accessToken}/></>}
   {(access.site_admin||canModerate)&&<AdminRoleplaySystemsManager accessToken={accessToken} access={access}/>} 
   {canEditContent&&<><AdminRoadmapManager accessToken={accessToken} userId={userId}/><AdminRoadmapOperationsPanel accessToken={accessToken} userId={userId} canModerate={canModerate}/><AdminSchoolStatusManager accessToken={accessToken} userId={userId} access={access}/><AdminAnnouncementManager accessToken={accessToken} userId={userId} access={access}/><AdminEventManager accessToken={accessToken} userId={userId} access={access}/><AdminOpportunityManager accessToken={accessToken} userId={userId}/><AdminOfficeRequestManager accessToken={accessToken} userId={userId}/></>}
-  {!canEditContent&&canModerate&&<AdminRoadmapOperationsPanel accessToken={accessToken} userId={userId} canModerate/>}
   {canModerate&&<><AdminSupportTicketManager accessToken={accessToken} userId={userId}/><AdminModerationManager accessToken={accessToken} userId={userId} access={access}/><AdminCharacterDirectory accessToken={accessToken}/></>}
   {access.site_admin&&<AdminAcademicManager accessToken={accessToken}/>} 
  </>;
