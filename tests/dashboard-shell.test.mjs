@@ -45,11 +45,11 @@ test("role dashboards read school status notices and calendar from Administratio
   assert.match(notices,/site_announcements/);
   assert.match(notices,/Authorization:`Bearer \$\{accessToken\}`/);
   assert.match(notices,/LIVE CMS/);
-  assert.match(notices,/is_test_data/);
+  assert.doesNotMatch(notices,/is_test_data/);
   assert.match(calendar,/school_calendar_events/);
   assert.match(calendar,/Authorization:`Bearer \$\{accessToken\}`/);
   assert.match(calendar,/LIVE CALENDAR/);
-  assert.match(calendar,/is_test_data/);
+  assert.doesNotMatch(calendar,/is_test_data/);
   assert.match(calendar,/timeZone:"Asia\/Tokyo"/);
 });
 
