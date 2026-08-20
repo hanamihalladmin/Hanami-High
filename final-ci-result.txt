@@ -1,8 +1,6 @@
 HANAMI_FINAL_CI=PASS
 exit_code=0
 --- failing tests / errors ---
-# Subtest: public Administration RPCs are security-invoker wrappers around private helpers
-# Subtest: school status is public-read and content-editor managed
 # Subtest: announcement management is protected by permission-aware RLS
 # Subtest: school calendar management is content-editor scoped and Tokyo based
 # Subtest: moderators have a private character directory rather than global profile exposure
@@ -66,6 +64,8 @@ exit_code=0
 # Subtest: friendship mutation stays behind controlled RPCs
 # Subtest: Students can only friend Students and Faculty can only friend Faculty
 # Subtest: Friends-only visibility requires an accepted same-role character friendship
+# Subtest: group chat creation does not create a selectedId-driven inbox refresh loop
+# Subtest: group chat create action is single-flight and updates in place
 # Subtest: Hanami Inbox is website-native and character scoped
 # Subtest: direct messages start by exact Hanami handle through a hardened controlled RPC
 # Subtest: group chats use exact handles, cap invites, and support membership management
@@ -182,97 +182,97 @@ exit_code=0
 # Subtest: School Office separates staff action waiting member and archive queues
 # Subtest: Help has a direct router and support anchor
 --- tail ---
-  duration_ms: 0.675927
+  duration_ms: 1.125991
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
-ok 184 - Admin workspace includes storyline incident and evidence operations
+ok 186 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.169325
+  duration_ms: 0.279884
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
-ok 185 - Faculty dashboard includes a private lounge workflow
+ok 187 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.104688
+  duration_ms: 0.199183
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 186 - dark mode controls are absent from Hanami accessibility settings
+ok 188 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.102524
+  duration_ms: 0.220854
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 187 - student activities are loaded for the active character
+ok 189 - student activities are loaded for the active character
   ---
-  duration_ms: 0.64475
+  duration_ms: 1.154974
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 188 - campus activity membership reads remain owner scoped
+ok 190 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.117998
+  duration_ms: 0.208921
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 189 - student dashboard has no remaining placeholder modules
+ok 191 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.22609
+  duration_ms: 0.33051
   type: 'test'
   ...
 # Subtest: test activity data stays visibly labeled
-ok 190 - test activity data stays visibly labeled
+ok 192 - test activity data stays visibly labeled
   ---
-  duration_ms: 0.095073
+  duration_ms: 0.20311
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 191 - accessibility and notification preferences bind to signed-in user automatically
+ok 193 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 4.505902
+  duration_ms: 5.307556
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 192 - group chat creation uses a validated private helper and creator management
+ok 194 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.192625
+  duration_ms: 1.340613
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 193 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 195 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.049049
+  duration_ms: 1.209477
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 194 - School Office separates staff action waiting member and archive queues
+ok 196 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.327588
+  duration_ms: 1.638641
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 195 - Help has a direct router and support anchor
+ok 197 - Help has a direct router and support anchor
   ---
-  duration_ms: 0.848948
+  duration_ms: 1.132022
   type: 'test'
   ...
-1..195
-# tests 195
+1..197
+# tests 197
 # suites 0
-# pass 195
+# pass 197
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 774.373235
+# duration_ms 1040.511639
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 19ms
+✓ Running next.config.ts took 25ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -281,15 +281,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 4.3s
+✓ Compiled successfully in 5.2s
   Running TypeScript ...
-  Finished TypeScript in 6.2s ...
+  Finished TypeScript in 8.3s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/25) ...
   Generating static pages using 3 workers (6/25) 
   Generating static pages using 3 workers (12/25) 
   Generating static pages using 3 workers (18/25) 
-✓ Generating static pages using 3 workers (25/25) in 437ms
+✓ Generating static pages using 3 workers (25/25) in 581ms
   Finalizing page optimization ...
 
 Route (app)
