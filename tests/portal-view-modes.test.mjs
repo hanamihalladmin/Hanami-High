@@ -2,24 +2,19 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 
-const toggle=fs.readFileSync("app/components/PortalViewModeToggle.tsx","utf8");
-const css=fs.readFileSync("app/portal-view-modes.css","utf8");
 const layout=fs.readFileSync("app/layout.tsx","utf8");
+const retro=fs.readFileSync("app/retro-ui.css","utf8");
 
-test("all role portals expose Original and Simplified modes",()=>{
- for(const role of ["student","faculty","admin","owner"]) assert.match(toggle,new RegExp(role));
- assert.match(toggle,/Original/);
- assert.match(toggle,/Simplified/);
- assert.match(toggle,/hanami\.portal\.view-mode\.v1/);
- assert.match(toggle,/localStorage\.setItem/);
- assert.match(layout,/PortalViewModeToggle/);
+test("Original Simplified portal mode controls are fully removed",()=>{
+ assert.equal(fs.existsSync("app/components/PortalViewModeToggle.tsx"),false);
+ assert.equal(fs.existsSync("app/portal-view-modes.css"),false);
+ assert.doesNotMatch(layout,/PortalViewModeToggle|portal-view-modes\.css/);
 });
 
-test("simplified mode preserves functionality while simplifying presentation",()=>{
- assert.match(css,/data-portal-mode="simplified"/);
- assert.match(css,/box-shadow:none/);
- assert.match(css,/background-image:none/);
- assert.match(css,/font-family:Arial/);
- assert.doesNotMatch(css,/pointer-events:none/);
- assert.doesNotMatch(css,/display:none!important.*button/);
+test("portal presentation uses one permanent retro typography treatment",()=>{
+ assert.match(layout,/retro-ui\.css/);
+ assert.match(retro,/Verdana,Tahoma,Arial,sans-serif/);
+ assert.match(retro,/Trebuchet MS/);
+ assert.match(retro,/Courier New/);
+ assert.doesNotMatch(retro,/data-portal-mode="simplified"/);
 });
