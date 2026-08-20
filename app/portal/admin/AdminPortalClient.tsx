@@ -27,7 +27,7 @@ export default function AdminPortalClient(){
   if(!permissions.site_admin&&!permissions.content_editor&&!permissions.moderator){setState("blocked");setMessage("The Administrator credential is unlocked, but this account has no Administration permission. Lock the portal and sign in again or ask the Owner to review this credential.");return;}
   setState("ready");setMessage(`Administrator authorization verified${roles?.sync_status==="synced"?" with synchronized Discord role":" in fallback role mode"}.`);}
   catch(error){setState("blocked");setMessage(error instanceof Error?error.message:"Administration access could not be verified.");}},[]);
- useEffect(()=>{initialize();},[initialize]);
+ useEffect(()=>{queueMicrotask(()=>void initialize());},[initialize]);
  async function privilegedLogout(){if(session)await fetch(`${SUPABASE_URL}/rest/v1/rpc/end_privileged_portal_session`,{method:"POST",headers:headers(session.accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({requested_portal:"administrator"})});setState("signin");setMessage("Administrator portal locked. Your normal Hanami session remains signed in.");}
  function logout(){localStorage.removeItem(SESSION_KEY);localStorage.removeItem("hanami.portal.character.v1");window.location.assign("../");}
  if(state==="signin")return <PrivilegedPortalLogin portalKind="administrator" onUnlocked={initialize}/>;
