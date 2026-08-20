@@ -25,7 +25,7 @@ test("Student portal exposes the website-native Campus Opportunities application
   assert.match(student,/Withdraw application/);
   assert.match(student,/timeZone:"Asia\/Tokyo"/);
   assert.match(dashboard,/StudentOpportunityPanel/);
-  assert.match(dashboard,/Campus Opportunities/);
+  assert.match(dashboard,/view==="community"/);
 });
 
 test("Administration manages opportunities and reviews applications",()=>{

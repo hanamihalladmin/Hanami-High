@@ -11,8 +11,8 @@ test("student schedule cards open a dedicated class workspace",async()=>{
   assert.match(schedule,/Open class/);
   assert.match(page,/StudentClassPageClient/);
   assert.match(client,/rpc\/student_class_detail/);
-  assert.match(client,/Assignments & teacher feedback/);
-  assert.match(client,/TEACHER COMMENT/);
+  assert.match(client,/Assignments & feedback/);
+  assert.match(client,/Teacher comment/);
   assert.match(client,/Attendance/);
 });
 

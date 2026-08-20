@@ -58,6 +58,6 @@ test("anonymous users have no direct School Office table grants",()=>{
 
 test("both Student and Faculty dashboards expose the shared Office desk",()=>{
   assert.match(dashboard,/OfficeRequestPanel accessToken=\{accessToken\} characterId=\{character\.id\}/);
-  assert.match(dashboard,/School Office Requests/);
-  assert.match(dashboard,/School Office/);
+  assert.match(dashboard,/view==="school"/);
+  assert.match(dashboard,/StudentLifeSystemsPanel/);
 });

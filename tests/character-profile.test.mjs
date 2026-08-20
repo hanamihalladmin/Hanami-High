@@ -30,5 +30,5 @@ test("character profile table is owner scoped by RLS",()=>{
 
 test("both role dashboards render the profile editor",()=>{
   assert.match(dashboard,/CharacterProfilePanel accessToken=\{accessToken\} characterId=\{character\.id\} currentVisibility=\{character\.visibility\}/);
-  assert.match(dashboard,/Profile & Privacy/);
+  assert.match(dashboard,/view==="profile"/);
 });

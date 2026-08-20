@@ -40,7 +40,7 @@ test("full community and moderation roadmap remains wired",async()=>{
  const rumors=await read("app/portal/RumorsBoardPanel.tsx");
  const approval=await read("app/portal/admin/AdminContentApprovalPanel.tsx");
  const operations=await read("app/portal/admin/AdminCommunityOperationsPanel.tsx");
- contains(dashboard,["RumorsBoardPanel","Rumors Board"]);
+ contains(dashboard,["RumorsBoardPanel","CommunityCenterPanel"]);
  contains(rumors,["school_rumors","content_approval_queue","Submit for review"]);
  contains(approval,["content_approval_queue"]);
  contains(operations,["organization","election"]);
