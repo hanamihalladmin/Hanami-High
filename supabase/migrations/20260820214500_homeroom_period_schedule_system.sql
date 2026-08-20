@@ -1,3 +1,16 @@
+create or replace function private.academic_manager_authorized()
+returns boolean
+language sql
+stable
+security definer
+set search_path = 'public','private','auth'
+as $$
+  select private.account_has_permission(auth.uid(),'site_admin') or private.is_owner_discord_user();
+$$;
+
+revoke all on function private.academic_manager_authorized() from public, anon;
+grant execute on function private.academic_manager_authorized() to authenticated;
+
 create table if not exists public.school_homerooms (
   id uuid primary key default gen_random_uuid(),
   code text not null unique check (char_length(code) between 1 and 20),
@@ -64,30 +77,84 @@ grant insert, update, delete on public.school_schedule_assignments to authentica
 
 create policy "members read active homerooms"
 on public.school_homerooms for select to authenticated
-using (is_active or private.account_has_permission('site_admin'));
+using (is_active or private.academic_manager_authorized());
 
-create policy "site admins manage homerooms"
+create policy "academic managers manage homerooms"
 on public.school_homerooms for all to authenticated
-using (private.account_has_permission('site_admin'))
-with check (private.account_has_permission('site_admin'));
+using (private.academic_manager_authorized())
+with check (private.academic_manager_authorized());
 
 create policy "members read active school periods"
 on public.school_periods for select to authenticated
-using (is_active or private.account_has_permission('site_admin'));
+using (is_active or private.academic_manager_authorized());
 
-create policy "site admins manage school periods"
+create policy "academic managers manage school periods"
 on public.school_periods for all to authenticated
-using (private.account_has_permission('site_admin'))
-with check (private.account_has_permission('site_admin'));
+using (private.academic_manager_authorized())
+with check (private.academic_manager_authorized());
 
 create policy "members read school schedule assignments"
 on public.school_schedule_assignments for select to authenticated
 using (true);
 
-create policy "site admins manage school schedule assignments"
+create policy "academic managers manage school schedule assignments"
 on public.school_schedule_assignments for all to authenticated
-using (private.account_has_permission('site_admin'))
-with check (private.account_has_permission('site_admin'));
+using (private.academic_manager_authorized())
+with check (private.academic_manager_authorized());
+
+-- Align the existing course/section data layer with the Owner portal's documented full-access model.
+drop policy if exists "site admins manage academic courses" on public.academic_courses;
+create policy "academic managers manage academic courses"
+on public.academic_courses for all to authenticated
+using (private.academic_manager_authorized())
+with check (private.academic_manager_authorized());
+
+drop policy if exists "site admins manage class sections" on public.class_sections;
+create policy "academic managers manage class sections"
+on public.class_sections for all to authenticated
+using (private.academic_manager_authorized())
+with check (private.academic_manager_authorized());
+
+drop policy if exists "site admins manage section meetings" on public.section_meetings;
+create policy "academic managers manage section meetings"
+on public.section_meetings for all to authenticated
+using (private.academic_manager_authorized())
+with check (private.academic_manager_authorized());
+
+drop policy if exists "site admins manage section memberships" on public.section_memberships;
+create policy "academic managers manage section memberships"
+on public.section_memberships for all to authenticated
+using (private.academic_manager_authorized())
+with check (private.academic_manager_authorized());
+
+drop policy if exists "site admins read all section memberships" on public.section_memberships;
+create policy "academic managers read all section memberships"
+on public.section_memberships for select to authenticated
+using (private.academic_manager_authorized());
+
+create or replace function private.admin_create_academic_course_internal(
+  requested_code text,
+  requested_title text,
+  requested_department text,
+  requested_description text default '',
+  requested_credits smallint default 1
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = 'public','private','auth'
+as $$
+declare new_id uuid;
+begin
+  if not private.academic_manager_authorized() then
+    raise exception 'Academic manager access required';
+  end if;
+  insert into public.academic_courses(code,title,department,description,credits)
+  values(upper(trim(requested_code)),trim(requested_title),trim(requested_department),coalesce(trim(requested_description),''),requested_credits)
+  returning id into new_id;
+  return new_id;
+end;
+$$;
 
 create or replace function private.validate_school_schedule_assignment()
 returns trigger
