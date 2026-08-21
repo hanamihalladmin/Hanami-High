@@ -12,7 +12,7 @@ export default function PortalPage(){
       <div className="nav-row"><nav><a href="../">School Home</a><a href="../about/">About</a><a href="../academics/">Academics</a><a href="../campus-life/">Campus Life</a><a href="./admin/">Administration</a></nav><a className="portal-button active" href="./">Login / Portal</a></div>
     </header>
     <section className={styles.gateway} id="portal-main">
-      <header className={styles.heading}><div><p className="eyebrow">HANAMI HIGH • ACCOUNT GATEWAY</p><h1>Choose your Hanami character.</h1><p>Sign in with Discord, manage up to two characters, and open the portal that matches who you are playing.</p></div><div className={styles.badge}><strong>PRIVATE SCHOOL DESK</strong><span>Student • Faculty • Administration • Owner</span></div></header>
+      <header className={styles.heading}><div><p className="eyebrow">HANAMI HIGH • ACCOUNT GATEWAY</p><h1>Choose your Hanami character.</h1><p><strong>Maximum two characters.</strong> Sign in with Discord, choose a student or faculty identity, and open the portal that matches who you are playing. <strong>Private until you publish.</strong> <strong>Website messages only.</strong></p></div><div className={styles.badge}><strong>PRIVATE SCHOOL DESK</strong><span>Student • Faculty • Administration • Owner</span></div></header>
       <PortalAuthPanel/>
     </section>
     <footer><p>HANAMI HIGH SCHOOL • SECURE PORTAL FOUNDATION • 2006</p><nav><a href="../">School Home</a><a href="./admin/">Administration</a><a href="./help/">Help</a><a href="#portal-main">Back to top ↑</a></nav></footer>
