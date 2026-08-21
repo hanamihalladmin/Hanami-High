@@ -105,38 +105,6 @@ exit_code=1
 /home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminWorkspace.tsx
   51:187  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
-/home/runner/work/Hanami-High/Hanami-High/app/portal/experience/page.tsx
-  29:253  error  Error: Cannot access variable before it is declared
-
-`load` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/experience/page.tsx:29:253
-  27 |  const [qEnabled,setQEnabled]=useState(true);const [qAnonymous,setQAnonymous]=useState(true);const [studySeconds,setStudySeconds]=useState(0);const [studying,setStudying]=useState(false);const timerRef=useRef<number|null>(null);
-  28 |  const minutes=useMemo(()=>Math.floor(studySeconds/60),[studySeconds]);
-> 29 |  useEffect(()=>{const session=auth();const cid=localStorage.getItem(CHARACTER_KEY)??"";if(!session?.accessToken||!cid){setMessage("Sign in and choose a character before opening this hub.");return;}setToken(session.accessToken);setCharacterId(cid);void load(session.accessToken,cid);return()=>{if(timerRef.current)window.clearInterval(timerRef.current)}},[]);
-     |                                                                                                                                                                                                                                                             ^^^^ `load` accessed before it is declared
-  30 |  async function load(accessToken:string,cid:string){try{const h=headers(accessToken);const [meR,pR,jR,gR,sR,lR,relR,qR]=await Promise.all([
-  31 |   fetch(`${SUPABASE_URL}/rest/v1/characters?select=id,display_name,handle&id=eq.${encodeURIComponent(cid)}&limit=1`,{headers:h}),
-  32 |   fetch(`${SUPABASE_URL}/rest/v1/character_presence?select=status_kind,status_message&character_id=eq.${encodeURIComponent(cid)}&limit=1`,{headers:h}),
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/experience/page.tsx:30:2
-  28 |  const minutes=useMemo(()=>Math.floor(studySeconds/60),[studySeconds]);
-  29 |  useEffect(()=>{const session=auth();const cid=localStorage.getItem(CHARACTER_KEY)??"";if(!session?.accessToken||!cid){setMessage("Sign in and choose a character before opening this hub.");return;}setToken(session.accessToken);setCharacterId(cid);void load(session.accessToken,cid);return()=>{if(timerRef.current)window.clearInterval(timerRef.current)}},[]);
-> 30 |  async function load(accessToken:string,cid:string){try{const h=headers(accessToken);const [meR,pR,jR,gR,sR,lR,relR,qR]=await Promise.all([
-     |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 31 |   fetch(`${SUPABASE_URL}/rest/v1/characters?select=id,display_name,handle&id=eq.${encodeURIComponent(cid)}&limit=1`,{headers:h}),
-     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 32 |   fetch(`${SUPABASE_URL}/rest/v1/character_presence?select=status_kind,status_message&character_id=eq.${encodeURIComponent(cid)}&limit=1`,{headers:h}),
-     …
-     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 40 |   if(lR.ok){const found=(await lR.json())[0]??null;if(found)setLocker(found);else{const created=await fetch(`${SUPABASE_URL}/rest/v1/student_lockers`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json","Prefer":"return=representation"}),body:JSON.stringify({character_id:cid})});if(created.ok)setLocker((await created.json())[0]??null)}}setMessage("Your Student Experience Hub is ready.");
-     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 41 |  }catch{setMessage("Some Student Experience systems could not be loaded.")}}
-     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `load` is declared here
-  42 |  async function saveStatus(e:FormEvent){e.preventDefault();if(!token)return;const r=await fetch(`${SUPABASE_URL}/rest/v1/character_presence?on_conflict=character_id`,{method:"POST",headers:headers(token,{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates"}),body:JSON.stringify({character_id:characterId,...presence,updated_at:new Date().toISOString()})});setMessage(r.ok?"Status updated.":"Status could not be updated.")}
-  43 |  async function addJournal(e:FormEvent){e.preventDefault();if(!token||!journalTitle.trim()||!journalBody.trim())return;const r=await fetch(`${SUPABASE_URL}/rest/v1/character_journals`,{method:"POST",headers:headers(token,{"Content-Type":"application/json","Prefer":"return=representation"}),body:JSON.stringify({character_id:characterId,title:journalTitle.trim(),body:journalBody.trim(),visibility:journalVisibility,published_at:journalVisibility==="private"?null:new Date().toISOString()})});if(r.ok){setJournals([...(await r.json()),...journals]);setJournalTitle("");setJournalBody("");setMessage("Journal entry saved.")}else setMessage("Journal entry could not be saved.")}
-  44 |  async function addLockerNote(e:FormEvent){e.preventDefault();if(!token||!locker||!lockerNote.trim())return;const r=await fetch(`${SUPABASE_URL}/rest/v1/locker_items`,{method:"POST",headers:headers(token,{"Content-Type":"application/json"}),body:JSON.stringify({locker_id:locker.id,item_type:"note",label:lockerNote.trim(),x:20,y:20})});if(r.ok){setLockerNote("");setMessage("Locker note added. Drag-and-drop locker design is the next visual layer.")}else setMessage("Locker item could not be added.")}  react-hooks/immutability
-
 /home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerFeedbackInboxPanel.tsx
   7:921  warning  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
 
@@ -163,7 +131,7 @@ exit_code=1
 /home/runner/work/Hanami-High/Hanami-High/app/portal/page.tsx
   11:174  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
-✖ 53 problems (3 errors, 50 warnings)
+✖ 52 problems (2 errors, 50 warnings)
 
 --- failing checks ---
 not ok 3 - About keeps the shared Tokyo 2006 roleplay clock while preserving 1836 school history
@@ -210,109 +178,109 @@ not ok 236 - public version and changelog are discoverable site-wide
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 243 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 0.851117
+  duration_ms: 0.841483
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 244 - people results expose one-click profile opening
   ---
-  duration_ms: 0.172111
+  duration_ms: 0.163017
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 245 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 3.802007
+  duration_ms: 5.618413
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 246 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 0.653428
+  duration_ms: 0.969051
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 247 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.170227
+  duration_ms: 0.26805
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 248 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.110196
+  duration_ms: 0.167329
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 249 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.103186
+  duration_ms: 0.201107
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 250 - student activities are loaded for the active character
   ---
-  duration_ms: 0.665486
+  duration_ms: 0.674926
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 251 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.146952
+  duration_ms: 0.123432
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 252 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.210328
+  duration_ms: 0.211087
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 253 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.133812
+  duration_ms: 0.127744
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 254 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.587158
+  duration_ms: 0.578457
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 255 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.192661
+  duration_ms: 0.190699
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 256 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 3.041337
+  duration_ms: 3.905217
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 257 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 0.683824
+  duration_ms: 0.913182
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 258 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 0.609231
+  duration_ms: 0.873256
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 259 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.010247
+  duration_ms: 1.399125
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 260 - Help has a direct router and support anchor
   ---
-  duration_ms: 0.627449
+  duration_ms: 0.929324
   type: 'test'
   ...
 1..260
@@ -323,14 +291,14 @@ ok 260 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1004.641337
+# duration_ms 1238.968619
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 18ms
+✓ Running next.config.ts took 26ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -339,15 +307,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 3.9s
+✓ Compiled successfully in 5.1s
   Running TypeScript ...
-  Finished TypeScript in 6.6s ...
+  Finished TypeScript in 9.4s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/32) ...
   Generating static pages using 3 workers (8/32) 
   Generating static pages using 3 workers (16/32) 
   Generating static pages using 3 workers (24/32) 
-✓ Generating static pages using 3 workers (32/32) in 396ms
+✓ Generating static pages using 3 workers (32/32) in 558ms
   Finalizing page optimization ...
 
 Route (app)
