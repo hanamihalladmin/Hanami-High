@@ -2,57 +2,19 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-
-function json(data: unknown, status = 200) {
-  return new Response(JSON.stringify(data), {status, headers:{"content-type":"application/json","cache-control":"no-store"}});
-}
-
-async function cache(userId:string,discordUserId:string,roles:string[],syncStatus:string,lastError:string|null){
-  return fetch(`${SUPABASE_URL}/rest/v1/account_discord_role_sync?on_conflict=user_id`, {
-    method:"POST",
-    headers:{apikey:SERVICE_ROLE_KEY,Authorization:`Bearer ${SERVICE_ROLE_KEY}`,"content-type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},
-    body:JSON.stringify({user_id:userId,discord_user_id:discordUserId,role_ids:roles,synced_at:new Date().toISOString(),sync_status:syncStatus,last_error:lastError})
-  });
-}
-
+const corsHeaders={"Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"authorization, x-client-info, apikey, content-type","Access-Control-Allow-Methods":"POST, OPTIONS"};
+function json(data: unknown, status = 200) {return new Response(JSON.stringify(data), {status, headers:{...corsHeaders,"content-type":"application/json","cache-control":"no-store"}});}
+async function cache(userId:string,discordUserId:string,roles:string[],syncStatus:string,lastError:string|null){return fetch(`${SUPABASE_URL}/rest/v1/account_discord_role_sync?on_conflict=user_id`, {method:"POST",headers:{apikey:SERVICE_ROLE_KEY,Authorization:`Bearer ${SERVICE_ROLE_KEY}`,"content-type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({user_id:userId,discord_user_id:discordUserId,role_ids:roles,synced_at:new Date().toISOString(),sync_status:syncStatus,last_error:lastError})});}
 Deno.serve(async (req: Request) => {
-  if (req.method !== "POST") return json({error:"Method not allowed"},405);
-  const authorization = req.headers.get("authorization") ?? "";
-  if (!authorization.startsWith("Bearer ")) return json({error:"Authentication required"},401);
-
-  const userResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, {headers:{Authorization:authorization, apikey:SERVICE_ROLE_KEY}});
-  if (!userResponse.ok) return json({error:"Invalid Hanami session"},401);
-  const user = await userResponse.json() as {id?:string;user_metadata?:Record<string,unknown>;identities?:Array<{provider?:string;identity_data?:Record<string,unknown>}>};
-  if (!user.id) return json({error:"Hanami account unavailable"},401);
-
-  const discordIdentity = user.identities?.find(identity=>identity.provider==="discord");
-  const identityData = discordIdentity?.identity_data ?? user.user_metadata ?? {};
-  const discordUserId = String(identityData.provider_id ?? identityData.sub ?? identityData.id ?? "");
-  if (!/^\d{16,22}$/.test(discordUserId)) return json({error:"Discord identity unavailable"},400);
-
-  let providerToken="";
-  try { const body=await req.json() as {provider_token?:unknown}; providerToken=typeof body.provider_token==="string"?body.provider_token:""; } catch { /* empty body */ }
-
-  const configResponse=await fetch(`${SUPABASE_URL}/rest/v1/portal_authorization_config?select=value&key=eq.discord_guild_id&limit=1`,{headers:{apikey:SERVICE_ROLE_KEY,Authorization:`Bearer ${SERVICE_ROLE_KEY}`}});
-  const configRows=configResponse.ok?await configResponse.json() as Array<{value?:string}>:[];
-  const guildId=String(configRows[0]?.value??"");
-  if (!/^\d{16,22}$/.test(guildId)) return json({configured:false,sync_status:"pending",message:"Owner must configure the Hanami Discord server ID."},503);
-  if (!providerToken) return json({configured:true,sync_status:"pending",reauthorize:true,message:"Sign out and sign in with Discord again to authorize server role reading."},428);
-
-  const discordUserResponse=await fetch("https://discord.com/api/v10/users/@me",{headers:{Authorization:`Bearer ${providerToken}`}});
-  if (!discordUserResponse.ok){await cache(user.id,discordUserId,[],"error",`Discord OAuth token validation failed (${discordUserResponse.status})`);return json({configured:true,sync_status:"error",reauthorize:true,error:"Discord authorization expired. Sign in again."},401);}
-  const discordUser=await discordUserResponse.json() as {id?:string};
-  if (discordUser.id!==discordUserId){await cache(user.id,discordUserId,[],"error","Discord OAuth identity did not match Hanami account");return json({error:"Discord identity mismatch"},403);}
-
-  const memberResponse=await fetch(`https://discord.com/api/v10/users/@me/guilds/${encodeURIComponent(guildId)}/member`,{headers:{Authorization:`Bearer ${providerToken}`}});
-  let roles:string[]=[];let syncStatus="synced";let lastError:string|null=null;
-  if(memberResponse.status===404) syncStatus="not_member";
-  else if(memberResponse.status===401||memberResponse.status===403){syncStatus="error";lastError="Discord guild member scope is missing or expired";}
-  else if(!memberResponse.ok){syncStatus="error";lastError=`Discord member lookup failed (${memberResponse.status})`;}
-  else {const member=await memberResponse.json() as {roles?:string[]};roles=Array.isArray(member.roles)?member.roles.filter(role=>/^\d+$/.test(role)):[];}
-
-  const upsertResponse=await cache(user.id,discordUserId,roles,syncStatus,lastError);
-  if(!upsertResponse.ok) return json({error:"Role cache update failed"},500);
-  if(syncStatus==="error") return json({configured:true,sync_status:syncStatus,reauthorize:true,error:lastError},502);
-  return json({configured:true,sync_status:syncStatus,roles_synced:roles.length});
+ if(req.method==="OPTIONS")return new Response("ok",{headers:corsHeaders});
+ if (req.method !== "POST") return json({error:"Method not allowed"},405);
+ const authorization = req.headers.get("authorization") ?? "";if (!authorization.startsWith("Bearer ")) return json({error:"Authentication required"},401);
+ const userResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, {headers:{Authorization:authorization, apikey:SERVICE_ROLE_KEY}});if (!userResponse.ok) return json({error:"Invalid Hanami session"},401);
+ const user = await userResponse.json() as {id?:string;user_metadata?:Record<string,unknown>;identities?:Array<{provider?:string;identity_data?:Record<string,unknown>}>};if (!user.id) return json({error:"Hanami account unavailable"},401);
+ const discordIdentity = user.identities?.find(identity=>identity.provider==="discord");const identityData = discordIdentity?.identity_data ?? user.user_metadata ?? {};const discordUserId = String(identityData.provider_id ?? identityData.sub ?? identityData.id ?? "");if (!/^\d{16,22}$/.test(discordUserId)) return json({error:"Discord identity unavailable"},400);
+ let providerToken="";try { const body=await req.json() as {provider_token?:unknown}; providerToken=typeof body.provider_token==="string"?body.provider_token:""; } catch {}
+ const configResponse=await fetch(`${SUPABASE_URL}/rest/v1/portal_authorization_config?select=value&key=eq.discord_guild_id&limit=1`,{headers:{apikey:SERVICE_ROLE_KEY,Authorization:`Bearer ${SERVICE_ROLE_KEY}`}});const configRows=configResponse.ok?await configResponse.json() as Array<{value?:string}>:[];const guildId=String(configRows[0]?.value??"");if (!/^\d{16,22}$/.test(guildId)) return json({configured:false,sync_status:"pending",message:"Owner must configure the Hanami Discord server ID."},503);if (!providerToken) return json({configured:true,sync_status:"pending",reauthorize:true,message:"Sign out and sign in with Discord again to authorize server role reading."},428);
+ const discordUserResponse=await fetch("https://discord.com/api/v10/users/@me",{headers:{Authorization:`Bearer ${providerToken}`}});if (!discordUserResponse.ok){await cache(user.id,discordUserId,[],"error",`Discord OAuth token validation failed (${discordUserResponse.status})`);return json({configured:true,sync_status:"error",reauthorize:true,error:"Discord authorization expired. Sign in again."},401);}const discordUser=await discordUserResponse.json() as {id?:string};if (discordUser.id!==discordUserId){await cache(user.id,discordUserId,[],"error","Discord OAuth identity did not match Hanami account");return json({error:"Discord identity mismatch"},403);}
+ const memberResponse=await fetch(`https://discord.com/api/v10/users/@me/guilds/${encodeURIComponent(guildId)}/member`,{headers:{Authorization:`Bearer ${providerToken}`}});let roles:string[]=[];let syncStatus="synced";let lastError:string|null=null;if(memberResponse.status===404) syncStatus="not_member";else if(memberResponse.status===401||memberResponse.status===403){syncStatus="error";lastError="Discord guild member scope is missing or expired";}else if(!memberResponse.ok){syncStatus="error";lastError=`Discord member lookup failed (${memberResponse.status})`;}else {const member=await memberResponse.json() as {roles?:string[]};roles=Array.isArray(member.roles)?member.roles.filter(role=>/^\d+$/.test(role)):[];}
+ const upsertResponse=await cache(user.id,discordUserId,roles,syncStatus,lastError);if(!upsertResponse.ok) return json({error:"Role cache update failed"},500);if(syncStatus==="error") return json({configured:true,sync_status:syncStatus,reauthorize:true,error:lastError},502);return json({configured:true,sync_status:syncStatus,roles_synced:roles.length});
 });
