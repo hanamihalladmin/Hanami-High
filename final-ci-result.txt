@@ -21,8 +21,7 @@ exit_code=0
   40:5749  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/PortalAppearancePanel.tsx
-  55:108  warning  React Hook useEffect has a missing dependency: 'avatarUrl'. Either include it or remove the dependency array                                                                                                                                                                             react-hooks/exhaustive-deps
-  74:235  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  75:235  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/ProfileDesignWorkspace.tsx
   34:5  warning  React Hook useEffect has a missing dependency: 'refreshStudio'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
@@ -58,7 +57,7 @@ exit_code=0
 /home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerPortalClient.tsx
   20:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
-✖ 26 problems (0 errors, 26 warnings)
+✖ 25 problems (0 errors, 25 warnings)
 
 --- failing checks ---
 --- test summary ---
@@ -70,115 +69,115 @@ exit_code=0
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.239066
+  duration_ms: 0.17858
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 239 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.17468
+  duration_ms: 0.890613
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 240 - people results expose one-click profile opening
   ---
-  duration_ms: 0.206546
+  duration_ms: 0.148433
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 241 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 4.731788
+  duration_ms: 5.234683
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 242 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 0.709941
+  duration_ms: 0.80913
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 243 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.196392
+  duration_ms: 0.162485
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 244 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.110409
+  duration_ms: 0.102875
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 245 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.109763
+  duration_ms: 0.144067
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 246 - student activities are loaded for the active character
   ---
-  duration_ms: 1.06131
+  duration_ms: 0.648318
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 247 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.237136
+  duration_ms: 0.116656
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 248 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.333957
+  duration_ms: 0.228315
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 249 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.217333
+  duration_ms: 0.140141
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 250 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.062256
+  duration_ms: 0.818434
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 251 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.327951
+  duration_ms: 0.241624
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 252 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 4.636546
+  duration_ms: 4.954501
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 253 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.097618
+  duration_ms: 0.965035
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 254 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 0.977479
+  duration_ms: 0.917724
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 255 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.628838
+  duration_ms: 1.210265
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 256 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.045344
+  duration_ms: 0.897102
   type: 'test'
   ...
 1..256
@@ -189,14 +188,14 @@ ok 256 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1410.031061
+# duration_ms 1184.572287
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 132ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -205,15 +204,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.4s
+✓ Compiled successfully in 4.7s
   Running TypeScript ...
-  Finished TypeScript in 9.2s ...
+  Finished TypeScript in 7.2s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 573ms
+✓ Generating static pages using 3 workers (28/28) in 439ms
   Finalizing page optimization ...
 
 Route (app)
