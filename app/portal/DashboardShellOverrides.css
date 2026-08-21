@@ -24,7 +24,7 @@ section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>nav bu
 section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>nav button[aria-pressed="true"]{background:var(--hanami-portal-accent,#b96b87)!important;color:#fff!important;border-color:var(--hanami-portal-accent,#b96b87)!important}
 section[aria-labelledby="dashboard-title"] [class*="logoButton"]{position:relative;display:grid!important;place-items:center!important;min-height:126px!important;padding:8px 0 6px!important;background:transparent!important}
 section[aria-labelledby="dashboard-title"] [class*="logoButton"]::before{display:none!important;content:none!important}
-section[aria-labelledby="dashboard-title"] [class*="logoButton"] img{content:url("/Hanami-High/hanami-high-portal-icon.png?v=20260821c")!important;display:block!important;opacity:1!important;width:112px!important;height:112px!important;max-width:112px!important;object-fit:contain!important;filter:none!important;background:transparent!important;border-radius:50%!important}
+section[aria-labelledby="dashboard-title"] [class*="logoButton"] img{content:url("/Hanami-High/hanami-high-master-logo.svg?v=20260821e")!important;display:block!important;opacity:1!important;width:112px!important;height:112px!important;max-width:112px!important;object-fit:contain!important;filter:none!important;background:transparent!important;border-radius:50%!important}
 section[aria-labelledby="dashboard-title"] [class*="contentView"]>section,
 section[aria-labelledby="dashboard-title"] [class*="contentView"]>div>section,
 section[aria-labelledby="dashboard-title"] [class*="accountContent"]>section,
