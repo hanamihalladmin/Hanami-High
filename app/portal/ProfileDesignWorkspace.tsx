@@ -7,6 +7,7 @@ import ProfileDecorativePresetGallery from "./ProfileDecorativePresetGallery";
 import GlitterDividerPresetGallery from "./GlitterDividerPresetGallery";
 import ProfileStudioRoadmapTools from "./ProfileStudioRoadmapTools";
 import ProfileStudioV2Panel from "./ProfileStudioV2Panel";
+import ProfileMemoryLibrary from "./ProfileMemoryLibrary";
 import styles from "./ProfileDesignWorkspace.module.css";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
@@ -84,6 +85,7 @@ export default function ProfileDesignWorkspace({accessToken,characterId}:Props){
           <div className={styles.controlRow}><div><strong>PROFILE BACKGROUND</strong><span>Upload a background directly from your device. Image URLs are no longer required.</span></div><div className={styles.actions}><label>{uploadingBackground?"Uploading…":"Upload background"}<input type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={uploadBackground} disabled={uploadingBackground}/></label>{(backgroundPath||backgroundUrl)&&<button type="button" onClick={clearBackground}>Clear background</button>}</div></div>
           <div className={styles.controlRow}><div><strong>PROFILE STUDIO V2</strong><span>Zoom, layers, keyboard nudging, borders, shadows, corners, image fitting, and private uploads.</span>{notice&&<small>{notice}</small>}</div><div className={styles.actions}><button type="button" onClick={unlockAll} disabled={unlocking||resetting}>{unlocking?"Unlocking…":"Unlock all widgets"}</button><button type="button" onClick={resetCanvas} disabled={resetting||unlocking}>{resetting?"Resetting canvas…":"Reset canvas"}</button></div></div>
         </section>
+        <ProfileMemoryLibrary accessToken={accessToken} characterId={characterId} onAdded={()=>setRevision(value=>value+1)}/>
         <div className={styles.canvasFrame} style={studioStyle}><ProfileStudioV2Panel accessToken={accessToken} characterId={characterId}/></div>
       </div>}
     </div>
