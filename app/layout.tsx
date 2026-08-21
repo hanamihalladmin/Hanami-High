@@ -8,6 +8,7 @@ import GlobalRulesNotice from "./components/GlobalRulesNotice";
 import SiteThemeRuntime from "./components/SiteThemeRuntime";
 import RoleplayWeatherEffects from "./components/RoleplayWeatherEffects";
 import ExamWeekRuntime from "./components/ExamWeekRuntime";
+import RoleplaySchoolYearInputs from "./components/RoleplaySchoolYearInputs";
 import "./globals.css";
 import "./mobile.css";
 import "./accessibility.css";
@@ -28,5 +29,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><ProfileOpenBridge/><SiteThemeRuntime/><ExamWeekRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/>{children}</body></html>;
+  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><ProfileOpenBridge/><SiteThemeRuntime/><ExamWeekRuntime/><RoleplaySchoolYearInputs/><GlobalRulesNotice/><RoleplayWeatherEffects/>{children}</body></html>;
 }
