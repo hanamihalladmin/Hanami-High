@@ -1,7 +1,7 @@
 /* Final shell unification layer: keep every public/network page and portal view on the same compact Canvas/Classroom-inspired visual system. */
 
-/* Always use the current transparent Hanami crest asset anywhere a legacy icon reference remains. */
-img[src*="hanami-high-portal-icon"]{content:url('/Hanami-High/hanami-high-portal-icon.png?v=20260821d')!important;background:transparent!important;mix-blend-mode:normal!important;filter:none!important;object-fit:contain!important}
+/* Always use the current Hanami master emblem anywhere a legacy icon reference remains. */
+img[src*="hanami-high-portal-icon"],img[src*="hanami-high-master-logo"]{content:url('/Hanami-High/hanami-high-master-logo.svg?v=20260821e')!important;background:transparent!important;mix-blend-mode:normal!important;filter:none!important;object-fit:contain!important}
 .school-header .school-mark{background:transparent!important;border:0!important;box-shadow:none!important}
 .school-header .school-mark::before{display:none!important}
 
@@ -12,12 +12,12 @@ img[src*="hanami-high-portal-icon"]{content:url('/Hanami-High/hanami-high-portal
  .site-page:has(> .school-header)> .school-header .network-strip{display:none!important}
  .site-page:has(> .school-header)> .school-header .brand-row{box-sizing:border-box!important;display:flex!important;min-height:112px!important;align-items:center!important;justify-content:space-between!important;gap:24px!important;padding:18px 30px!important;background:transparent!important}
  .site-page:has(> .school-header)> .school-header .brand-lockup{display:flex!important;align-items:center!important;gap:14px!important;text-decoration:none!important}
- .site-page:has(> .school-header)> .school-header .brand-lockup .school-mark{width:58px!important;height:58px!important;min-width:58px!important}
+ .site-page:has(> .school-header)> .school-header .brand-lockup .school-mark{width:58px!important;height:58px!important;min-width:58px!important;background:url('/Hanami-High/hanami-high-master-logo.svg?v=20260821e') center/contain no-repeat!important}
  .site-page:has(> .school-header)> .school-header .brand-name{font-size:32px!important;line-height:1!important;letter-spacing:.01em!important}
  .site-page:has(> .school-header)> .school-header .brand-subtitle{font-size:10px!important;letter-spacing:.12em!important}
  .site-page:has(> .school-header)> .school-header .school-clock{min-width:310px!important;padding:14px 18px!important;border:1px solid #d7dde5!important;border-radius:15px!important;background:#fbfcfd!important;text-align:right!important}
  .site-page:has(> .school-header)> .school-header .nav-row{position:fixed!important;z-index:70!important;top:0!important;bottom:0!important;left:0!important;box-sizing:border-box!important;display:flex!important;width:160px!important;height:100vh!important;flex-direction:column!important;align-items:stretch!important;gap:12px!important;padding:16px 10px 12px!important;border:0!important;border-right:1px solid rgba(80,50,60,.08)!important;background:linear-gradient(180deg,#dc94ae,#bf6d8c)!important;overflow:hidden!important}
- .site-page:has(> .school-header)> .school-header .nav-row::before{content:""!important;display:block!important;flex:0 0 104px!important;width:100%!important;background:url('/Hanami-High/hanami-high-portal-icon.png?v=20260821d') center/88px 88px no-repeat!important}
+ .site-page:has(> .school-header)> .school-header .nav-row::before{content:""!important;display:block!important;flex:0 0 104px!important;width:100%!important;background:url('/Hanami-High/hanami-high-master-logo.svg?v=20260821e') center/88px 88px no-repeat!important}
  .site-page:has(> .school-header)> .school-header .nav-row nav{display:grid!important;gap:5px!important;width:100%!important}
  .site-page:has(> .school-header)> .school-header .nav-row nav a,.site-page:has(> .school-header)> .school-header .nav-row>.portal-button{box-sizing:border-box!important;display:flex!important;align-items:center!important;width:100%!important;min-height:42px!important;padding:9px 12px!important;border:0!important;border-radius:11px!important;background:transparent!important;color:#fff!important;box-shadow:none!important;font:600 11px/1.2 Arial,sans-serif!important;text-decoration:none!important;white-space:normal!important}
  .site-page:has(> .school-header)> .school-header .nav-row nav a:hover,.site-page:has(> .school-header)> .school-header .nav-row nav a.active,.site-page:has(> .school-header)> .school-header .nav-row>.portal-button:hover,.site-page:has(> .school-header)> .school-header .nav-row>.portal-button.active{background:rgba(255,255,255,.94)!important;color:#8f405f!important}
