@@ -1,5 +1,5 @@
 name: Deploy Hanami High
-# Deployment refresh: force Pages rebuild after Classroom portal rollout
+# Deployment refresh: force Pages rebuild after August 21 bugfix pass
 
 on:
   push:
