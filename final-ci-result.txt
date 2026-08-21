@@ -111,141 +111,142 @@ not ok 133 - public chronology is anchored to April 7 2006 and calendar stays in
 not ok 214 - TEST Faculty fixture is explicit test data, owner scoped, and Owner only
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
+not ok 236 - public version and changelog are discoverable site-wide
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 --- test summary ---
 # tests 260
-# pass 251
-# fail 9
+# pass 250
+# fail 10
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
-  duration_ms: 0.259608
-  type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 243 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.523161
+  duration_ms: 1.319563
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 244 - people results expose one-click profile opening
   ---
-  duration_ms: 0.283936
+  duration_ms: 0.228718
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 245 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 8.262132
+  duration_ms: 5.040928
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 246 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.065706
+  duration_ms: 1.151328
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 247 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.329533
+  duration_ms: 0.311293
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 248 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.205308
+  duration_ms: 0.191228
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 249 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.19357
+  duration_ms: 0.198442
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 250 - student activities are loaded for the active character
   ---
-  duration_ms: 0.847749
+  duration_ms: 1.197816
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 251 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.172248
+  duration_ms: 0.193062
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 252 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.292508
+  duration_ms: 0.330098
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 253 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.178337
+  duration_ms: 0.226956
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 254 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.845006
+  duration_ms: 0.84297
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 255 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.255462
+  duration_ms: 0.230321
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 256 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 6.37804
+  duration_ms: 5.644911
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 257 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.41616
+  duration_ms: 1.367804
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 258 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.230873
+  duration_ms: 1.314735
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 259 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.902499
+  duration_ms: 1.792249
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 260 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.244153
+  duration_ms: 1.319263
   type: 'test'
   ...
 1..260
 # tests 260
 # suites 0
-# pass 251
-# fail 9
+# pass 250
+# fail 10
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1639.371087
+# duration_ms 1636.229939
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 28ms
+✓ Running next.config.ts took 26ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -256,13 +257,13 @@ https://nextjs.org/telemetry
   Creating an optimized production build ...
 ✓ Compiled successfully in 6.1s
   Running TypeScript ...
-  Finished TypeScript in 10.0s ...
+  Finished TypeScript in 10.3s ...
   Collecting page data using 3 workers ...
-  Generating static pages using 3 workers (0/29) ...
-  Generating static pages using 3 workers (7/29) 
-  Generating static pages using 3 workers (14/29) 
-  Generating static pages using 3 workers (21/29) 
-✓ Generating static pages using 3 workers (29/29) in 600ms
+  Generating static pages using 3 workers (0/31) ...
+  Generating static pages using 3 workers (7/31) 
+  Generating static pages using 3 workers (15/31) 
+  Generating static pages using 3 workers (23/31) 
+✓ Generating static pages using 3 workers (31/31) in 642ms
   Finalizing page optimization ...
 
 Route (app)
@@ -275,7 +276,9 @@ Route (app)
 ├ ○ /campus-life
 ├ ○ /changelog
 ├ ○ /elections
+├ ○ /features
 ├ ○ /homeroom
+├ ○ /ideas
 ├ ○ /organizations
 ├ ○ /portal
 ├ ○ /portal/admin
