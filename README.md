@@ -1,21 +1,5 @@
 # Hanami High
 
-The official 2000s-inspired Hanami High school network, with modern accessibility and navigation.
+Hanami High is a Next.js + Supabase roleplay school network deployed to GitHub Pages.
 
-## Architecture
-
-- Next.js + TypeScript
-- GitHub as the source of truth
-- GitHub Actions and GitHub Pages for verified deployments
-- Supabase (Tokyo) for authentication, PostgreSQL, authorization, and storage
-- `Asia/Tokyo` as the canonical roleplay timezone
-
-## Local setup
-
-```bash
-cp .env.example .env.local
-npm ci
-npm run dev
-```
-
-Only browser-safe Supabase values may use the `NEXT_PUBLIC_` prefix. Secret keys must never be committed.
+Current development focuses on the public school site, character-based Student and Faculty portals, Administration and Owner tools, campus life, scheduling, messaging, profiles, and live 2006 roleplay-time systems.
