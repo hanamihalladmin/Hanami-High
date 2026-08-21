@@ -17,7 +17,7 @@ export default function Home(){
    <div className={styles.railBottom}><a href="./portal/"><span className={styles.railIcon}>↪</span><b>Portal Login</b></a></div>
   </aside>
   <section className={styles.main}>
-   <header className={styles.topbar}><div><p>PUBLIC SCHOOL NETWORK • EST. 1836</p><h1>HANAMI HIGH SCHOOL</h1></div><div className={styles.dateCard}><strong>{currentDate.toUpperCase()}</strong><span>ONLINE • ROLEPLAY YEAR 2006</span><LiveSchoolStatus/></div></header>
+   <header className={styles.topbar}><div><p>PUBLIC SCHOOL NETWORK • EST. 1836</p><h1>HANAMI HIGH SCHOOL</h1></div><div className={styles.dateCard}><strong>{currentDate.toUpperCase()}</strong><span>ONLINE • 2006</span><LiveSchoolStatus/></div></header>
    <div className={styles.content}>
     <LiveAnnouncements/>
     <section className={styles.hero} aria-labelledby="welcome-heading">
