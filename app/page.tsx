@@ -17,7 +17,7 @@ export default function Home(){
    <div className={styles.railBottom}><a href="./portal/"><span className={styles.railIcon}>↪</span><b>Portal Login</b></a></div>
   </aside>
   <section className={styles.main}>
-   <header className={styles.topbar}><div><p>PUBLIC SCHOOL NETWORK • EST. 1836</p><h1>Hanami High School</h1></div><div className={styles.dateCard}><strong>{currentDate.toUpperCase()}</strong><LiveSchoolStatus/></div></header>
+   <header className={styles.topbar}><div><p>PUBLIC SCHOOL NETWORK • EST. 1836</p><h1>Hanami High School</h1></div><div className={styles.dateCard}><strong>{currentDate.toUpperCase()}</strong><span>ONLINE • 2006</span><LiveSchoolStatus/></div></header>
    <div className={styles.content}>
     <LiveAnnouncements/>
     <section className={styles.hero} aria-labelledby="welcome-heading">
@@ -25,7 +25,7 @@ export default function Home(){
      <aside className={`${styles.card} ${styles.todayCard}`}><div className={styles.cardHeader}><h3>Today at Hanami</h3><span>LIVE</span></div><p><b>{currentDate.toUpperCase()}</b></p><p>Hanami City • Japan Standard Time<br/>Roleplay year • 2006</p><LiveNextEvent/></aside>
     </section>
     <div className={styles.dashboardGrid}>
-     <section className={styles.wideCard}><div className={styles.cardHeader}><h3>Academic highlights</h3><span>COURSE GUIDE</span></div><div className={styles.academicGrid}><article><b>01</b><h4>Arts & Humanities</h4><p>Literature, history, languages, visual art, and music.</p></article><article><b>02</b><h4>Science & Technology</h4><p>Laboratory science, mathematics, computing, and design.</p></article><article><b>03</b><h4>Guidance & Pathways</h4><p>Graduation planning, counseling, internships, and careers.</p></article></div></section>
+     <section className={styles.wideCard}><div className={styles.cardHeader}><h3>ACADEMIC HIGHLIGHTS</h3><span>COURSE GUIDE</span></div><div className={styles.academicGrid}><article><b>01</b><h4>Arts & Humanities</h4><p>Literature, history, languages, visual art, and music.</p></article><article><b>02</b><h4>Science & Technology</h4><p>Laboratory science, mathematics, computing, and design.</p></article><article><b>03</b><h4>Guidance & Pathways</h4><p>Graduation planning, counseling, internships, and careers.</p></article></div></section>
      <section className={styles.card}><div className={styles.cardHeader}><h3>Quick links</h3><span>EXPLORE</span></div><div className={styles.linkGrid}><a href="./about/">About Hanami</a><a href="./academics/">Academics</a><a href="./campus-life/#directory">Clubs</a><a href="./calendar/">Calendar</a><a href="./rules/">Rules</a><a href="./apply/">Apply</a></div></section>
      <section className={`${styles.card} ${styles.searchWrap}`}><div className={styles.cardHeader}><h3>Search Hanami</h3><span>DIRECTORY</span></div><SiteSearch/></section>
      <section className={styles.wideCard}><div className={styles.cardHeader}><h3>Campus life</h3><span>AFTER THE BELL</span></div><div className={styles.liveWrap}><div><h3>Clubs & organizations</h3><p>Sports, academic, arts, service, and special-interest groups all in one directory.</p><div className={styles.actions}><a href="./campus-life/#directory">View clubs</a></div></div><div><h3>Campus opportunities</h3><p>Jobs, volunteering, internships, and student leadership opportunities published through Hanami.</p><div className={styles.actions}><a href="./campus-life/#jobs">See opportunities</a></div></div></div></section>
