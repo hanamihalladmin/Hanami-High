@@ -1,0 +1,57 @@
+/* Final shell unification layer: keep every public/network page and portal view on the same compact Canvas/Classroom-inspired visual system. */
+
+/* Always use the transparent detailed crest asset anywhere a legacy icon reference remains. */
+img[src*="hanami-high-portal-icon"]{content:url('/Hanami-High/hanami-high-portal-icon-black.svg')!important;background:transparent!important;mix-blend-mode:normal!important;filter:none!important;object-fit:contain!important}
+.school-header .school-mark{background:transparent!important;border:0!important;box-shadow:none!important}
+.school-header .school-mark::before{display:none!important}
+
+/* Convert every remaining legacy public/network school header into the same left-rail shell used by the new homepage. */
+@media(min-width:761px){
+ .site-page:has(> .school-header){box-sizing:border-box!important;width:100%!important;max-width:none!important;min-height:calc(100vh - 88px)!important;margin:0!important;padding:0 0 24px 160px!important;background:#f7f8fa!important}
+ .site-page:has(> .school-header)> .school-header{box-sizing:border-box!important;width:100%!important;max-width:none!important;margin:0!important;border:0!important;border-bottom:1px solid #dfe3e8!important;background:rgba(255,255,255,.97)!important;box-shadow:none!important}
+ .site-page:has(> .school-header)> .school-header .network-strip{display:none!important}
+ .site-page:has(> .school-header)> .school-header .brand-row{box-sizing:border-box!important;display:flex!important;min-height:112px!important;align-items:center!important;justify-content:space-between!important;gap:24px!important;padding:18px 30px!important;background:transparent!important}
+ .site-page:has(> .school-header)> .school-header .brand-lockup{display:flex!important;align-items:center!important;gap:14px!important;text-decoration:none!important}
+ .site-page:has(> .school-header)> .school-header .brand-lockup .school-mark{width:58px!important;height:58px!important;min-width:58px!important}
+ .site-page:has(> .school-header)> .school-header .brand-name{font-size:32px!important;line-height:1!important;letter-spacing:.01em!important}
+ .site-page:has(> .school-header)> .school-header .brand-subtitle{font-size:10px!important;letter-spacing:.12em!important}
+ .site-page:has(> .school-header)> .school-header .school-clock{min-width:310px!important;padding:14px 18px!important;border:1px solid #d7dde5!important;border-radius:15px!important;background:#fbfcfd!important;text-align:right!important}
+ .site-page:has(> .school-header)> .school-header .nav-row{position:fixed!important;z-index:38!important;top:88px!important;bottom:0!important;left:0!important;box-sizing:border-box!important;display:flex!important;width:160px!important;height:auto!important;flex-direction:column!important;align-items:stretch!important;gap:12px!important;padding:16px 10px 12px!important;border:0!important;border-right:1px solid rgba(80,50,60,.08)!important;background:linear-gradient(180deg,#dc94ae,#bf6d8c)!important;overflow:auto!important}
+ .site-page:has(> .school-header)> .school-header .nav-row::before{content:""!important;display:block!important;flex:0 0 92px!important;width:100%!important;background:url('/Hanami-High/hanami-high-portal-icon-black.svg') center/76px 76px no-repeat!important}
+ .site-page:has(> .school-header)> .school-header .nav-row nav{display:grid!important;gap:5px!important;width:100%!important}
+ .site-page:has(> .school-header)> .school-header .nav-row nav a,.site-page:has(> .school-header)> .school-header .nav-row>.portal-button{box-sizing:border-box!important;display:flex!important;align-items:center!important;width:100%!important;min-height:42px!important;padding:9px 12px!important;border:0!important;border-radius:11px!important;background:transparent!important;color:#fff!important;box-shadow:none!important;font:600 11px/1.2 Arial,sans-serif!important;text-decoration:none!important;white-space:normal!important}
+ .site-page:has(> .school-header)> .school-header .nav-row nav a:hover,.site-page:has(> .school-header)> .school-header .nav-row nav a.active,.site-page:has(> .school-header)> .school-header .nav-row>.portal-button:hover,.site-page:has(> .school-header)> .school-header .nav-row>.portal-button.active{background:rgba(255,255,255,.94)!important;color:#8f405f!important}
+ .site-page:has(> .school-header)> .school-header .nav-row>.portal-button{margin-top:auto!important}
+ .site-page:has(> .school-header)>section,.site-page:has(> .school-header)>article,.site-page:has(> .school-header)>div:not(.school-header){max-width:1440px!important;margin-left:auto!important;margin-right:auto!important}
+ .site-page:has(> .school-header)>footer{box-sizing:border-box!important;max-width:1440px!important;margin:22px auto 0!important;border-radius:14px!important}
+}
+
+/* Compact the old portal gateway instead of allowing it to create a multi-screen document. */
+.portal-page [class*="PortalGatewayCompact_gateway"]{box-sizing:border-box!important;width:min(1180px,calc(100% - 40px))!important;max-width:1180px!important;max-height:calc(100vh - 235px)!important;margin:20px auto!important;padding:18px!important;overflow:auto!important;border:1px solid #e3cbd5!important;border-radius:18px!important;background:rgba(255,252,253,.97)!important;box-shadow:0 8px 28px rgba(75,43,55,.08)!important;scrollbar-gutter:stable!important}
+.portal-page [class*="PortalGatewayCompact_heading"]{position:sticky!important;top:-18px!important;z-index:3!important;margin:-18px -18px 16px!important;padding:18px!important;background:#fffafb!important;border-radius:18px 18px 0 0!important}
+[class*="CharacterManager_testFaculty"]{display:none!important}
+
+/* Portal tabs are work surfaces, not text floating directly over a wallpaper. */
+[class*="DashboardShell_contentView"],[class*="DashboardShell_accountContent"]{box-sizing:border-box!important;width:auto!important;max-width:none!important;max-height:calc(100vh - 98px)!important;margin:0 24px 22px!important;padding:18px!important;overflow:auto!important;scrollbar-gutter:stable!important;border:1px solid color-mix(in srgb,var(--global-nav-deep,#a7607d) 18%,#e1e1e1 82%)!important;border-radius:18px!important;background:color-mix(in srgb,var(--canvas-bg,#fffafa) 93%,#fff 7%)!important;box-shadow:0 8px 28px rgba(58,35,44,.08)!important}
+[class*="DashboardShell_accountLayout"]{height:calc(100vh - 76px)!important;min-height:0!important;overflow:hidden!important}
+[class*="DashboardShell_pageIntro"]{margin:0 0 4px!important;padding:12px 14px!important;border:1px solid color-mix(in srgb,var(--global-nav-deep,#a7607d) 16%,#e7e7e7 84%)!important;border-radius:13px!important;background:rgba(255,255,255,.88)!important}
+[class*="DashboardShell_dashboardMain"]>section,[class*="DashboardShell_dashboardView"]>aside,[class*="DashboardShell_featureStack"]>section,[class*="DashboardShell_accountContent"]>section{background:rgba(255,255,255,.94)!important;border:1px solid color-mix(in srgb,var(--global-nav-deep,#a7607d) 14%,#e9e9e9 86%)!important;overflow:hidden!important}
+[class*="DashboardShell_topbar"]{background:rgba(255,255,255,.74)!important;border-bottom:1px solid rgba(120,90,100,.09)!important;backdrop-filter:blur(8px)!important}
+
+/* Keep list-heavy tools compact with their own internal scrolling area. */
+[class*="StudentActivitiesPanel_columns"]{align-items:start!important}
+[class*="StudentActivitiesPanel_block"]{max-height:560px!important;overflow:auto!important;scrollbar-gutter:stable!important;background:rgba(255,255,255,.96)!important}
+[class*="PortalAppearancePanel_panel"],[class*="ProfileDesignWorkspace_workspace"],[class*="ProfileStudioPanel_panel"],[class*="ProfileStudioV2Panel"]{background:rgba(255,255,255,.96)!important}
+
+/* The dashboard should remain a dense overview rather than an empty wallpaper canvas. */
+[class*="StudentDashboardOverview_grid"]{grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr)!important;align-items:start!important}
+[class*="StudentDashboardOverview_panel"]{background:rgba(255,255,255,.96)!important;min-height:0!important}
+
+@media(max-width:760px){
+ .site-page:has(> .school-header){padding-left:0!important}
+ .portal-page [class*="PortalGatewayCompact_gateway"]{width:calc(100% - 20px)!important;max-height:none!important;margin:10px!important}
+ [class*="DashboardShell_contentView"],[class*="DashboardShell_accountContent"]{max-height:none!important;margin:0 10px 18px!important;padding:12px!important;overflow:visible!important}
+ [class*="DashboardShell_accountLayout"]{height:auto!important;overflow:visible!important}
+ [class*="StudentActivitiesPanel_block"]{max-height:none!important}
+ [class*="StudentDashboardOverview_grid"]{grid-template-columns:1fr!important}
+}
