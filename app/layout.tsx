@@ -21,6 +21,7 @@ import "./classroom-hub.css";
 import "./retro-ui.css";
 import "./portal-refresh.css";
 import "./public-network-fixes.css";
+import "./unified-shell-fixes.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
