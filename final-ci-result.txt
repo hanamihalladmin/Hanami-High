@@ -90,6 +90,9 @@ not ok 39 - test faculty character uses the signed-in account and receives TEST-
 not ok 51 - Course card layout is responsive and adaptive
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
+not ok 88 - Discord role sync uses member OAuth authorization without a bot token
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 not ok 125 - roleplay locale is Tokyo and public chronology is fixed to 2006
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
@@ -104,139 +107,139 @@ not ok 213 - TEST Faculty fixture is explicit test data, owner scoped, and Owner
   name: 'AssertionError'
 --- test summary ---
 # tests 259
-# pass 252
-# fail 7
+# pass 251
+# fail 8
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
-  duration_ms: 0.243735
+  duration_ms: 0.130406
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 242 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.057633
+  duration_ms: 0.609885
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 243 - people results expose one-click profile opening
   ---
-  duration_ms: 0.195525
+  duration_ms: 0.117316
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 244 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 5.003732
+  duration_ms: 3.499991
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 245 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.222159
+  duration_ms: 0.479019
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 246 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.323123
+  duration_ms: 0.118848
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 247 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.263701
+  duration_ms: 0.06647
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 248 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.242943
+  duration_ms: 0.072639
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 249 - student activities are loaded for the active character
   ---
-  duration_ms: 1.294945
+  duration_ms: 0.595974
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 250 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.239798
+  duration_ms: 0.137556
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 251 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.379337
+  duration_ms: 0.183105
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 252 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.280774
+  duration_ms: 0.125578
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 253 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.830008
+  duration_ms: 0.602514
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 254 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.306502
+  duration_ms: 0.182944
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 255 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.233861
+  duration_ms: 3.014312
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 256 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.288292
+  duration_ms: 0.871237
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 257 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.159202
+  duration_ms: 0.785539
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 258 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.539001
+  duration_ms: 1.09321
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 259 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.140407
+  duration_ms: 0.739419
   type: 'test'
   ...
 1..259
 # tests 259
 # suites 0
-# pass 252
-# fail 7
+# pass 251
+# fail 8
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1611.880613
+# duration_ms 991.934817
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 17ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -245,15 +248,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.6s
+✓ Compiled successfully in 3.7s
   Running TypeScript ...
-  Finished TypeScript in 10.0s ...
+  Finished TypeScript in 5.9s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/29) ...
   Generating static pages using 3 workers (7/29) 
   Generating static pages using 3 workers (14/29) 
   Generating static pages using 3 workers (21/29) 
-✓ Generating static pages using 3 workers (29/29) in 625ms
+✓ Generating static pages using 3 workers (29/29) in 395ms
   Finalizing page optimization ...
 
 Route (app)
