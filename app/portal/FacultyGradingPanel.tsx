@@ -10,6 +10,7 @@ type Assignment={id:string;section_id:string;title:string;points:number;status:"
 type Student={id:string;display_name:string;handle:string};
 type Submission={id:string;assignment_id:string;student_character_id:string;body:string;status:"draft"|"submitted"|"returned";submitted_at:string|null;grade:number|null;feedback:string;characters:Student|null};
 type Props={accessToken:string;characterId:string};
+type Filter="review"|"returned"|"all";
 
 function headers(accessToken:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`,...extra};}
 function dateLabel(value:string|null){if(!value)return "Not submitted";return new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZone:"Asia/Tokyo",timeZoneName:"short"}).format(new Date(value));}
@@ -21,6 +22,7 @@ export default function FacultyGradingPanel({accessToken,characterId}:Props){
   const [feedback,setFeedback]=useState<Record<string,string>>({});
   const [message,setMessage]=useState("Loading submitted work…");
   const [savingId,setSavingId]=useState<string|null>(null);
+  const [filter,setFilter]=useState<Filter>("review");
 
   const loadData=useCallback(async()=>{
     const membershipResponse=await fetch(`${SUPABASE_URL}/rest/v1/section_memberships?select=section_id&character_id=eq.${encodeURIComponent(characterId)}&relationship=eq.instructor`,{headers:headers(accessToken)});
@@ -28,8 +30,8 @@ export default function FacultyGradingPanel({accessToken,characterId}:Props){
     const memberships=await membershipResponse.json() as {section_id:string}[];
     const sectionIds=memberships.map(item=>item.section_id);
     if(sectionIds.length===0){setAssignments([]);setSubmissions([]);setMessage("No teaching sections are assigned yet.");return;}
-    const filter=`(${sectionIds.join(",")})`;
-    const assignmentResponse=await fetch(`${SUPABASE_URL}/rest/v1/course_assignments?select=id,section_id,title,points,status&section_id=in.${encodeURIComponent(filter)}`,{headers:headers(accessToken)});
+    const filterValue=`(${sectionIds.join(",")})`;
+    const assignmentResponse=await fetch(`${SUPABASE_URL}/rest/v1/course_assignments?select=id,section_id,title,points,status&section_id=in.${encodeURIComponent(filterValue)}`,{headers:headers(accessToken)});
     if(!assignmentResponse.ok)throw new Error("Assignments could not be loaded for grading.");
     const assignmentRows=await assignmentResponse.json() as Assignment[];
     const assignmentIds=assignmentRows.map(item=>item.id);
@@ -48,6 +50,9 @@ export default function FacultyGradingPanel({accessToken,characterId}:Props){
   useEffect(()=>{let cancelled=false;async function load(){try{await loadData();}catch(error){if(!cancelled)setMessage(error instanceof Error?error.message:"Grading data could not be loaded.");}}load();return()=>{cancelled=true;};},[loadData]);
 
   const assignmentMap=useMemo(()=>new Map(assignments.map(item=>[item.id,item])),[assignments]);
+  const reviewCount=submissions.filter(item=>item.status==="submitted").length;
+  const returnedCount=submissions.filter(item=>item.status==="returned").length;
+  const visible=useMemo(()=>filter==="all"?submissions:submissions.filter(item=>filter==="review"?item.status==="submitted":item.status==="returned"),[filter,submissions]);
 
   async function returnWork(submission:Submission){
     const assignment=assignmentMap.get(submission.assignment_id);
@@ -63,9 +68,11 @@ export default function FacultyGradingPanel({accessToken,characterId}:Props){
   }
 
   return <section className={styles.panel} aria-labelledby="grading-title">
-    <div className={styles.heading}><div><p className="eyebrow">GRADING</p><h4 id="grading-title">Submitted work</h4></div><span>{submissions.filter(item=>item.status==="submitted").length} TO REVIEW</span></div>
+    <div className={styles.heading}><div><p className="eyebrow">GRADING</p><h4 id="grading-title">Submitted work</h4></div><span>{reviewCount} TO REVIEW</span></div>
     <div className={styles.status} aria-live="polite">{message}</div>
-    {submissions.length===0?<div className={styles.empty}><strong>No submitted work</strong><p>Student submissions for your teaching sections will appear here automatically.</p></div>:<div className={styles.list}>{submissions.map(submission=>{
+    <div className={styles.summary}><article><span>ASSIGNMENTS</span><strong>{assignments.length}</strong></article><article><span>TO REVIEW</span><strong>{reviewCount}</strong></article><article><span>RETURNED</span><strong>{returnedCount}</strong></article></div>
+    <div className={styles.filters}><button type="button" className={filter==="review"?styles.active:""} onClick={()=>setFilter("review")}>Needs review</button><button type="button" className={filter==="returned"?styles.active:""} onClick={()=>setFilter("returned")}>Returned</button><button type="button" className={filter==="all"?styles.active:""} onClick={()=>setFilter("all")}>All work</button></div>
+    {visible.length===0?<div className={styles.empty}><strong>{filter==="review"?"Grading queue clear":"No work in this view"}</strong><p>{filter==="review"?"There is no submitted work waiting for grading.":"Student submissions will appear here automatically."}</p></div>:<div className={styles.list}>{visible.map(submission=>{
       const assignment=assignmentMap.get(submission.assignment_id);
       const student=submission.characters;
       const returned=submission.status==="returned";
