@@ -7,7 +7,8 @@ export function hanamiRoleplayNow(){
 }
 
 export function hanamiRoleplayDate(){
-  return new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric",hour:"numeric",minute:"2-digit",hour12:true,timeZone:"Asia/Tokyo",timeZoneName:"short"}).format(hanamiRoleplayNow());
+  const value=new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric",hour:"numeric",minute:"2-digit",hour12:true,timeZone:"Asia/Tokyo"}).format(hanamiRoleplayNow());
+  return `${value} JST`;
 }
 
 export function hanamiRoleplayMonthDay(){
