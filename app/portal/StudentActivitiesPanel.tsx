@@ -5,54 +5,17 @@ import styles from "./StudentActivitiesPanel.module.css";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
-
 type Activity={id:string;kind:"club"|"student_government"|"event"|"committee";name:string;description:string;meeting_location:string|null;meeting_schedule:string|null};
 type Membership={activity_id:string;status:"member"|"officer"|"advisor"};
 type Event={id:string;activity_id:string|null;title:string;description:string;starts_at:string;ends_at:string|null;location:string|null};
 type Props={accessToken:string;characterId:string};
-
-function headers(accessToken:string){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`};}
+function headers(accessToken:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`,...extra};}
 function dateLabel(value:string){return new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZone:"Asia/Tokyo",timeZoneName:"short"}).format(new Date(value));}
-
 export default function StudentActivitiesPanel({accessToken,characterId}:Props){
-  const [activities,setActivities]=useState<Activity[]>([]);
-  const [memberships,setMemberships]=useState<Membership[]>([]);
-  const [events,setEvents]=useState<Event[]>([]);
-  const [message,setMessage]=useState("Loading campus activities…");
-
-  useEffect(()=>{
-    let cancelled=false;
-    async function load(){
-      try{
-        const [activitiesResponse,membershipsResponse,eventsResponse]=await Promise.all([
-          fetch(`${SUPABASE_URL}/rest/v1/campus_activities?select=id,kind,name,description,meeting_location,meeting_schedule&is_active=eq.true&order=name.asc`,{headers:headers(accessToken)}),
-          fetch(`${SUPABASE_URL}/rest/v1/campus_activity_memberships?select=activity_id,status&character_id=eq.${encodeURIComponent(characterId)}`,{headers:headers(accessToken)}),
-          fetch(`${SUPABASE_URL}/rest/v1/campus_activity_events?select=id,activity_id,title,description,starts_at,ends_at,location&is_public=eq.true&starts_at=gte.${encodeURIComponent(new Date().toISOString())}&order=starts_at.asc&limit=8`,{headers:headers(accessToken)}),
-        ]);
-        if(!activitiesResponse.ok||!membershipsResponse.ok||!eventsResponse.ok)throw new Error("Campus activity data could not be loaded.");
-        const [activityRows,membershipRows,eventRows]=await Promise.all([
-          activitiesResponse.json() as Promise<Activity[]>,
-          membershipsResponse.json() as Promise<Membership[]>,
-          eventsResponse.json() as Promise<Event[]>,
-        ]);
-        if(cancelled)return;
-        setActivities(activityRows);setMemberships(membershipRows);setEvents(eventRows);
-        setMessage(`${membershipRows.length} joined activit${membershipRows.length===1?"y":"ies"} • ${eventRows.length} upcoming public event${eventRows.length===1?"":"s"}.`);
-      }catch(error){if(!cancelled)setMessage(error instanceof Error?error.message:"Campus activities could not be loaded.");}
-    }
-    load();
-    return()=>{cancelled=true;};
-  },[accessToken,characterId]);
-
-  const activityMap=useMemo(()=>new Map(activities.map(item=>[item.id,item])),[activities]);
-  const joined=memberships.map(item=>({membership:item,activity:activityMap.get(item.activity_id)})).filter(item=>item.activity);
-
-  return <section className={styles.panel} aria-labelledby="activities-title">
-    <div className={styles.heading}><div><p className="eyebrow">CAMPUS</p><h4 id="activities-title">Activities & events</h4></div><span>{joined.length} JOINED</span></div>
-    <div className={styles.status} aria-live="polite">{message}</div>
-    <div className={styles.columns}>
-      <div className={styles.block}><div className={styles.blockTitle}><strong>MY ACTIVITIES</strong><span>ACTIVE CHARACTER</span></div>{joined.length===0?<div className={styles.empty}><b>No joined activities yet</b><p>Clubs, committees, and student-government memberships assigned to this character will appear here.</p></div>:joined.map(({membership,activity})=><article key={activity!.id}><div className={styles.meta}><span>{activity!.kind.replace("_"," ").toUpperCase()} • {membership.status.toUpperCase()}</span></div><h5>{activity!.name}</h5><p>{activity!.description||"No description posted."}</p><dl><div><dt>Meeting</dt><dd>{activity!.meeting_schedule||"Not posted"}</dd></div><div><dt>Location</dt><dd>{activity!.meeting_location||"Not posted"}</dd></div></dl></article>)}</div>
-      <div className={styles.block}><div className={styles.blockTitle}><strong>UPCOMING EVENTS</strong><span>PUBLIC CAMPUS CALENDAR</span></div>{events.length===0?<div className={styles.empty}><b>No upcoming public events</b><p>New campus events will appear here automatically when they are published.</p></div>:events.map(event=><article key={event.id}><div className={styles.meta}><span>{dateLabel(event.starts_at)}</span></div><h5>{event.title}</h5><p>{event.description||"No event description posted."}</p><dl><div><dt>Location</dt><dd>{event.location||"To be announced"}</dd></div><div><dt>Hosted by</dt><dd>{event.activity_id?activityMap.get(event.activity_id)?.name||"Campus activity":"Hanami High"}</dd></div></dl></article>)}</div>
-    </div>
-  </section>;
+ const [activities,setActivities]=useState<Activity[]>([]),[memberships,setMemberships]=useState<Membership[]>([]),[events,setEvents]=useState<Event[]>([]),[message,setMessage]=useState("Loading clubs & activities…"),[saving,setSaving]=useState(false);
+ async function load(){try{const [a,m,e]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/campus_activities?select=id,kind,name,description,meeting_location,meeting_schedule&is_active=eq.true&order=name.asc`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/campus_activity_memberships?select=activity_id,status&character_id=eq.${encodeURIComponent(characterId)}`,{headers:headers(accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/campus_activity_events?select=id,activity_id,title,description,starts_at,ends_at,location&is_public=eq.true&starts_at=gte.2006-04-01T00:00:00%2B09:00&starts_at=lt.2007-04-01T00:00:00%2B09:00&order=starts_at.asc&limit=30`,{headers:headers(accessToken)})]);if(!a.ok||!m.ok||!e.ok)throw new Error("Club data could not be loaded.");const [ar,mr,er]=await Promise.all([a.json() as Promise<Activity[]>,m.json() as Promise<Membership[]>,e.json() as Promise<Event[]>]);setActivities(ar);setMemberships(mr);setEvents(er);setMessage(`${mr.length} joined activit${mr.length===1?"y":"ies"} • ${ar.filter(x=>x.kind==="club").length} clubs open for registration.`);}catch(error){setMessage(error instanceof Error?error.message:"Campus activities could not be loaded.");}}
+ useEffect(()=>{void load();},[accessToken,characterId]);
+ const membershipMap=useMemo(()=>new Map(memberships.map(item=>[item.activity_id,item])),[memberships]);const joinedIds=new Set(memberships.map(m=>m.activity_id));const visibleEvents=events.filter(event=>!event.activity_id||joinedIds.has(event.activity_id));
+ async function toggleClub(activity:Activity){if(activity.kind!=="club"||saving)return;setSaving(true);const joined=membershipMap.has(activity.id);setMessage(joined?`Leaving ${activity.name}…`:`Joining ${activity.name}…`);try{const r=await fetch(`${SUPABASE_URL}/rest/v1/rpc/${joined?"leave_campus_club":"join_campus_club"}`,{method:"POST",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({target_character_id:characterId,target_activity_id:activity.id})});if(!r.ok)throw new Error(joined?"Club membership could not be removed.":"Club registration could not be completed.");await load();setMessage(joined?`Left ${activity.name}.`:`Joined ${activity.name}. Future club events can now appear on your schedule.`);}catch(error){setMessage(error instanceof Error?error.message:"Club registration could not be updated.");}finally{setSaving(false);}}
+ return <section className={styles.panel} aria-labelledby="activities-title"><div className={styles.heading}><div><p className="eyebrow">CAMPUS</p><h4 id="activities-title">Clubs, activities & events</h4></div><span>{memberships.length} JOINED</span></div><div className={styles.status} aria-live="polite">{message}</div><div className={styles.columns}><div className={styles.block}><div className={styles.blockTitle}><strong>CLUB REGISTRATION</strong><span>2006–2007</span></div>{activities.length===0?<div className={styles.empty}><b>No activities posted yet</b></div>:activities.map(activity=>{const membership=membershipMap.get(activity.id);return <article key={activity.id}><div className={styles.meta}><span>{activity.kind.replace("_"," ").toUpperCase()}{membership?` • ${membership.status.toUpperCase()}`:""}</span></div><h5>{activity.name}</h5><p>{activity.description||"No description posted."}</p><dl><div><dt>Meeting</dt><dd>{activity.meeting_schedule||"Not posted"}</dd></div><div><dt>Location</dt><dd>{activity.meeting_location||"Not posted"}</dd></div></dl>{activity.kind==="club"&&<button type="button" disabled={saving} onClick={()=>toggleClub(activity)}>{membership?"Leave club":"Join club"}</button>}</article>})}</div><div className={styles.block}><div className={styles.blockTitle}><strong>MY UPCOMING ACTIVITY EVENTS</strong><span>JST</span></div>{visibleEvents.length===0?<div className={styles.empty}><b>No scheduled club events yet</b><p>When clubs publish meetings or events for 2006-2007, joined-club events will appear here and on your schedule.</p></div>:visibleEvents.map(event=><article key={event.id}><div className={styles.meta}><span>{dateLabel(event.starts_at)}</span></div><h5>{event.title}</h5><p>{event.description||"No event description posted."}</p><dl><div><dt>Location</dt><dd>{event.location||"To be announced"}</dd></div><div><dt>Hosted by</dt><dd>{event.activity_id?activities.find(a=>a.id===event.activity_id)?.name||"Campus activity":"Hanami High"}</dd></div></dl></article>)}</div></div></section>;
 }
