@@ -1,0 +1,48 @@
+/* 2026-08-21 visual bugfix pass: square UI, flush rails, readable boxes. */
+:root{--hanami-square-radius:0px}
+
+/* The school UI now uses square corners. Keep profile/avatar circles circular. */
+body :where(button,input,select,textarea,.card,.panel,.focus-card,.info-section,.section-heading,.content-note,[class*="Card"],[class*="card"],[class*="Panel"],[class*="panel"]){border-radius:0!important}
+body :where(button,input,select,textarea){box-sizing:border-box;max-width:100%}
+body :where(button,a,input,select,textarea){line-height:1.25}
+body :where(h1,h2,h3,h4,h5,p,span,strong,small,label,dd,dt){overflow-wrap:anywhere}
+
+/* Portal: no global banners leaving blank bands above/below the navigation rail. */
+body:has(section[aria-labelledby="dashboard-title"])>aside[aria-label="Hanami rules and safety"],
+body:has(section[aria-labelledby="dashboard-title"])>aside[aria-label="Roleplay weather flavor"]{display:none!important}
+section[aria-labelledby="dashboard-title"]{min-height:100dvh!important;align-items:stretch!important}
+section[aria-labelledby="dashboard-title"] [class*="globalNav"]{position:sticky!important;top:0!important;height:100dvh!important;min-height:100dvh!important;padding-top:0!important;padding-bottom:0!important;border-radius:0!important}
+section[aria-labelledby="dashboard-title"] [class*="primaryNav"]{margin-top:0!important}
+section[aria-labelledby="dashboard-title"] [class*="navBottom"]{padding-bottom:8px!important}
+
+/* Use the supplied circular crest directly. Do not replace it with the old SVG. */
+section[aria-labelledby="dashboard-title"] [class*="logoButton"]{min-height:112px!important;padding:6px!important;overflow:hidden!important}
+section[aria-labelledby="dashboard-title"] [class*="logoButton"]::before{display:none!important;content:none!important}
+section[aria-labelledby="dashboard-title"] [class*="logoButton"] img{display:block!important;opacity:1!important;width:100px!important;height:100px!important;max-width:100%!important;object-fit:contain!important;filter:none!important;background:transparent!important;border-radius:50%!important}
+
+/* Remove broad white underlays while retaining readable information cards. */
+section[aria-labelledby="dashboard-title"] [class*="main"],
+section[aria-labelledby="dashboard-title"] [class*="contentView"],
+section[aria-labelledby="dashboard-title"] [class*="dashboardView"],
+section[aria-labelledby="dashboard-title"] [class*="dashboardMain"],
+section[aria-labelledby="dashboard-title"] [class*="accountContent"]{background:transparent!important}
+section[aria-labelledby="dashboard-title"] [class*="main"]>div>section,
+section[aria-labelledby="dashboard-title"] [class*="contentView"]>section,
+section[aria-labelledby="dashboard-title"] [class*="featureStack"]>section{border-radius:0!important;box-shadow:none!important}
+section[aria-labelledby="dashboard-title"] :where(article,section,div)[style*="background: rgb(255"],
+section[aria-labelledby="dashboard-title"] :where(article,section,div)[style*="background:#fff"]{border-radius:0!important}
+
+/* Public home: keep one desktop viewport compact instead of stretching vertically. */
+@media(min-width:901px){
+  body:has(main[class*="shell"]) main[class*="shell"]{min-height:100dvh!important}
+  body:has(main[class*="shell"]) [class*="content"]{padding-top:16px!important;padding-bottom:16px!important}
+  body:has(main[class*="shell"]) [class*="heroMain"]{min-height:170px!important}
+  body:has(main[class*="shell"]) [class*="focusCard"]{min-height:230px!important}
+  body:has(main[class*="shell"]) [class*="quickRow"]{min-height:64px!important}
+}
+
+/* Public/legacy school boxes also use sharp corners and safe text flow. */
+.site-page :where(.school-clock,.nav-row,.portal-button,.school-mark,.network-strip,.section-heading,.info-section,article,button,input,select,textarea){border-radius:0!important}
+.site-page :where(.section-heading,.network-strip,.school-clock,article){min-width:0}
+
+@media(max-width:760px){section[aria-labelledby="dashboard-title"] [class*="globalNav"]{height:auto!important;min-height:0!important}}
