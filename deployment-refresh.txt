@@ -1,1 +1,1 @@
-Deployment refresh triggered after PR #17 merge on 2026-08-21.
+Hanami High deployment refresh: 2026-08-21 bugfix batch 1.
