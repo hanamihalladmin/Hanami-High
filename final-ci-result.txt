@@ -9,8 +9,14 @@ exit_code=1
 /home/runner/work/Hanami-High/Hanami-High/app/HomeDashboard.tsx
   19:79  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
+/home/runner/work/Hanami-High/Hanami-High/app/calendar/page.tsx
+  14:242  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
 /home/runner/work/Hanami-High/Hanami-High/app/components/OwnerWebsiteAccess.tsx
   11:24  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+
+/home/runner/work/Hanami-High/Hanami-High/app/organizations/page.tsx
+  17:243  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/DashboardShell.tsx
   18:251   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
@@ -48,7 +54,7 @@ exit_code=1
   105:1934  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/RolePortalClient.tsx
-  23:361  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+  24:420  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/StudentAcademicRecordPanel.tsx
   45:477  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
@@ -69,154 +75,162 @@ exit_code=1
 /home/runner/work/Hanami-High/Hanami-High/app/portal/page.tsx
   11:174  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
-✖ 29 problems (0 errors, 29 warnings)
+✖ 31 problems (0 errors, 31 warnings)
 
 --- failing checks ---
 not ok 3 - About keeps the shared Tokyo 2006 roleplay clock while preserving 1836 school history
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
+not ok 39 - test faculty character uses the signed-in account and receives TEST-101
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 not ok 125 - roleplay locale is Tokyo and public chronology is fixed to 2006
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+not ok 128 - Owner TEST Faculty fixture remains usable after Discord role sync is enabled
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
 not ok 133 - public chronology is anchored to April 7 2006 and calendar stays in-universe
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
+not ok 213 - TEST Faculty fixture is explicit test data, owner scoped, and Owner only
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 --- test summary ---
 # tests 259
-# pass 256
-# fail 3
+# pass 253
+# fail 6
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
-  ---
-  duration_ms: 0.294734
+  duration_ms: 0.243577
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 242 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.512068
+  duration_ms: 2.111707
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 243 - people results expose one-click profile opening
   ---
-  duration_ms: 0.245512
+  duration_ms: 0.204203
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 244 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 5.076019
+  duration_ms: 5.094869
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 245 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.125579
+  duration_ms: 0.925888
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 246 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.292651
+  duration_ms: 0.219512
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 247 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.209148
+  duration_ms: 0.152927
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 248 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.207636
+  duration_ms: 0.204654
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 249 - student activities are loaded for the active character
   ---
-  duration_ms: 1.180119
+  duration_ms: 0.975352
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 250 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.224651
+  duration_ms: 0.173366
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 251 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.386018
+  duration_ms: 0.538041
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 252 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.263308
+  duration_ms: 0.227567
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 253 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.791196
+  duration_ms: 1.089376
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 254 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.240654
+  duration_ms: 0.326503
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 255 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.106674
+  duration_ms: 5.406031
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 256 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.245165
+  duration_ms: 1.327894
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 257 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.126871
+  duration_ms: 1.220162
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 258 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.552487
+  duration_ms: 1.712747
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 259 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.158728
+  duration_ms: 1.167453
   type: 'test'
   ...
 1..259
 # tests 259
 # suites 0
-# pass 256
-# fail 3
+# pass 253
+# fail 6
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1598.882406
+# duration_ms 1679.149309
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 26ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -225,15 +239,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.9s
+✓ Compiled successfully in 6.1s
   Running TypeScript ...
-  Finished TypeScript in 9.7s ...
+  Finished TypeScript in 10.2s ...
   Collecting page data using 3 workers ...
-  Generating static pages using 3 workers (0/28) ...
-  Generating static pages using 3 workers (7/28) 
-  Generating static pages using 3 workers (14/28) 
-  Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 577ms
+  Generating static pages using 3 workers (0/29) ...
+  Generating static pages using 3 workers (7/29) 
+  Generating static pages using 3 workers (14/29) 
+  Generating static pages using 3 workers (21/29) 
+✓ Generating static pages using 3 workers (29/29) in 618ms
   Finalizing page optimization ...
 
 Route (app)
@@ -255,6 +269,7 @@ Route (app)
 ├ ○ /portal/help
 ├ ○ /portal/lore
 ├ ○ /portal/owner
+├ ○ /portal/owner/portal-viewer
 ├ ○ /portal/owner/student-viewer
 ├ ○ /portal/roadmap
 ├ ○ /portal/student
