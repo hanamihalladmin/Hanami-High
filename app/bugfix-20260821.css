@@ -7,18 +7,19 @@ body :where(button,input,select,textarea){box-sizing:border-box;max-width:100%}
 body :where(button,a,input,select,textarea){line-height:1.25}
 body :where(h1,h2,h3,h4,h5,p,span,strong,small,label,dd,dt){overflow-wrap:anywhere}
 
-/* Portal: no global banners leaving blank bands above/below the navigation rail. */
+/* Portal shell: the navigation rail is a true full-height page rail, not its own scrolling panel. */
 body:has(section[aria-labelledby="dashboard-title"])>aside[aria-label="Hanami rules and safety"],
 body:has(section[aria-labelledby="dashboard-title"])>aside[aria-label="Roleplay weather flavor"]{display:none!important}
-section[aria-labelledby="dashboard-title"]{min-height:100dvh!important;align-items:stretch!important}
-section[aria-labelledby="dashboard-title"] [class*="globalNav"]{position:sticky!important;top:0!important;height:100dvh!important;min-height:100dvh!important;padding-top:0!important;padding-bottom:0!important;border-radius:0!important}
+section[aria-labelledby="dashboard-title"]{display:block!important;min-height:100dvh!important;padding-left:136px!important}
+section[aria-labelledby="dashboard-title"] [class*="globalNav"]{position:fixed!important;z-index:60!important;top:0!important;bottom:0!important;left:0!important;width:136px!important;height:100dvh!important;min-height:100dvh!important;padding-top:0!important;padding-bottom:8px!important;border-radius:0!important;overflow:hidden!important}
+section[aria-labelledby="dashboard-title"] [class*="main"]{min-height:100dvh!important;width:100%!important}
 section[aria-labelledby="dashboard-title"] [class*="primaryNav"]{margin-top:0!important}
-section[aria-labelledby="dashboard-title"] [class*="navBottom"]{padding-bottom:8px!important}
+section[aria-labelledby="dashboard-title"] [class*="navBottom"]{padding-bottom:0!important}
 
-/* Use the supplied circular crest directly. Do not replace it with the old SVG. */
+/* Use the supplied Hanami crest directly. Do not replace it with the old black SVG. */
 section[aria-labelledby="dashboard-title"] [class*="logoButton"]{min-height:112px!important;padding:6px!important;overflow:hidden!important}
 section[aria-labelledby="dashboard-title"] [class*="logoButton"]::before{display:none!important;content:none!important}
-section[aria-labelledby="dashboard-title"] [class*="logoButton"] img{display:block!important;opacity:1!important;width:100px!important;height:100px!important;max-width:100%!important;object-fit:contain!important;filter:none!important;background:transparent!important;border-radius:50%!important}
+section[aria-labelledby="dashboard-title"] [class*="logoButton"] img{display:block!important;opacity:1!important;width:100px!important;height:100px!important;max-width:100%!important;object-fit:contain!important;filter:none!important;background:transparent!important;border-radius:50%!important;content:url('/Hanami-High/hanami-high-portal-icon.png?v=20260821d')!important}
 
 /* Remove broad white underlays while retaining readable information cards. */
 section[aria-labelledby="dashboard-title"] [class*="main"],
@@ -45,4 +46,7 @@ section[aria-labelledby="dashboard-title"] :where(article,section,div)[style*="b
 .site-page :where(.school-clock,.nav-row,.portal-button,.school-mark,.network-strip,.section-heading,.info-section,article,button,input,select,textarea){border-radius:0!important}
 .site-page :where(.section-heading,.network-strip,.school-clock,article){min-width:0}
 
-@media(max-width:760px){section[aria-labelledby="dashboard-title"] [class*="globalNav"]{height:auto!important;min-height:0!important}}
+@media(max-width:760px){
+ section[aria-labelledby="dashboard-title"]{display:block!important;padding-left:0!important}
+ section[aria-labelledby="dashboard-title"] [class*="globalNav"]{position:sticky!important;top:0!important;bottom:auto!important;width:100%!important;height:auto!important;min-height:0!important;overflow:visible!important}
+}
