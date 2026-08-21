@@ -12,12 +12,12 @@ export default function Home(){
  const currentDate=hanamiRoleplayDate();
  return <main id="home" className={styles.shell}>
   <aside className={styles.rail} aria-label="Public website navigation">
-   <a className={styles.logo} href="#home"><span className={styles.logoMark}>花</span><small>HANAMI HIGH</small></a>
+   <a className={styles.logo} href="#home"><img className={styles.logoImage} src="./hanami-high-portal-icon.png" alt="Hanami High"/><small>HANAMI HIGH</small></a>
    <nav>{navigation.map(([icon,label,href])=><a key={label} href={href}><span className={styles.railIcon}>{icon}</span><b>{label}</b></a>)}</nav>
    <div className={styles.railBottom}><a href="./portal/"><span className={styles.railIcon}>↪</span><b>Portal Login</b></a></div>
   </aside>
   <section className={styles.main}>
-   <header className={styles.topbar}><div><p>PUBLIC SCHOOL NETWORK • EST. 1836</p><h1>HANAMI HIGH SCHOOL</h1></div><div className={styles.dateCard}><strong>{currentDate.toUpperCase()}</strong><span>ONLINE • 2006</span><LiveSchoolStatus/></div></header>
+   <header className={styles.topbar}><div><p>PUBLIC SCHOOL NETWORK • EST. 1836</p><h1>HANAMI HIGH SCHOOL</h1></div><div className={styles.dateCard}><strong>{currentDate.toUpperCase()}</strong><span>ONLINE • ROLEPLAY YEAR 2006</span><LiveSchoolStatus/></div></header>
    <div className={styles.content}>
     <LiveAnnouncements/>
     <section className={styles.hero} aria-labelledby="welcome-heading">
