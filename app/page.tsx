@@ -12,7 +12,7 @@ export default function Home(){
  const currentDate=hanamiRoleplayDate();
  return <main id="home" className={styles.shell}>
   <aside className={styles.rail} aria-label="Public website navigation">
-   <a className={styles.logo} href="#home"><span className={styles.logoMark}>花</span><small>HANAMI HIGH</small></a>
+   <a className={styles.logo} href="#home"><img className={styles.logoImage} src="./hanami-high-portal-icon.png" alt="Hanami High"/><small>HANAMI HIGH</small></a>
    <nav>{navigation.map(([icon,label,href])=><a key={label} href={href}><span className={styles.railIcon}>{icon}</span><b>{label}</b></a>)}</nav>
    <div className={styles.railBottom}><a href="./portal/"><span className={styles.railIcon}>↪</span><b>Portal Login</b></a></div>
   </aside>
