@@ -1,14 +1,14 @@
-/* Hanami High permanent early-2000s typography and portal crest treatment. */
-body{font-family:Verdana,Tahoma,Arial,sans-serif}
-button,input,select,textarea{font-family:Verdana,Tahoma,Arial,sans-serif}
-h1,h2,h3,h4,h5,h6{font-family:"Trebuchet MS",Verdana,Arial,sans-serif}
-.eyebrow,[class*="eyebrow"]{font-family:"Courier New",Courier,monospace!important}
+/* Hanami High permanent early-2000s typography, with user font overrides from portal Settings. */
+body{font-family:var(--hanami-user-font-family,Verdana,Tahoma,Arial,sans-serif)}
+button,input,select,textarea{font-family:var(--hanami-user-font-family,Verdana,Tahoma,Arial,sans-serif)}
+h1,h2,h3,h4,h5,h6{font-family:var(--hanami-user-font-family,"Trebuchet MS",Verdana,Arial,sans-serif)}
+.eyebrow,[class*="eyebrow"]{font-family:var(--hanami-user-font-family,"Courier New",Courier,monospace)!important}
 
-/* Portal shells previously hard-coded Arial; keep the 2006-era stack everywhere. */
-[class*="canvasShell"],[class*="AdminWorkspace_shell"],[class*="DashboardShell_canvasShell"]{font-family:Verdana,Tahoma,Arial,sans-serif!important}
-[class*="canvasShell"] button,[class*="canvasShell"] input,[class*="canvasShell"] select,[class*="canvasShell"] textarea,[class*="AdminWorkspace_shell"] button,[class*="AdminWorkspace_shell"] input,[class*="AdminWorkspace_shell"] select,[class*="AdminWorkspace_shell"] textarea{font-family:Verdana,Tahoma,Arial,sans-serif!important}
-[class*="canvasShell"] h1,[class*="canvasShell"] h2,[class*="canvasShell"] h3,[class*="canvasShell"] h4,[class*="canvasShell"] h5,[class*="AdminWorkspace_shell"] h1,[class*="AdminWorkspace_shell"] h2,[class*="AdminWorkspace_shell"] h3,[class*="AdminWorkspace_shell"] h4,[class*="AdminWorkspace_shell"] h5{font-family:"Trebuchet MS",Verdana,Arial,sans-serif!important}
+/* Portal shells previously hard-coded Arial. Respect the signed-in user's website-font choice everywhere. */
+[class*="canvasShell"],[class*="AdminWorkspace_shell"],[class*="DashboardShell_canvasShell"]{font-family:var(--hanami-user-font-family,Verdana,Tahoma,Arial,sans-serif)!important}
+[class*="canvasShell"] button,[class*="canvasShell"] input,[class*="canvasShell"] select,[class*="canvasShell"] textarea,[class*="AdminWorkspace_shell"] button,[class*="AdminWorkspace_shell"] input,[class*="AdminWorkspace_shell"] select,[class*="AdminWorkspace_shell"] textarea{font-family:var(--hanami-user-font-family,Verdana,Tahoma,Arial,sans-serif)!important}
+[class*="canvasShell"] h1,[class*="canvasShell"] h2,[class*="canvasShell"] h3,[class*="canvasShell"] h4,[class*="canvasShell"] h5,[class*="AdminWorkspace_shell"] h1,[class*="AdminWorkspace_shell"] h2,[class*="AdminWorkspace_shell"] h3,[class*="AdminWorkspace_shell"] h4,[class*="AdminWorkspace_shell"] h5{font-family:var(--hanami-user-font-family,"Trebuchet MS",Verdana,Arial,sans-serif)!important}
 
-/* The Hanami crest is dark navy, so give it a light cell instead of placing it navy-on-navy. */
+/* The navigation crest treatment remains isolated from typography settings. */
 a[class*="logoButton"]{min-height:72px!important;margin:6px!important;padding:3px!important;border:1px solid #c8d1dc!important;border-radius:2px!important;background:#fff!important;box-shadow:inset 0 0 0 2px #f3f6f8}
 a[class*="logoButton"] img{display:block!important;width:64px!important;height:64px!important;max-width:100%!important;object-fit:contain!important}
