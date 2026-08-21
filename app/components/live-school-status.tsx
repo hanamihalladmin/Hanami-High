@@ -10,5 +10,5 @@ type Row={status:Status;message:string};
 export default function LiveSchoolStatus(){
  const [row,setRow]=useState<Row>({status:"open",message:"School is operating on the normal schedule."});
  useEffect(()=>{let cancelled=false;async function load(){try{const response=await fetch(`${SUPABASE_URL}/rest/v1/school_status_config?select=status,message&key=eq.main&limit=1`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY}});if(!response.ok)return;const rows=await response.json() as Row[];if(!cancelled&&rows[0])setRow(rows[0]);}catch{/* Keep safe open-status fallback if the public request fails. */}}load();return()=>{cancelled=true;};},[]);
- return <span title={row.message}>HANAMI CITY • SCHOOL STATUS: {row.status.toUpperCase()}</span>;
+ return <span title={row.message} style={{display:"block",marginTop:4}}>HANAMI CITY • SCHOOL STATUS: {row.status.toUpperCase()}</span>;
 }
