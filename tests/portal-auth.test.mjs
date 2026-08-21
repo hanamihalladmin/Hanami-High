@@ -8,7 +8,15 @@ const migration=await readFile(new URL("../supabase/migrations/20260818130000_po
 test("portal starts Discord OAuth and returns to the current portal path",()=>{
   assert.match(authPanel,/auth\/v1\/authorize/);
   assert.match(authPanel,/set\("provider","discord"\)/);
-  assert.match(authPanel,/set\("redirect_to",redirectTo\)/);
+  assert.match(authPanel,/set\("redirect_to",redirect\.toString\(\)\)/);
+});
+
+test("Discord OAuth requests role-reading scopes and supports explicit reauthorization",()=>{
+  assert.match(authPanel,/identify guilds guilds\.members\.read/);
+  assert.match(authPanel,/set\("prompt","consent"\)/);
+  assert.match(authPanel,/Authorize Discord Roles/);
+  assert.match(authPanel,/needsDiscordAuthorization/);
+  assert.match(authPanel,/reauthorize/);
 });
 
 test("portal restores and refreshes a browser session",()=>{
