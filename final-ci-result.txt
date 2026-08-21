@@ -1,5 +1,5 @@
-HANAMI_FINAL_CI=FAIL
-exit_code=1
+HANAMI_FINAL_CI=PASS
+exit_code=0
 --- lint ---
 
 > hanami-high@0.1.0 lint
@@ -69,145 +69,142 @@ exit_code=1
 ✖ 28 problems (0 errors, 28 warnings)
 
 --- failing checks ---
-not ok 210 - Profile Studio presents image editing as file upload instead of pasted image links
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 --- test summary ---
 # tests 259
-# pass 258
-# fail 1
+# pass 259
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.213452
+  duration_ms: 0.134992
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 242 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.019009
+  duration_ms: 0.709912
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 243 - people results expose one-click profile opening
   ---
-  duration_ms: 0.234254
+  duration_ms: 0.135773
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 244 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 6.062154
+  duration_ms: 3.865164
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 245 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.146762
+  duration_ms: 0.580288
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 246 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.305962
+  duration_ms: 0.169684
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 247 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.242156
+  duration_ms: 0.094651
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 248 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.227774
+  duration_ms: 0.087781
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 249 - student activities are loaded for the active character
   ---
-  duration_ms: 1.349398
+  duration_ms: 0.598976
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 250 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.242496
+  duration_ms: 0.129214
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 251 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.368337
+  duration_ms: 0.214742
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 252 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.227774
+  duration_ms: 0.48163
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 253 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.004577
+  duration_ms: 0.454229
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 254 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.289638
+  duration_ms: 0.142914
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 255 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.229536
+  duration_ms: 3.324525
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 256 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.285031
+  duration_ms: 0.806908
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 257 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.150448
+  duration_ms: 0.740859
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 258 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.64952
+  duration_ms: 1.092375
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 259 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.157698
+  duration_ms: 0.807148
   type: 'test'
   ...
 1..259
 # tests 259
 # suites 0
-# pass 258
-# fail 1
+# pass 259
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1610.845107
+# duration_ms 985.166155
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 44ms
+✓ Running next.config.ts took 16ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -216,15 +213,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.9s
+✓ Compiled successfully in 3.5s
   Running TypeScript ...
-  Finished TypeScript in 10.0s ...
+  Finished TypeScript in 5.3s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 607ms
+✓ Generating static pages using 3 workers (28/28) in 359ms
   Finalizing page optimization ...
 
 Route (app)
