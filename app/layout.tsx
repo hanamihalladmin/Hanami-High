@@ -11,6 +11,7 @@ import ExamWeekRuntime from "./components/ExamWeekRuntime";
 import RoleplaySchoolYearInputs from "./components/RoleplaySchoolYearInputs";
 import RoleplayClockRuntime from "./components/RoleplayClockRuntime";
 import ForumReplyLimitRuntime from "./components/ForumReplyLimitRuntime";
+import GlobalUpdateAccess from "./components/GlobalUpdateAccess";
 import "./globals.css";
 import "./mobile.css";
 import "./accessibility.css";
@@ -33,5 +34,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><ProfileOpenBridge/><SiteThemeRuntime/><ExamWeekRuntime/><RoleplaySchoolYearInputs/><RoleplayClockRuntime/><ForumReplyLimitRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/>{children}</body></html>;
+  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><ProfileOpenBridge/><SiteThemeRuntime/><ExamWeekRuntime/><RoleplaySchoolYearInputs/><RoleplayClockRuntime/><ForumReplyLimitRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/><GlobalUpdateAccess/>{children}</body></html>;
 }
