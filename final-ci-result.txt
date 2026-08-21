@@ -75,115 +75,115 @@ exit_code=0
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.199457
+  duration_ms: 0.233977
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
 ok 242 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.125524
+  duration_ms: 1.274033
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 243 - people results expose one-click profile opening
   ---
-  duration_ms: 0.219792
+  duration_ms: 0.239709
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 244 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 4.67242
+  duration_ms: 8.351528
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 245 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 0.575199
+  duration_ms: 0.977749
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 246 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.160707
+  duration_ms: 0.231743
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 247 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.095647
+  duration_ms: 0.156953
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 248 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.090427
+  duration_ms: 0.211836
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 249 - student activities are loaded for the active character
   ---
-  duration_ms: 0.866753
+  duration_ms: 1.316602
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 250 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.210789
+  duration_ms: 0.172943
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 251 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.273187
+  duration_ms: 0.339224
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 252 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.171698
+  duration_ms: 0.285895
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 253 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.052285
+  duration_ms: 0.860339
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 254 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.283866
+  duration_ms: 0.25115
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 255 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 3.860687
+  duration_ms: 6.144223
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 256 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 0.922493
+  duration_ms: 1.542374
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 257 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 0.851836
+  duration_ms: 1.557283
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 258 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.267837
+  duration_ms: 1.966819
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 259 - Help has a direct router and support anchor
   ---
-  duration_ms: 0.884601
+  duration_ms: 1.504704
   type: 'test'
   ...
 1..259
@@ -194,14 +194,14 @@ ok 259 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1153.992416
+# duration_ms 1671.651077
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 20ms
+✓ Running next.config.ts took 26ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -210,15 +210,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 4.3s
+✓ Compiled successfully in 6.2s
   Running TypeScript ...
-  Finished TypeScript in 7.4s ...
+  Finished TypeScript in 10.2s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 422ms
+✓ Generating static pages using 3 workers (28/28) in 600ms
   Finalizing page optimization ...
 
 Route (app)
