@@ -1,5 +1,5 @@
-HANAMI_FINAL_CI=FAIL
-exit_code=1
+HANAMI_FINAL_CI=PASS
+exit_code=0
 --- lint ---
 
 > hanami-high@0.1.0 lint
@@ -13,10 +13,10 @@ exit_code=1
   11:24  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/DashboardShell.tsx
-  17:251   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-  17:582   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-  17:1668  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-  24:180   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  18:251   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  18:582   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  18:1668  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  25:207   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/InboxPanel.tsx
   39:76    warning  The 'selectedParticipants' conditional could make the dependencies of useMemo Hook (at line 39) change on every render. To fix this, wrap the initialization of 'selectedParticipants' in its own useMemo() Hook                                                                         react-hooks/exhaustive-deps
@@ -66,145 +66,142 @@ exit_code=1
 ✖ 27 problems (0 errors, 27 warnings)
 
 --- failing checks ---
-not ok 173 - portal gateway explains authentication, privacy, and two-character rule
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 --- test summary ---
-# tests 256
-# pass 255
-# fail 1
+# tests 259
+# pass 259
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
   ---
-  duration_ms: 0.234573
+  duration_ms: 0.199457
   type: 'test'
   ...
 # Subtest: Search Everything includes the shipped website and portal page index
-ok 239 - Search Everything includes the shipped website and portal page index
+ok 242 - Search Everything includes the shipped website and portal page index
   ---
-  duration_ms: 1.363673
+  duration_ms: 1.125524
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
-ok 240 - people results expose one-click profile opening
+ok 243 - people results expose one-click profile opening
   ---
-  duration_ms: 0.204428
+  duration_ms: 0.219792
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
-ok 241 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
+ok 244 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 6.300324
+  duration_ms: 4.67242
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
-ok 242 - Owner receives system health and aggregate staff analytics
+ok 245 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.038133
+  duration_ms: 0.575199
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
-ok 243 - Admin workspace includes storyline incident and evidence operations
+ok 246 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.295125
+  duration_ms: 0.160707
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
-ok 244 - Faculty dashboard includes a private lounge workflow
+ok 247 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.220732
+  duration_ms: 0.095647
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 245 - dark mode controls are absent from Hanami accessibility settings
+ok 248 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.183677
+  duration_ms: 0.090427
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 246 - student activities are loaded for the active character
+ok 249 - student activities are loaded for the active character
   ---
-  duration_ms: 0.818592
+  duration_ms: 0.866753
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 247 - campus activity membership reads remain owner scoped
+ok 250 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.254713
+  duration_ms: 0.210789
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 248 - student dashboard has no remaining placeholder modules
+ok 251 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.344018
+  duration_ms: 0.273187
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
-ok 249 - Student activity UI contains no launch test-data labels
+ok 252 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.230087
+  duration_ms: 0.171698
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 250 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 253 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.805913
+  duration_ms: 1.052285
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 251 - Student life feeds validate owned Student character even for privileged accounts
+ok 254 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.240923
+  duration_ms: 0.283866
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 252 - accessibility and notification preferences bind to signed-in user automatically
+ok 255 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.316644
+  duration_ms: 3.860687
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 253 - group chat creation uses a validated private helper and creator management
+ok 256 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.24249
+  duration_ms: 0.922493
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 254 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 257 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.353788
+  duration_ms: 0.851836
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 255 - School Office separates staff action waiting member and archive queues
+ok 258 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.703535
+  duration_ms: 1.267837
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 256 - Help has a direct router and support anchor
+ok 259 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.22232
+  duration_ms: 0.884601
   type: 'test'
   ...
-1..256
-# tests 256
+1..259
+# tests 259
 # suites 0
-# pass 255
-# fail 1
+# pass 259
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1561.972343
+# duration_ms 1153.992416
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 20ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -213,15 +210,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.6s
+✓ Compiled successfully in 4.3s
   Running TypeScript ...
-  Finished TypeScript in 9.5s ...
+  Finished TypeScript in 7.4s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/28) ...
   Generating static pages using 3 workers (7/28) 
   Generating static pages using 3 workers (14/28) 
   Generating static pages using 3 workers (21/28) 
-✓ Generating static pages using 3 workers (28/28) in 624ms
+✓ Generating static pages using 3 workers (28/28) in 422ms
   Finalizing page optimization ...
 
 Route (app)
