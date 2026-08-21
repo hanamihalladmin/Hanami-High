@@ -16,10 +16,10 @@ section[aria-labelledby="dashboard-title"] [class*="main"]{min-height:100dvh!imp
 section[aria-labelledby="dashboard-title"] [class*="primaryNav"]{margin-top:0!important}
 section[aria-labelledby="dashboard-title"] [class*="navBottom"]{padding-bottom:0!important}
 
-/* Use the supplied Hanami crest directly. Do not replace it with the old black SVG. */
+/* Use the supplied Hanami master emblem directly. */
 section[aria-labelledby="dashboard-title"] [class*="logoButton"]{min-height:112px!important;padding:6px!important;overflow:hidden!important}
 section[aria-labelledby="dashboard-title"] [class*="logoButton"]::before{display:none!important;content:none!important}
-section[aria-labelledby="dashboard-title"] [class*="logoButton"] img{display:block!important;opacity:1!important;width:100px!important;height:100px!important;max-width:100%!important;object-fit:contain!important;filter:none!important;background:transparent!important;border-radius:50%!important;content:url('/Hanami-High/hanami-high-portal-icon.png?v=20260821d')!important}
+section[aria-labelledby="dashboard-title"] [class*="logoButton"] img{display:block!important;opacity:1!important;width:100px!important;height:100px!important;max-width:100%!important;object-fit:contain!important;filter:none!important;background:transparent!important;border-radius:50%!important;content:url('/Hanami-High/hanami-high-master-logo.svg?v=20260821e')!important}
 
 /* Remove broad white underlays while retaining readable information cards. */
 section[aria-labelledby="dashboard-title"] [class*="main"],
