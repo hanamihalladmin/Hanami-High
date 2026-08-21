@@ -7,15 +7,18 @@ import ProfileDecorativePresetGallery from "./ProfileDecorativePresetGallery";
 import GlitterDividerPresetGallery from "./GlitterDividerPresetGallery";
 import ProfileStudioRoadmapTools from "./ProfileStudioRoadmapTools";
 import ProfileStudioV2Panel from "./ProfileStudioV2Panel";
+import styles from "./ProfileDesignWorkspace.module.css";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
 type Props={accessToken:string;characterId:string};
 type ResetWidget={id:string;content:Record<string,string>};
+type DesignerTab="canvas"|"templates"|"decorations"|"saved"|"tools";
 function headers(accessToken:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`,...extra};}
 function photoPaths(content:Record<string,string>){try{const parsed=JSON.parse(content.photo_paths??"[]");return Array.isArray(parsed)?parsed.filter((value):value is string=>typeof value==="string"&&Boolean(value)):[];}catch{return [];}}
 
 export default function ProfileDesignWorkspace({accessToken,characterId}:Props){
+  const [tab,setTab]=useState<DesignerTab>("canvas");
   const [revision,setRevision]=useState(0);
   const [notice,setNotice]=useState("");
   const [unlocking,setUnlocking]=useState(false);
@@ -68,16 +71,21 @@ export default function ProfileDesignWorkspace({accessToken,characterId}:Props){
   async function clearBackground(){try{const response=await fetch(`${SUPABASE_URL}/rest/v1/character_profile_canvases?character_id=eq.${encodeURIComponent(characterId)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({background_storage_path:null,background_image_url:null,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error("Background could not be cleared.");if(backgroundPath)await fetch(`${SUPABASE_URL}/storage/v1/object/profile-media/${backgroundPath}`,{method:"DELETE",headers:headers(accessToken)}).catch(()=>undefined);setBackgroundPath("");setBackgroundUrl("");setRevision(value=>value+1);refreshStudio();setNotice("Background image cleared. Canvas color is active again.");}catch(error){setNotice(error instanceof Error?error.message:"Background could not be cleared.");}}
 
   const studioStyle=(backgroundUrl?{"--hanami-profile-background-image":`url(${JSON.stringify(backgroundUrl)})`}: {}) as CSSProperties;
-  return <>
-    <ProfileSavedDesignsPanel accessToken={accessToken} characterId={characterId} onApplied={()=>{setRevision(value=>value+1);refreshStudio();}}/>
-    <ProfileTemplateGallery accessToken={accessToken} characterId={characterId}/>
-    <ProfileDecorativePresetGallery accessToken={accessToken} characterId={characterId} onAdded={()=>refreshStudio()}/>
-    <GlitterDividerPresetGallery accessToken={accessToken} characterId={characterId} onAdded={()=>refreshStudio()}/>
-    <ProfileStudioRoadmapTools accessToken={accessToken} characterId={characterId} onChanged={roadmapChanged}/>
-    <section style={{marginTop:12,padding:"10px 12px",border:"1px solid #c8b5bf",background:"#fff8fb",display:"grid",gap:10}} aria-label="Profile Studio workspace controls">
-      <div style={{display:"flex",gap:10,alignItems:"center",justifyContent:"space-between",flexWrap:"wrap"}}><div><strong style={{display:"block",fontSize:9,color:"#8e4364",letterSpacing:".06em"}}>PROFILE BACKGROUND</strong><span style={{fontSize:9,color:"#6a6470"}}>Upload a background directly from your device. Image URLs are no longer required.</span></div><div style={{display:"flex",gap:6,flexWrap:"wrap"}}><label style={{minHeight:32,padding:"7px 10px",border:"1px solid #17375f",background:"#fff",color:"#17375f",fontSize:8,fontWeight:700,cursor:"pointer"}}>{uploadingBackground?"Uploading…":"Upload background"}<input type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={uploadBackground} disabled={uploadingBackground} style={{display:"none"}}/></label>{(backgroundPath||backgroundUrl)&&<button type="button" onClick={clearBackground} style={{minHeight:32,padding:"6px 10px",border:"1px solid #983845",background:"#fff",color:"#8b2632",fontSize:8,fontWeight:700,cursor:"pointer"}}>Clear background</button>}</div></div>
-      <div style={{display:"flex",gap:10,alignItems:"center",justifyContent:"space-between",flexWrap:"wrap"}}><div><strong style={{display:"block",fontSize:9,color:"#8e4364",letterSpacing:".06em"}}>PROFILE STUDIO V2</strong><span style={{fontSize:9,color:"#6a6470"}}>Enhanced editor: zoom, layers, keyboard nudging, border/shadow tools, corner presets, image fitting, style copy/paste, and private uploads.</span>{notice&&<div style={{marginTop:4,fontSize:8,color:"#5d6d80"}}>{notice}</div>}</div><div style={{display:"flex",gap:6,flexWrap:"wrap"}}><button type="button" onClick={unlockAll} disabled={unlocking||resetting} style={{minHeight:32,padding:"6px 10px",border:"1px solid #17375f",background:"#fff",color:"#17375f",fontSize:8,fontWeight:700,cursor:"pointer"}}>{unlocking?"Unlocking…":"Unlock all widgets"}</button><button type="button" onClick={resetCanvas} disabled={resetting||unlocking} style={{minHeight:32,padding:"6px 10px",border:"1px solid #983845",background:"#fff3f4",color:"#8b2632",fontSize:8,fontWeight:700,cursor:"pointer"}}>{resetting?"Resetting canvas…":"Reset canvas"}</button></div></div>
-    </section>
-    <div style={studioStyle}><ProfileStudioV2Panel accessToken={accessToken} characterId={characterId}/></div>
-  </>;
+  const tabs:[DesignerTab,string,string][]=[["canvas","Canvas","Build and edit the page"],["templates","Templates","Start from a saved layout"],["decorations","Decorations","Presets and dividers"],["saved","Saved Designs","Switch between your designs"],["tools","Studio Tools","Advanced utilities"]];
+  return <section className={styles.workspace} aria-label="Profile Designer">
+    <nav className={styles.tabs} aria-label="Profile Designer sections">{tabs.map(([id,label,description])=><button key={id} type="button" className={tab===id?styles.active:""} onClick={()=>setTab(id)}><strong>{label}</strong><span>{description}</span></button>)}</nav>
+    <div className={styles.stage}>
+      {tab==="saved"&&<ProfileSavedDesignsPanel accessToken={accessToken} characterId={characterId} onApplied={()=>{setRevision(value=>value+1);refreshStudio();setTab("canvas");}}/>}
+      {tab==="templates"&&<ProfileTemplateGallery accessToken={accessToken} characterId={characterId}/>} 
+      {tab==="decorations"&&<div className={styles.stack}><ProfileDecorativePresetGallery accessToken={accessToken} characterId={characterId} onAdded={()=>refreshStudio()}/><GlitterDividerPresetGallery accessToken={accessToken} characterId={characterId} onAdded={()=>refreshStudio()}/></div>}
+      {tab==="tools"&&<ProfileStudioRoadmapTools accessToken={accessToken} characterId={characterId} onChanged={roadmapChanged}/>} 
+      {tab==="canvas"&&<div className={styles.stack}>
+        <section className={styles.controls} aria-label="Profile Studio workspace controls">
+          <div className={styles.controlRow}><div><strong>PROFILE BACKGROUND</strong><span>Upload a background directly from your device.</span></div><div className={styles.actions}><label>{uploadingBackground?"Uploading…":"Upload background"}<input type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={uploadBackground} disabled={uploadingBackground}/></label>{(backgroundPath||backgroundUrl)&&<button type="button" onClick={clearBackground}>Clear background</button>}</div></div>
+          <div className={styles.controlRow}><div><strong>PROFILE STUDIO V2</strong><span>Zoom, layers, keyboard nudging, borders, shadows, corners, image fitting, and private uploads.</span>{notice&&<small>{notice}</small>}</div><div className={styles.actions}><button type="button" onClick={unlockAll} disabled={unlocking||resetting}>{unlocking?"Unlocking…":"Unlock all widgets"}</button><button type="button" onClick={resetCanvas} disabled={resetting||unlocking}>{resetting?"Resetting canvas…":"Reset canvas"}</button></div></div>
+        </section>
+        <div className={styles.canvasFrame} style={studioStyle}><ProfileStudioV2Panel accessToken={accessToken} characterId={characterId}/></div>
+      </div>}
+    </div>
+  </section>;
 }
