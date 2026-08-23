@@ -59,6 +59,7 @@ jobs:
             out/campus-life/index.html \
             out/changelog/index.html \
             out/elections/index.html \
+            out/guide/index.html \
             out/homeroom/index.html \
             out/organizations/index.html \
             out/portal/index.html \
