@@ -1,0 +1,134 @@
+:root{
+  --hanami-tokyo-slate:#243443;
+  --hanami-tokyo-slate-deep:#182631;
+  --hanami-tokyo-secondary:#647483;
+  --hanami-tokyo-secondary-soft:#dfe4e7;
+  --hanami-tokyo-paper:#f5f4ef;
+  --hanami-tokyo-surface:#fbfaf6;
+  --hanami-tokyo-burgundy:#6d293d;
+  --hanami-tokyo-burgundy-deep:#55202f;
+  --hanami-tokyo-burgundy-soft:#eadde1;
+  --hanami-tokyo-line:#c8ced2;
+  --hanami-tokyo-muted:#66717a;
+}
+
+/* Public Hanami High identity: Tokyo Slate + burgundy. Character portals keep their own themes. */
+body:not(:has(section[aria-labelledby="dashboard-title"])){
+  background-color:#e7e9e8!important;
+  background-image:radial-gradient(#b7bec2 .65px,transparent .65px)!important;
+  color:var(--hanami-tokyo-slate)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .site-page{
+  background:var(--hanami-tokyo-paper)!important;
+  border-top-color:var(--hanami-tokyo-burgundy)!important;
+  box-shadow:0 0 0 1px #aeb6bc,0 8px 24px rgba(24,38,49,.13)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .network-strip{
+  background:#e2e6e8!important;
+  color:#4e5f6c!important;
+  border-bottom-color:#aeb8bf!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .brand-row,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .panel,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .hero-panel,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .info-section,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .feature-grid{
+  background:var(--hanami-tokyo-surface)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .brand-row{border-bottom-color:var(--hanami-tokyo-slate)!important}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .school-mark{
+  background:var(--hanami-tokyo-burgundy-soft)!important;
+  border-color:var(--hanami-tokyo-slate)!important;
+  color:var(--hanami-tokyo-burgundy)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .jp-name,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .eyebrow,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .news-list time,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .campus-columns b,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .wire-card span{
+  color:var(--hanami-tokyo-burgundy)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .brand-lockup h1,
+body:not(:has(section[aria-labelledby="dashboard-title"])) h1,
+body:not(:has(section[aria-labelledby="dashboard-title"])) h2,
+body:not(:has(section[aria-labelledby="dashboard-title"])) h3,
+body:not(:has(section[aria-labelledby="dashboard-title"])) h4,
+body:not(:has(section[aria-labelledby="dashboard-title"])) a{
+  color:var(--hanami-tokyo-slate)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) a:hover{color:var(--hanami-tokyo-burgundy)!important}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .nav-row,
+body:not(:has(section[aria-labelledby="dashboard-title"])) footer,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .countdown>strong{
+  background:var(--hanami-tokyo-slate)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .nav-row nav a,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .secondary-action{
+  background:#fff!important;
+  border-color:#9eabb5!important;
+  color:var(--hanami-tokyo-slate)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .nav-row nav a.active,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .portal-button,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .panel-title,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .section-heading{
+  background:var(--hanami-tokyo-burgundy-soft)!important;
+  border-color:#c5a6af!important;
+  color:var(--hanami-tokyo-burgundy)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .panel-title,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .section-heading h2{color:var(--hanami-tokyo-burgundy)!important}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .primary-action,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .site-search button{
+  background:var(--hanami-tokyo-slate)!important;
+  border-color:var(--hanami-tokyo-slate-deep)!important;
+  color:#fff!important;
+  box-shadow:inset 0 1px 0 #617a8c,2px 2px 0 #b8bec2!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .primary-action:hover,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .site-search button:hover{
+  background:var(--hanami-tokyo-burgundy)!important;
+  color:#fff!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .hero-panel{border-top-color:var(--hanami-tokyo-burgundy)!important}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .sakura-seal{
+  background:var(--hanami-tokyo-burgundy-soft)!important;
+  border-color:#a77484!important;
+  box-shadow:inset 0 0 0 8px #faf8f3,inset 0 0 0 10px #a77484!important;
+  color:var(--hanami-tokyo-burgundy)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .site-search{
+  background:#edf0f1!important;
+  border-color:#b8c1c8!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .feature-story{background:#f7f5f1!important}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .quiet-sections>div{background:#efefeb!important;border-color:#b8bec1!important}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .link-list span{
+  background:var(--hanami-tokyo-burgundy-soft)!important;
+  border-color:#b68a97!important;
+  color:var(--hanami-tokyo-burgundy)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .panel,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .hero-panel,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .info-section,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .feature-grid,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .site-search{
+  border-color:var(--hanami-tokyo-line)!important;
+  box-shadow:2px 2px 0 rgba(36,52,67,.08)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) .brand-subtitle,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .hero-copy p,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .feature-story>p:not(.eyebrow):not(.story-date),
+body:not(:has(section[aria-labelledby="dashboard-title"])) .academic-grid p,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .campus-columns p,
+body:not(:has(section[aria-labelledby="dashboard-title"])) .quiet-sections p{
+  color:var(--hanami-tokyo-muted)!important;
+}
+body:not(:has(section[aria-labelledby="dashboard-title"])) footer,
+body:not(:has(section[aria-labelledby="dashboard-title"])) footer a{color:#fff!important}
+
+/* Seasonal themes may tint small accents, but the permanent school identity stays Tokyo Slate. */
+:root[data-hanami-school-theme] body:not(:has(section[aria-labelledby="dashboard-title"])) .network-strip{
+  background:var(--hanami-tokyo-slate)!important;
+  color:#fff!important;
+}
