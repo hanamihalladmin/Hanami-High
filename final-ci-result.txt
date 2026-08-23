@@ -1,5 +1,5 @@
 HANAMI_FINAL_CI=FAIL
-exit_code=1
+exit_code=2
 --- lint ---
 
 > hanami-high@0.1.0 lint
@@ -31,10 +31,12 @@ exit_code=1
   8:3144  warning  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/DashboardShell.tsx
-  18:251   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-  18:582   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-  18:1668  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-  25:207   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  13:377   warning  React Hook useEffect has a missing dependency: 'character'. Either include it or remove the dependency array                                                                                                                                                                             react-hooks/exhaustive-deps
+  14:621   warning  React Hook useEffect has a missing dependency: 'character'. Either include it or remove the dependency array                                                                                                                                                                             react-hooks/exhaustive-deps
+  20:251   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  20:582   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  20:1668  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  27:207   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/FacultyStaffToolsPanel.tsx
   10:3492  warning  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
@@ -121,7 +123,7 @@ exit_code=1
 /home/runner/work/Hanami-High/Hanami-High/app/portal/page.tsx
   11:174  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
-✖ 51 problems (0 errors, 51 warnings)
+✖ 53 problems (0 errors, 53 warnings)
 
 --- failing checks ---
 not ok 3 - About keeps the shared Tokyo 2006 roleplay clock while preserving 1836 school history
@@ -157,6 +159,32 @@ not ok 214 - TEST Faculty fixture is explicit test data, owner scoped, and Owner
 not ok 236 - public version and changelog are discoverable site-wide
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
+MISSING ROUTE: out/index.html
+MISSING ROUTE: out/about/index.html
+MISSING ROUTE: out/academics/index.html
+MISSING ROUTE: out/apply/index.html
+MISSING ROUTE: out/calendar/index.html
+MISSING ROUTE: out/campus-life/index.html
+MISSING ROUTE: out/changelog/index.html
+MISSING ROUTE: out/elections/index.html
+MISSING ROUTE: out/homeroom/index.html
+MISSING ROUTE: out/organizations/index.html
+MISSING ROUTE: out/portal/index.html
+MISSING ROUTE: out/portal/admin/index.html
+MISSING ROUTE: out/portal/city/index.html
+MISSING ROUTE: out/portal/faculty/index.html
+MISSING ROUTE: out/portal/help/index.html
+MISSING ROUTE: out/portal/lore/index.html
+MISSING ROUTE: out/portal/owner/index.html
+MISSING ROUTE: out/portal/owner/student-viewer/index.html
+MISSING ROUTE: out/portal/roadmap/index.html
+MISSING ROUTE: out/portal/student/index.html
+MISSING ROUTE: out/portal/student/class/index.html
+MISSING ROUTE: out/rooms/index.html
+MISSING ROUTE: out/rules/index.html
+MISSING ROUTE: out/sports/index.html
+MISSING ROUTE: out/traditions/index.html
+MISSING ROUTE: out/updates/index.html
 --- test summary ---
 # tests 260
 # pass 249
@@ -165,110 +193,101 @@ not ok 236 - public version and changelog are discoverable site-wide
 # skipped 0
 # todo 0
 --- tail ---
-  ---
-  duration_ms: 1.187017
-  type: 'test'
-  ...
-# Subtest: people results expose one-click profile opening
-ok 244 - people results expose one-click profile opening
-  ---
-  duration_ms: 0.257121
-  type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 245 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 5.742686
+  duration_ms: 5.269654
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 246 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 1.248883
+  duration_ms: 1.179181
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 247 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.284231
+  duration_ms: 0.329605
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 248 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.248895
+  duration_ms: 0.236936
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 249 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.229468
+  duration_ms: 0.222474
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 250 - student activities are loaded for the active character
   ---
-  duration_ms: 0.862631
+  duration_ms: 1.11869
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 251 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.159187
+  duration_ms: 0.275053
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 252 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.270876
+  duration_ms: 0.390046
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 253 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.182861
+  duration_ms: 0.232889
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 254 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.204319
+  duration_ms: 1.032631
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 255 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.337841
+  duration_ms: 0.303155
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 256 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.362987
+  duration_ms: 5.531306
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 257 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.299497
+  duration_ms: 1.342656
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 258 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.196665
+  duration_ms: 1.150918
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 259 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.628492
+  duration_ms: 1.650538
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 260 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.192047
+  duration_ms: 1.099852
   type: 'test'
   ...
 1..260
@@ -279,7 +298,7 @@ ok 260 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1611.067924
+# duration_ms 1700.202354
 === build ===
 
 > hanami-high@0.1.0 build
@@ -295,53 +314,62 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.1s
-  Running TypeScript ...
-  Finished TypeScript in 11.4s ...
-  Collecting page data using 3 workers ...
-  Generating static pages using 3 workers (0/34) ...
-  Generating static pages using 3 workers (8/34) 
-  Generating static pages using 3 workers (16/34) 
-  Generating static pages using 3 workers (25/34) 
-✓ Generating static pages using 3 workers (34/34) in 652ms
-  Finalizing page optimization ...
 
-Route (app)
-┌ ○ /
-├ ○ /_not-found
-├ ○ /about
-├ ○ /academics
-├ ○ /apply
-├ ○ /calendar
-├ ○ /campus-life
-├ ○ /changelog
-├ ○ /elections
-├ ○ /features
-├ ○ /homeroom
-├ ○ /ideas
-├ ○ /organizations
-├ ○ /portal
-├ ○ /portal/admin
-├ ○ /portal/city
-├ ○ /portal/experience
-├ ○ /portal/faculty
-├ ○ /portal/help
-├ ○ /portal/lore
-├ ○ /portal/owner
-├ ○ /portal/owner/portal-viewer
-├ ○ /portal/owner/student-viewer
-├ ○ /portal/roadmap
-├ ○ /portal/roleplay
-├ ○ /portal/student
-├ ○ /portal/student-council
-├ ○ /portal/student/class
-├ ○ /rooms
-├ ○ /rules
-├ ○ /sports
-├ ○ /traditions
-└ ○ /updates
+> Build error occurred
+Error: Turbopack build failed with 1 error:
+./app/portal/HanamiSchoolPulse.tsx:52:187
+Error: Nullish coalescing operator(??) requires parens when mixing with logical operators
+  [90m50 |[0m ...[32m`[0m:[32m"No more scheduled blocks today."[0m}<[35m/p><small>{schoolState?.status_message||status}</s...[0m
+  [90m51 |[0m ...oin([32m" · "[0m):[32m"When today’s menu is posted, it will appear here."[0m}<[35m/p>{lunch?.note&&<small...[0m
+[31m[1m>[0m [90m52 |[0m ...?schoolState?.rp_focus||[32m"No formal daily prompt is published, so freeform school-life s...[0m
+  [90m   |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m53 |[0m ...[32mup on school-wide announcements."[0m}<[35m/p>{notice?.severity&&<small>{pretty(notice.severity...[0m
+  [90m54 |[0m ...<p>{birthdayNames.length?[32m"Send them a note or add a memory to the day."[0m:[32m"The birthday b...[0m
+  [90m55 |[0m ...ts.map(e=>[32m`[0m${[36mnew[0m [33mIntl[0m.[33mDateTimeFormat[0m([32m"en-US"[0m,{timeZone:[32m"Asia/Tokyo"[0m,hour:[32m"numeric"[0m,minu...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./app/portal/HanamiSchoolPulse.tsx [Client Component Browser]
+    ./app/portal/DashboardShell.tsx [Client Component Browser]
+    ./app/portal/RolePortalClient.tsx [Client Component Browser]
+    ./app/portal/RolePortalClient.tsx [Server Component]
+    ./app/portal/student/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/portal/HanamiSchoolPulse.tsx [Client Component SSR]
+    ./app/portal/DashboardShell.tsx [Client Component SSR]
+    ./app/portal/RolePortalClient.tsx [Client Component SSR]
+    ./app/portal/RolePortalClient.tsx [Server Component]
+    ./app/portal/student/page.tsx [Server Component]
 
 
-○  (Static)  prerendered as static content
-
+    at <unknown> (./app/portal/HanamiSchoolPulse.tsx:52:187)
 === routes ===
+MISSING ROUTE: out/index.html
+MISSING ROUTE: out/about/index.html
+MISSING ROUTE: out/academics/index.html
+MISSING ROUTE: out/apply/index.html
+MISSING ROUTE: out/calendar/index.html
+MISSING ROUTE: out/campus-life/index.html
+MISSING ROUTE: out/changelog/index.html
+MISSING ROUTE: out/elections/index.html
+MISSING ROUTE: out/homeroom/index.html
+MISSING ROUTE: out/organizations/index.html
+MISSING ROUTE: out/portal/index.html
+MISSING ROUTE: out/portal/admin/index.html
+MISSING ROUTE: out/portal/city/index.html
+MISSING ROUTE: out/portal/faculty/index.html
+MISSING ROUTE: out/portal/help/index.html
+MISSING ROUTE: out/portal/lore/index.html
+MISSING ROUTE: out/portal/owner/index.html
+MISSING ROUTE: out/portal/owner/student-viewer/index.html
+MISSING ROUTE: out/portal/roadmap/index.html
+MISSING ROUTE: out/portal/student/index.html
+MISSING ROUTE: out/portal/student/class/index.html
+MISSING ROUTE: out/rooms/index.html
+MISSING ROUTE: out/rules/index.html
+MISSING ROUTE: out/sports/index.html
+MISSING ROUTE: out/traditions/index.html
+MISSING ROUTE: out/updates/index.html
