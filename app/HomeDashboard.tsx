@@ -16,7 +16,7 @@ export default function HomeDashboard({currentDate}:Props){
  const [tab,setTab]=useState<Tab>("home");
  return <main id="home" className={styles.shell}>
   <aside className={styles.rail} aria-label="Public website navigation">
-   <button className={styles.logo} type="button" onClick={()=>setTab("home")}><img className={styles.logoImage} src="./hanami-high-portal-icon.png" alt="Hanami High"/><small>HANAMI HIGH</small></button>
+   <button className={styles.logo} type="button" onClick={()=>setTab("home")}><img className={styles.logoImage} src="./hanami-high-portal-icon-black.svg?v=20260823a" alt="Hanami High"/><small>HANAMI HIGH</small></button>
    <nav>{tabs.map(([id,icon,label])=><button key={id} type="button" className={tab===id?styles.activeRail:""} onClick={()=>setTab(id)}><span className={styles.railIcon}>{icon}</span><b>{label}</b></button>)}</nav>
    <div className={styles.railLinks}><a href="./newspaper/"><span>▤</span><b>Newspaper</b></a><a href="./about/"><span>◎</span><b>About</b></a><a href="./rules/"><span>◆</span><b>Rules</b></a><a href="./apply/"><span>＋</span><b>Apply</b></a><a href="./changelog/"><span>↻</span><b>Updates</b></a><a href="./features/"><span>✦</span><b>Features</b></a></div>
    <div className={styles.railBottom}><a href="./portal/"><span className={styles.railIcon}>↪</span><b>Portal Login</b></a></div>
