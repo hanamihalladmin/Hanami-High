@@ -2,6 +2,7 @@
 
 import {FormEvent,useState} from "react";
 import ProfileReportPanel from "./ProfileReportPanel";
+import ProfileVisitorInteractions from "./ProfileVisitorInteractions";
 import styles from "./ProfileLookupPanel.module.css";
 
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
@@ -128,8 +129,9 @@ export default function ProfileLookupPanel({accessToken,viewerCharacterId}:Props
         <article style={{border:"1px solid #c6b6c1",background:"#fff7fb",padding:12}}><p className="eyebrow">PROFILE BADGES</p><h5 style={{margin:"4px 0 10px",font:"400 20px Georgia,serif"}}>Hanami badges</h5>{social.badges?.length?social.badges.map(badge=><div key={badge.id} style={{borderBottom:"1px solid #e1d5dc",padding:"6px 0"}}><strong>{badge.icon_text} {badge.label}</strong><small style={{display:"block"}}>{badge.badge_type.replaceAll("_"," ")}{badge.description?` • ${badge.description}`:""}</small></div>):<p>No visible badges yet.</p>}</article>
       </section>}
       {design&&<div className={styles.designWrap}><div className={styles.designLabel}><strong>CUSTOM PROFILE DESIGN</strong><span>{design.canvas.canvas_width}×{design.canvas.canvas_height} • {design.widgets.length} WIDGET{design.widgets.length===1?"":"S"}</span></div><div className={styles.previewScroller}><div className={styles.preview} style={{width:design.canvas.canvas_width*scale,height:design.canvas.canvas_height*scale,background:design.canvas.background,backgroundImage:visibleBackground?`url(${visibleBackground})`:undefined,backgroundSize:"cover",backgroundPosition:"center"}}>{design.widgets.map(widget=><div key={widget.id} className={styles.previewWidget} style={{left:widget.x*scale,top:widget.y*scale,width:widget.width*scale,height:widget.height*scale,zIndex:widget.z_index,opacity:widget.opacity,transform:`rotate(${widget.rotation}deg)`}}>{widgetView(widget,mediaUrls)}</div>)}</div></div></div>}
+      {profile.character_id!==viewerCharacterId&&<ProfileVisitorInteractions accessToken={accessToken} viewerCharacterId={viewerCharacterId} targetCharacterId={profile.character_id} targetDisplayName={profile.display_name}/>} 
       <ProfileReportPanel accessToken={accessToken} viewerCharacterId={viewerCharacterId} targetCharacterId={profile.character_id} targetHandle={profile.handle}/>
     </>}
-    <div className={styles.privacy}><strong>VISIBILITY RULE</strong><span>Public profiles can be viewed by signed-in Hanami members. Friends-only profiles can be viewed by accepted character friends. Private profiles remain owner-only. Top Friends, visible badges, status, visit counts, and the chosen profile image are shown only after the same profile visibility check succeeds. Private Hanami uploads and uploaded backgrounds use short-lived signed media links after that check.</span></div>
+    <div className={styles.privacy}><strong>VISIBILITY RULE</strong><span>Public profiles can be viewed by signed-in Hanami members. Friends-only profiles can be viewed by accepted character friends. Private profiles remain owner-only. Top Friends, visible badges, status, visit counts, profile interactions, and the chosen profile image are shown only after the same profile visibility check succeeds. Private Hanami uploads and uploaded backgrounds use short-lived signed media links after that check.</span></div>
   </section>;
 }
