@@ -140,20 +140,6 @@ exit_code=1
   8:2142  warning  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array                                                                                                                                                                 react-hooks/exhaustive-deps
   8:2324  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerOperationsCommandPanel.tsx
-  28:40  error  Error: Cannot call impure function during render
-
-`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
-
-/home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerOperationsCommandPanel.tsx:28:40
-  26 |  useEffect(()=>{void load()},[load]);
-  27 |  const analytics=useMemo(()=>{const pages=new Map<string,number>(),roles=new Map<string,number>();for(const row of usage){pages.set(row.page_key,(pages.get(row.page_key)??0)+1);roles.set(row.portal_role,(roles.get(row.portal_role)??0)+1);}return {top:[...pages].sort((a,b)=>b[1]-a[1]).slice(0,8),roles:[...roles].sort((a,b)=>b[1]-a[1]),total:usage.length};},[usage]);
-> 28 |  const today=useMemo(()=>{const cutoff=Date.now()-864e5;return audit.filter(x=>new Date(x.created_at).getTime()>=cutoff)},[audit]);
-     |                                        ^^^^^^^^^^ Cannot call impure function
-  29 |  function command(view:string,tool:string){window.dispatchEvent(new CustomEvent("hanami-admin-command",{detail:{view,tool}}));setMessage(`Opened ${pretty(tool)}.`)}
-  30 |  async function addWatch(event:FormEvent){event.preventDefault();if(!draft.title.trim())return;setSaving(true);try{const r=await fetch(`${U}/rest/v1/owner_watchlist`,{method:"POST",headers:h(accessToken,{"Content-Type":"application/json",Prefer:"return=minimal"}),body:JSON.stringify({...draft,title:draft.title.trim(),note:draft.note.trim(),reference_id:draft.reference_id.trim()||null,status:"watching"})});if(!r.ok)throw new Error("Watchlist item could not be saved.");setDraft({item_type:"feature",title:"",note:"",reference_id:"",priority:"normal"});await load();}catch(e){setMessage(e instanceof Error?e.message:"Watchlist item could not be saved.");}finally{setSaving(false)}}
-  31 |  async function setWatchStatus(id:string,status:string){setSaving(true);try{const r=await fetch(`${U}/rest/v1/owner_watchlist?id=eq.${id}`,{method:"PATCH",headers:h(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({status,updated_at:new Date().toISOString()})});if(!r.ok)throw new Error("Watchlist status could not be changed.");await load();}catch(e){setMessage(e instanceof Error?e.message:"Watchlist status could not be changed.");}finally{setSaving(false)}}  react-hooks/purity
-
 /home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerPortalClient.tsx
   24:162  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
@@ -163,7 +149,7 @@ exit_code=1
 /home/runner/work/Hanami-High/Hanami-High/app/portal/page.tsx
   11:174  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
-✖ 66 problems (1 error, 65 warnings)
+✖ 65 problems (0 errors, 65 warnings)
 
 --- failing checks ---
 not ok 3 - About keeps the shared Tokyo 2006 roleplay clock while preserving 1836 school history
@@ -207,109 +193,109 @@ not ok 236 - public version and changelog are discoverable site-wide
 # skipped 0
 # todo 0
 --- tail ---
-  duration_ms: 1.400365
+  duration_ms: 0.794055
   type: 'test'
   ...
 # Subtest: people results expose one-click profile opening
 ok 244 - people results expose one-click profile opening
   ---
-  duration_ms: 0.256792
+  duration_ms: 0.16083
   type: 'test'
   ...
 # Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
 ok 245 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
   ---
-  duration_ms: 6.014347
+  duration_ms: 4.765066
   type: 'test'
   ...
 # Subtest: Owner receives system health and aggregate staff analytics
 ok 246 - Owner receives system health and aggregate staff analytics
   ---
-  duration_ms: 0.997591
+  duration_ms: 0.598815
   type: 'test'
   ...
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 247 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.199521
+  duration_ms: 0.148904
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 248 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.12202
+  duration_ms: 0.124588
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 249 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.133076
+  duration_ms: 0.154805
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 250 - student activities are loaded for the active character
   ---
-  duration_ms: 1.000715
+  duration_ms: 0.86952
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 251 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.207901
+  duration_ms: 0.184255
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 252 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.363207
+  duration_ms: 0.325332
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 253 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.209299
+  duration_ms: 0.189831
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 254 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.754932
+  duration_ms: 0.59923
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 255 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.217402
+  duration_ms: 0.21466
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 256 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.005856
+  duration_ms: 4.16437
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 257 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.375164
+  duration_ms: 0.945989
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 258 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.200676
+  duration_ms: 0.900414
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 259 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.674737
+  duration_ms: 1.303437
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 ok 260 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.17562
+  duration_ms: 0.885825
   type: 'test'
   ...
 1..260
@@ -320,14 +306,14 @@ ok 260 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1512.80503
+# duration_ms 1219.8957
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 21ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -336,15 +322,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.1s
+✓ Compiled successfully in 5.0s
   Running TypeScript ...
-  Finished TypeScript in 12.8s ...
+  Finished TypeScript in 9.9s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/35) ...
   Generating static pages using 3 workers (8/35) 
   Generating static pages using 3 workers (17/35) 
   Generating static pages using 3 workers (26/35) 
-✓ Generating static pages using 3 workers (35/35) in 645ms
+✓ Generating static pages using 3 workers (35/35) in 571ms
   Finalizing page optimization ...
 
 Route (app)
