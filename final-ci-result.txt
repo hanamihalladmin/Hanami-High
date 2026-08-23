@@ -192,136 +192,138 @@ not ok 214 - TEST Faculty fixture is explicit test data, owner scoped, and Owner
 not ok 236 - public version and changelog are discoverable site-wide
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
+not ok 260 - Help has a direct router and support anchor
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 --- hard failing checks ---
 --- test summary ---
 # tests 260
-# pass 246
-# fail 14
+# pass 245
+# fail 15
 # cancelled 0
 # skipped 0
 # todo 0
 --- tail ---
-  duration_ms: 1.37246
-  type: 'test'
-  ...
-# Subtest: people results expose one-click profile opening
-ok 244 - people results expose one-click profile opening
-  ---
-  duration_ms: 0.260937
-  type: 'test'
-  ...
-# Subtest: sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
-ok 245 - sensitive roadmap and messaging tables deny anon and keep narrow authenticated grants
-  ---
-  duration_ms: 6.441157
-  type: 'test'
-  ...
-# Subtest: Owner receives system health and aggregate staff analytics
-ok 246 - Owner receives system health and aggregate staff analytics
-  ---
-  duration_ms: 1.194658
-  type: 'test'
-  ...
-# Subtest: Admin workspace includes storyline incident and evidence operations
-ok 247 - Admin workspace includes storyline incident and evidence operations
-  ---
-  duration_ms: 0.288499
-  type: 'test'
-  ...
-# Subtest: Faculty dashboard includes a private lounge workflow
-ok 248 - Faculty dashboard includes a private lounge workflow
-  ---
-  duration_ms: 0.24624
-  type: 'test'
-  ...
-# Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 249 - dark mode controls are absent from Hanami accessibility settings
-  ---
-  duration_ms: 0.281616
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 250 - student activities are loaded for the active character
   ---
-  duration_ms: 1.321205
+  duration_ms: 0.792249
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 251 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.262831
+  duration_ms: 0.156651
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 252 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.349863
+  duration_ms: 0.294184
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 253 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.247271
+  duration_ms: 0.248817
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 254 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.851569
+  duration_ms: 1.01063
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 255 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.246219
+  duration_ms: 0.308055
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 256 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.550265
+  duration_ms: 5.365562
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 257 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.38853
+  duration_ms: 1.318965
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 258 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.253489
+  duration_ms: 1.159881
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 259 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.636242
+  duration_ms: 1.78372
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-ok 260 - Help has a direct router and support anchor
+not ok 260 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.20619
+  duration_ms: 1.909015
   type: 'test'
+  location: '/home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:39:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /\/portal\/faculty\/#help/. Input:
+    
+    '"use client";\n' +
+      '\n' +
+      'import {useEffect} from "react";\n' +
+      '\n' +
+      'function basePath(){return window.location.pathname.startsWith("/Hanami-High/")?"/Hanami-High":"";}\n' +
+      '\n' +
+      'export default function PortalHelpPage(){\n' +
+      ' useEffect(()=>{window.location.replace(`${basePath()}/guide/#accounts`);},[]);\n' +
+      ' return <main className="site-page"><section style={{maxWidth:720,margin:"64px auto",padding:24,border:"1px solid #b7c5d1",background:"#fff"}}><p className="eyebrow">HANAMI SUPPORT</p><h1 style={{font:"400 28px Georgia,serif",color:"#243443"}}>Opening Website Guide…</h1><p>The complete Hanami High website guide covers portal login, characters, Student, Faculty, Administration, Owner tools, customization, school life, and troubleshooting.</p></section></main>;\n' +
+      '}\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    "use client";
+    
+    import {useEffect} from "react";
+    
+    function basePath(){return window.location.pathname.startsWith("/Hanami-High/")?"/Hanami-High":"";}
+    
+    export default function PortalHelpPage(){
+     useEffect(()=>{window.location.replace(`${basePath()}/guide/#accounts`);},[]);
+     return <main className="site-page"><section style={{maxWidth:720,margin:"64px auto",padding:24,border:"1px solid #b7c5d1",background:"#fff"}}><p className="eyebrow">HANAMI SUPPORT</p><h1 style={{font:"400 28px Georgia,serif",color:"#243443"}}>Opening Website Guide…</h1><p>The complete Hanami High website guide covers portal login, characters, Student, Faculty, Administration, Owner tools, customization, school life, and troubleshooting.</p></section></main>;
+    }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:43:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
 1..260
 # tests 260
 # suites 0
-# pass 246
-# fail 14
+# pass 245
+# fail 15
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1692.42709
+# duration_ms 1651.041884
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 26ms
+✓ Running next.config.ts took 28ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -330,15 +332,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.4s
+✓ Compiled successfully in 6.6s
   Running TypeScript ...
-  Finished TypeScript in 13.3s ...
+  Finished TypeScript in 13.0s ...
   Collecting page data using 3 workers ...
-  Generating static pages using 3 workers (0/35) ...
-  Generating static pages using 3 workers (8/35) 
-  Generating static pages using 3 workers (17/35) 
-  Generating static pages using 3 workers (26/35) 
-✓ Generating static pages using 3 workers (35/35) in 706ms
+  Generating static pages using 3 workers (0/36) ...
+  Generating static pages using 3 workers (9/36) 
+  Generating static pages using 3 workers (18/36) 
+  Generating static pages using 3 workers (27/36) 
+✓ Generating static pages using 3 workers (36/36) in 696ms
   Finalizing page optimization ...
 
 Route (app)
@@ -352,6 +354,7 @@ Route (app)
 ├ ○ /changelog
 ├ ○ /elections
 ├ ○ /features
+├ ○ /guide
 ├ ○ /homeroom
 ├ ○ /ideas
 ├ ○ /newspaper
