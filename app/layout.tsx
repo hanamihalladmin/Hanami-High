@@ -12,6 +12,7 @@ import RoleplaySchoolYearInputs from "./components/RoleplaySchoolYearInputs";
 import RoleplayClockRuntime from "./components/RoleplayClockRuntime";
 import ForumReplyLimitRuntime from "./components/ForumReplyLimitRuntime";
 import GlobalUpdateAccess from "./components/GlobalUpdateAccess";
+import PortalCustomizationRuntime from "./components/PortalCustomizationRuntime";
 import "./globals.css";
 import "./mobile.css";
 import "./accessibility.css";
@@ -26,6 +27,7 @@ import "./portal-refresh.css";
 import "./public-network-fixes.css";
 import "./unified-shell-fixes.css";
 import "./bugfix-20260821.css";
+import "./portal-customization-runtime.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
@@ -34,5 +36,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><ProfileOpenBridge/><SiteThemeRuntime/><ExamWeekRuntime/><RoleplaySchoolYearInputs/><RoleplayClockRuntime/><ForumReplyLimitRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/><GlobalUpdateAccess/>{children}</body></html>;
+  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><ProfileOpenBridge/><SiteThemeRuntime/><PortalCustomizationRuntime/><ExamWeekRuntime/><RoleplaySchoolYearInputs/><RoleplayClockRuntime/><ForumReplyLimitRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/><GlobalUpdateAccess/>{children}</body></html>;
 }
