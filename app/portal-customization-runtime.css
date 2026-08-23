@@ -1,0 +1,12 @@
+html{--hanami-custom-accent:#17375f;--hanami-custom-text:#2d3b45;--hanami-custom-sidebar:#d6e0ec;--hanami-custom-surface:#f8fafc}
+section[aria-labelledby="dashboard-title"]{--global-nav:var(--hanami-custom-sidebar)!important;--global-nav-deep:var(--hanami-custom-accent)!important;--hanami-portal-accent:var(--hanami-custom-accent)!important;--hanami-portal-text:var(--hanami-custom-text)!important;--canvas-bg:var(--hanami-custom-surface)!important;color:var(--hanami-custom-text)!important}
+section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{background:linear-gradient(180deg,color-mix(in srgb,var(--hanami-custom-sidebar) 82%,#fff 18%),var(--hanami-custom-sidebar))!important}
+section[aria-labelledby="dashboard-title"]>main{background-color:var(--hanami-custom-surface)!important}
+section[aria-labelledby="dashboard-title"] [class*="navActive"]{color:var(--hanami-custom-accent)!important}
+section[aria-labelledby="dashboard-title"] [class*="pageIntro"] h2,
+section[aria-labelledby="dashboard-title"] [class*="contentView"] h2,
+section[aria-labelledby="dashboard-title"] [class*="contentView"] h3,
+section[aria-labelledby="dashboard-title"] [class*="contentView"] h4{color:var(--hanami-custom-text)!important}
+.hanami-device-image-picker{display:flex!important;align-items:center!important;justify-content:center!important;min-height:40px!important;box-sizing:border-box!important;width:100%!important;margin:5px 0 8px!important;padding:8px 10px!important;border:1px solid color-mix(in srgb,var(--hanami-custom-accent,#17375f) 42%,#b9c1cb 58%)!important;background:#fff!important;color:var(--hanami-custom-text,#2d3b45)!important;font:600 11px Arial,sans-serif!important;cursor:pointer!important;text-align:center!important}
+.hanami-device-image-picker:hover{background:color-mix(in srgb,var(--hanami-custom-accent,#17375f) 6%,#fff 94%)!important}
+.hanami-device-image-picker input[type="file"]{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;clip-path:inset(50%)!important;white-space:nowrap!important}
