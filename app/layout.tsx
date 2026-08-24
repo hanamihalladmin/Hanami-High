@@ -29,6 +29,7 @@ import "./unified-shell-fixes.css";
 import "./bugfix-20260821.css";
 import "./portal-customization-runtime.css";
 import "./tokyo-slate-theme.css";
+import "./portal-mobile-stabilization.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
