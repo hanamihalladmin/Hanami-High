@@ -177,31 +177,31 @@ not ok 88 - Discord role sync uses member OAuth authorization without a bot toke
 not ok 125 - roleplay locale is Tokyo and public chronology is fixed to 2006
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 128 - Owner TEST Faculty fixture remains usable after Discord role sync is enabled
+not ok 131 - Owner TEST Faculty fixture remains usable after Discord role sync is enabled
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 133 - public chronology is anchored to April 7 2006 and calendar stays in-universe
+not ok 136 - public chronology is anchored to April 7 2006 and calendar stays in-universe
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 142 - Hanami High does not collect or store birthdays
+not ok 145 - Hanami High does not collect or store birthdays
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 214 - TEST Faculty fixture is explicit test data, owner scoped, and Owner only
+not ok 217 - TEST Faculty fixture is explicit test data, owner scoped, and Owner only
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 236 - public version and changelog are discoverable site-wide
+not ok 239 - public version and changelog are discoverable site-wide
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 248 - weekly scheduler keeps Period naming for academic rows
+not ok 251 - weekly scheduler keeps Period naming for academic rows
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 263 - Help has a direct router and support anchor
+not ok 266 - Help has a direct router and support anchor
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
 --- hard failing checks ---
 --- test summary ---
-# tests 263
-# pass 247
+# tests 266
+# pass 250
 # fail 16
 # cancelled 0
 # skipped 0
@@ -210,69 +210,69 @@ not ok 263 - Help has a direct router and support anchor
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
-ok 253 - student activities are loaded for the active character
+ok 256 - student activities are loaded for the active character
   ---
-  duration_ms: 1.02796
+  duration_ms: 0.626481
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
-ok 254 - campus activity membership reads remain owner scoped
+ok 257 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.223477
+  duration_ms: 0.179056
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
-ok 255 - student dashboard has no remaining placeholder modules
+ok 258 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.337179
+  duration_ms: 0.275309
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
-ok 256 - Student activity UI contains no launch test-data labels
+ok 259 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.221584
+  duration_ms: 0.185726
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 257 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 260 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.756951
+  duration_ms: 0.749704
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 258 - Student life feeds validate owned Student character even for privileged accounts
+ok 261 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.227793
+  duration_ms: 0.228088
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 259 - accessibility and notification preferences bind to signed-in user automatically
+ok 262 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.647815
+  duration_ms: 4.043255
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 260 - group chat creation uses a validated private helper and creator management
+ok 263 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.938207
+  duration_ms: 0.940117
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 261 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 264 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.181481
+  duration_ms: 0.853728
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 262 - School Office separates staff action waiting member and archive queues
+ok 265 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.594544
+  duration_ms: 1.221039
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-not ok 263 - Help has a direct router and support anchor
+not ok 266 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.880916
+  duration_ms: 1.436123
   type: 'test'
   location: '/home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:39:1'
   failureType: 'testCodeFailure'
@@ -311,22 +311,22 @@ not ok 263 - Help has a direct router and support anchor
     async Test.run (node:internal/test_runner/test:1054:7)
     async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
-1..263
-# tests 263
+1..266
+# tests 266
 # suites 0
-# pass 247
+# pass 250
 # fail 16
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1607.685513
+# duration_ms 1270.912539
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 22ms
+✓ Running next.config.ts took 19ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -335,15 +335,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.1s
+✓ Compiled successfully in 5.0s
   Running TypeScript ...
-  Finished TypeScript in 12.3s ...
+  Finished TypeScript in 9.9s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/36) ...
   Generating static pages using 3 workers (9/36) 
   Generating static pages using 3 workers (18/36) 
   Generating static pages using 3 workers (27/36) 
-✓ Generating static pages using 3 workers (36/36) in 653ms
+✓ Generating static pages using 3 workers (36/36) in 549ms
   Finalizing page optimization ...
 
 Route (app)
