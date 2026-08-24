@@ -1,0 +1,39 @@
+@media(max-width:760px){
+  aside[aria-label$="global navigation"]{overflow:visible!important}
+  aside[aria-label$="global navigation"] > div:last-child{
+    display:flex!important;
+    gap:4px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    margin-top:4px!important;
+    padding:4px 2px 2px!important;
+    border-top:1px solid rgba(255,255,255,.22)!important;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+  }
+  aside[aria-label$="global navigation"] > div:last-child > *{
+    flex:0 0 auto!important;
+    min-width:82px!important;
+    min-height:42px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:5px!important;
+    padding:7px 9px!important;
+    text-align:center!important;
+    white-space:nowrap!important;
+  }
+  aside[aria-label$="global navigation"] > div:last-child b{
+    font-size:9px!important;
+  }
+  aside[aria-label$="global navigation"] > div:last-child span{
+    font-size:13px!important;
+  }
+}
+
+@media(max-width:520px){
+  aside[aria-label$="global navigation"] > div:last-child > *{
+    min-width:74px!important;
+    padding:6px 7px!important;
+  }
+}
