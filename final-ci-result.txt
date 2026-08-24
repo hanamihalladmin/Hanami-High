@@ -1,5 +1,5 @@
-HANAMI_FINAL_CI=FAIL
-exit_code=2
+HANAMI_FINAL_CI=PASS
+exit_code=0
 --- lint ---
 
 > hanami-high@0.1.0 lint
@@ -196,33 +196,6 @@ not ok 260 - Help has a direct router and support anchor
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
 --- hard failing checks ---
-MISSING ROUTE: out/index.html
-MISSING ROUTE: out/about/index.html
-MISSING ROUTE: out/academics/index.html
-MISSING ROUTE: out/apply/index.html
-MISSING ROUTE: out/calendar/index.html
-MISSING ROUTE: out/campus-life/index.html
-MISSING ROUTE: out/changelog/index.html
-MISSING ROUTE: out/elections/index.html
-MISSING ROUTE: out/homeroom/index.html
-MISSING ROUTE: out/newspaper/index.html
-MISSING ROUTE: out/organizations/index.html
-MISSING ROUTE: out/portal/index.html
-MISSING ROUTE: out/portal/admin/index.html
-MISSING ROUTE: out/portal/city/index.html
-MISSING ROUTE: out/portal/faculty/index.html
-MISSING ROUTE: out/portal/help/index.html
-MISSING ROUTE: out/portal/lore/index.html
-MISSING ROUTE: out/portal/owner/index.html
-MISSING ROUTE: out/portal/owner/student-viewer/index.html
-MISSING ROUTE: out/portal/roadmap/index.html
-MISSING ROUTE: out/portal/student/index.html
-MISSING ROUTE: out/portal/student/class/index.html
-MISSING ROUTE: out/rooms/index.html
-MISSING ROUTE: out/rules/index.html
-MISSING ROUTE: out/sports/index.html
-MISSING ROUTE: out/traditions/index.html
-MISSING ROUTE: out/updates/index.html
 --- test summary ---
 # tests 260
 # pass 245
@@ -233,88 +206,70 @@ MISSING ROUTE: out/updates/index.html
 --- tail ---
   type: 'test'
   ...
-# Subtest: Admin workspace includes storyline incident and evidence operations
-ok 247 - Admin workspace includes storyline incident and evidence operations
-  ---
-  duration_ms: 0.208295
-  type: 'test'
-  ...
-# Subtest: Faculty dashboard includes a private lounge workflow
-ok 248 - Faculty dashboard includes a private lounge workflow
-  ---
-  duration_ms: 0.13899
-  type: 'test'
-  ...
-# Subtest: dark mode controls are absent from Hanami accessibility settings
-ok 249 - dark mode controls are absent from Hanami accessibility settings
-  ---
-  duration_ms: 0.154824
-  type: 'test'
-  ...
 # Subtest: student activities are loaded for the active character
 ok 250 - student activities are loaded for the active character
   ---
-  duration_ms: 1.093964
+  duration_ms: 1.20452
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 251 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.213894
+  duration_ms: 0.251029
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 252 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.353754
+  duration_ms: 0.346177
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 253 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.256919
+  duration_ms: 0.24109
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 254 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.845648
+  duration_ms: 0.877329
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 255 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.276518
+  duration_ms: 0.238395
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 256 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.136234
+  duration_ms: 6.04975
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 257 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.251351
+  duration_ms: 1.34336
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 258 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.076337
+  duration_ms: 1.264461
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 259 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.632818
+  duration_ms: 1.73477
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 not ok 260 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.83962
+  duration_ms: 1.98631
   type: 'test'
   location: '/home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:39:1'
   failureType: 'testCodeFailure'
@@ -361,14 +316,14 @@ not ok 260 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1606.502741
+# duration_ms 1711.854869
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 27ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -377,37 +332,55 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.4s
+✓ Compiled successfully in 6.7s
   Running TypeScript ...
-app/portal/admin/AdminWorkspace.tsx(65,128): error TS2322: Type '{ accessToken: string; userId: string; access: Access; }' is not assignable to type 'IntrinsicAttributes & Props'.
-  Property 'access' does not exist on type 'IntrinsicAttributes & Props'.
-Failed to type check.
+  Finished TypeScript in 13.5s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/36) ...
+  Generating static pages using 3 workers (9/36) 
+  Generating static pages using 3 workers (18/36) 
+  Generating static pages using 3 workers (27/36) 
+✓ Generating static pages using 3 workers (36/36) in 708ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ○ /academics
+├ ○ /apply
+├ ○ /calendar
+├ ○ /campus-life
+├ ○ /changelog
+├ ○ /elections
+├ ○ /features
+├ ○ /guide
+├ ○ /homeroom
+├ ○ /ideas
+├ ○ /newspaper
+├ ○ /organizations
+├ ○ /portal
+├ ○ /portal/admin
+├ ○ /portal/city
+├ ○ /portal/experience
+├ ○ /portal/faculty
+├ ○ /portal/help
+├ ○ /portal/lore
+├ ○ /portal/owner
+├ ○ /portal/owner/portal-viewer
+├ ○ /portal/owner/student-viewer
+├ ○ /portal/roadmap
+├ ○ /portal/roleplay
+├ ○ /portal/student
+├ ○ /portal/student-council
+├ ○ /portal/student/class
+├ ○ /rooms
+├ ○ /rules
+├ ○ /sports
+├ ○ /traditions
+└ ○ /updates
+
+
+○  (Static)  prerendered as static content
 
 === routes ===
-MISSING ROUTE: out/index.html
-MISSING ROUTE: out/about/index.html
-MISSING ROUTE: out/academics/index.html
-MISSING ROUTE: out/apply/index.html
-MISSING ROUTE: out/calendar/index.html
-MISSING ROUTE: out/campus-life/index.html
-MISSING ROUTE: out/changelog/index.html
-MISSING ROUTE: out/elections/index.html
-MISSING ROUTE: out/homeroom/index.html
-MISSING ROUTE: out/newspaper/index.html
-MISSING ROUTE: out/organizations/index.html
-MISSING ROUTE: out/portal/index.html
-MISSING ROUTE: out/portal/admin/index.html
-MISSING ROUTE: out/portal/city/index.html
-MISSING ROUTE: out/portal/faculty/index.html
-MISSING ROUTE: out/portal/help/index.html
-MISSING ROUTE: out/portal/lore/index.html
-MISSING ROUTE: out/portal/owner/index.html
-MISSING ROUTE: out/portal/owner/student-viewer/index.html
-MISSING ROUTE: out/portal/roadmap/index.html
-MISSING ROUTE: out/portal/student/index.html
-MISSING ROUTE: out/portal/student/class/index.html
-MISSING ROUTE: out/rooms/index.html
-MISSING ROUTE: out/rules/index.html
-MISSING ROUTE: out/sports/index.html
-MISSING ROUTE: out/traditions/index.html
-MISSING ROUTE: out/updates/index.html
