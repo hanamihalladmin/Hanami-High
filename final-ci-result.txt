@@ -209,67 +209,67 @@ not ok 260 - Help has a direct router and support anchor
 # Subtest: student activities are loaded for the active character
 ok 250 - student activities are loaded for the active character
   ---
-  duration_ms: 1.060621
+  duration_ms: 1.02136
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 251 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.207293
+  duration_ms: 0.205186
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 252 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.380054
+  duration_ms: 0.391403
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 253 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.227133
+  duration_ms: 0.249422
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 254 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.816884
+  duration_ms: 1.070724
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 255 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.235336
+  duration_ms: 0.30219
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 256 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.320713
+  duration_ms: 5.042475
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 257 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.258039
+  duration_ms: 1.239816
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 258 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.140772
+  duration_ms: 1.134018
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 259 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.705144
+  duration_ms: 1.656275
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 not ok 260 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.833889
+  duration_ms: 1.855131
   type: 'test'
   location: '/home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:39:1'
   failureType: 'testCodeFailure'
@@ -316,14 +316,14 @@ not ok 260 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1611.702666
+# duration_ms 1581.135751
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 27ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -332,15 +332,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.2s
+✓ Compiled successfully in 6.1s
   Running TypeScript ...
-  Finished TypeScript in 12.6s ...
+  Finished TypeScript in 12.5s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/36) ...
   Generating static pages using 3 workers (9/36) 
   Generating static pages using 3 workers (18/36) 
   Generating static pages using 3 workers (27/36) 
-✓ Generating static pages using 3 workers (36/36) in 667ms
+✓ Generating static pages using 3 workers (36/36) in 664ms
   Finalizing page optimization ...
 
 Route (app)
