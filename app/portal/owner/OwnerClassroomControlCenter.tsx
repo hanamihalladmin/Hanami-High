@@ -16,9 +16,9 @@ type Tab="weekly"|"homerooms"|"courses"|"changes"|"blocks"|"operations"|"exams"|
 export default function OwnerClassroomControlCenter({accessToken,userId}:{accessToken:string;userId:string}){
  const [tab,setTab]=useState<Tab>("weekly");
  const tabs:[Tab,string,string][]=[
-  ["weekly","Weekly Scheduler","Assign each homeroom its Monday–Friday class timetable."],
+  ["weekly","Weekly Scheduler","Assign shared school classes to each homeroom’s Monday–Friday timetable."],
   ["homerooms","Homerooms","Manage homeroom definitions, advisers, rooms, and placement."],
-  ["courses","Courses & Sections","Manage course records and the A/B/C sections used by homeroom schedules."],
+  ["courses","Courses & Sections","Create each shared class once, then reuse it across every homeroom schedule."],
   ["changes","Day Changes","Apply one-day schedule exceptions without rewriting the normal week."],
   ["blocks","School Blocks","Manage non-class blocks and school-wide schedule items."],
   ["operations","Academic Operations","Run broader academic maintenance and management tools."],
@@ -27,7 +27,7 @@ export default function OwnerClassroomControlCenter({accessToken,userId}:{access
  ];
  const active=tabs.find(item=>item[0]===tab)!;
  return <section className={styles.shell} aria-labelledby="classroom-control-title">
-  <header className={styles.header}><div><p className="eyebrow">OWNER • ACADEMIC OPERATIONS</p><h2 id="classroom-control-title">Classroom Control Center</h2><p>The Owner classroom workspace is organized around the weekly homeroom timetable. Build the week first, then manage the course, homeroom, exception, and exam records that support it.</p></div><span>OWNER ONLY</span></header>
+  <header className={styles.header}><div><p className="eyebrow">OWNER • ACADEMIC OPERATIONS</p><h2 id="classroom-control-title">Classroom Control Center</h2><p>Create schoolwide classes once, then build each homeroom’s weekly timetable from that shared catalog. Teachers and rooms stay attached to the class while the timetable decides which homeroom attends it each period.</p></div><span>OWNER ONLY</span></header>
   <nav className={styles.tabs} aria-label="Classroom control tools">{tabs.map(([id,label,description])=><button type="button" key={id} className={tab===id?styles.active:""} onClick={()=>setTab(id)}><strong>{label}</strong><small>{description}</small></button>)}</nav>
   <div className={styles.context}><strong>{active[1]}</strong><span>{active[2]}</span></div>
   <div className={styles.workspace}>
