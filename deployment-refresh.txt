@@ -1,1 +1,2 @@
-Hanami High deployment refresh: 2026-08-21 bugfix batch 1 complete.
+Hanami High deployment refresh: 2026-08-24 09:19 EDT stabilization deployment requested.
+Includes latest Owner sign-in fixes, privileged mobile navigation fixes, organizations runtime hardening, and current stabilization frontend updates.
