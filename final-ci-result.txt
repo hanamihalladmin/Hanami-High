@@ -236,85 +236,85 @@ MISSING ROUTE: out/updates/index.html
 # Subtest: Admin workspace includes storyline incident and evidence operations
 ok 247 - Admin workspace includes storyline incident and evidence operations
   ---
-  duration_ms: 0.30969
+  duration_ms: 0.208295
   type: 'test'
   ...
 # Subtest: Faculty dashboard includes a private lounge workflow
 ok 248 - Faculty dashboard includes a private lounge workflow
   ---
-  duration_ms: 0.214333
+  duration_ms: 0.13899
   type: 'test'
   ...
 # Subtest: dark mode controls are absent from Hanami accessibility settings
 ok 249 - dark mode controls are absent from Hanami accessibility settings
   ---
-  duration_ms: 0.225292
+  duration_ms: 0.154824
   type: 'test'
   ...
 # Subtest: student activities are loaded for the active character
 ok 250 - student activities are loaded for the active character
   ---
-  duration_ms: 1.099221
+  duration_ms: 1.093964
   type: 'test'
   ...
 # Subtest: campus activity membership reads remain owner scoped
 ok 251 - campus activity membership reads remain owner scoped
   ---
-  duration_ms: 0.1921
+  duration_ms: 0.213894
   type: 'test'
   ...
 # Subtest: student dashboard has no remaining placeholder modules
 ok 252 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.265478
+  duration_ms: 0.353754
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 253 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.184386
+  duration_ms: 0.256919
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 254 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.887554
+  duration_ms: 0.845648
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 255 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.232265
+  duration_ms: 0.276518
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 256 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.371914
+  duration_ms: 5.136234
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 257 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.322811
+  duration_ms: 1.251351
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 258 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.244774
+  duration_ms: 1.076337
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 259 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.591174
+  duration_ms: 1.632818
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 not ok 260 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.952762
+  duration_ms: 1.83962
   type: 'test'
   location: '/home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:39:1'
   failureType: 'testCodeFailure'
@@ -361,14 +361,14 @@ not ok 260 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1628.945262
+# duration_ms 1606.502741
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 28ms
+✓ Running next.config.ts took 24ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
