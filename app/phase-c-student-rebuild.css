@@ -1,0 +1,183 @@
+/* Phase C — Student Portal workspace rebuild. Scoped so Faculty/Admin/Owner are not changed here. */
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]){
+  --global-nav:var(--user-nav,var(--hh-sage));
+  --canvas-bg:var(--user-surface,var(--hh-ivory));
+  --line:color-mix(in srgb,var(--hh-navy) 16%,var(--hh-line) 84%);
+  grid-template-columns:204px minmax(0,1fr)!important;
+  min-height:100dvh!important;
+  background:var(--canvas-bg)!important;
+  color:var(--hh-ink)!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) > aside{
+  width:204px!important;
+  padding:12px!important;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--global-nav) 82%,#fff 18%),var(--global-nav))!important;
+  border-right:1px solid color-mix(in srgb,var(--hh-navy) 22%,transparent)!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="logoButton"]{
+  min-height:82px!important;
+  background-image:url("/Hanami-High/hanami-high-portal-icon.png")!important;
+  background-size:72px 72px!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  border-bottom:1px solid rgba(23,40,60,.16)!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="primaryNav"]:before{
+  content:"HANAMI STUDENT WORKSPACE"!important;
+  color:color-mix(in srgb,var(--hh-navy) 78%,#fff 22%)!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="primaryNav"] [class*="navGroup"]>button,
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="navBottom"] button,
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="navBottom"] a{
+  min-height:40px!important;
+  color:var(--hh-navy)!important;
+  border-radius:var(--user-radius,0)!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="navActive"]{
+  background:var(--hh-paper)!important;
+  color:var(--hh-navy)!important;
+  border:1px solid color-mix(in srgb,var(--hh-navy) 18%,transparent)!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="subNav"]{
+  margin-left:34px!important;
+  border-left-color:color-mix(in srgb,var(--hh-navy) 25%,transparent)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="subNav"] button{
+  color:color-mix(in srgb,var(--hh-navy) 82%,#fff 18%)!important;
+  white-space:normal!important;
+  min-height:27px!important;
+}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="subNavActive"]{
+  background:color-mix(in srgb,var(--hh-paper) 82%,transparent)!important;
+  color:var(--hh-navy)!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) > main{
+  min-width:0!important;
+  overflow-x:hidden!important;
+  background:color-mix(in srgb,var(--canvas-bg) 94%,#fff 6%)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) > main:before,
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) > main:after{
+  inset-left:204px!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="topbar"]{
+  min-height:76px!important;
+  padding:13px clamp(20px,2.5vw,36px)!important;
+  background:color-mix(in srgb,var(--hh-paper) 94%,transparent)!important;
+  border-bottom:1px solid var(--line)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="topbar"] h1{
+  color:var(--hh-navy)!important;
+  font-family:var(--hh-font-serif)!important;
+  font-size:29px!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="contentView"],
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="accountContent"]{
+  width:min(1320px,100%)!important;
+  max-width:1320px!important;
+  min-width:0!important;
+  padding:20px clamp(20px,2.5vw,36px) 36px!important;
+  margin:0!important;
+}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="dashboardView"]{
+  grid-template-columns:minmax(0,1fr) minmax(260px,300px)!important;
+  gap:18px!important;
+  width:min(1320px,100%)!important;
+  max-width:1320px!important;
+  min-width:0!important;
+  padding:20px clamp(20px,2.5vw,36px) 36px!important;
+}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="dashboardMain"],
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="dashboardView"]>*{
+  min-width:0!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="pageIntro"]{
+  padding:4px 0 12px!important;
+  border-bottom:3px double var(--hh-navy)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="pageIntro"] h2{
+  color:var(--hh-navy)!important;
+  font:500 25px var(--hh-font-serif)!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) :is(section,article,form,details)[class*="panel"],
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) :is(section,article,div)[class*="card"]{
+  min-width:0!important;
+  max-width:100%!important;
+  border-color:var(--line)!important;
+  border-radius:var(--user-radius,0)!important;
+  box-shadow:1px 1px 0 rgba(23,40,60,.05)!important;
+}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) :is(table){
+  width:100%!important;
+  max-width:100%!important;
+  table-layout:auto!important;
+}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) :is(input,textarea,select,button){
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+/* Student schedule: prioritize one readable timeline/grid instead of squeezed cards. */
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="SchedulePanel"],
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="StudentDashboardSchedule"]{
+  min-width:0!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="scheduleGrid"],
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="weekGrid"]{
+  min-width:780px;
+}
+
+/* Account/profile areas keep character customization while outer workspace geometry stays stable. */
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="accountLayout"]{
+  grid-template-columns:220px minmax(0,1fr)!important;
+  min-width:0!important;
+}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="accountNav"]{
+  background:color-mix(in srgb,var(--global-nav) 10%,var(--hh-paper) 90%)!important;
+}
+
+/* Acceptance-letter archive access should feel like a document drawer, not a floating bug-fix button. */
+button[class*="archiveButton"]{
+  right:18px!important;
+  bottom:18px!important;
+  min-height:34px!important;
+  padding:8px 12px!important;
+  border:1px solid var(--hh-navy)!important;
+  border-radius:0!important;
+  background:var(--hh-paper)!important;
+  color:var(--hh-navy)!important;
+  box-shadow:2px 2px 0 rgba(23,40,60,.12)!important;
+  font:700 9px var(--hh-font-ui)!important;
+}
+button[class*="archiveButton"]:before{content:"▤ ";color:var(--hh-rose-deep)}
+
+@media(max-width:1080px){
+  section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="dashboardView"]{grid-template-columns:1fr!important}
+}
+@media(max-width:760px){
+  section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]){display:block!important}
+  section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) > aside{position:sticky!important;top:0!important;width:100%!important;height:auto!important;padding:4px!important;overflow:visible!important;border-right:0!important;border-bottom:1px solid rgba(23,40,60,.16)!important}
+  section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="primaryNav"]{display:flex!important;overflow-x:auto!important;scroll-snap-type:x proximity}
+  section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="navGroup"]{flex:0 0 auto!important;scroll-snap-align:start}
+  section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="primaryNav"] [class*="navGroup"]>button{width:82px!important;min-height:56px!important;grid-template-columns:1fr!important;justify-items:center!important}
+  section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="topbar"]{padding:9px 14px!important}
+  section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="dashboardView"],
+  section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="contentView"],
+  section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="accountContent"]{width:100%!important;padding:12px 14px 26px!important}
+  section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="accountLayout"]{display:block!important}
+  button[class*="archiveButton"]{right:10px!important;bottom:10px!important;max-width:calc(100vw - 20px)!important}
+}
