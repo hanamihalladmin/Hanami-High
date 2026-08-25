@@ -17,6 +17,9 @@ const entries=[
 ];
 
 const categories:Category[]=["All","Pages","Academics","Campus","News","People"];
+const sitemap=[
+ ["Home","./"],["About","./about/"],["Academics","./academics/"],["Student Life","./campus-life/"],["Admissions","./apply/"],["News","./newspaper/"],["Directory","./organizations/"],["Calendar","./calendar/"],["Rules","./rules/"],["Guide","./guide/"],["Change Log","./changelog/"],["Portals","./portal/"]
+] as const;
 
 export default function SiteSearch(){
  const [query,setQuery]=useState("");
@@ -60,6 +63,10 @@ export default function SiteSearch(){
     <span>{entry.category}</span>
    </article>):<div className={styles.empty}><h3>No results found.</h3><p>Try a broader term or choose another category.</p></div>}
   </div>}
+  <div aria-label="Compact sitemap" style={{padding:"12px 14px",borderTop:"1px dotted #7e8d79",background:"#f5f3ea",textAlign:"center"}}>
+   <strong style={{display:"block",marginBottom:7,fontSize:8,letterSpacing:".09em",color:"#17283c"}}>HANAMI HIGH SITE MAP</strong>
+   <nav style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:"5px 12px"}}>{sitemap.map(([label,href])=><a key={label} href={href} style={{fontSize:8,color:"#17283c",textDecoration:"none"}}>» {label}</a>)}</nav>
+  </div>
   <footer className={styles.footer}>Hanami Search · School Network Directory · Public results only</footer>
  </section>
 }
