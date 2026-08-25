@@ -5,6 +5,7 @@ section[aria-labelledby="dashboard-title"]{
   --phase5-line:var(--hanami-line,#c9c2b4);
   --phase5-ink:var(--hanami-navy,#17283c);
   --phase5-muted:var(--hanami-muted,#68736c);
+  --phase5-rose-soft:color-mix(in srgb,var(--hanami-rose,#c58e93) 16%,var(--hanami-paper,#fffdf8) 84%);
 }
 
 section[aria-labelledby="dashboard-title"] section,
@@ -22,6 +23,19 @@ section[aria-labelledby="dashboard-title"] strong{color:var(--phase5-ink)}
 section[aria-labelledby="dashboard-title"] small,
 section[aria-labelledby="dashboard-title"] p{color:var(--phase5-muted)}
 
+/* Normalize older inline portal colors without changing component behavior. */
+section[aria-labelledby="dashboard-title"] [style*="#eef3f8"],
+section[aria-labelledby="dashboard-title"] [style*="#f8fafc"],
+section[aria-labelledby="dashboard-title"] [style*="#f7f9fb"]{background-color:var(--phase5-soft)!important}
+section[aria-labelledby="dashboard-title"] [style*="#17375f"]{color:var(--phase5-ink)!important}
+section[aria-labelledby="dashboard-title"] [style*="#8f365b"]{color:var(--hanami-rose-deep,#9e6870)!important}
+section[aria-labelledby="dashboard-title"] [style*="#fff0f5"]{background-color:var(--phase5-rose-soft)!important}
+section[aria-labelledby="dashboard-title"] [style*="#ccd4dc"],
+section[aria-labelledby="dashboard-title"] [style*="#cbd4dd"],
+section[aria-labelledby="dashboard-title"] [style*="#b8c2cc"],
+section[aria-labelledby="dashboard-title"] [style*="#aeb9c5"]{border-color:var(--phase5-line)!important}
+section[aria-labelledby="dashboard-title"] [style*="borderRadius"]{border-radius:0!important}
+
 /* Inline-style legacy panels */
 section[aria-label="Class competitions and Exams Week"]{border:1px solid var(--phase5-line)!important;background:var(--phase5-surface)!important}
 section[aria-label="Class competitions and Exams Week"]>div:first-child{background:var(--phase5-soft)!important;border-bottom:1px solid var(--phase5-line)!important}
@@ -30,6 +44,13 @@ section[aria-label="Class competitions and Exams Week"] input,
 section[aria-label="Class competitions and Exams Week"] select,
 section[aria-label="Class competitions and Exams Week"] textarea{border:1px solid #b9b2a6!important;border-radius:0!important;background:#fff!important;color:var(--phase5-ink)!important}
 section[aria-label="Class competitions and Exams Week"] button{min-height:34px!important;border:1px solid var(--hanami-navy-deep,#0f1c2b)!important;border-radius:0!important;background:var(--phase5-ink)!important;color:#fffdf8!important;font-weight:700!important}
+
+section[aria-label="Character archive and continuity"]{border:1px solid var(--phase5-line)!important;background:var(--phase5-surface)!important;box-shadow:none!important}
+section[aria-label="Character archive and continuity"]>div:first-child{padding-bottom:10px;border-bottom:1px solid var(--phase5-line)!important}
+section[aria-label="Character archive and continuity"] article{border:1px solid var(--phase5-line)!important;background:var(--phase5-surface)!important;box-shadow:none!important}
+section[aria-label="Character archive and continuity"] details{border-color:var(--phase5-line)!important}
+section[aria-label="Character archive and continuity"] button{min-height:32px!important;border:1px solid var(--phase5-ink)!important;border-radius:0!important;background:var(--phase5-ink)!important;color:#fffdf8!important;font-weight:700!important}
+section[aria-label="Character archive and continuity"] input{min-height:34px!important;border-radius:0!important;border-color:var(--phase5-line)!important;background:#fff!important}
 
 section[aria-label="Notifications and accessibility"]{border-radius:0!important;border-color:var(--phase5-line)!important;background:var(--phase5-surface)!important;box-shadow:none!important}
 section[aria-label="Notifications and accessibility"]>div:first-child{background:var(--phase5-soft)!important;border-color:var(--phase5-line)!important}
@@ -89,4 +110,5 @@ section[aria-label="Notifications and accessibility"] select{border-radius:0!imp
   [class*="DashboardShell_primaryNav"] [class*="navGroup"]>button{height:58px!important;min-height:58px!important;align-content:center!important}
   [class*="DashboardShell_primaryNav"] [class*="navGroup"]>button b{display:flex!important;align-items:center!important;justify-content:center!important;min-height:20px!important;text-align:center!important}
   [role="tablist"]{overflow-x:auto!important;flex-wrap:nowrap!important}
+  section[aria-label="Character archive and continuity"]>div:last-child{grid-template-columns:1fr!important}
 }
