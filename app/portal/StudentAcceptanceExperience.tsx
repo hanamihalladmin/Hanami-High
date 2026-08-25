@@ -8,11 +8,11 @@ const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?
 
 type Props={accessToken:string;characterId:string;displayName:string};
 type LetterRow={character_id:string;accepted_at:string;viewed_at:string|null};
-type AcceptanceLetterProps={displayName:string;dateText:string;archived:boolean;onEnter:()=>void;onClose:()=>void};
+type AcceptanceLetterProps={displayName:string;dateText:string;archived:boolean;storedNotice:boolean;onStore:()=>void;onEnter:()=>void;onClose:()=>void};
 function headers(accessToken:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${accessToken}`,...extra};}
 
-function AcceptanceLetter({displayName,dateText,archived,onEnter,onClose}:AcceptanceLetterProps){return <div className={styles.letterWrap}><article className={styles.letter}>
- <img className={styles.crest} src="../../hanami-high-portal-icon.png?v=20260825b" alt="Hanami High crest"/>
+function AcceptanceLetter({displayName,dateText,archived,storedNotice,onStore,onEnter,onClose}:AcceptanceLetterProps){return <div className={styles.letterWrap}><article className={styles.letter}>
+ <img className={styles.crest} src="/Hanami-High/hanami-high-portal-icon.png?v=20260825c" alt="Hanami High crest"/>
  <p className={styles.schoolName}>Hanami High School</p>
  <p className={styles.office}>OFFICE OF ADMISSIONS · HANAMI CITY · JAPAN</p>
  <h2>Notice of Acceptance</h2>
@@ -42,13 +42,19 @@ function AcceptanceLetter({displayName,dateText,archived,onEnter,onClose}:Accept
  <p>We look forward to welcoming you through the school gates. <strong>Welcome to Hanami High.</strong></p>
  <p><em>Delivery note: no owls were inconvenienced in the arrival of this letter.</em></p>
  <div className={styles.signature}><div className={styles.signatureText}><strong>Office of Admissions</strong><span>HANAMI HIGH SCHOOL · {dateText.toUpperCase()}</span></div><div className={styles.wax}>HH</div></div>
- <div className={styles.actions}><button type="button" onClick={onEnter}>Enter Hanami High →</button>{archived&&<button className={styles.secondary} type="button" onClick={onClose}>Close letter</button>}</div>
+ {storedNotice&&<p className={styles.office} role="status">STORED IN STUDENT DOCUMENTS · YOU CAN REOPEN THIS LETTER FROM YOUR PORTAL AT ANY TIME</p>}
+ <div className={styles.actions}>
+  {!archived&&<button className={styles.secondary} type="button" onClick={onStore}>Store in Student Documents</button>}
+  <button type="button" onClick={onEnter}>{archived?"Return to Hanami High →":"Enter Hanami High →"}</button>
+  {archived&&<button className={styles.secondary} type="button" onClick={onClose}>Close letter</button>}
+ </div>
 </article></div>}
 
 export default function StudentAcceptanceExperience({accessToken,characterId,displayName}:Props){
  const [state,setState]=useState<"loading"|"closed"|"envelope"|"letter">("loading");
  const [acceptedAt,setAcceptedAt]=useState<string|null>(null);
  const [archived,setArchived]=useState(false);
+ const [storedNotice,setStoredNotice]=useState(false);
  useEffect(()=>{let cancelled=false;async function load(){
   try{
    const query=await fetch(`${SUPABASE_URL}/rest/v1/student_acceptance_letters?select=character_id,accepted_at,viewed_at&character_id=eq.${encodeURIComponent(characterId)}&limit=1`,{headers:headers(accessToken)});
@@ -66,27 +72,31 @@ export default function StudentAcceptanceExperience({accessToken,characterId,dis
   }catch{
    if(!cancelled){
     const key=`hanami.acceptance-fallback.v1.${characterId}`;
-    const seen=localStorage.getItem(key)==="done";
+    let seen=false;try{seen=localStorage.getItem(key)==="done"}catch{}
     setArchived(seen);
     setState(seen?"closed":"envelope");
    }
   }
  }
  void load();return()=>{cancelled=true};},[accessToken,characterId]);
- async function markViewed(){
-  try{
-   await fetch(`${SUPABASE_URL}/rest/v1/student_acceptance_letters?character_id=eq.${encodeURIComponent(characterId)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({viewed_at:new Date().toISOString(),updated_at:new Date().toISOString()})});
-  }catch{}
-  try{localStorage.setItem(`hanami.acceptance-fallback.v1.${characterId}`,"done")}catch{}
-  setArchived(true);setState("closed");
-  window.dispatchEvent(new CustomEvent("hanami-acceptance-complete",{detail:{characterId}}));
+ async function persistArchive(){
+  if(!archived){
+   try{
+    await fetch(`${SUPABASE_URL}/rest/v1/student_acceptance_letters?character_id=eq.${encodeURIComponent(characterId)}`,{method:"PATCH",headers:headers(accessToken,{"Content-Type":"application/json"}),body:JSON.stringify({viewed_at:new Date().toISOString(),updated_at:new Date().toISOString()})});
+   }catch{}
+   try{localStorage.setItem(`hanami.acceptance-fallback.v1.${characterId}`,"done")}catch{}
+   setArchived(true);
+   window.dispatchEvent(new CustomEvent("hanami-acceptance-complete",{detail:{characterId}}));
+  }
  }
+ async function storeLetter(){await persistArchive();setStoredNotice(true);setState("letter");}
+ async function enterSchool(){await persistArchive();setStoredNotice(false);setState("closed");}
  function dateLabel(){if(!acceptedAt)return "Academic Year 2006";const d=new Date(acceptedAt);return Number.isNaN(d.valueOf())?"Academic Year 2006":d.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});}
  if(state==="loading")return <span className={styles.loading}>Preparing student documents…</span>;
- if(state==="closed")return <button className={styles.archiveButton} type="button" onClick={()=>setState("letter")}>Documents · Acceptance Letter</button>;
+ if(state==="closed")return <button className={styles.archiveButton} type="button" onClick={()=>{setStoredNotice(false);setState("letter")}}>Student Documents · Acceptance Letter</button>;
  return <div className={styles.overlay} role="dialog" aria-modal="true" aria-label="Hanami High acceptance letter">
   <section className={styles.stage}>
-   {state==="envelope"?<div className={styles.envelope}><button className={styles.sealButton} type="button" onClick={()=>setState("letter")}><span className={styles.seal}>HH</span><strong>Hanami High School</strong><span>OPEN YOUR ACCEPTANCE LETTER</span></button></div>:<AcceptanceLetter displayName={displayName} dateText={dateLabel()} archived={archived} onEnter={markViewed} onClose={()=>setState("closed")}/>} 
+   {state==="envelope"?<div className={styles.envelope}><button className={styles.sealButton} type="button" onClick={()=>setState("letter")}><span className={styles.seal}>HH</span><strong>Hanami High School</strong><span>OPEN YOUR ACCEPTANCE LETTER</span></button></div>:<AcceptanceLetter displayName={displayName} dateText={dateLabel()} archived={archived} storedNotice={storedNotice} onStore={storeLetter} onEnter={enterSchool} onClose={()=>setState("closed")}/>} 
   </section>
  </div>;
 }
