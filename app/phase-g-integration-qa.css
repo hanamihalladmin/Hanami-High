@@ -1,0 +1,73 @@
+/* Phase G — final website-wide integration + QA.
+   This layer is intentionally narrow: it stabilizes layout, legacy surfaces,
+   tabs and mobile overflow without flattening Student/Faculty customization. */
+
+:root{
+  --phase-g-navy:var(--hanami-navy,#17283c);
+  --phase-g-sage:var(--hanami-sage,#9ba891);
+  --phase-g-ivory:var(--hanami-ivory,#f3efe4);
+  --phase-g-paper:var(--hanami-paper,#fffdf8);
+  --phase-g-line:var(--hanami-line,#c9c2b4);
+  --phase-g-muted:var(--hanami-muted,#68736c);
+  --phase-g-soft:color-mix(in srgb,var(--phase-g-sage) 16%,var(--phase-g-paper) 84%);
+}
+
+/* Box-model and clipping stabilization across role workspaces. */
+main[class*="PortalAppPage_page"],
+main[class*="PortalAppPage_page"] *,
+[class*="DashboardShell_shell"],
+[class*="DashboardShell_shell"] *{box-sizing:border-box}
+[class*="DashboardShell_shell"],
+[class*="DashboardShell_main"],
+[class*="DashboardShell_content"],
+[class*="DashboardShell_workspace"],
+[class*="DashboardShell_dashboard"],
+[class*="DashboardShell_grid"]{min-width:0;max-width:100%}
+[class*="DashboardShell_content"],
+[class*="DashboardShell_workspace"]{overflow-x:clip}
+
+/* Student/Faculty remain character-customizable. */
+:is([data-portal-role="student"],[data-portal-role="faculty"],[class*="student" i],[class*="faculty" i])
+:is(section,article,form,details,input,textarea,select,button){border-radius:var(--user-radius,var(--hanami-user-radius,8px))!important}
+
+/* Legacy social/profile/student-life surfaces inherit the active character palette. */
+:is([class*="SocialCustomizationPanel_"],[class*="ProfileLookupPanel_"],[class*="ProfileVisitorInteractions_"],[class*="ConnectionsMemoriesPanel_"],[class*="FriendsPanel_"],[class*="DailyLifePersonalizationPanel_"],[class*="StudentSettingsDrawer_"])[class*="panel" i],
+:is([class*="SocialCustomizationPanel_"],[class*="ProfileLookupPanel_"],[class*="ProfileVisitorInteractions_"],[class*="ConnectionsMemoriesPanel_"],[class*="FriendsPanel_"],[class*="DailyLifePersonalizationPanel_"])[class*="card" i]{
+  border-color:color-mix(in srgb,var(--hanami-portal-accent,var(--phase-g-navy)) 24%,var(--phase-g-line) 76%)!important;
+  background:color-mix(in srgb,var(--hanami-website-background,var(--phase-g-paper)) 88%,var(--phase-g-paper) 12%)!important;
+  color:var(--hanami-portal-text,var(--phase-g-navy))!important;
+}
+
+:is([class*="SocialCustomizationPanel_"],[class*="ProfileLookupPanel_"],[class*="ProfileVisitorInteractions_"],[class*="ConnectionsMemoriesPanel_"],[class*="FriendsPanel_"],[class*="DailyLifePersonalizationPanel_"])
+:is(h2,h3,h4,h5,strong){color:var(--hanami-portal-text,var(--phase-g-navy))}
+
+/* Tabs: one height, no accidental wrapping, active state stays readable. */
+:is([role="tablist"],[class*="tabs" i],[class*="tabList" i],[class*="tabBar" i],[class*="switcher" i]){align-items:stretch;min-width:0}
+:is([role="tab"],[class*="tabs" i]>button,[class*="tabList" i]>button,[class*="tabBar" i]>button,[class*="switcher" i]>button){
+  min-height:40px;box-sizing:border-box;margin:0;line-height:1.2;
+}
+
+/* Form controls should never be wider than the workspace. */
+main[class*="PortalAppPage_page"] :is(input,textarea,select){max-width:100%;font-family:inherit;color:inherit}
+main[class*="PortalAppPage_page"] textarea{resize:vertical}
+main[class*="PortalAppPage_page"] :is(img,video,canvas,svg){max-width:100%}
+
+/* Tables remain usable on small screens instead of clipping the dashboard. */
+main[class*="PortalAppPage_page"] :is([class*="tableWrap" i],[class*="tableWrapper" i],[class*="tableContainer" i]){max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+main[class*="PortalAppPage_page"] table{max-width:100%}
+
+/* Legacy blue/pink utility surfaces that survive inside Student/Faculty pages. */
+:is([class*="DashboardShell_"],[class*="SocialCustomizationPanel_"],[class*="ProfileLookupPanel_"],[class*="FriendsPanel_"])
+[style*="#17375f"]{color:var(--hanami-portal-text,var(--phase-g-navy))}
+
+@media(max-width:760px){
+  :is([role="tablist"],[class*="tabs" i],[class*="tabList" i],[class*="tabBar" i],[class*="switcher" i]){
+    display:flex!important;overflow-x:auto!important;overflow-y:hidden!important;flex-wrap:nowrap!important;
+    -webkit-overflow-scrolling:touch;scrollbar-width:thin;
+  }
+  :is([role="tab"],[class*="tabs" i]>button,[class*="tabList" i]>button,[class*="tabBar" i]>button,[class*="switcher" i]>button){
+    flex:0 0 auto!important;white-space:nowrap!important;
+  }
+  [class*="DashboardShell_content"],
+  [class*="DashboardShell_workspace"]{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+}

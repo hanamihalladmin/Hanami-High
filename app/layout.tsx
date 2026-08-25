@@ -40,6 +40,7 @@ import "./post-phase5-bugfix.css";
 import "./rebuild-tokens.css";
 import "./phase-c-public-followups.css";
 import "./phase-f-profile-customization.css";
+import "./phase-g-integration-qa.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
