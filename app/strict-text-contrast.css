@@ -1,0 +1,39 @@
+/* Global text-color contract: readable black on light surfaces, white on dark/colored surfaces. */
+html,body{color:#000;}
+body :where(h1,h2,h3,h4,h5,h6,p,span,small,strong,b,em,i,label,legend,li,dt,dd,td,th,caption,summary,a,button,input,textarea,select,option){
+  text-decoration-color:currentColor;
+}
+body :where(input,textarea,select){color:#000;}
+body :where(input,textarea)::placeholder{color:currentColor!important;opacity:.7;}
+body :where(button,a,[role="button"],[role="tab"],[role="link"]){text-decoration-color:currentColor;}
+
+/* First-paint fallbacks for the major filled navigation/shell surfaces. The runtime
+   refines every text-bearing element from its actual computed background. */
+[class*="globalNav"],
+[class*="GlobalNav"],
+[class*="sidebar"],
+[class*="Sidebar"],
+[class*="navRail"],
+[class*="NavRail"],
+[class*="portalRail"],
+[class*="PortalRail"],
+[class*="footer"],
+[class*="Footer"]{
+  color:#fff;
+}
+[class*="globalNav"] *,
+[class*="GlobalNav"] *,
+[class*="sidebar"] *,
+[class*="Sidebar"] *,
+[class*="navRail"] *,
+[class*="NavRail"] *,
+[class*="portalRail"] *,
+[class*="PortalRail"] *,
+[class*="footer"] *,
+[class*="Footer"] *{
+  color:inherit;
+}
+
+/* Runtime-applied values are deliberately limited to the requested two colors. */
+[data-hanami-contrast="black"]{color:#000!important;}
+[data-hanami-contrast="white"]{color:#fff!important;}
