@@ -1,0 +1,45 @@
+:root{
+  --hh-navy:#17283c;
+  --hh-navy-deep:#0f1c2b;
+  --hh-sage:#9ba891;
+  --hh-sage-deep:#78856f;
+  --hh-ivory:#f3efe4;
+  --hh-paper:#fffdf8;
+  --hh-rose:#c58e93;
+  --hh-rose-deep:#9e6870;
+  --hh-ink:#26343e;
+  --hh-muted:#68736c;
+  --hh-line:#c9c2b4;
+  --hh-line-soft:#ddd6c9;
+  --hh-wash:#ebe6da;
+  --hh-success:#647a5e;
+  --hh-warning:#9a7443;
+  --hh-danger:#8e4f55;
+  --hh-space-1:4px;
+  --hh-space-2:8px;
+  --hh-space-3:12px;
+  --hh-space-4:16px;
+  --hh-space-5:20px;
+  --hh-space-6:24px;
+  --hh-space-8:32px;
+  --hh-space-10:40px;
+  --hh-page-max:1440px;
+  --hh-public-gutter:clamp(14px,3vw,34px);
+  --hh-portal-gutter:clamp(18px,2.5vw,36px);
+  --hh-sidebar:204px;
+  --hh-font-ui:Arial,Helvetica,sans-serif;
+  --hh-font-serif:Georgia,"Times New Roman",serif;
+  --hh-radius:0px;
+  --hh-shadow:2px 2px 0 rgba(23,40,60,.10);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--hh-ivory)}
+body{margin:0;background:var(--hh-ivory);color:var(--hh-ink)}
+
+.hh-rebuild-scope{color:var(--hh-ink);font-family:var(--hh-font-ui)}
+.hh-rebuild-scope :where(h1,h2,h3,h4){color:var(--hh-navy);font-family:var(--hh-font-serif)}
+.hh-rebuild-scope :where(button,input,select,textarea){font:inherit}
+.hh-rebuild-scope :where(button,a,input,select,textarea){border-radius:var(--hh-radius)}
+.hh-rebuild-scope :where(img,svg,video,canvas){max-width:100%}
+.hh-rebuild-scope :where(.hh-min-zero){min-width:0}
