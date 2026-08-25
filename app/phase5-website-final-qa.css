@@ -1,0 +1,127 @@
+/* Phase 5 website-wide final QA layer.
+   Loaded last so the entire site shares the Hanami palette and aligned tabs. */
+
+:root{
+  --qa-navy:var(--hanami-navy,#17283c);
+  --qa-navy-deep:var(--hanami-navy-deep,#0f1c2b);
+  --qa-sage:var(--hanami-sage,#9ba891);
+  --qa-sage-deep:var(--hanami-sage-deep,#78856f);
+  --qa-ivory:var(--hanami-ivory,#f3efe4);
+  --qa-paper:var(--hanami-paper,#fffdf8);
+  --qa-rose:var(--hanami-rose-deep,#9e6870);
+  --qa-line:var(--hanami-line,#c9c2b4);
+  --qa-muted:var(--hanami-muted,#68736c);
+  --qa-soft:color-mix(in srgb,var(--qa-sage) 18%,var(--qa-paper) 82%);
+}
+
+/* Public site shell and all public route cards. */
+.site-page:not(.portal-page){background:var(--qa-paper)!important;color:var(--qa-navy)!important}
+.site-page:not(.portal-page) .network-strip{background:var(--qa-navy)!important;color:#fffdf8!important}
+.site-page:not(.portal-page) .brand-row{background:var(--qa-paper)!important;border-color:var(--qa-navy)!important}
+.site-page:not(.portal-page) .nav-row{background:var(--qa-sage)!important;border-color:var(--qa-navy)!important}
+.site-page:not(.portal-page) .nav-row nav{display:flex!important;align-items:stretch!important;gap:0!important}
+.site-page:not(.portal-page) .nav-row nav a,
+.site-page:not(.portal-page) .portal-button{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  box-sizing:border-box!important;min-height:40px!important;margin:0!important;padding:8px 13px!important;
+  border:0!important;border-right:1px solid color-mix(in srgb,var(--qa-navy) 34%,transparent)!important;
+  border-radius:0!important;background:transparent!important;color:var(--qa-navy)!important;box-shadow:none!important;
+  line-height:1.2!important;text-align:center!important;
+}
+.site-page:not(.portal-page) .nav-row nav a.active,
+.site-page:not(.portal-page) .portal-button{background:var(--qa-paper)!important;color:var(--qa-navy)!important;box-shadow:inset 0 -3px 0 var(--qa-navy)!important}
+.site-page:not(.portal-page) .panel,
+.site-page:not(.portal-page) .hero-panel,
+.site-page:not(.portal-page) .info-section,
+.site-page:not(.portal-page) .feature-grid,
+.site-page:not(.portal-page) .site-search{border-radius:0!important;border-color:var(--qa-line)!important;background:var(--qa-paper)!important;box-shadow:2px 2px 0 rgba(23,40,60,.06)!important}
+.site-page:not(.portal-page) .panel-title,
+.site-page:not(.portal-page) .section-heading{background:var(--qa-soft)!important;border-color:var(--qa-line)!important;color:var(--qa-navy)!important}
+.site-page:not(.portal-page) .primary-action,
+.site-page:not(.portal-page) .site-search button{border-radius:0!important;background:var(--qa-navy)!important;border-color:var(--qa-navy-deep)!important;color:#fffdf8!important;box-shadow:none!important}
+.site-page:not(.portal-page) .secondary-action{border-radius:0!important;background:var(--qa-paper)!important;border-color:var(--qa-navy)!important;color:var(--qa-navy)!important;box-shadow:none!important}
+
+/* Shared portal route canvas: Student, Faculty, Admin, Owner and helper portals. */
+main[class*="PortalAppPage_page"]{background:var(--qa-ivory)!important;color:var(--qa-navy)!important}
+main[class*="PortalAppPage_page"] section,
+main[class*="PortalAppPage_page"] article,
+main[class*="PortalAppPage_page"] form,
+main[class*="PortalAppPage_page"] details,
+main[class*="PortalAppPage_page"] table{border-radius:0!important}
+main[class*="PortalAppPage_page"] input,
+main[class*="PortalAppPage_page"] textarea,
+main[class*="PortalAppPage_page"] select,
+main[class*="PortalAppPage_page"] button{border-radius:0!important}
+
+/* Catch legacy inline color fragments still present in older role panels. */
+main[class*="PortalAppPage_page"] [style*="background:#eef3f8"],
+main[class*="PortalAppPage_page"] [style*="background: #eef3f8"],
+main[class*="PortalAppPage_page"] [style*="background:#edf2f7"],
+main[class*="PortalAppPage_page"] [style*="background: #edf2f7"],
+main[class*="PortalAppPage_page"] [style*="background:#f7f9fb"],
+main[class*="PortalAppPage_page"] [style*="background: #f7f9fb"]{background:var(--qa-soft)!important}
+main[class*="PortalAppPage_page"] [style*="background:#17375f"],
+main[class*="PortalAppPage_page"] [style*="background: #17375f"]{background:var(--qa-navy)!important;color:#fffdf8!important}
+main[class*="PortalAppPage_page"] [style*="background:#8f365b"],
+main[class*="PortalAppPage_page"] [style*="background: #8f365b"]{background:var(--qa-rose)!important;color:#fffdf8!important}
+main[class*="PortalAppPage_page"] [style*="color:#17375f"],
+main[class*="PortalAppPage_page"] [style*="color: #17375f"]{color:var(--qa-navy)!important}
+main[class*="PortalAppPage_page"] [style*="color:#8f365b"],
+main[class*="PortalAppPage_page"] [style*="color: #8f365b"]{color:var(--qa-rose)!important}
+main[class*="PortalAppPage_page"] [style*="#9babc0"],
+main[class*="PortalAppPage_page"] [style*="#aeb9c5"],
+main[class*="PortalAppPage_page"] [style*="#ccd5df"]{border-color:var(--qa-line)!important}
+
+/* Universal tabs and tab-like button groups. */
+[role="tablist"],
+[class*="tabs" i],
+[class*="tabList" i],
+[class*="tabBar" i],
+[class*="switcher" i]{align-items:stretch!important}
+[role="tab"]{min-height:38px!important}
+[role="tab"],
+[class*="tabs" i]>button,
+[class*="tabList" i]>button,
+[class*="tabBar" i]>button,
+[class*="switcher" i]>button{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  box-sizing:border-box!important;margin:0!important;line-height:1.2!important;vertical-align:middle!important;
+}
+
+/* Student/Faculty left navigation, account navigation, Admin/Owner tab rows. */
+[class*="DashboardShell_primaryNav"],
+[class*="DashboardShell_navGroup"],
+[class*="DashboardShell_accountNav"],
+:is([class*="Admin"],[class*="Owner"])[class*="nav"],
+:is([class*="Admin"],[class*="Owner"])[class*="tabs"]{align-items:stretch!important}
+[class*="DashboardShell_primaryNav"] [class*="DashboardShell_navGroup"]>button,
+[class*="DashboardShell_accountNav"]>button,
+[class*="DashboardShell_accountNav"]>a,
+:is([class*="Admin"],[class*="Owner"])[class*="nav"]>button,
+:is([class*="Admin"],[class*="Owner"])[class*="nav"]>a,
+:is([class*="Admin"],[class*="Owner"])[class*="tabs"]>button,
+:is([class*="Admin"],[class*="Owner"])[class*="tabs"]>a{
+  box-sizing:border-box!important;min-height:38px!important;margin:0!important;align-items:center!important;line-height:1.2!important;
+}
+
+/* Database/table polish everywhere. */
+table{border-collapse:collapse!important;background:var(--qa-paper)!important}
+th{background:var(--qa-soft)!important;color:var(--qa-navy)!important}
+th,td{border-color:var(--qa-line)!important}
+
+/* Mobile QA: tabs stay aligned and scroll rather than wrap into uneven rows. */
+@media(max-width:760px){
+  .site-page:not(.portal-page) .nav-row nav,
+  [role="tablist"],
+  [class*="tabs" i],
+  [class*="tabList" i],
+  [class*="tabBar" i],
+  [class*="switcher" i]{overflow-x:auto!important;flex-wrap:nowrap!important;scrollbar-width:thin!important}
+  .site-page:not(.portal-page) .nav-row nav a,
+  [role="tab"],
+  [class*="tabs" i]>button,
+  [class*="tabList" i]>button,
+  [class*="tabBar" i]>button,
+  [class*="switcher" i]>button{flex:0 0 auto!important;white-space:nowrap!important}
+  [class*="DashboardShell_primaryNav"] [class*="DashboardShell_navGroup"]>button{height:58px!important;min-height:58px!important;align-content:center!important}
+}
