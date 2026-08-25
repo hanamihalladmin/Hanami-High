@@ -1,0 +1,48 @@
+/* Phase F profile/customization compatibility layer.
+   This is intentionally loaded after the website-wide QA layer so Student and
+   Faculty character appearance settings are not flattened by legacy sharp-corner rules.
+   Admin and Owner remain sharp because they do not set --user-radius. */
+
+main[class*="PortalAppPage_page"] section,
+main[class*="PortalAppPage_page"] article,
+main[class*="PortalAppPage_page"] form,
+main[class*="PortalAppPage_page"] details,
+main[class*="PortalAppPage_page"] table{
+  border-radius:var(--user-radius,0px)!important;
+}
+
+main[class*="PortalAppPage_page"] input,
+main[class*="PortalAppPage_page"] textarea,
+main[class*="PortalAppPage_page"] select,
+main[class*="PortalAppPage_page"] button{
+  border-radius:var(--user-radius,0px)!important;
+}
+
+/* Profile Studio deliberately follows the character's chosen surface, text,
+   accent and radius while retaining a readable school-workspace baseline. */
+[class*="ProfileDesignWorkspace_workspace"],
+[class*="PortalAppearancePanel_panel"],
+[class*="CharacterProfilePanel_panel"],
+[class*="ProfileStudioPanel_studio"],
+[class*="ProfileTemplateGallery_gallery"],
+[class*="ProfileSavedDesignsPanel_panel"]{
+  color:var(--hanami-custom-text,var(--hanami-portal-text,#26323d));
+}
+
+[class*="ProfileDesignWorkspace_tabs"]>button,
+[class*="ProfileDesignWorkspace_actions"]>button,
+[class*="ProfileDesignWorkspace_actions"]>label{
+  box-sizing:border-box!important;
+}
+
+@media(max-width:760px){
+  [class*="ProfileDesignWorkspace_tabs"]{
+    overflow-x:auto!important;
+    flex-wrap:nowrap!important;
+    scrollbar-width:thin;
+  }
+  [class*="ProfileDesignWorkspace_tabs"]>button{
+    flex:0 0 150px!important;
+    white-space:normal!important;
+  }
+}
