@@ -1,0 +1,120 @@
+/* Post-rebuild screenshot regressions */
+
+/* Keep page title, description, and action rows on the same visual grid. */
+[class*="DashboardShell_"] [class*="topbar"],
+[class*="DashboardShell_"] [class*="context"],
+[class*="DashboardShell_"] [class*="header"],
+[class*="PortalWorkspaceShell_"] [class*="header"],
+[class*="PortalContextBar_"] {
+  box-sizing:border-box;
+  min-width:0;
+  width:100%;
+}
+
+[class*="DashboardShell_"] [class*="topbar"] > *,
+[class*="DashboardShell_"] [class*="context"] > *,
+[class*="PortalContextBar_"] > * {
+  min-width:0;
+  align-self:center;
+}
+
+[class*="DashboardShell_"] h1,
+[class*="DashboardShell_"] h2,
+[class*="DashboardShell_"] h3,
+[class*="DashboardShell_"] p {
+  max-width:100%;
+}
+
+/* Re-skin remaining legacy public/standalone school pages without altering their data logic. */
+body:has(a[href*="/rooms"]) main,
+body:has(a[href*="/elections"]) main,
+body:has([class*="StandaloneCommunityPage_"]) main,
+body:has([class*="StandaloneCommunityPage_"]) [class*="StandaloneCommunityPage_"] {
+  background:var(--hanami-paper,#fffdf8);
+  color:var(--hanami-ink,#17283c);
+}
+
+body:has(a[href*="/rooms"]) section,
+body:has(a[href*="/elections"]) section,
+body:has([class*="StandaloneCommunityPage_"]) section {
+  border-color:color-mix(in srgb,var(--hanami-ink,#17283c) 24%,transparent);
+}
+
+/* Student-owned classroom banner layer. */
+[data-hanami-course-banner="true"] {
+  position:relative;
+  isolation:isolate;
+  padding-top:0!important;
+}
+
+[data-hanami-course-banner="true"]::before {
+  content:"";
+  display:block;
+  width:100%;
+  min-height:150px;
+  margin-bottom:22px;
+  border:1px solid rgba(23,40,60,.24);
+  background-color:var(--student-course-banner-color,#9caa92);
+  background-image:var(--student-course-banner-image,none);
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-position:var(--student-course-banner-position,center);
+}
+
+.hanami-course-banner-editor {
+  position:absolute;
+  z-index:3;
+  top:12px;
+  right:12px;
+  width:min(330px,calc(100% - 24px));
+  border:1px solid #17283c;
+  background:#fffdf8;
+  color:#17283c;
+  box-shadow:0 3px 0 rgba(23,40,60,.18);
+}
+
+.hanami-course-banner-editor > summary {
+  cursor:pointer;
+  padding:9px 11px;
+  font:700 12px/1.2 Arial,sans-serif;
+  letter-spacing:.03em;
+  background:#f3efe4;
+}
+
+.hanami-course-banner-controls {
+  display:grid;
+  gap:9px;
+  padding:11px;
+  font:12px/1.35 Arial,sans-serif;
+}
+
+.hanami-course-banner-controls label {
+  display:grid;
+  gap:4px;
+}
+
+.hanami-course-banner-controls input,
+.hanami-course-banner-controls select,
+.hanami-course-banner-controls button {
+  min-height:34px;
+  border:1px solid #738094;
+  background:#fff;
+  color:#17283c;
+  padding:6px 8px;
+}
+
+.hanami-course-banner-controls div {
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+
+.hanami-course-banner-controls button {
+  cursor:pointer;
+  font-weight:700;
+}
+
+@media (max-width:760px){
+  [data-hanami-course-banner="true"]::before{min-height:110px;}
+  .hanami-course-banner-editor{position:relative;top:auto;right:auto;width:100%;margin-bottom:10px;}
+}
