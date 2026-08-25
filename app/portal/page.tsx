@@ -4,17 +4,62 @@ import styles from "./PortalGatewayCompact.module.css";
 
 export default function PortalPage(){
   const currentDate=hanamiRoleplayDate();
-  return <main className="site-page portal-page">
+  return <main className={styles.shell}>
     <a className="skip-link" href="#portal-main">Skip to main content</a>
-    <header className="school-header">
-      <div className="network-strip">HANAMI HIGH SCHOOL • SECURE SCHOOL NETWORK • EST. 2006</div>
-      <div className="brand-row"><a className="brand-lockup brand-link" href="../"><div className="school-mark" style={{background:"transparent",border:0,boxShadow:"none"}}><img src="../hanami-high-portal-icon.png?v=20260825b" alt="Hanami High" style={{width:"100%",height:"100%",objectFit:"contain",background:"transparent"}}/></div><div><p className="jp-name">花見高等学校</p><p className="brand-name">HANAMI HIGH SCHOOL</p><p className="brand-subtitle">Student & Faculty Portal</p></div></a><div className="school-clock"><strong>{currentDate.toUpperCase()}</strong><span>HANAMI CITY • JAPAN STANDARD TIME • SECURE PORTAL GATEWAY</span></div></div>
-      <div className="nav-row"><nav><a href="../">School Home</a><a href="../about/">About</a><a href="../academics/">Academics</a><a href="../campus-life/">Campus Life</a><a href="./admin/">Administration</a></nav><a className="portal-button active" href="./">Login / Portal</a></div>
+
+    <div className={styles.utilityBar}>
+      <span>HANAMI HIGH SCHOOL • SECURE SCHOOL NETWORK • EST. 2006</span>
+      <nav><a href="../help/">Help Desk</a><a href="../">Public Site</a></nav>
+    </div>
+
+    <header className={styles.masthead}>
+      <a className={styles.brandBlock} href="../" aria-label="Hanami High School home">
+        <img className={styles.crest} src="../hanami-high-portal-icon.png?v=20260825b" alt="Hanami High crest" />
+        <div>
+          <p>花見高等学校</p>
+          <h1>HANAMI HIGH SCHOOL</h1>
+          <span>Student & Faculty Portal</span>
+        </div>
+      </a>
+      <div className={styles.schoolMeta}>
+        <strong>{currentDate.toUpperCase()}</strong>
+        <span>HANAMI CITY • JAPAN STANDARD TIME</span>
+        <span>SECURE PORTAL GATEWAY</span>
+      </div>
     </header>
-    <section className={styles.gateway} id="portal-main">
-      <header className={styles.heading}><div><p className="eyebrow">HANAMI HIGH • ACCOUNT GATEWAY</p><h1>Choose your Hanami character.</h1><p><strong>Maximum two characters.</strong> Sign in with Discord, choose a student or faculty identity, and open the portal that matches who you are playing. <strong>Private until you publish.</strong> <strong>Website messages only.</strong></p></div><div className={styles.badge}><strong>PRIVATE SCHOOL DESK</strong><span>Student • Faculty • Administration • Owner</span></div></header>
-      <PortalAuthPanel/>
-    </section>
-    <footer><p>HANAMI HIGH SCHOOL • SECURE PORTAL FOUNDATION • 2006</p><nav><a href="../">School Home</a><a href="./admin/">Administration</a><a href="./help/">Help</a><a href="#portal-main">Back to top ↑</a></nav></footer>
+
+    <nav className={styles.primaryNav} aria-label="Portal navigation">
+      <a href="../">School Home</a>
+      <a href="../about/">About</a>
+      <a href="../academics/">Academics</a>
+      <a href="../campus-life/">Campus Life</a>
+      <a href="./admin/">Administration</a>
+      <a className={styles.activeNav} href="./">Login / Portal</a>
+    </nav>
+
+    <div className={styles.pageFrame} id="portal-main">
+      <div className={styles.breadcrumbs}><b>HANAMI HIGH</b> / SECURE PORTAL / CHARACTER GATEWAY</div>
+      <section className={styles.gateway}>
+        <div className={styles.frameLabel}><span>PRIVATE SCHOOL DESK</span><span>STUDENT • FACULTY • ADMINISTRATION • OWNER</span></div>
+        <header className={styles.heading}>
+          <div>
+            <p className={styles.eyebrow}>HANAMI HIGH • ACCOUNT GATEWAY</p>
+            <h2>Choose your Hanami character.</h2>
+            <p><strong>Maximum two characters.</strong> Sign in with Discord, choose a student or faculty identity, and open the portal that matches who you are playing. Your character desk stays private until you publish profile content.</p>
+          </div>
+          <aside className={styles.gatewayNote}>
+            <b>HOW IT WORKS</b>
+            <ol><li>Sign in with Discord</li><li>Choose your character</li><li>Enter the correct portal</li></ol>
+            <span>Website messages only • no email inbox required</span>
+          </aside>
+        </header>
+        <div className={styles.authSurface}><PortalAuthPanel/></div>
+      </section>
+    </div>
+
+    <footer className={styles.footer}>
+      <p>HANAMI HIGH SCHOOL • SECURE PORTAL FOUNDATION • 2006</p>
+      <nav><a href="../">School Home</a><a href="./admin/">Administration</a><a href="./help/">Help</a><a href="#portal-main">Back to top ↑</a></nav>
+    </footer>
   </main>;
 }
