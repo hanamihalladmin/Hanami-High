@@ -34,7 +34,7 @@ export default function HomeDashboard({currentDate}:Props){
 
   <header className={styles.masthead}>
    <div className={styles.brandBlock}>
-    <img className={styles.crest} src="./hanami-high-portal-icon-black.svg?v=20260823a" alt="Hanami High crest"/>
+    <img className={styles.crest} src="./hanami-high-portal-icon.png?v=20260825b" alt="Hanami High crest"/>
     <div>
      <p>PUBLIC SCHOOL NETWORK · ACADEMIC YEAR 2006</p>
      <h1>Hanami High School</h1>
