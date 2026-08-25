@@ -1,44 +1,40 @@
 import FacultyDirectory from "../components/faculty-directory";
-import {hanamiRoleplayDate} from "../components/roleplay-date";
+import PublicSchoolShell from "../components/PublicSchoolShell";
+import styles from "../PublicRebuild.module.css";
 
-const values = [
-  ["学", "Curiosity", "Learn boldly, ask thoughtful questions, and share what you discover."],
-  ["心", "Character", "Act with courage, accountability, kindness, and respect for the community."],
-  ["結", "Connection", "Build friendships across classrooms, clubs, teams, and generations."],
+const sideItems=[
+  {id:"story",label:"Our Story",href:"/about/#story"},
+  {id:"mission",label:"Mission & Values",href:"/about/#mission"},
+  {id:"leadership",label:"Leadership",href:"/about/#leadership"},
+  {id:"traditions",label:"Traditions",href:"/about/#traditions"},
+  {id:"profile",label:"School Profile",href:"/about/#profile"},
+  {id:"directory",label:"Faculty & Staff",href:"/about/#directory"},
+  {id:"contact",label:"Contact",href:"/about/#contact"},
+];
+
+const traditions=[
+  ["APRIL","First Bloom Assembly","The new school year opens beneath the courtyard cherry trees."],
+  ["SEPTEMBER","Autumn Culture Festival","Clubs, classes, and performers transform campus for a full community day."],
+  ["DECEMBER","Lantern Walk","Students recognize the people who helped them grow during the year."],
+  ["MARCH","Petal Farewell","Graduating students leave a written wish in the school archive."],
 ] as const;
 
-const traditions = [
-  ["APRIL", "First Bloom Assembly", "The new school year opens beneath the courtyard cherry trees."],
-  ["SEPTEMBER", "Autumn Culture Festival", "Clubs, classes, and performers transform campus for a full community day."],
-  ["DECEMBER", "Lantern Walk", "Students recognize the people who helped them grow during the year."],
-  ["MARCH", "Petal Farewell", "Graduating students leave a written wish in the school archive."],
-] as const;
+export default function AboutPage(){
+ return <PublicSchoolShell active="about" sectionTitle="ABOUT HANAMI" breadcrumb="About Hanami" sideItems={sideItems} sideActive="story" stickyUtility lastUpdated="08.25.2006">
+  <div className={styles.pageTitle}><small>HANAMI HIGH · SCHOOL PROFILE</small><h1>About Hanami High</h1><p>Founded in 1836 and represented here through the school network&apos;s 2006 edition, Hanami carries a long institutional history into a new academic year.</p></div>
 
-export default function AboutPage() {
-  const currentDate = hanamiRoleplayDate();
-  return (
-    <main className="site-page about-page">
-      <a className="skip-link" href="#about-main">Skip to main content</a>
-      <header className="school-header" aria-label="Hanami High header">
-        <div className="network-strip">HANAMI HIGH SCHOOL • PUBLIC SCHOOL NETWORK • EST. 1836</div>
-        <div className="brand-row"><a className="brand-lockup brand-link" href="../"><div className="school-mark" aria-hidden="true"><span>花</span></div><div><p className="jp-name">花見高等学校</p><p className="brand-name">HANAMI HIGH SCHOOL</p><p className="brand-subtitle">Knowledge • Character • Community</p></div></a><div className="school-clock"><strong>{currentDate.toUpperCase()}</strong><span>HANAMI CITY • ROLEPLAY YEAR 2006</span></div></div>
-        <div className="nav-row"><nav aria-label="Primary navigation"><a href="../">Home</a><a className="active" href="./">About</a><a href="../academics/">Academics</a><a href="../campus-life/">Campus Life</a><a href="../campus-life/#directory">Clubs</a><a href="../calendar/">Calendar</a><a href="../#news">News</a><a href="#directory">People</a><a href="../campus-life/#gallery">Gallery</a></nav><a className="portal-button" href="../portal/">↪ Login / Portal</a></div>
-      </header>
-      <div className="about-breadcrumb"><a href="../">School Home</a><span>›</span><strong>About Hanami</strong></div>
-      <div className="about-layout" id="about-main">
-        <aside className="about-nav panel" aria-label="About page sections"><h2 className="panel-title">ABOUT HANAMI</h2><nav className="link-list"><a href="#story"><span>01</span>Our Story</a><a href="#mission"><span>02</span>Mission & Values</a><a href="#leadership"><span>03</span>Leadership</a><a href="#traditions"><span>04</span>Traditions</a><a href="#statistics"><span>05</span>School Profile</a><a href="#directory"><span>06</span>Faculty & Staff</a><a href="#contact"><span>07</span>Contact</a></nav><div className="panel-body about-note"><p className="eyebrow">VISITING CAMPUS?</p><p>Public office hours are Monday–Friday, 8:00 AM–3:30 PM JST.</p><a href="#contact">Plan your visit →</a></div></aside>
-        <div className="about-content">
-          <section className="about-hero" id="story"><p className="eyebrow">HANAMI HIGH • ABOUT OUR SCHOOL</p><div><div><h1>Nearly two centuries<br />of Hanami tradition.</h1><p>Hanami High is a historic secondary school in Hanami City, Japan. Founded in 1836, the school has survived political upheaval, financial collapse, gang influence, wartime fear, occupation, and repeated reinvention. In 2006, a new generation is inheriting that difficult legacy.</p></div><div className="about-year"><small>FOUNDED</small><strong>1836</strong><span>花見市</span></div></div></section>
-          <section className="history-panel info-section"><div className="section-heading"><h2>OUR STORY</h2><span>1836–2006</span></div><div className="history-copy"><p className="dropcap">Hanami began in 1836 as an ordinary local school and grew steadily through the nineteenth century. The Meiji Restoration of 1868 accelerated that growth, helping Hanami earn a reputation as one of the area&apos;s better-known schools. That success did not last. Rising debt weakened the surrounding district, and gangs began treating the campus and neighborhood as fertile recruiting ground.</p><p>In 1885, Headmistress Sakura Kawasaki took control. The eldest daughter of a yakuza boss, she understood the codes, pride, and pressure that shaped the young people around her. Rather than being intimidated by them, she turned that same philosophy back on the school&apos;s troublemakers and rebuilt Hanami around discipline, resilience, and order.</p><p>The school endured the fear surrounding Pearl Harbor and the upheaval of the wartime and postwar years. During the Western occupation, leadership eventually passed to Sakura&apos;s daughter. In 1952, Nora Kawasaki became headmistress and continued the family&apos;s iron-fisted approach while improving the appearance, organization, and public reputation of the school. Under Nora, Hanami received national educational recognition and later earned the Medal for Education and Culture before her retirement.</p><p>Now, in 2006, Akira has taken over as principal—the first male head of Hanami High since before Sakura&apos;s tenure. He inherits a school known as much for surviving its history as for its academics, traditions, and fiercely guarded sense of identity.</p></div></section>
-          <section className="info-section" id="mission"><div className="section-heading"><h2>MISSION & VALUES</h2><span>WHAT GUIDES US</span></div><div className="mission-statement"><p>Our mission is to help every student become a capable learner, a grounded individual, and an active member of their community.</p></div><div className="values-grid">{values.map(([icon,title,copy]) => <article key={title}><span>{icon}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>
-          <section className="info-section" id="leadership"><div className="section-heading"><h2>SCHOOL LEADERSHIP</h2><span>OFFICE DIRECTORY</span></div><div className="leadership-grid"><article><div className="portrait-placeholder">校</div><div><p className="eyebrow">HEAD OF SCHOOL</p><h3>Principal Akira</h3><p>Current headmaster of Hanami High and the first male principal since before Sakura Kawasaki&apos;s tenure began in 1885.</p><a href="../portal/">Message through portal →</a></div></article><article><div className="portrait-placeholder">生</div><div><p className="eyebrow">STUDENT AFFAIRS</p><h3>Student Life Office</h3><p>Clubs, conduct, attendance support, events, and student wellbeing.</p><a href="../portal/student/">Message through Student Portal →</a></div></article></div><p className="content-note">Additional named roleplay staff appear here as faculty profiles are approved.</p></section>
-          <section className="info-section" id="traditions"><div className="section-heading"><h2>HANAMI TRADITIONS</h2><span>GENERATIONAL SCHOOL CULTURE</span></div><div className="traditions-list">{traditions.map(([month,title,copy]) => <article key={title}><time>{month}</time><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div></section>
-          <section className="info-section" id="statistics"><div className="section-heading"><h2>SCHOOL AT A GLANCE</h2><span>2006 SCHOOL PROFILE</span></div><div className="statistics-grid"><article><strong>1836</strong><span>Founding year</span></article><article><strong>170</strong><span>Years of history in 2006</span></article><article><strong>3</strong><span>Student year levels</span></article><article><strong>JST</strong><span>Shared school time</span></article></div></section>
-          <FacultyDirectory />
-          <section className="info-section" id="contact"><div className="section-heading"><h2>CONTACT INFORMATION</h2><span>HANAMI CITY, JAPAN</span></div><div className="contact-grid"><article><h3>General Office</h3><p>For records, school visits, and general questions.</p><a href="../portal/">Open a School Office request →</a><p>Monday–Friday<br />8:00 AM–3:30 PM JST</p></article><article><h3>Student Support</h3><p>For counseling, accessibility, health, safety, and student services.</p><a href="../portal/student/">Request private support →</a><p>Support conversations stay inside the authenticated portal.</p></article><article><h3>Portal Help</h3><p>For Discord sign-in, account access, profiles, and technical problems.</p><a href="../portal/">Open portal help →</a><p>Never share privileged portal passwords in messages.</p></article></div></section>
-        </div>
-      </div>
-      <footer><p>HANAMI HIGH SCHOOL • 花見高等学校 • HANAMI CITY • EST. 1836 • 2006</p><nav><a href="#contact">Contact</a><a href="../portal/">Portal Help</a><a href="#about-main">Back to top ↑</a></nav></footer>
-    </main>
-  );
+  <section className={styles.section} id="story"><div className={styles.sectionHead}><h2>Our Story</h2><span>1836–2006</span></div><div className={styles.sectionBody}><p>Hanami began in 1836 as an ordinary local school and grew steadily through the nineteenth century. The Meiji Restoration of 1868 accelerated that growth, helping Hanami earn a reputation as one of the area&apos;s better-known schools.</p><p>In 1885, Headmistress Sakura Kawasaki took control during a difficult period for the school and surrounding district. Her leadership rebuilt Hanami around discipline, resilience, and order.</p><p>The school endured wartime upheaval and the postwar years. In 1952, Nora Kawasaki became headmistress, continuing the family&apos;s strict approach while improving the school&apos;s organization and public reputation. In 2006, Principal Akira inherits that complicated legacy as the first male head of Hanami High since before Sakura&apos;s tenure.</p><div className={styles.note}>School founded: <strong>1836</strong> · Current roleplay/network era: <strong>2006</strong>. These dates now describe different parts of Hanami&apos;s identity rather than conflicting with each other.</div></div></section>
+
+  <section className={styles.section} id="mission"><div className={styles.sectionHead}><h2>Mission & Values</h2><span>WHAT GUIDES US</span></div><div className={styles.sectionBody}><p>Our mission is to help every student become a capable learner, a grounded individual, and an active member of their community.</p><div className={styles.cardGrid}><article className={styles.card}><h3>Curiosity</h3><p>Learn boldly, ask thoughtful questions, and share what you discover.</p></article><article className={styles.card}><h3>Character</h3><p>Act with courage, accountability, kindness, and respect for the community.</p></article><article className={styles.card}><h3>Connection</h3><p>Build friendships across classrooms, clubs, teams, and generations.</p></article></div></div></section>
+
+  <section className={styles.section} id="leadership"><div className={styles.sectionHead}><h2>School Leadership</h2><span>OFFICE DIRECTORY</span></div><div className={styles.sectionBody}><div className={styles.cardGrid}><article className={styles.card}><h3>Principal Akira</h3><p>Current headmaster of Hanami High and the first male principal since before Sakura Kawasaki&apos;s tenure began in 1885.</p><small>HEAD OF SCHOOL</small></article><article className={styles.card}><h3>Student Life Office</h3><p>Clubs, conduct, attendance support, events, and student wellbeing.</p><small>STUDENT AFFAIRS</small></article></div></div></section>
+
+  <section className={styles.section} id="traditions"><div className={styles.sectionHead}><h2>Hanami Traditions</h2><span>ANNUAL SCHOOL CULTURE</span></div><div className={styles.sectionBody}><div className={styles.timeline}>{traditions.map(([month,title,copy])=><article key={title}><time>{month}</time><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div></div></section>
+
+  <section className={styles.section} id="profile"><div className={styles.sectionHead}><h2>School at a Glance</h2><span>2006 PROFILE</span></div><div className={styles.sectionBody}><div className={styles.factGrid}><div className={styles.fact}><strong>1836</strong><span>School founding year</span></div><div className={styles.fact}><strong>170</strong><span>Years of history in 2006</span></div><div className={styles.fact}><strong>3</strong><span>Student year levels</span></div><div className={styles.fact}><strong>JST</strong><span>Shared school timezone</span></div></div></div></section>
+
+  <section className={styles.section} id="directory"><div className={styles.sectionHead}><h2>Faculty & Staff Directory</h2><span>LIVE DIRECTORY</span></div><div className={styles.sectionBody}><FacultyDirectory/></div></section>
+
+  <section className={styles.section} id="contact"><div className={styles.sectionHead}><h2>Contact Information</h2><span>HANAMI CITY, JAPAN</span></div><div className={styles.sectionBody}><div className={styles.cardGrid}><article className={styles.card}><h3>General Office</h3><p>Records, school visits, and general questions. Monday–Friday, 8:00 AM–3:30 PM JST.</p><small>USE SCHOOL OFFICE REQUESTS IN THE PORTAL</small></article><article className={styles.card}><h3>Student Support</h3><p>Counseling, accessibility, health, safety, and student services remain inside the authenticated portal.</p><small>PRIVATE SUPPORT CHANNEL</small></article><article className={styles.card}><h3>Portal Help</h3><p>Discord sign-in, account access, profiles, and technical problems.</p><small>NEVER SHARE PRIVILEGED PASSWORDS</small></article></div></div></section>
+ </PublicSchoolShell>;
 }
