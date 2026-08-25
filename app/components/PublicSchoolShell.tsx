@@ -10,6 +10,8 @@ type Props={
   breadcrumb?:string;
   sideItems?:SideItem[];
   sideActive?:string;
+  stickyUtility?:boolean;
+  lastUpdated?:string;
   children:ReactNode;
 };
 
@@ -18,6 +20,7 @@ const NAV:NavItem[]=[
   {id:"about",label:"About",href:"/about/"},
   {id:"academics",label:"Academics",href:"/academics/"},
   {id:"student-life",label:"Student Life",href:"/campus-life/"},
+  {id:"calendar",label:"Calendar",href:"/calendar/"},
   {id:"admissions",label:"Admissions",href:"/apply/"},
   {id:"news",label:"News",href:"/newspaper/"},
   {id:"directory",label:"Directory",href:"/organizations/"},
@@ -32,10 +35,10 @@ function siteHref(path:string){
   return `${base}${path}`;
 }
 
-export default function PublicSchoolShell({active,sectionTitle="HANAMI HIGH",breadcrumb,sideItems,sideActive,children}:Props){
+export default function PublicSchoolShell({active,sectionTitle="HANAMI HIGH",breadcrumb,sideItems,sideActive,stickyUtility=false,lastUpdated="08.25.2006",children}:Props){
   return <div className={`${styles.shell} hh-rebuild-scope`}>
-    <div className={styles.utility}>
-      <span>HANAMI HIGH SCHOOL · 花見高等学校 · HANAMI CITY · EST. 2006</span>
+    <div className={`${styles.utility} ${stickyUtility?styles.utilitySticky:""}`}>
+      <span>HANAMI HIGH SCHOOL · FOUNDED 1836 · SCHOOL NETWORK ERA 2006</span>
       <nav aria-label="Utility links">
         <a href={siteHref("/#search")}>Search</a>
         <a href={siteHref("/calendar/")}>Calendar</a>
@@ -56,7 +59,7 @@ export default function PublicSchoolShell({active,sectionTitle="HANAMI HIGH",bre
       <div className={styles.meta}>
         <strong data-hanami-roleplay-clock>APRIL 7, 2006</strong>
         <span>HANAMI CITY · JAPAN STANDARD TIME</span>
-        <span>SCHOOL NETWORK · ONLINE</span>
+        <span>FOUNDED 1836 · NETWORK EDITION 2006</span>
       </div>
     </header>
     <div className={styles.navWrap}>
@@ -65,7 +68,7 @@ export default function PublicSchoolShell({active,sectionTitle="HANAMI HIGH",bre
       </nav>
     </div>
     <main className={styles.frame}>
-      <div className={styles.crumbs}>Hanami High / <b>{breadcrumb??sectionTitle}</b></div>
+      <div className={styles.crumbRow}><div className={styles.crumbs}>Hanami High / <b>{breadcrumb??sectionTitle}</b></div><div className={styles.updated}>Page last updated: {lastUpdated}</div></div>
       {sideItems?.length?<div className={styles.contentGrid}>
         <aside className={styles.pageMenu} aria-label={`${sectionTitle} page menu`}>
           <h2>{sectionTitle}</h2>
@@ -76,7 +79,7 @@ export default function PublicSchoolShell({active,sectionTitle="HANAMI HIGH",bre
     </main>
     <footer className={styles.footer}>
       <div className={styles.footerInner}>
-        <div><b>HANAMI HIGH SCHOOL NETWORK</b><small>© 2006 Hanami High School · Hanami City, Japan</small></div>
+        <div><b>HANAMI HIGH SCHOOL NETWORK</b><small>School founded 1836 · Digital network edition 2006 · Hanami City, Japan</small></div>
         <nav><a href={siteHref("/guide/")}>Guide</a><a href={siteHref("/changelog/")}>Change Log</a><a href={siteHref("/accessibility/")}>Accessibility</a><a href={siteHref("/support/")}>Support</a></nav>
         <div className={styles.retroNote}>Site rebuild · v1.0<br/><small>Best viewed with curiosity at 1024×768 or better.</small></div>
       </div>
