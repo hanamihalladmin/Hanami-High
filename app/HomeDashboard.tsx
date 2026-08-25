@@ -34,7 +34,7 @@ export default function HomeDashboard({currentDate}:Props){
 
   <header className={styles.masthead}>
    <div className={styles.brandBlock}>
-    <img className={styles.crest} src="./hanami-high-portal-icon.png?v=20260825b" alt="Hanami High crest"/>
+    <img className={styles.crest} src="/Hanami-High/hanami-high-portal-icon.png?v=20260825c" alt="Hanami High crest"/>
     <div>
      <p>PUBLIC SCHOOL NETWORK · ACADEMIC YEAR 2006</p>
      <h1>Hanami High School</h1>
@@ -69,7 +69,7 @@ export default function HomeDashboard({currentDate}:Props){
        <p>Explore academics, student life, clubs, school traditions, news, and the stories shaping Hanami from one school network designed for our community.</p>
        <div className={styles.actions}>
         <button type="button" onClick={()=>setTab("academics")}>Explore academics</button>
-        <a href="./newspaper/">Read the Chronicle</a>
+        <a className={styles.chronicleAction} href="./newspaper/">Read the Chronicle</a>
         <a href="./apply/">Apply to Hanami</a>
        </div>
       </div>
