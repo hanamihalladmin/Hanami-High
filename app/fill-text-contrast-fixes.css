@@ -1,0 +1,74 @@
+/* Deterministic contrast for filled interactive controls.
+   These rules intentionally override legacy theme colors so filled boxes never render
+   with dark/pink/navy text on a dark background. */
+
+/* Public homepage primary actions. */
+[class*="PublicRebuild_welcomeActions"] a:not(:nth-child(2)){
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+[class*="PublicRebuild_welcomeActions"] a:nth-child(2){
+  color:#000!important;
+  -webkit-text-fill-color:#000!important;
+}
+
+/* Portal character gateway handoff buttons. */
+[class*="PortalAuthPanel_portalHandoff"] a,
+[class*="PortalAuthPanel_ownerHandoff"] a{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+[class*="PortalAuthPanel_portalHandoff"] a *,
+[class*="PortalAuthPanel_ownerHandoff"] a *{
+  color:inherit!important;
+  -webkit-text-fill-color:inherit!important;
+}
+
+/* Other common dark filled actions used throughout portals and public pages. */
+.discord-button,
+[class*="primaryAction"],
+[class*="PrimaryAction"],
+[class*="darkAction"],
+[class*="DarkAction"],
+[class*="navyAction"],
+[class*="NavyAction"],
+[class*="submitButton"],
+[class*="SubmitButton"]{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+.discord-button *,
+[class*="primaryAction"] *,
+[class*="PrimaryAction"] *,
+[class*="darkAction"] *,
+[class*="DarkAction"] *,
+[class*="navyAction"] *,
+[class*="NavyAction"] *,
+[class*="submitButton"] *,
+[class*="SubmitButton"] *{
+  color:inherit!important;
+  -webkit-text-fill-color:inherit!important;
+}
+
+/* Inline legacy buttons with known Hanami dark fills. */
+[style*="background: rgb(23, 40, 60)"],
+[style*="background:#17283c"],
+[style*="background: #17283c"],
+[style*="background:#17375f"],
+[style*="background: #17375f"],
+[style*="background:#4f492e"],
+[style*="background: #4f492e"]{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+
+/* Do not allow nested legacy colored text to override a filled parent's contrast. */
+[style*="background:#17283c"] *,
+[style*="background: #17283c"] *,
+[style*="background:#17375f"] *,
+[style*="background: #17375f"] *,
+[style*="background:#4f492e"] *,
+[style*="background: #4f492e"] *{
+  color:inherit!important;
+  -webkit-text-fill-color:inherit!important;
+}
