@@ -20,6 +20,7 @@ const NAV:NavItem[]=[
   {id:"about",label:"About",href:"/about/"},
   {id:"academics",label:"Academics",href:"/academics/"},
   {id:"student-life",label:"Student Life",href:"/campus-life/"},
+  {id:"calendar",label:"Calendar",href:"/calendar/"},
   {id:"admissions",label:"Admissions",href:"/apply/"},
   {id:"news",label:"News",href:"/newspaper/"},
   {id:"directory",label:"Directory",href:"/organizations/"},
