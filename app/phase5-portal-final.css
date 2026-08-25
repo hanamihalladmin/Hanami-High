@@ -1,0 +1,114 @@
+/* Phase 5 final consistency layer: closes remaining legacy portal styling gaps. */
+section[aria-labelledby="dashboard-title"]{
+  --phase5-surface:var(--hanami-paper,#fffdf8);
+  --phase5-soft:color-mix(in srgb,var(--hanami-sage,#9ba891) 12%,var(--hanami-paper,#fffdf8) 88%);
+  --phase5-line:var(--hanami-line,#c9c2b4);
+  --phase5-ink:var(--hanami-navy,#17283c);
+  --phase5-muted:var(--hanami-muted,#68736c);
+  --phase5-rose-soft:color-mix(in srgb,var(--hanami-rose,#c58e93) 16%,var(--hanami-paper,#fffdf8) 84%);
+}
+
+section[aria-labelledby="dashboard-title"] section,
+section[aria-labelledby="dashboard-title"] article,
+section[aria-labelledby="dashboard-title"] form,
+section[aria-labelledby="dashboard-title"] table{
+  border-color:var(--phase5-line)!important;
+}
+section[aria-labelledby="dashboard-title"] article{background:var(--phase5-surface)!important;box-shadow:none!important}
+section[aria-labelledby="dashboard-title"] section>div:first-child[style*="background"],
+section[aria-labelledby="dashboard-title"] article>div:first-child[style*="background"]{background:var(--phase5-soft)!important;border-color:var(--phase5-line)!important}
+section[aria-labelledby="dashboard-title"] h4,
+section[aria-labelledby="dashboard-title"] h5,
+section[aria-labelledby="dashboard-title"] strong{color:var(--phase5-ink)}
+section[aria-labelledby="dashboard-title"] small,
+section[aria-labelledby="dashboard-title"] p{color:var(--phase5-muted)}
+
+/* Normalize older inline portal colors without changing component behavior. */
+section[aria-labelledby="dashboard-title"] [style*="#eef3f8"],
+section[aria-labelledby="dashboard-title"] [style*="#f8fafc"],
+section[aria-labelledby="dashboard-title"] [style*="#f7f9fb"]{background-color:var(--phase5-soft)!important}
+section[aria-labelledby="dashboard-title"] [style*="#17375f"]{color:var(--phase5-ink)!important}
+section[aria-labelledby="dashboard-title"] [style*="#8f365b"]{color:var(--hanami-rose-deep,#9e6870)!important}
+section[aria-labelledby="dashboard-title"] [style*="#fff0f5"]{background-color:var(--phase5-rose-soft)!important}
+section[aria-labelledby="dashboard-title"] [style*="#ccd4dc"],
+section[aria-labelledby="dashboard-title"] [style*="#cbd4dd"],
+section[aria-labelledby="dashboard-title"] [style*="#b8c2cc"],
+section[aria-labelledby="dashboard-title"] [style*="#aeb9c5"]{border-color:var(--phase5-line)!important}
+section[aria-labelledby="dashboard-title"] [style*="borderRadius"]{border-radius:0!important}
+
+/* Inline-style legacy panels */
+section[aria-label="Class competitions and Exams Week"]{border:1px solid var(--phase5-line)!important;background:var(--phase5-surface)!important}
+section[aria-label="Class competitions and Exams Week"]>div:first-child{background:var(--phase5-soft)!important;border-bottom:1px solid var(--phase5-line)!important}
+section[aria-label="Class competitions and Exams Week"] article{border:1px solid var(--phase5-line)!important;background:var(--phase5-surface)!important}
+section[aria-label="Class competitions and Exams Week"] input,
+section[aria-label="Class competitions and Exams Week"] select,
+section[aria-label="Class competitions and Exams Week"] textarea{border:1px solid #b9b2a6!important;border-radius:0!important;background:#fff!important;color:var(--phase5-ink)!important}
+section[aria-label="Class competitions and Exams Week"] button{min-height:34px!important;border:1px solid var(--hanami-navy-deep,#0f1c2b)!important;border-radius:0!important;background:var(--phase5-ink)!important;color:#fffdf8!important;font-weight:700!important}
+
+section[aria-label="Character archive and continuity"]{border:1px solid var(--phase5-line)!important;background:var(--phase5-surface)!important;box-shadow:none!important}
+section[aria-label="Character archive and continuity"]>div:first-child{padding-bottom:10px;border-bottom:1px solid var(--phase5-line)!important}
+section[aria-label="Character archive and continuity"] article{border:1px solid var(--phase5-line)!important;background:var(--phase5-surface)!important;box-shadow:none!important}
+section[aria-label="Character archive and continuity"] details{border-color:var(--phase5-line)!important}
+section[aria-label="Character archive and continuity"] button{min-height:32px!important;border:1px solid var(--phase5-ink)!important;border-radius:0!important;background:var(--phase5-ink)!important;color:#fffdf8!important;font-weight:700!important}
+section[aria-label="Character archive and continuity"] input{min-height:34px!important;border-radius:0!important;border-color:var(--phase5-line)!important;background:#fff!important}
+
+section[aria-label="Notifications and accessibility"]{border-radius:0!important;border-color:var(--phase5-line)!important;background:var(--phase5-surface)!important;box-shadow:none!important}
+section[aria-label="Notifications and accessibility"]>div:first-child{background:var(--phase5-soft)!important;border-color:var(--phase5-line)!important}
+section[aria-label="Notifications and accessibility"] article{border-radius:0!important;border-color:var(--phase5-line)!important;background:var(--phase5-surface)!important;box-shadow:none!important}
+section[aria-label="Notifications and accessibility"] button,
+section[aria-label="Notifications and accessibility"] select{border-radius:0!important;border-color:var(--phase5-line)!important}
+
+/* Common legacy modules not yet converted individually. */
+[class*="SchoolNoticesPanel_panel"],
+[class*="SchoolCalendarPanel_panel"],
+[class*="SchoolResourcesPanel_panel"],
+[class*="FriendsPanel_panel"],
+[class*="InboxPanel_panel"],
+[class*="MessageCenterPanel_center"]{border-radius:0!important;border-color:var(--phase5-line)!important;background:var(--phase5-surface)!important;box-shadow:none!important}
+[class*="SchoolNoticesPanel_heading"],
+[class*="SchoolCalendarPanel_heading"],
+[class*="SchoolResourcesPanel_heading"],
+[class*="FriendsPanel_heading"],
+[class*="InboxPanel_heading"],
+[class*="MessageCenterPanel_bar"]{background:var(--phase5-soft)!important;border-color:var(--phase5-line)!important}
+[class*="SchoolNoticesPanel_heading"]>span,
+[class*="SchoolCalendarPanel_heading"]>span,
+[class*="SchoolResourcesPanel_heading"]>span,
+[class*="FriendsPanel_heading"]>span,
+[class*="InboxPanel_heading"]>span{background:var(--phase5-ink)!important;color:#fffdf8!important}
+[class*="InboxPanel_threads"]{background:#f5f2e9!important;border-color:var(--phase5-line)!important}
+[class*="InboxPanel_threads"] button{border-radius:0!important;border-color:var(--phase5-line)!important}
+[class*="InboxPanel_threads"] button[class*="selected"]{background:#fffdf8!important;box-shadow:inset 3px 0 0 var(--hanami-sage-deep,#78856f)!important}
+[class*="InboxPanel_messages"]{background:#f8f6f0!important}
+[class*="InboxPanel_messages"] article{border-radius:0!important;border-color:var(--phase5-line)!important;box-shadow:none!important}
+[class*="InboxPanel_composer"],[class*="InboxPanel_startTools"]{background:var(--phase5-surface)!important;border-color:var(--phase5-line)!important}
+
+/* Course cards: retain visual variety while keeping the school palette as the base. */
+[class*="SchedulePanel_classCard"]{border-radius:0!important;border-color:var(--phase5-line)!important;box-shadow:none!important}
+[class*="SchedulePanel_classBody"]{background:var(--phase5-surface)!important}
+[class*="SchedulePanel_banner0"]{background:linear-gradient(135deg,#bbc5b4,#8f9d88)!important}
+[class*="SchedulePanel_banner1"]{background:linear-gradient(135deg,#d7c3c3,#b88f94)!important}
+[class*="SchedulePanel_banner2"]{background:linear-gradient(135deg,#c5d0bf,#91a18a)!important}
+[class*="SchedulePanel_banner3"]{background:linear-gradient(135deg,#e2dac7,#b8ab8d)!important}
+[class*="SchedulePanel_banner4"]{background:linear-gradient(135deg,#c4ccd3,#8797a6)!important}
+[class*="SchedulePanel_banner5"]{background:linear-gradient(135deg,#d9ccc0,#b29e8d)!important}
+
+/* Account/Profile subnav and all tab-like groups */
+[class*="accountNav"],
+[class*="subNav"],
+[role="tablist"]{border-color:var(--phase5-line)!important}
+[class*="accountNav"] button,
+[class*="accountNav"] a,
+[class*="subNav"] button,
+[role="tab"]{box-sizing:border-box!important;min-height:38px!important;align-items:center!important;justify-content:center!important;line-height:1.2!important}
+
+/* Desktop public navigation and portal navigation share one baseline. */
+.nav-row nav,.primaryNav,[class*="DashboardShell_primaryNav"]{align-items:stretch!important}
+.nav-row nav a,.primaryNav>a,.primaryNav>button,[class*="DashboardShell_primaryNav"] [class*="navGroup"]>button{box-sizing:border-box!important;align-items:center!important;min-height:40px!important}
+
+@media(max-width:760px){
+  [class*="DashboardShell_primaryNav"] [class*="navGroup"]>button{height:58px!important;min-height:58px!important;align-content:center!important}
+  [class*="DashboardShell_primaryNav"] [class*="navGroup"]>button b{display:flex!important;align-items:center!important;justify-content:center!important;min-height:20px!important;text-align:center!important}
+  [role="tablist"]{overflow-x:auto!important;flex-wrap:nowrap!important}
+  section[aria-label="Character archive and continuity"]>div:last-child{grid-template-columns:1fr!important}
+}

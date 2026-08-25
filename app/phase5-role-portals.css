@@ -1,0 +1,136 @@
+/* Phase 5 role-portal consistency: Administration and Owner use the same Hanami
+   school identity as public, Student, and Faculty surfaces. Feature behavior and
+   role permissions remain untouched. */
+
+:root{
+  --role-paper:var(--hanami-paper,#fffdf8);
+  --role-ivory:var(--hanami-ivory,#f3efe4);
+  --role-navy:var(--hanami-navy,#17283c);
+  --role-navy-deep:var(--hanami-navy-deep,#0f1c2b);
+  --role-sage:var(--hanami-sage,#9ba891);
+  --role-sage-deep:var(--hanami-sage-deep,#78856f);
+  --role-rose:var(--hanami-rose-deep,#9e6870);
+  --role-line:var(--hanami-line,#c9c2b4);
+  --role-muted:var(--hanami-muted,#68736c);
+  --role-soft:color-mix(in srgb,var(--role-sage) 16%,var(--role-paper) 84%);
+}
+
+/* Portal route canvas. */
+[class*="PortalAppPage_page"]{background:var(--role-ivory)!important;color:var(--role-navy)!important}
+
+/* Admin + Owner component surfaces. */
+:is([class*="Admin"],[class*="Owner"])[class*="panel"],
+:is([class*="Admin"],[class*="Owner"])[class*="card"],
+:is([class*="Admin"],[class*="Owner"])[class*="center"],
+:is([class*="Admin"],[class*="Owner"])[class*="shell"]{
+  border-color:var(--role-line)!important;
+  border-radius:0!important;
+  background:var(--role-paper)!important;
+  color:var(--role-navy)!important;
+  box-shadow:2px 2px 0 rgba(23,40,60,.06)!important;
+}
+
+:is([class*="Admin"],[class*="Owner"])[class*="heading"],
+:is([class*="Admin"],[class*="Owner"])[class*="header"],
+:is([class*="Admin"],[class*="Owner"])[class*="bar"],
+:is([class*="Admin"],[class*="Owner"])[class*="title"]{
+  border-color:var(--role-line)!important;
+  background:var(--role-soft)!important;
+  color:var(--role-navy)!important;
+}
+
+:is([class*="Admin"],[class*="Owner"])[class*="heading"] h1,
+:is([class*="Admin"],[class*="Owner"])[class*="heading"] h2,
+:is([class*="Admin"],[class*="Owner"])[class*="heading"] h3,
+:is([class*="Admin"],[class*="Owner"])[class*="heading"] h4,
+:is([class*="Admin"],[class*="Owner"])[class*="header"] h1,
+:is([class*="Admin"],[class*="Owner"])[class*="header"] h2,
+:is([class*="Admin"],[class*="Owner"])[class*="header"] h3,
+:is([class*="Admin"],[class*="Owner"])[class*="header"] h4{color:var(--role-navy)!important}
+
+:is([class*="Admin"],[class*="Owner"])[class*="notice"],
+:is([class*="Admin"],[class*="Owner"])[class*="status"],
+:is([class*="Admin"],[class*="Owner"])[class*="meta"]{
+  border-color:var(--role-line)!important;
+  background:color-mix(in srgb,var(--role-sage) 10%,var(--role-paper) 90%)!important;
+  color:var(--role-muted)!important;
+}
+
+:is([class*="Admin"],[class*="Owner"]) article,
+:is([class*="Admin"],[class*="Owner"]) form,
+:is([class*="Admin"],[class*="Owner"]) table,
+:is([class*="Admin"],[class*="Owner"]) details{
+  border-color:var(--role-line)!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+
+:is([class*="Admin"],[class*="Owner"]) input,
+:is([class*="Admin"],[class*="Owner"]) textarea,
+:is([class*="Admin"],[class*="Owner"]) select{
+  border-color:#b9b2a6!important;
+  border-radius:0!important;
+  background:#fff!important;
+  color:var(--role-navy)!important;
+}
+
+:is([class*="Admin"],[class*="Owner"]) button,
+:is([class*="Admin"],[class*="Owner"]) a[class*="button"]{
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+
+:is([class*="Admin"],[class*="Owner"]) button[type="submit"],
+:is([class*="Admin"],[class*="Owner"]) button[class*="primary"],
+:is([class*="Admin"],[class*="Owner"]) a[class*="primary"]{
+  border-color:var(--role-navy-deep)!important;
+  background:var(--role-navy)!important;
+  color:#fffdf8!important;
+}
+
+:is([class*="Admin"],[class*="Owner"]) button[type="submit"]:hover,
+:is([class*="Admin"],[class*="Owner"]) button[class*="primary"]:hover,
+:is([class*="Admin"],[class*="Owner"]) a[class*="primary"]:hover{background:var(--role-sage-deep)!important}
+
+/* Tables use the Notion/database treatment. */
+:is([class*="Admin"],[class*="Owner"]) th{background:var(--role-soft)!important;color:var(--role-navy)!important}
+:is([class*="Admin"],[class*="Owner"]) td,
+:is([class*="Admin"],[class*="Owner"]) th{border-color:var(--role-line)!important}
+
+/* Navigation/tab groups: equal heights and centered labels. */
+:is([class*="Admin"],[class*="Owner"])[class*="tabs"],
+:is([class*="Admin"],[class*="Owner"])[class*="nav"],
+:is([class*="Admin"],[class*="Owner"])[class*="switcher"]{align-items:stretch!important}
+:is([class*="Admin"],[class*="Owner"])[class*="tabs"]>button,
+:is([class*="Admin"],[class*="Owner"])[class*="nav"]>button,
+:is([class*="Admin"],[class*="Owner"])[class*="switcher"]>button,
+:is([class*="Admin"],[class*="Owner"])[class*="tabs"]>a,
+:is([class*="Admin"],[class*="Owner"])[class*="nav"]>a{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  min-height:38px!important;
+  margin:0!important;
+  line-height:1.2!important;
+  border-radius:0!important;
+}
+
+/* Old inline blue/pink fragments in role portals inherit the final school palette. */
+main[class*="PortalAppPage_page"] [style*="#eef3f8"],
+main[class*="PortalAppPage_page"] [style*="#edf2f7"],
+main[class*="PortalAppPage_page"] [style*="#f7f9fb"]{background-color:var(--role-soft)!important}
+main[class*="PortalAppPage_page"] [style*="#17375f"]{color:var(--role-navy)!important}
+main[class*="PortalAppPage_page"] [style*="#8f365b"]{color:var(--role-rose)!important}
+main[class*="PortalAppPage_page"] [style*="#9babc0"],
+main[class*="PortalAppPage_page"] [style*="#aeb9c5"],
+main[class*="PortalAppPage_page"] [style*="#ccd5df"]{border-color:var(--role-line)!important}
+
+@media(max-width:760px){
+  :is([class*="Admin"],[class*="Owner"])[class*="tabs"],
+  :is([class*="Admin"],[class*="Owner"])[class*="nav"],
+  :is([class*="Admin"],[class*="Owner"])[class*="switcher"]{overflow-x:auto!important;flex-wrap:nowrap!important}
+  :is([class*="Admin"],[class*="Owner"])[class*="tabs"]>button,
+  :is([class*="Admin"],[class*="Owner"])[class*="nav"]>button,
+  :is([class*="Admin"],[class*="Owner"])[class*="switcher"]>button{flex:0 0 auto!important}
+}
