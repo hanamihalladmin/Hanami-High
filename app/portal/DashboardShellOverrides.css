@@ -3,11 +3,14 @@ section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"
 section[aria-labelledby="dashboard-title"]>main{margin-left:136px!important;width:calc(100% - 136px)!important;min-height:100vh!important;box-sizing:border-box!important}
 section[aria-labelledby="dashboard-title"]>main::after{display:none!important}
 section[aria-labelledby="dashboard-title"]>main::before{opacity:var(--hanami-wallpaper-opacity,.55)!important}
+section[aria-labelledby="dashboard-title"]>main>header{min-height:82px!important;padding:16px 30px 12px!important;border-bottom:1px solid #d9d9d2!important;background:color-mix(in srgb,var(--hanami-website-background,#f5f2e8) 88%,transparent)!important;backdrop-filter:blur(10px)!important}
 section[aria-labelledby="dashboard-title"]>main>header>div{display:grid!important;align-content:center!important;gap:2px!important}
-section[aria-labelledby="dashboard-title"]>main>header p{margin:0!important;font:700 8px/1.2 Arial,sans-serif!important;letter-spacing:.1em!important;text-transform:uppercase!important}
-section[aria-labelledby="dashboard-title"]>main>header h1{margin:0!important;font-size:28px!important;line-height:1.05!important;font-weight:600!important;letter-spacing:-.015em!important}
-section[aria-labelledby="dashboard-title"] [class*="contentView"]{width:min(1320px,calc(100% - 60px))!important;box-sizing:border-box!important;min-width:0!important}
-section[aria-labelledby="dashboard-title"] [class*="pageIntro"]{padding:14px 16px!important;background:rgba(255,255,255,.96)!important;border:1px solid color-mix(in srgb,var(--hanami-portal-accent,#d98aa6) 18%,#ddd 82%)!important}
+section[aria-labelledby="dashboard-title"]>main>header p{margin:0!important;color:#718078!important;font:700 8px/1.2 Arial,sans-serif!important;letter-spacing:.11em!important;text-transform:uppercase!important}
+section[aria-labelledby="dashboard-title"]>main>header h1{margin:0!important;color:#203247!important;font-size:28px!important;line-height:1.05!important;font-weight:600!important;letter-spacing:-.015em!important}
+section[aria-labelledby="dashboard-title"] [class*="contentView"]{width:min(1320px,calc(100% - 60px))!important;box-sizing:border-box!important;min-width:0!important;padding-top:16px!important}
+section[aria-labelledby="dashboard-title"] [class*="pageIntro"]{padding:14px 16px!important;background:#fffdf8!important;border:1px solid #d5d5ce!important;border-left:4px solid #9ba891!important}
+section[aria-labelledby="dashboard-title"] [class*="pageIntro"] h2{color:#203247!important;font-weight:600!important}
+section[aria-labelledby="dashboard-title"] [class*="pageIntro"] p{color:#6d7771!important;max-width:900px!important}
 section[aria-labelledby="dashboard-title"] [class*="contentView"]>section,
 section[aria-labelledby="dashboard-title"] [class*="contentView"]>div>section,
 section[aria-labelledby="dashboard-title"] [class*="accountContent"]>section,
@@ -15,13 +18,26 @@ section[aria-labelledby="dashboard-title"] [class*="featureStack"]>section,
 section[aria-labelledby="dashboard-title"] article,
 section[aria-labelledby="dashboard-title"] fieldset,
 section[aria-labelledby="dashboard-title"] .status-banner,
-section[aria-labelledby="dashboard-title"] .site-search{background:rgba(255,255,255,.96)!important;box-shadow:none!important}
-[data-portal-view="account"]>aside,[data-portal-view="account"]>section,[data-portal-view="messages"]>section,[data-portal-view="messages"] #hanami-message-center>div{background:rgba(255,255,255,.96)!important;backdrop-filter:none!important}
+section[aria-labelledby="dashboard-title"] .site-search{background:#fffdf8!important;box-shadow:none!important;border-color:#d8d8d1!important}
+[data-portal-view="account"]>aside,[data-portal-view="account"]>section,[data-portal-view="messages"]>section,[data-portal-view="messages"] #hanami-message-center>div{background:#fffdf8!important;backdrop-filter:none!important}
 section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>div:first-child,
-section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>nav{background:#fff!important;border:1px solid color-mix(in srgb,var(--hanami-portal-accent,#d98aa6) 18%,#ddd 82%)!important}
+section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>nav{background:#fffdf8!important;border:1px solid #d8d8d1!important}
 section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>nav{margin:8px 0!important}
-section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>nav button{border:1px solid color-mix(in srgb,var(--hanami-portal-accent,#d98aa6) 20%,#ddd 80%)!important;background:#fff!important;color:var(--hanami-portal-text,#4d3a40)!important;box-shadow:none!important}
-section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>nav button[aria-pressed="true"]{background:var(--hanami-portal-accent,#b96b87)!important;color:#fff!important;border-color:var(--hanami-portal-accent,#b96b87)!important}
+section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>nav button{border:1px solid #dcddd7!important;background:#faf9f4!important;color:#45564e!important;box-shadow:none!important}
+section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>nav button[aria-pressed="true"]{background:#203247!important;color:#fff!important;border-color:#203247!important}
+section[aria-labelledby="dashboard-title"] table{width:100%!important;border-collapse:collapse!important;background:#fffdf8!important}
+section[aria-labelledby="dashboard-title"] thead th{background:#eef1ea!important;color:#43554d!important;border:1px solid #d8dcd5!important;padding:9px 10px!important;font:700 9px Arial,sans-serif!important;letter-spacing:.05em!important;text-transform:uppercase!important;text-align:left!important}
+section[aria-labelledby="dashboard-title"] tbody td{border:1px solid #e0e1dc!important;padding:9px 10px!important;color:#56635d!important;background:#fffdf8!important}
+section[aria-labelledby="dashboard-title"] tbody tr:hover td{background:#f6f7f2!important}
+section[aria-labelledby="dashboard-title"] input,
+section[aria-labelledby="dashboard-title"] select,
+section[aria-labelledby="dashboard-title"] textarea{border:1px solid #cfd1ca!important;background:#fff!important;color:#31413b!important;box-shadow:none!important}
+section[aria-labelledby="dashboard-title"] input:focus,
+section[aria-labelledby="dashboard-title"] select:focus,
+section[aria-labelledby="dashboard-title"] textarea:focus{outline:2px solid color-mix(in srgb,#9ba891 60%,transparent)!important;outline-offset:1px!important;border-color:#819078!important}
+section[aria-labelledby="dashboard-title"] button:not([class*="nav"]):not([class*="identity"]){box-shadow:none!important}
+section[aria-labelledby="dashboard-title"] [class*="badge"],section[aria-labelledby="dashboard-title"] [class*="pill"]{border-radius:2px!important}
+section[aria-labelledby="dashboard-title"] [class*="empty"],section[aria-labelledby="dashboard-title"] [class*="state"]{border-color:#dfddd5!important;background:#f7f5ee!important;color:#737a74!important}
 section[aria-labelledby="dashboard-title"] [class*="logoButton"]{position:relative;display:grid!important;place-items:center!important;min-height:126px!important;padding:8px 0 6px!important;background:transparent!important;background-image:none!important}
 section[aria-labelledby="dashboard-title"] [class*="logoButton"]::before{content:""!important;display:block!important;width:112px!important;height:112px!important;background-image:url("/Hanami-High/hanami-high-portal-icon.png?v=20260823")!important;background-repeat:no-repeat!important;background-position:center!important;background-size:contain!important;border-radius:50%!important}
 section[aria-labelledby="dashboard-title"] [class*="logoButton"] img{display:none!important}
@@ -48,5 +64,8 @@ section[aria-labelledby="dashboard-title"] [class*="navBottom"] a,
 section[aria-labelledby="dashboard-title"] [class*="navBottom"] button{border-radius:0!important}
 section[aria-labelledby="school-notices-title"]+section[aria-labelledby="school-notices-title"]{display:none!important}
 section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) section[aria-label="Class competitions and Exams Week"] article:first-child form{display:none!important}
-section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) section[aria-label="Class competitions and Exams Week"] article:first-child:after{content:"Class competition posting and point changes are managed by Owner / Administration.";display:block;margin-top:8px;padding:8px 10px;border-radius:0;background:#fff;color:#796d72;font:600 9px/1.45 Arial,sans-serif}
-@media(max-width:760px){section[aria-labelledby="dashboard-title"]{display:block!important}section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{position:sticky!important;inset:auto!important;top:0!important;width:100%!important;height:auto!important;min-height:0!important;padding:4px!important;overflow:visible!important}section[aria-labelledby="dashboard-title"]>main{margin-left:0!important;width:100%!important}section[aria-labelledby="dashboard-title"] [class*="contentView"]{width:auto!important}section[aria-labelledby="dashboard-title"]>main>header h1{font-size:24px!important}section[aria-labelledby="dashboard-title"] [class*="lockerLayout"]{grid-template-columns:1fr!important}}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) section[aria-label="Class competitions and Exams Week"] article:first-child:after{content:"Class competition posting and point changes are managed by Owner / Administration.";display:block;margin-top:8px;padding:8px 10px;border-radius:0;background:#f6f3ea;color:#726b61;font:600 9px/1.45 Arial,sans-serif}
+#hanami-message-center{border:1px solid #d8d8d1!important;background:#fffdf8!important}
+#hanami-message-center button{border-color:#d6d8d1!important}
+#hanami-message-center textarea{background:#fff!important}
+@media(max-width:760px){section[aria-labelledby="dashboard-title"]{display:block!important}section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{position:sticky!important;inset:auto!important;top:0!important;width:100%!important;height:auto!important;min-height:0!important;padding:4px!important;overflow:visible!important}section[aria-labelledby="dashboard-title"]>main{margin-left:0!important;width:100%!important}section[aria-labelledby="dashboard-title"] [class*="contentView"]{width:auto!important;padding-top:10px!important}section[aria-labelledby="dashboard-title"]>main>header{min-height:66px!important;padding:10px 14px!important}section[aria-labelledby="dashboard-title"]>main>header h1{font-size:24px!important}section[aria-labelledby="dashboard-title"] [class*="lockerLayout"]{grid-template-columns:1fr!important}section[aria-labelledby="dashboard-title"] table{font-size:10px!important}}
