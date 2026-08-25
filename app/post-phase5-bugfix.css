@@ -2,6 +2,7 @@
 
 /* Reliable logo fallback for the deployed GitHub Pages base path. */
 img[src*="hanami-high-portal-icon-black.svg"]{content:url("/Hanami-High/hanami-high-portal-icon.png")!important}
+[class*="DashboardShell_logoButton"]{background-image:url("/Hanami-High/hanami-high-portal-icon.png"),url("/hanami-high-portal-icon.png")!important;background-size:68px 68px,68px 68px!important;background-repeat:no-repeat,no-repeat!important;background-position:center,center!important}
 
 /* Public homepage action contrast. */
 [class*="Home_actions"] a:first-of-type{background:var(--hanami-navy,#17283c)!important;color:#fffdf8!important;border-color:var(--hanami-navy,#17283c)!important}
