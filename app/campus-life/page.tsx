@@ -1,30 +1,38 @@
 import CampusDirectory from "../components/campus-directory";
 import LiveCampusOpportunities from "../components/live-campus-opportunities";
-import {hanamiRoleplayDate} from "../components/roleplay-date";
+import PublicSchoolShell from "../components/PublicSchoolShell";
+import styles from "../PublicRebuild.module.css";
 
-const services = [
-  ["保", "Health Office", "First aid, health plans, wellness support, and referrals.", "Student Services • Room 104"],
-  ["心", "Counseling", "Private appointments for personal, social, and academic support.", "Student Services • Room 108"],
-  ["図", "Library", "Books, research help, quiet study, media, and technology lending.", "Learning Commons • Levels 1–2"],
-  ["奉", "Volunteer Center", "School and community service projects with verified participation.", "Student Life • Room 202"],
+const sideItems=[
+ {id:"directory",label:"Clubs & Athletics",href:"/campus-life/#directory"},
+ {id:"government",label:"Student Government",href:"/campus-life/#government"},
+ {id:"events",label:"Events",href:"/calendar/"},
+ {id:"gallery",label:"Gallery",href:"/campus-life/#gallery"},
+ {id:"services",label:"Student Services",href:"/campus-life/#services"},
+ {id:"jobs",label:"Opportunities",href:"/campus-life/#jobs"},
+];
+
+const services=[
+ ["Health Office","First aid, health plans, wellness support, and referrals.","Student Services · Room 104"],
+ ["Counseling","Private appointments for personal, social, and academic support.","Student Services · Room 108"],
+ ["Library","Books, research help, quiet study, media, and technology lending.","Learning Commons · Levels 1–2"],
+ ["Volunteer Center","School and community service projects with verified participation.","Student Life · Room 202"],
 ] as const;
-const government = [["Student Council", "Elected representatives coordinate student proposals, events, and campus initiatives."],["Class Representatives", "Each class selects a representative to raise concerns and share announcements."],["Broadcast Committee", "Student reporters publish notices, interviews, event coverage, and the hallway rumor column."]] as const;
 
 export default function CampusLifePage(){
-  const currentDate=hanamiRoleplayDate();
-  return <main className="site-page campus-page">
-    <a className="skip-link" href="#campus-main">Skip to main content</a>
-    <header className="school-header" aria-label="Hanami High header"><div className="network-strip">HANAMI HIGH SCHOOL • PUBLIC SCHOOL NETWORK • EST. 2006</div><div className="brand-row"><a className="brand-lockup brand-link" href="../"><div className="school-mark" aria-hidden="true"><span>花</span></div><div><p className="jp-name">花見高等学校</p><p className="brand-name">HANAMI HIGH SCHOOL</p><p className="brand-subtitle">Knowledge • Character • Community</p></div></a><div className="school-clock"><strong>{currentDate.toUpperCase()}</strong><span>HANAMI CITY • ROLEPLAY YEAR 2006</span></div></div><div className="nav-row"><nav aria-label="Primary navigation"><a href="../">Home</a><a href="../about/">About</a><a href="../academics/">Academics</a><a className="active" href="./">Campus Life</a><a href="#directory">Clubs</a><a href="../calendar/">Calendar</a><a href="../#news">News</a><a href="../about/#directory">People</a><a href="#gallery">Gallery</a></nav><a className="portal-button" href="../portal/">↪ Login / Portal</a></div></header>
-    <div className="about-breadcrumb"><a href="../">School Home</a><span>›</span><strong>Campus Life</strong></div>
-    <section className="campus-hero" id="campus-main"><div><p className="eyebrow">HANAMI HIGH • LIFE BEYOND THE CLASSROOM</p><h1>Find your people.<br/>Make campus yours.</h1><p>Join a club, compete with a team, serve the community, attend an event, or help create one of Hanami High&apos;s first traditions.</p><div className="hero-actions"><a className="primary-action" href="#directory">Explore opportunities</a><a className="text-link" href="../calendar/">See upcoming events →</a></div></div><div className="campus-board"><p className="eyebrow">AFTER THE BELL</p><strong>3:30 PM</strong><span>Club rooms open</span><hr/><p>Applications and registrations stay inside the Student Portal and use your active character.</p></div></section>
-    <div className="campus-page-layout"><aside className="campus-side"><section className="panel"><h2 className="panel-title">CAMPUS LIFE INDEX</h2><nav className="link-list"><a href="#directory"><span>01</span>Clubs & Athletics</a><a href="#government"><span>02</span>Student Government</a><a href="../calendar/"><span>03</span>Events</a><a href="#gallery"><span>04</span>Gallery</a><a href="#services"><span>05</span>Student Services</a><a href="#jobs"><span>06</span>Opportunities</a></nav></section><section className="panel"><h2 className="panel-title">CAMPUS STATUS</h2><div className="panel-body"><p><i className="status-dot"/> Activities operating normally</p><small>All schedules use Japan Standard Time.</small></div></section></aside>
-      <div className="campus-page-content"><CampusDirectory/>
-        <section className="info-section" id="government"><div className="section-heading"><h2>STUDENT GOVERNMENT</h2><span>VOICE • SERVICE • LEADERSHIP</span></div><div className="government-grid">{government.map(([title,copy],index)=><article key={title}><span>0{index+1}</span><h3>{title}</h3><p>{copy}</p><a href="../portal/student/">View in Student Portal →</a></article>)}</div></section>
-        <section className="info-section" id="events"><div className="section-heading"><h2>CAMPUS EVENTS CALENDAR</h2><span>2006 • JST</span></div><div className="campus-events"><article><time><strong>24</strong>AUG</time><div><p className="eyebrow">CLUBS</p><h3>Club Recruitment Week</h3><p>Meet student organizations in the courtyard after classes.</p></div><span>3:30 PM</span></article><article><time><strong>29</strong>AUG</time><div><p className="eyebrow">ATHLETICS</p><h3>Welcome Sports Day</h3><p>Open practices, team introductions, and friendly matches.</p></div><span>10:00 AM</span></article><article><time><strong>12</strong>SEP</time><div><p className="eyebrow">WHOLE SCHOOL</p><h3>Autumn Culture Festival</h3><p>Performances, class exhibits, club booths, art, and food.</p></div><span>10:00 AM</span></article></div><div className="calendar-actions"><a className="secondary-action" href="../calendar/">View complete calendar</a></div></section>
-        <section className="info-section" id="gallery"><div className="section-heading"><h2>CAMPUS GALLERY</h2><span>STUDENT NETWORK ARCHIVE</span></div><div className="campus-gallery"><figure><div>桜</div><figcaption>Courtyard in bloom</figcaption></figure><figure><div>祭</div><figcaption>Culture Festival preparations</figcaption></figure><figure><div>部</div><figcaption>After-school club rooms</figcaption></figure><figure><div>競</div><figcaption>Athletics field</figcaption></figure></div><p className="content-note">Approved roleplay photography and student work can be added as the 2006 school year develops.</p></section>
-        <section className="info-section" id="services"><div className="section-heading"><h2>HEALTH, COUNSELING & LIBRARY</h2><span>STUDENT SUPPORT</span></div><div className="campus-services">{services.map(([icon,title,copy,place])=><article key={title}><span>{icon}</span><h3>{title}</h3><p>{copy}</p><small>{place}</small><a href="../portal/student/">Open service in Student Portal →</a></article>)}</div></section>
-        <section className="info-section" id="jobs"><div className="section-heading"><h2>CAMPUS OPPORTUNITIES</h2><span>JOBS • SERVICE • INTERNSHIPS • LEADERSHIP</span></div><LiveCampusOpportunities/><p className="content-note">Only published opportunities appear here. Applications and status updates stay inside Hanami High; no external email forms are used.</p></section>
-      </div></div>
-    <footer><p>HANAMI HIGH SCHOOL • 花見高等学校 • HANAMI CITY • 2006</p><nav><a href="../about/#contact">Contact</a><a href="../portal/help/">Portal Help</a><a href="#campus-main">Back to top ↑</a></nav></footer>
-  </main>;
+ return <PublicSchoolShell active="student-life" sectionTitle="STUDENT LIFE" breadcrumb="Campus Life" sideItems={sideItems} sideActive="directory" stickyUtility lastUpdated="08.25.2006">
+  <div className={styles.pageTitle}><small>LIFE BEYOND THE CLASSROOM</small><h1>Find your people. Make campus yours.</h1><p>Join a club, compete with a team, serve the community, attend an event, or help build Hanami High traditions during the 2006 school year.</p></div>
+
+  <section className={styles.section} id="directory"><div className={styles.sectionHead}><h2>Clubs & Athletics Directory</h2><span>LIVE DIRECTORY</span></div><div className={styles.sectionBody}><CampusDirectory/></div></section>
+
+  <section className={styles.section} id="government"><div className={styles.sectionHead}><h2>Student Government</h2><span>VOICE · SERVICE · LEADERSHIP</span></div><div className={styles.sectionBody}><div className={styles.cardGrid}><article className={styles.card}><h3>Student Council</h3><p>Elected representatives coordinate student proposals, events, and campus initiatives.</p></article><article className={styles.card}><h3>Class Representatives</h3><p>Each class selects a representative to raise concerns and share announcements.</p></article><article className={styles.card}><h3>Broadcast Committee</h3><p>Student reporters publish notices, interviews, event coverage, and school-network features.</p></article></div></div></section>
+
+  <section className={styles.section} id="events"><div className={styles.sectionHead}><h2>Campus Events</h2><span>2006 · JST</span></div><div className={styles.sectionBody}><div className={styles.timeline}><article><time>AUG 24</time><div><h3>Club Recruitment Week</h3><p>Meet student organizations in the courtyard after classes.</p></div></article><article><time>AUG 29</time><div><h3>Welcome Sports Day</h3><p>Open practices, team introductions, and friendly matches.</p></div></article><article><time>SEP 12</time><div><h3>Autumn Culture Festival</h3><p>Performances, class exhibits, club booths, art, and food.</p></div></article></div><div className={styles.note}>All campus schedules use Japan Standard Time. The complete live event list is available on the public calendar.</div></div></section>
+
+  <section className={styles.section} id="gallery"><div className={styles.sectionHead}><h2>Campus Gallery</h2><span>STUDENT NETWORK ARCHIVE</span></div><div className={styles.sectionBody}><div className={styles.cardGrid}><article className={styles.card}><h3>Courtyard in Bloom</h3><p>Cherry trees and gathering spaces at the center of campus.</p></article><article className={styles.card}><h3>Culture Festival</h3><p>Class displays, performances, food stalls, and club showcases.</p></article><article className={styles.card}><h3>After-School Rooms</h3><p>Club meetings, rehearsals, study groups, and creative work after the bell.</p></article><article className={styles.card}><h3>Athletics Field</h3><p>Practices, sports-day events, and school competitions.</p></article></div></div></section>
+
+  <section className={styles.section} id="services"><div className={styles.sectionHead}><h2>Student Services</h2><span>HEALTH · COUNSELING · LIBRARY</span></div><div className={styles.sectionBody}><div className={styles.cardGrid}>{services.map(([title,copy,place])=><article className={styles.card} key={title}><h3>{title}</h3><p>{copy}</p><small>{place}</small></article>)}</div></div></section>
+
+  <section className={styles.section} id="jobs"><div className={styles.sectionHead}><h2>Campus Opportunities</h2><span>JOBS · SERVICE · INTERNSHIPS · LEADERSHIP</span></div><div className={styles.sectionBody}><LiveCampusOpportunities/><div className={styles.note}>Only published opportunities appear publicly. Applications and status updates stay inside Hanami High; external email forms are not used.</div></div></section>
+ </PublicSchoolShell>;
 }
