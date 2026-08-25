@@ -145,7 +145,7 @@ exit_code=0
   19:31  warning  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/page.tsx
-  11:174  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  17:9  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 ✖ 63 problems (0 errors, 63 warnings)
 
@@ -219,6 +219,9 @@ not ok 136 - public chronology is anchored to April 7 2006 and calendar stays in
 not ok 145 - Hanami High does not collect or store birthdays
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
+not ok 180 - portal gateway explains authentication, privacy, and two-character rule
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 not ok 217 - TEST Faculty fixture is explicit test data, owner scoped, and Owner only
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
@@ -234,8 +237,8 @@ not ok 268 - Help has a direct router and support anchor
 --- hard failing checks ---
 --- test summary ---
 # tests 268
-# pass 241
-# fail 27
+# pass 240
+# fail 28
 # cancelled 0
 # skipped 0
 # todo 0
@@ -245,67 +248,67 @@ not ok 268 - Help has a direct router and support anchor
 # Subtest: student dashboard has no remaining placeholder modules
 ok 258 - student dashboard has no remaining placeholder modules
   ---
-  duration_ms: 0.440395
+  duration_ms: 0.405099
   type: 'test'
   ...
 # Subtest: Student activity UI contains no launch test-data labels
 ok 259 - Student activity UI contains no launch test-data labels
   ---
-  duration_ms: 0.271038
+  duration_ms: 0.265678
   type: 'test'
   ...
 # Subtest: student schedule renders class periods from the published homeroom schedule
 ok 260 - student schedule renders class periods from the published homeroom schedule
   ---
-  duration_ms: 1.083771
+  duration_ms: 0.939401
   type: 'test'
   ...
 # Subtest: student schedule ignores duplicated per-homeroom copies of shared school blocks
 ok 261 - student schedule ignores duplicated per-homeroom copies of shared school blocks
   ---
-  duration_ms: 0.171882
+  duration_ms: 0.165661
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 262 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.210899
+  duration_ms: 1.167149
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 263 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.401453
+  duration_ms: 0.340689
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 264 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.814987
+  duration_ms: 5.991713
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 265 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.478511
+  duration_ms: 1.656365
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 266 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.338789
+  duration_ms: 1.48307
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 267 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.849256
+  duration_ms: 2.006552
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 not ok 268 - Help has a direct router and support anchor
   ---
-  duration_ms: 2.052035
+  duration_ms: 2.27731
   type: 'test'
   location: '/home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:39:1'
   failureType: 'testCodeFailure'
@@ -347,19 +350,19 @@ not ok 268 - Help has a direct router and support anchor
 1..268
 # tests 268
 # suites 0
-# pass 241
-# fail 27
+# pass 240
+# fail 28
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1823.399973
+# duration_ms 1831.870193
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 29ms
+✓ Running next.config.ts took 28ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -368,15 +371,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 7.6s
+✓ Compiled successfully in 6.9s
   Running TypeScript ...
-  Finished TypeScript in 14.3s ...
+  Finished TypeScript in 13.9s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/36) ...
   Generating static pages using 3 workers (9/36) 
   Generating static pages using 3 workers (18/36) 
   Generating static pages using 3 workers (27/36) 
-✓ Generating static pages using 3 workers (36/36) in 758ms
+✓ Generating static pages using 3 workers (36/36) in 740ms
   Finalizing page optimization ...
 
 Route (app)
