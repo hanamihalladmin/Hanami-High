@@ -18,7 +18,7 @@ export default function NewspaperPage(){
  const visible=section==="all"?articles:articles.filter(a=>a.section===section);
  const lead=visible[0];
  return <PublicSchoolShell active="news" sectionTitle="HANAMI CHRONICLE" breadcrumb="Student Newspaper" stickyUtility lastUpdated="08.25.2006">
-  <div className={styles.pageTitle}><small>STUDENT NEWSPAPER · HANAMI CITY · 2006</small><h1>The Hanami Chronicle</h1><p>Approved student reporting, school stories, announcements, features, and archive pieces from the Hanami community.</p></div>
+  <div className={styles.pageTitle}><small>STUDENT NEWSPAPER · HANAMI CITY · 2006</small><h1>The Hanami Chronicle</h1><p>Approved student reporting, school stories, announcements, features, and archive pieces from the Hanami community.</p><div className={styles.printTools}><button type="button" onClick={()=>window.print()}>Print this Chronicle view</button><span>Printer-friendly edition · current section only</span></div></div>
 
   <section className={styles.quick} aria-label="Newspaper sections"><h3>SECTIONS</h3><nav>{sections.map(s=><button key={s} type="button" onClick={()=>setSection(s)}>{section===s?"» ":""}{s==="all"?"Front Page":pretty(s)}</button>)}</nav></section>
 

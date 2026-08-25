@@ -1,0 +1,4 @@
+/* Stable compatibility guard for the rebuilt student workspace. */
+section[aria-labelledby="dashboard-title"]{max-width:100%;box-sizing:border-box}
+section[aria-labelledby="dashboard-title"] *{box-sizing:border-box}
+section[aria-labelledby="dashboard-title"] img{max-width:100%}

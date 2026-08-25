@@ -38,6 +38,7 @@ import "./phase5-role-portals.css";
 import "./phase5-website-final-qa.css";
 import "./post-phase5-bugfix.css";
 import "./rebuild-tokens.css";
+import "./phase-c-public-followups.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
