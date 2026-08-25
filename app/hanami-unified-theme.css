@@ -45,7 +45,8 @@ body{background-image:radial-gradient(#c8c1b5 .6px,transparent .6px)!important;b
 [class*="Panel_"] button[type="submit"]:hover{background:var(--hanami-sage-deep)!important;color:#fffdf8!important}
 .secondary-action{background:var(--hanami-paper)!important;border-color:var(--hanami-navy)!important;color:var(--hanami-navy)!important;border-radius:0!important;box-shadow:none!important}
 
-/* Notion-inspired flatter surfaces throughout portal workspaces. */
+/* Notion-inspired flatter surfaces throughout portal workspaces. Existing
+   character theme variables are intentionally not reassigned here. */
 section[aria-labelledby="dashboard-title"] [class*="panel"],
 section[aria-labelledby="dashboard-title"] [class*="card"],
 section[aria-labelledby="dashboard-title"] [class*="item"],
@@ -54,19 +55,27 @@ section[aria-labelledby="dashboard-title"] input,
 section[aria-labelledby="dashboard-title"] textarea,
 section[aria-labelledby="dashboard-title"] select,
 section[aria-labelledby="dashboard-title"] button{border-radius:0!important}
-
-/* Keep character-set portal colors available, but use the new school palette as
-   the default/fallback everywhere a user has not explicitly customized it. */
-section[aria-labelledby="dashboard-title"]{
-  --hanami-portal-accent:var(--hanami-sage);
-  --hanami-portal-text:var(--hanami-navy);
-  --hanami-portal-surface:var(--hanami-paper);
-  --hanami-portal-background:var(--hanami-ivory);
-}
 section[aria-labelledby="dashboard-title"] [class*="heading"],
-section[aria-labelledby="dashboard-title"] [class*="bar"]{background:color-mix(in srgb,var(--hanami-sage) 20%,var(--hanami-paper) 80%)!important;border-color:var(--hanami-line)!important}
+section[aria-labelledby="dashboard-title"] [class*="bar"]{background:color-mix(in srgb,var(--hanami-portal-accent,var(--hanami-sage)) 18%,var(--hanami-paper) 82%)!important;border-color:var(--hanami-line)!important}
 section[aria-labelledby="dashboard-title"] [class*="status"],
-section[aria-labelledby="dashboard-title"] [class*="notice"]{background:color-mix(in srgb,var(--hanami-sage) 12%,var(--hanami-paper) 88%)!important;color:var(--hanami-muted)!important;border-color:var(--hanami-line)!important}
+section[aria-labelledby="dashboard-title"] [class*="notice"]{background:color-mix(in srgb,var(--hanami-portal-accent,var(--hanami-sage)) 10%,var(--hanami-paper) 90%)!important;color:var(--hanami-muted)!important;border-color:var(--hanami-line)!important}
+
+/* Portal navigation alignment: equal-height labels, centered icons/text, and a
+   stable selected indicator on desktop and mobile. */
+[class*="DashboardShell_primaryNav"]{align-items:stretch!important}
+[class*="DashboardShell_navGroup"]{align-items:stretch!important}
+[class*="DashboardShell_primaryNav"] [class*="DashboardShell_navGroup"]>button,
+[class*="DashboardShell_navBottom"] button,
+[class*="DashboardShell_navBottom"] a{
+  align-items:center!important;
+  min-height:40px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  line-height:1.2!important;
+}
+[class*="DashboardShell_subNav"] button{display:flex!important;align-items:center!important;min-height:28px!important;margin:0!important;line-height:1.2!important}
+[class*="DashboardShell_accountNav"] button,
+[class*="DashboardShell_accountNav"] a{display:flex!important;align-items:center!important;min-height:38px!important;margin:0!important;box-sizing:border-box!important}
 
 /* Universal tab alignment. This fixes mixed heights/baselines in public search,
    portal views, account pages, calendars, and any future accessible tabsets. */
@@ -132,4 +141,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--hanami-sage-deep)!imp
   [role="tab"]{flex:0 0 auto!important;min-width:max-content!important}
   .nav-row nav,.primaryNav{align-items:stretch!important}
   .nav-row nav a,.primaryNav a,.primaryNav button{display:flex!important;align-items:center!important;justify-content:center!important;min-height:40px!important}
+  [class*="DashboardShell_primaryNav"]{display:flex!important;align-items:stretch!important}
+  [class*="DashboardShell_primaryNav"] [class*="DashboardShell_navGroup"]>button{display:grid!important;align-content:center!important;justify-items:center!important;min-height:58px!important;height:58px!important;padding:5px 7px!important}
+  [class*="DashboardShell_primaryNav"] [class*="DashboardShell_navGroup"]>button b{display:flex!important;align-items:center!important;justify-content:center!important;min-height:20px!important;text-align:center!important;line-height:1.1!important}
 }
