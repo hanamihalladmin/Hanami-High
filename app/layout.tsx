@@ -32,6 +32,7 @@ import "./portal-customization-runtime.css";
 import "./tokyo-slate-theme.css";
 import "./portal-mobile-stabilization.css";
 import "./hanami-unified-theme.css";
+import "./phase5-portal-final.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
