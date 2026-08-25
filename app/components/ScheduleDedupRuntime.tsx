@@ -12,17 +12,29 @@ function canonicalTitle(value:string){
 }
 
 function normalizeTime(value:string){return value.replace(/\s+/g," ").trim().toLowerCase();}
+function isGenericClassPeriod(row:HTMLElement){return /\bclass\s+period\b/i.test(row.textContent??"");}
 
 function dedupeContainer(container:Element){
  const rows=[...container.children].filter((node):node is HTMLElement=>node instanceof HTMLElement);
- const seen=new Set<string>();
+ const byTime=new Map<string,HTMLElement>();
+ const exactSeen=new Set<string>();
  rows.forEach(row=>{
   row.hidden=false;
   const time=normalizeTime(row.querySelector("time")?.textContent??"");
   const title=canonicalTitle(row.querySelector("strong")?.textContent??"");
   if(!time||!title)return;
-  const key=`${time}|${title}`;
-  if(seen.has(key))row.hidden=true;else seen.add(key);
+  const exactKey=`${time}|${title}`;
+  if(exactSeen.has(exactKey)){row.hidden=true;return;}
+  exactSeen.add(exactKey);
+
+  const previous=byTime.get(time);
+  if(!previous){byTime.set(time,row);return;}
+  const previousGeneric=isGenericClassPeriod(previous);
+  const currentGeneric=isGenericClassPeriod(row);
+  if(currentGeneric&&!previousGeneric){row.hidden=true;return;}
+  if(previousGeneric&&!currentGeneric){previous.hidden=true;byTime.set(time,row);return;}
+  // Different legitimate items can share a time (for example a club event and a school event).
+  // Keep both unless one is the generic class-period mirror of the enrolled section meeting.
  });
 }
 
