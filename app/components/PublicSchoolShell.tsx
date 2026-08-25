@@ -1,5 +1,6 @@
 import type {ReactNode} from "react";
 import HanamiCrest from "./HanamiCrest";
+import PublicNetworkStatus from "./PublicNetworkStatus";
 import styles from "./PublicSchoolShell.module.css";
 
 type NavItem={label:string;href:string;id:string};
@@ -79,7 +80,7 @@ export default function PublicSchoolShell({active,sectionTitle="HANAMI HIGH",bre
     </main>
     <footer className={styles.footer}>
       <div className={styles.footerInner}>
-        <div><b>HANAMI HIGH SCHOOL NETWORK</b><small>School founded 1836 · Digital network edition 2006 · Hanami City, Japan</small></div>
+        <div><b>HANAMI HIGH SCHOOL NETWORK</b><small>School founded 1836 · Digital network edition 2006 · Hanami City, Japan</small><small><PublicNetworkStatus/></small></div>
         <nav><a href={siteHref("/guide/")}>Guide</a><a href={siteHref("/changelog/")}>Change Log</a><a href={siteHref("/accessibility/")}>Accessibility</a><a href={siteHref("/support/")}>Support</a></nav>
         <div className={styles.retroNote}>Site rebuild · v1.0<br/><small>Best viewed with curiosity at 1024×768 or better.</small></div>
       </div>
