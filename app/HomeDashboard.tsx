@@ -6,6 +6,7 @@ import LiveNextEvent from "./components/live-next-event";
 import LiveUpcomingEvents from "./components/live-upcoming-events";
 import LiveSchoolStatus from "./components/live-school-status";
 import PublicSchoolShell from "./components/PublicSchoolShell";
+import VisitorNetworkStatus from "./components/VisitorNetworkStatus";
 import styles from "./PublicRebuild.module.css";
 
 type Props={currentDate:string};
@@ -25,6 +26,8 @@ export default function HomeDashboard({currentDate}:Props){
      <a href="./apply/">Apply to Hanami</a>
     </div>
    </section>
+
+   <VisitorNetworkStatus className={styles.networkStatus}/>
 
    <div className={styles.homeIntro}>
     <aside className={styles.quick}>
