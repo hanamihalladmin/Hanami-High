@@ -1,1 +1,61 @@
-temp
+/* Deterministic contrast for filled interactive controls. */
+[class*="PublicRebuild_welcomeActions"] a:not(:nth-child(2)){
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+[class*="PublicRebuild_welcomeActions"] a:nth-child(2){
+  color:#000!important;
+  -webkit-text-fill-color:#000!important;
+}
+[class*="PortalAuthPanel_portalHandoff"] a,
+[class*="PortalAuthPanel_ownerHandoff"] a{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+[class*="PortalAuthPanel_portalHandoff"] a *,
+[class*="PortalAuthPanel_ownerHandoff"] a *{
+  color:inherit!important;
+  -webkit-text-fill-color:inherit!important;
+}
+.discord-button,
+[class*="primaryAction"],
+[class*="PrimaryAction"],
+[class*="darkAction"],
+[class*="DarkAction"],
+[class*="navyAction"],
+[class*="NavyAction"],
+[class*="submitButton"],
+[class*="SubmitButton"]{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+.discord-button *,
+[class*="primaryAction"] *,
+[class*="PrimaryAction"] *,
+[class*="darkAction"] *,
+[class*="DarkAction"] *,
+[class*="navyAction"] *,
+[class*="NavyAction"] *,
+[class*="submitButton"] *,
+[class*="SubmitButton"] *{
+  color:inherit!important;
+  -webkit-text-fill-color:inherit!important;
+}
+[style*="background:#17283c"],
+[style*="background: #17283c"],
+[style*="background:#17375f"],
+[style*="background: #17375f"],
+[style*="background:#4f492e"],
+[style*="background: #4f492e"]{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+[style*="background:#17283c"] *,
+[style*="background: #17283c"] *,
+[style*="background:#17375f"] *,
+[style*="background: #17375f"] *,
+[style*="background:#4f492e"] *,
+[style*="background: #4f492e"] *{
+  color:inherit!important;
+  -webkit-text-fill-color:inherit!important;
+}
