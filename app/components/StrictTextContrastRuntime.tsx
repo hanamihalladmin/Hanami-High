@@ -22,13 +22,7 @@ function luminance(r:number,g:number,b:number){return 0.2126*channel(r)+0.7152*c
 function backgroundFor(element:HTMLElement){
  let current:HTMLElement|null=element;
  while(current){
-  const style=getComputedStyle(current);
-  const image=style.backgroundImage;
-  const parsed=parseRgb(style.backgroundColor);
-  if(image&&image!=="none"){
-   if(parsed&&parsed.a>.08)return parsed;
-   return {r:48,g:48,b:48,a:1};
-  }
+  const parsed=parseRgb(getComputedStyle(current).backgroundColor);
   if(parsed&&parsed.a>.08)return parsed;
   current=current.parentElement;
  }
