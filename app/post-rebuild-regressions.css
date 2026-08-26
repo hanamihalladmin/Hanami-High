@@ -114,6 +114,51 @@ body:has([class*="StandaloneCommunityPage_"]) section {
   font-weight:700;
 }
 
+/* Keep the rebuilt student/faculty workspace physically visible and aligned. */
+section[aria-labelledby="dashboard-title"] > aside[aria-label$="global navigation"] {
+  background:linear-gradient(180deg,color-mix(in srgb,var(--portal-sage,#9ba891) 82%,#fff 18%),var(--portal-sage,#9ba891))!important;
+  color:#fff!important;
+}
+
+section[aria-labelledby="dashboard-title"] > main {
+  min-width:0!important;
+}
+
+section[aria-labelledby="dashboard-title"] [class*="accountLayout"],
+section[aria-labelledby="dashboard-title"] [class*="accountContent"] {
+  box-sizing:border-box!important;
+  min-width:0!important;
+  max-width:100%!important;
+}
+
+section[aria-labelledby="dashboard-title"] [class*="logoButton"]::before {
+  background-image:url("/Hanami-High/hanami-high-portal-icon.png?v=20260826"),url("/hanami-high-portal-icon.png?v=20260826")!important;
+}
+
+/* CSS fallback for seating charts if JavaScript has not run yet. */
+section[aria-labelledby="dashboard-title"] div[style*="repeat(6"] {
+  grid-template-columns:repeat(4,minmax(78px,1fr))!important;
+}
+section[aria-labelledby="dashboard-title"] div[style*="repeat(6"] > :nth-child(6n + 5),
+section[aria-labelledby="dashboard-title"] div[style*="repeat(6"] > :nth-child(6n + 6) {
+  display:none!important;
+}
+
+@media (max-width:980px){
+  section[aria-labelledby="dashboard-title"] > aside[aria-label$="global navigation"]{
+    position:sticky!important;
+    inset:auto!important;
+    top:0!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+  }
+  section[aria-labelledby="dashboard-title"] > main{
+    margin-left:0!important;
+    width:100%!important;
+  }
+}
+
 @media (max-width:760px){
   [data-hanami-course-banner="true"]::before{min-height:110px;}
   .hanami-course-banner-editor{position:relative;top:auto;right:auto;width:100%;margin-bottom:10px;}
