@@ -24,7 +24,7 @@ const NAV:NavItem[]=[
   {id:"calendar",label:"Calendar",href:"/calendar/"},
   {id:"admissions",label:"Admissions",href:"/apply/"},
   {id:"news",label:"News",href:"/newspaper/"},
-  {id:"directory",label:"Directory",href:"/organizations/"},
+  {id:"directory",label:"Directory",href:"/directory/"},
   {id:"rules",label:"Rules",href:"/rules/"},
   {id:"search",label:"Search",href:"/#search"},
   {id:"portals",label:"Portals",href:"/portal/"},
@@ -82,7 +82,7 @@ export default function PublicSchoolShell({active,sectionTitle="HANAMI HIGH",bre
     <footer className={styles.footer}>
       <div className={styles.footerInner}>
         <div><b>HANAMI HIGH SCHOOL NETWORK</b><small>School founded 1836 · Digital network edition 2006 · Hanami City, Japan</small><small><PublicNetworkStatus/></small></div>
-        <nav><a href={siteHref("/guide/")}>Guide</a><a href={siteHref("/whats-new/")}>What&apos;s New</a><a href={siteHref("/feeds/")}>RSS</a><a href={siteHref("/status/")}>Status</a><a href={siteHref("/webmaster/")}>Webmaster</a><a href={siteHref("/support/")}>Support</a></nav>
+        <nav><a href={siteHref("/guide/")}>Guide</a><a href={siteHref("/new-student/")}>New Student FAQ</a><a href={siteHref("/directory/")}>Directory</a><a href={siteHref("/newspaper/archive/")}>Chronicle Archive</a><a href={siteHref("/gallery/")}>Gallery</a><a href={siteHref("/radio/")}>Radio</a><a href={siteHref("/whats-new/")}>What&apos;s New</a><a href={siteHref("/feeds/")}>RSS</a><a href={siteHref("/status/")}>Status</a><a href={siteHref("/webmaster/")}>Webmaster</a><a href={siteHref("/support/")}>Support</a></nav>
         <div className={styles.retroNote}>Site rebuild · v1.0<br/><small>Best viewed with curiosity at 1024×768 or better.</small></div>
       </div>
     </footer>
