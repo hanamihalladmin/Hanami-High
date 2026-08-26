@@ -58,15 +58,18 @@ function enforceTwentySeatCharts(){
 
 function repairHanamiIcons(){
   document.querySelectorAll<HTMLImageElement>('img[src*="hanami-high-portal-icon"]').forEach(img=>{
-    if(img.dataset.hanamiIconFallback==="ready")return;
-    img.dataset.hanamiIconFallback="ready";
-    img.addEventListener("error",()=>{
+    const swap=()=>{
       const repoPath="/Hanami-High/hanami-high-portal-icon.png";
       const rootPath="/hanami-high-portal-icon.png";
       const current=new URL(img.src,location.href).pathname;
       const fallback=current.includes(repoPath)?rootPath:repoPath;
-      if(new URL(img.src,location.href).pathname!==fallback)img.src=fallback;
-    });
+      if(current!==fallback)img.src=fallback;
+    };
+    if(img.dataset.hanamiIconFallback!=="ready"){
+      img.dataset.hanamiIconFallback="ready";
+      img.addEventListener("error",swap);
+    }
+    if(img.complete&&img.naturalWidth===0)swap();
   });
 }
 
