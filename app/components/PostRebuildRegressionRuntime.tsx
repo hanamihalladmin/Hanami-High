@@ -35,16 +35,37 @@ function removeCafeteria(){
   });
 }
 
+function seatLabel(el:Element){
+  const strong=el.querySelector(":scope > strong");
+  return (strong?.textContent??text(el).match(/^[A-E][1-6]/)?.[0]??"").trim();
+}
+
 function enforceTwentySeatCharts(){
   document.querySelectorAll("div").forEach(grid=>{
     const children=Array.from(grid.children);
-    if(children.length!==30)return;
-    const labels=children.map(child=>text(child).split(" ")[0]);
-    if(!labels.includes("A1")||!labels.includes("E6"))return;
-    (grid as HTMLElement).style.gridTemplateColumns="repeat(4,minmax(78px,1fr))";
-    children.forEach(child=>{
-      const label=text(child).split(" ")[0];
-      if(/[A-E][56]$/.test(label))(child as HTMLElement).style.display="none";
+    if(children.length<20)return;
+    const labels=children.map(seatLabel).filter(Boolean);
+    if(!labels.includes("A1")||!labels.includes("E4"))return;
+    const chartChildren=children.filter(child=>/^[A-E][1-6]$/.test(seatLabel(child)));
+    if(chartChildren.length<20)return;
+    (grid as HTMLElement).style.setProperty("grid-template-columns","repeat(4,minmax(78px,1fr))","important");
+    chartChildren.forEach(child=>{
+      const label=seatLabel(child);
+      (child as HTMLElement).style.display=/[A-E][56]$/.test(label)?"none":"";
+    });
+  });
+}
+
+function repairHanamiIcons(){
+  document.querySelectorAll<HTMLImageElement>('img[src*="hanami-high-portal-icon"]').forEach(img=>{
+    if(img.dataset.hanamiIconFallback==="ready")return;
+    img.dataset.hanamiIconFallback="ready";
+    img.addEventListener("error",()=>{
+      const repoPath="/Hanami-High/hanami-high-portal-icon.png";
+      const rootPath="/hanami-high-portal-icon.png";
+      const current=new URL(img.src,location.href).pathname;
+      const fallback=current.includes(repoPath)?rootPath:repoPath;
+      if(new URL(img.src,location.href).pathname!==fallback)img.src=fallback;
     });
   });
 }
@@ -90,7 +111,7 @@ function installCourseBannerCustomizer(){
   editor.querySelector("[data-banner-reset]")?.addEventListener("click",()=>{prefs={color:"#9caa92",image:"",position:"center"};localStorage.removeItem(key);color.value=prefs.color;image.value="";position.value="center";applyBanner(target,prefs);});
 }
 
-function run(){hideRoleInappropriateForums();removeCafeteria();enforceTwentySeatCharts();installCourseBannerCustomizer();}
+function run(){hideRoleInappropriateForums();removeCafeteria();enforceTwentySeatCharts();repairHanamiIcons();installCourseBannerCustomizer();}
 
 export default function PostRebuildRegressionRuntime(){
   useEffect(()=>{
@@ -100,7 +121,8 @@ export default function PostRebuildRegressionRuntime(){
     const observer=new MutationObserver(schedule);
     observer.observe(document.body,{subtree:true,childList:true});
     window.addEventListener("popstate",schedule);
-    return()=>{observer.disconnect();window.removeEventListener("popstate",schedule);cancelAnimationFrame(raf)};
+    window.addEventListener("load",schedule,{once:true});
+    return()=>{observer.disconnect();window.removeEventListener("popstate",schedule);window.removeEventListener("load",schedule);cancelAnimationFrame(raf)};
   },[]);
   return null;
 }
