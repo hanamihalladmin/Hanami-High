@@ -18,7 +18,7 @@ type Honor={id:string;term:string;honor_title:string;description:string;class_ra
 type StudentSeatRow={section_id:string;section_code:string;course_code:string;course_title:string;room:string|null;student_character_id:string;display_name:string;handle:string;seat_label:string|null;row_number:number|null;column_number:number|null;is_self:boolean};
 
 const weekdays=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-const SEAT_ROWS=5,SEAT_COLS=6;
+const SEAT_ROWS=5,SEAT_COLS=4;
 function seatName(row:number,column:number){return `${String.fromCharCode(64+row)}${column}`;}
 
 export default function ClassroomOperationsPanel({accessToken,characterId,role}:Props){
