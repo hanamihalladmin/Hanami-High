@@ -22,7 +22,13 @@ function luminance(r:number,g:number,b:number){return 0.2126*channel(r)+0.7152*c
 function backgroundFor(element:HTMLElement){
  let current:HTMLElement|null=element;
  while(current){
-  const parsed=parseRgb(getComputedStyle(current).backgroundColor);
+  const style=getComputedStyle(current);
+  const image=style.backgroundImage;
+  const parsed=parseRgb(style.backgroundColor);
+  if(image&&image!=="none"){
+   if(parsed&&parsed.a>.08)return parsed;
+   return {r:48,g:48,b:48,a:1};
+  }
   if(parsed&&parsed.a>.08)return parsed;
   current=current.parentElement;
  }
@@ -35,14 +41,22 @@ function hasOwnText(element:HTMLElement){
  return Array.from(element.childNodes).some(node=>node.nodeType===Node.TEXT_NODE&&Boolean(node.textContent?.trim()));
 }
 
+function applyTextColor(element:HTMLElement,target:"black"|"white"){
+ const value=target==="black"?"#000":"#fff";
+ if(element.dataset.hanamiContrast!==target)element.dataset.hanamiContrast=target;
+ element.style.setProperty("color",value,"important");
+ element.style.setProperty("-webkit-text-fill-color",value,"important");
+ element.style.setProperty("text-decoration-color",value,"important");
+}
+
 function applyContrast(root:ParentNode=document){
  const elements=root instanceof HTMLElement?[root,...Array.from(root.querySelectorAll<HTMLElement>("*"))]:Array.from(root.querySelectorAll<HTMLElement>("body *"));
  for(const element of elements){
   if(!hasOwnText(element))continue;
   if(element.closest("svg,script,style,noscript"))continue;
   const bg=backgroundFor(element);
-  const target=luminance(bg.r,bg.g,bg.b)>.179?"black":"white";
-  if(element.dataset.hanamiContrast!==target)element.dataset.hanamiContrast=target;
+  const target:"black"|"white"=luminance(bg.r,bg.g,bg.b)>.179?"black":"white";
+  applyTextColor(element,target);
  }
 }
 
@@ -57,9 +71,11 @@ export default function StrictTextContrastRuntime(){
   const observer=new MutationObserver(schedule);
   observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class","style","hidden"]});
   window.addEventListener("resize",schedule,{passive:true});
+  window.addEventListener("load",schedule,{once:true});
   return()=>{
    observer.disconnect();
    window.removeEventListener("resize",schedule);
+   window.removeEventListener("load",schedule);
    if(frame)cancelAnimationFrame(frame);
   };
  },[]);
