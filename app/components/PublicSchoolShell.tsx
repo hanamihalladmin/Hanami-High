@@ -36,14 +36,15 @@ function siteHref(path:string){
   return `${base}${path}`;
 }
 
-export default function PublicSchoolShell({active,sectionTitle="HANAMI HIGH",breadcrumb,sideItems,sideActive,stickyUtility=false,lastUpdated="08.25.2006",children}:Props){
+export default function PublicSchoolShell({active,sectionTitle="HANAMI HIGH",breadcrumb,sideItems,sideActive,stickyUtility=false,lastUpdated="08.26.2026",children}:Props){
   return <div className={`${styles.shell} hh-rebuild-scope`}>
     <div className={`${styles.utility} ${stickyUtility?styles.utilitySticky:""}`}>
       <span>HANAMI HIGH SCHOOL · FOUNDED 1836 · SCHOOL NETWORK ERA 2006</span>
       <nav aria-label="Utility links">
         <a href={siteHref("/#search")}>Search</a>
         <a href={siteHref("/calendar/")}>Calendar</a>
-        <a href={siteHref("/apply/")}>Apply</a>
+        <a href={siteHref("/feeds/")}>RSS</a>
+        <a href={siteHref("/status/")}>Status</a>
         <a href={siteHref("/portal/")}>Portal Login</a>
       </nav>
     </div>
@@ -81,7 +82,7 @@ export default function PublicSchoolShell({active,sectionTitle="HANAMI HIGH",bre
     <footer className={styles.footer}>
       <div className={styles.footerInner}>
         <div><b>HANAMI HIGH SCHOOL NETWORK</b><small>School founded 1836 · Digital network edition 2006 · Hanami City, Japan</small><small><PublicNetworkStatus/></small></div>
-        <nav><a href={siteHref("/guide/")}>Guide</a><a href={siteHref("/changelog/")}>Change Log</a><a href={siteHref("/accessibility/")}>Accessibility</a><a href={siteHref("/support/")}>Support</a></nav>
+        <nav><a href={siteHref("/guide/")}>Guide</a><a href={siteHref("/whats-new/")}>What&apos;s New</a><a href={siteHref("/feeds/")}>RSS</a><a href={siteHref("/status/")}>Status</a><a href={siteHref("/webmaster/")}>Webmaster</a><a href={siteHref("/support/")}>Support</a></nav>
         <div className={styles.retroNote}>Site rebuild · v1.0<br/><small>Best viewed with curiosity at 1024×768 or better.</small></div>
       </div>
     </footer>
