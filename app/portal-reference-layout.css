@@ -1,12 +1,22 @@
 /* Balanced portal workspace inspired by the approved dashboard reference.
-   Navigation rails stay intact; the workspace becomes a simple header + card grid. */
+   Navigation rails stay intact; the workspace uses a 70–80% 2006 visual language
+   with modern responsive behavior and accessible interaction underneath. */
 
 /* Shared Student / Faculty workspace ------------------------------------------------ */
 [class*="DashboardShell_canvasShell"]{
-  --portal-workspace-gap:18px;
-  --portal-workspace-pad:clamp(16px,2vw,28px);
+  --portal-workspace-gap:16px;
+  --portal-workspace-pad:clamp(14px,1.8vw,24px);
+  --portal-2006-blue:#17375f;
+  --portal-2006-blue-dark:#102842;
+  --portal-2006-sage:#9ba891;
+  --portal-2006-paper:#fffdf8;
+  --portal-2006-gray:#eef0ed;
+  --portal-2006-line:#cbd1cb;
+  --portal-2006-soft:#f5f6f3;
   grid-template-columns:208px minmax(0,1fr)!important;
-  background:#eef0ed!important;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(255,255,255,.68),transparent 24%),
+    linear-gradient(180deg,#f0f2ef 0%,#e8ebe7 100%)!important;
 }
 
 [class*="DashboardShell_main"]{
@@ -17,35 +27,45 @@
   margin:0!important;
   padding:0!important;
   overflow-x:hidden!important;
-  background:#eef0ed!important;
+  background:transparent!important;
 }
 
+/* Portal header keeps the clean reference geometry but looks like an upgraded 2006 intranet. */
 [class*="DashboardShell_topbar"]{
-  min-height:74px!important;
+  min-height:76px!important;
   padding:13px var(--portal-workspace-pad)!important;
   margin:0!important;
   border:0!important;
-  border-bottom:1px solid #d8ddd8!important;
-  background:#fff!important;
-  box-shadow:none!important;
+  border-bottom:1px solid #bcc5bd!important;
+  background:linear-gradient(180deg,#ffffff 0%,#f5f6f2 72%,#ecefe9 100%)!important;
+  box-shadow:0 1px 0 #fff inset,0 2px 5px rgba(24,45,65,.08)!important;
 }
 [class*="DashboardShell_topbar"] h1{
   margin:0!important;
-  font-size:clamp(21px,2.2vw,28px)!important;
+  color:#111!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:clamp(22px,2.2vw,29px)!important;
+  font-weight:600!important;
   line-height:1.1!important;
+  text-shadow:0 1px 0 #fff;
 }
 [class*="DashboardShell_topbar"] p{
   margin:0 0 3px!important;
+  font-family:Verdana,Arial,sans-serif!important;
+  font-size:8px!important;
+  font-weight:700!important;
+  letter-spacing:.08em!important;
 }
 [class*="DashboardShell_identity"]{
   min-height:42px!important;
   padding:5px 8px!important;
-  border:1px solid #dde2dd!important;
-  background:#fff!important;
-  box-shadow:none!important;
+  border:1px solid #aeb9b0!important;
+  border-radius:5px!important;
+  background:linear-gradient(180deg,#fff 0%,#edf0eb 100%)!important;
+  box-shadow:0 1px 0 #fff inset,0 1px 2px rgba(20,45,65,.12)!important;
 }
 
-/* Keep any context/status strips inside the same horizontal geometry as the page. */
+/* Context/status strips read like little intranet utility bars rather than modern floating cards. */
 [class*="PortalContextBar_"],
 [class*="SystemAnnouncementBanner_"]{
   width:auto!important;
@@ -53,6 +73,9 @@
   margin-left:var(--portal-workspace-pad)!important;
   margin-right:var(--portal-workspace-pad)!important;
   box-sizing:border-box!important;
+  border-radius:4px!important;
+  border-color:#bfc7bf!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset!important;
 }
 
 [class*="DashboardShell_contentView"],
@@ -67,10 +90,10 @@
   justify-self:stretch!important;
 }
 
-/* Reference dashboard: broad main column + compact right rail, with balanced cards. */
+/* Reference dashboard: broad main column + compact right rail, with slightly dense cards. */
 [class*="DashboardShell_dashboardView"]{
   display:grid!important;
-  grid-template-columns:minmax(0,1fr) minmax(260px,330px)!important;
+  grid-template-columns:minmax(0,1fr) minmax(260px,320px)!important;
   align-items:start!important;
   gap:var(--portal-workspace-gap)!important;
   width:100%!important;
@@ -84,22 +107,24 @@
   min-width:0!important;
 }
 
-/* Turn legacy dashboard surfaces into the clean reference-card language. */
+/* 2006 Web 2.0 card language: thin borders, subtle bevels, tiny shadows, non-pill rounding. */
 [class*="DashboardShell_contentView"] :where(section,article,aside,details),
 [class*="DashboardShell_accountContent"] :where(section,article,aside,details),
 [class*="StudentDashboardOverview_panel"],
 [class*="StudentDashboardOverview_command"],
 [class*="CanvasTodoRail_"],
 [class*="SchoolNoticesPanel_"]{
-  border-color:#dce1dc!important;
-  box-shadow:none!important;
+  border:1px solid var(--portal-2006-line)!important;
+  border-radius:5px!important;
+  background:var(--portal-2006-paper)!important;
+  box-shadow:0 1px 0 #fff inset,0 2px 5px rgba(24,45,65,.09)!important;
 }
 
 /* Student dashboard widget system -------------------------------------------------- */
 [class*="StudentDashboardOverview_widgets"]{
   display:grid!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:14px!important;
+  gap:12px!important;
   width:100%!important;
   margin:0!important;
 }
@@ -108,34 +133,77 @@
 }
 [class*="StudentDashboardOverview_grid"]{
   display:grid!important;
-  grid-template-columns:minmax(0,1.65fr) minmax(250px,.75fr)!important;
-  gap:14px!important;
+  grid-template-columns:minmax(0,1.65fr) minmax(245px,.75fr)!important;
+  gap:12px!important;
   width:100%!important;
   margin:0!important;
 }
 [class*="StudentDashboardOverview_panel"],
 [class*="StudentDashboardOverview_command"]{
-  border:1px solid #dce1dc!important;
-  background:#fff!important;
+  border:1px solid #c5cdc5!important;
+  background:#fffdf8!important;
 }
 [class*="StudentDashboardOverview_heading"]{
-  min-height:42px!important;
-  padding:10px 13px!important;
-  border-bottom:1px solid #e3e7e3!important;
-  background:#fafbfa!important;
+  min-height:40px!important;
+  padding:9px 12px!important;
+  border-bottom:1px solid #bcc5bd!important;
+  border-radius:4px 4px 0 0!important;
+  background:linear-gradient(180deg,#f9faf8 0%,#e4e8e2 100%)!important;
+  box-shadow:0 1px 0 #fff inset!important;
+}
+[class*="StudentDashboardOverview_heading"] h3{
+  color:#111!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-weight:600!important;
 }
 [class*="StudentDashboardOverview_metric"]{
-  min-height:112px!important;
+  min-height:108px!important;
   align-content:center!important;
-  padding:16px!important;
-  background:#fff!important;
+  padding:14px!important;
+  background:linear-gradient(180deg,#fffdf8 0%,#faf9f4 100%)!important;
 }
 [class*="StudentDashboardOverview_metric"] strong{
   font-size:24px!important;
+  font-family:Georgia,"Times New Roman",serif!important;
 }
 [class*="StudentDashboardOverview_slot"],
 [class*="StudentDashboardOverview_priorities"] article{
-  min-height:56px!important;
+  min-height:54px!important;
+}
+
+/* Buttons/tabs should feel glossy and clickable, not like 2020s pills. */
+[class*="DashboardShell_main"] :where(button,[role="button"],[role="tab"]),
+[class*="DashboardShell_accountContent"] a[class],
+[class*="StudentDashboardOverview_heading"] button,
+[class*="StudentDashboardOverview_metric"] button,
+[class*="StudentDashboardOverview_quickActions"] button{
+  border-radius:4px!important;
+  border:1px solid #8f9c91!important;
+  background:linear-gradient(180deg,#ffffff 0%,#e8ece6 48%,#d9dfd8 100%)!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.95) inset,0 1px 1px rgba(20,45,65,.08)!important;
+  color:#000!important;
+  text-shadow:0 1px 0 #fff!important;
+  transition:background .16s ease,box-shadow .16s ease,transform .08s ease!important;
+}
+[class*="DashboardShell_main"] :where(button,[role="button"],[role="tab"]):hover,
+[class*="DashboardShell_accountContent"] a[class]:hover,
+[class*="StudentDashboardOverview_heading"] button:hover,
+[class*="StudentDashboardOverview_metric"] button:hover,
+[class*="StudentDashboardOverview_quickActions"] button:hover{
+  background:linear-gradient(180deg,#fff 0%,#f1f4ef 45%,#cfd8cf 100%)!important;
+}
+[class*="DashboardShell_main"] :where(button,[role="button"],[role="tab"]):active{
+  transform:translateY(1px);
+  box-shadow:0 1px 2px rgba(20,45,65,.16) inset!important;
+}
+
+/* Filled primary controls retain white text and a classic glossy navy treatment. */
+[class*="DashboardShell_main"] :where([class*="primary"],[class*="Primary"],[class*="active"],[class*="Active"]):is(button,a,[role="button"],[role="tab"]){
+  border-color:#0f2845!important;
+  background:linear-gradient(180deg,#315a86 0%,#1e466f 48%,#17375f 52%,#102842 100%)!important;
+  color:#fff!important;
+  text-shadow:0 -1px 0 rgba(0,0,0,.55)!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 1px 2px rgba(20,45,65,.18)!important;
 }
 
 /* Page title/description rows use one consistent baseline everywhere. */
@@ -143,23 +211,32 @@
   display:grid!important;
   grid-template-columns:minmax(0,1fr)!important;
   align-items:start!important;
-  min-height:72px!important;
-  padding:0 0 14px!important;
+  min-height:70px!important;
+  padding:0 0 12px!important;
   margin:0!important;
   border:0!important;
-  border-bottom:1px solid #d8ddd8!important;
+  border-bottom:3px double #c4cac4!important;
 }
 [class*="DashboardShell_pageIntro"]:before{
   margin-bottom:4px!important;
+  font-family:Verdana,Arial,sans-serif!important;
 }
-[class*="DashboardShell_pageIntro"] h2,
+[class*="DashboardShell_pageIntro"] h2{
+  margin-left:0!important;
+  margin-right:0!important;
+  max-width:860px!important;
+  color:#111!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+}
 [class*="DashboardShell_pageIntro"] p{
   margin-left:0!important;
   margin-right:0!important;
   max-width:860px!important;
+  color:#000!important;
+  font-family:Arial,Verdana,sans-serif!important;
 }
 
-/* Forms/account pages use a centered, balanced working width inside the workspace. */
+/* Forms/account pages use a balanced working width inside the workspace. */
 [class*="DashboardShell_accountLayout"]{
   display:grid!important;
   grid-template-columns:210px minmax(0,1fr)!important;
@@ -172,20 +249,30 @@
   padding-left:var(--portal-workspace-pad)!important;
   padding-right:var(--portal-workspace-pad)!important;
 }
+[class*="DashboardShell_accountNav"]{
+  background:linear-gradient(180deg,#eef1ec 0%,#e3e8e1 100%)!important;
+  border-right-color:#bcc5bd!important;
+}
 
-/* Administration / Owner receive the same header + neutral workspace proportions. */
+/* Classic hyperlink treatment where links are not buttons. */
+[class*="DashboardShell_main"] a:not([class*="button"]):not([class*="Button"]){
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+
+/* Administration / Owner receive the same upgraded-intranet proportions. */
 [class*="AdminWorkspace_main"],
 [class*="OwnerPortalClient_main"]{
   min-width:0!important;
-  background:#eef0ed!important;
+  background:linear-gradient(180deg,#f0f2ef 0%,#e8ebe7 100%)!important;
 }
 [class*="AdminWorkspace_header"],
 [class*="OwnerPortalClient_topBar"]{
   min-height:74px!important;
   padding:13px clamp(16px,2vw,28px)!important;
-  background:#fff!important;
-  border-bottom:1px solid #d8ddd8!important;
-  box-shadow:none!important;
+  background:linear-gradient(180deg,#fff 0%,#f0f2ee 100%)!important;
+  border-bottom:1px solid #bcc5bd!important;
+  box-shadow:0 1px 0 #fff inset,0 2px 5px rgba(24,45,65,.08)!important;
 }
 [class*="AdminWorkspace_content"],
 [class*="OwnerPortalClient_content"]{
@@ -195,9 +282,23 @@
   box-sizing:border-box!important;
 }
 
+/* Tiny nostalgic details without sacrificing modern usability. */
+[class*="DashboardShell_contentView"]:after,
+[class*="DashboardShell_accountContent"]:after{
+  content:"HANAMI HIGH NETWORK · © 2006–2026 · Last Updated: 08/26/2026";
+  display:block;
+  grid-column:1/-1;
+  margin-top:4px;
+  padding:8px 0 2px;
+  border-top:1px dotted #aeb6ae;
+  color:#000;
+  font:10px Verdana,Arial,sans-serif;
+  text-align:center;
+}
+
 @media(max-width:1180px){
   [class*="DashboardShell_dashboardView"]{
-    grid-template-columns:minmax(0,1fr) minmax(240px,290px)!important;
+    grid-template-columns:minmax(0,1fr) minmax(240px,285px)!important;
   }
   [class*="StudentDashboardOverview_widgets"]{
     grid-template-columns:repeat(2,minmax(0,1fr))!important;
