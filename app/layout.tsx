@@ -48,6 +48,7 @@ import "./strict-text-contrast.css";
 import "./portal-dimension-fixes.css";
 import "./fill-text-contrast-fixes.css";
 import "./portal-reference-layout.css";
+import "./final-portal-geometry.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
