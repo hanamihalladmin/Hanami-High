@@ -10,28 +10,34 @@ Design contract: 70–80% 2006 Web 2.0 / early MySpace / school-district website
 - [x] Old-school What's New page
 
 ## Batch B — School information and publication
-- [ ] School Directory + Staff Pages
-- [ ] School Newspaper Archive
-- [ ] Photo Gallery
-- [ ] School Radio / Broadcast Page
-- [ ] FAQ / New Student Guide
+- [x] School Directory + Staff Pages
+- [x] School Newspaper Archive
+- [x] Photo Gallery
+- [x] School Radio / Broadcast Page
+- [x] FAQ / New Student Guide
 
 ## Batch C — Student identity and school life
-- [ ] Student Yearbook
-- [ ] Homeroom Pages
-- [ ] Club Microsites
-- [ ] Personal Profile Guestbooks
-- [ ] Status / Away Messages
-- [ ] Top Friends / Featured Friends
-- [ ] Achievements / Badges
+- [x] Student Yearbook
+- [x] Homeroom Pages
+- [x] Club Microsites
+- [x] Personal Profile Guestbooks
+- [x] Status / Away Messages
+- [x] Top Friends / Featured Friends
+- [x] Achievements / Badges
 
 ## Batch D — Community participation
-- [ ] School Polls
-- [ ] Lost & Found Board
-- [ ] Classifieds / Bulletin Board
-- [ ] Event RSVP System
-- [ ] Anonymous Suggestion Box
-- [ ] Help Desk / Tech Support
+- [x] School Polls
+- [x] Lost & Found Board
+- [x] Classifieds / Bulletin Board
+- [x] Event RSVP System
+- [x] Anonymous Suggestion Box
+- [x] Help Desk / Tech Support
+
+## Final integration
+- [x] Portal viewport geometry hardened for Student, Faculty, Administration, and Owner workspaces.
+- [x] Homepage rebuilt around the approved 2006 school-network layout.
+- [x] Supplied Hanami campus photograph designated as the homepage school banner (no AI replacement).
+- [x] Supplied Hanami crest designated as the canonical public/portal logo.
 
 ## Implementation rules
 - Keep public pages visibly 2006-first: thin borders, glossy/beveled headers, small shadows, classic typography, dense information layout, tiny icons, blue/navy links and small decorative details.
