@@ -15,13 +15,14 @@ export default function HomeDashboard({currentDate}:Props){
  return <PublicSchoolShell active="home" sectionTitle="PUBLIC NETWORK" breadcrumb="Home" stickyUtility lastUpdated="08.27.2026">
   <div className={styles.homeGrid}>
    <aside className={styles.leftRail}>
-    <section className={styles.panel} id="search"><h2>🔎 SCHOOL SEARCH</h2><div className={styles.compactSearch}><strong>Search Hanami High</strong><p>Courses, clubs, calendars, news, people and school resources.</p><a href="#network-search">Open Hanami Search »</a></div></section>
     <section className={styles.panel}><h2>📢 ANNOUNCEMENTS</h2><nav className={styles.linkList}><a href="./whats-new/">What&apos;s New</a><a href="./calendar/">School Calendar</a><a href="./newspaper/">Hanami Chronicle</a><a href="./status/">Network Notices</a></nav></section>
     <section className={styles.panel}><h2>🔗 QUICK LINKS</h2><nav className={styles.linkList}><a href="./directory/">School Directory</a><a href="./newspaper/archive/">Chronicle Archive</a><a href="./gallery/">Photo Gallery</a><a href="./radio/">School Radio</a><a href="./homerooms/">Homerooms</a><a href="./yearbook/">Yearbook</a><a href="./club-sites/">Club Microsites</a><a href="./new-student/">FAQ / New Student Guide</a><a href="./webmaster/">Webmaster Page</a></nav></section>
     <section className={styles.panel}><h2>👤 NETWORK ACCESS</h2><div className={styles.loginBox}><a className={styles.primaryButton} href="./portal/">Student / Faculty Login</a><a href="./apply/">Apply to Hanami</a></div></section>
    </aside>
 
    <main className={styles.centerColumn}>
+    <section className={styles.fullSearch} id="network-search"><h2>🔎 HANAMI SEARCH</h2><SiteSearch/></section>
+
     <section className={`${styles.panel} ${styles.welcome}`}><h2>✿ WELCOME TO HANAMI HIGH SCHOOL</h2><div className={styles.welcomeBody}><div><p className={styles.dateLine}>HANAMI HIGH SCHOOL NETWORK · <span data-hanami-roleplay-clock>{currentDate.toUpperCase()}</span></p><h3>A school day is more than a schedule.</h3><p>Explore academics, student life, school traditions, news, events, and community resources through a school website that still looks proudly at home in 2006.</p><div className={styles.actions}><a href="./about/">About Hanami</a><a href="./academics/">Explore Academics</a><a href="./campus-life/">Student Life</a></div></div><img src="./hanami-high-portal-icon.png" alt="Hanami High School logo"/></div></section>
 
     <section className={`${styles.panel} ${styles.announcement}`}><h2>★ FEATURED ANNOUNCEMENTS</h2><div className={styles.panelBody}><LiveAnnouncements/></div></section>
@@ -46,10 +47,5 @@ export default function HomeDashboard({currentDate}:Props){
     <section className={styles.panel}><h2>🛠 SITE INFORMATION</h2><dl className={styles.siteInfo}><div><dt>Network era</dt><dd>2006</dd></div><div><dt>Last updated</dt><dd>08/27/2026</dd></div><div><dt>Site tools</dt><dd><a href="./webmaster/">Webmaster</a></dd></div><div><dt>Support</dt><dd><a href="./support/">Report a Problem</a></dd></div></dl></section>
    </aside>
   </div>
-
-  <section className={styles.fullSearch} id="network-search">
-   <h2>🔎 HANAMI SEARCH</h2>
-   <SiteSearch/>
-  </section>
  </PublicSchoolShell>;
 }
