@@ -1,0 +1,299 @@
+/* Hanami portal visual system — cozy school intranet + personal web + game dashboard. */
+section[aria-labelledby="dashboard-title"]{
+ --hanami-ink:#1f2630;
+ --hanami-navy:#17283c;
+ --hanami-wood:#4b3024;
+ --hanami-wood-deep:#302019;
+ --hanami-paper:#fffaf1;
+ --hanami-paper-2:#f7efe2;
+ --hanami-sage:#87927a;
+ --hanami-blush:#e9b7c5;
+ --hanami-blush-deep:#c77e94;
+ --hanami-line:#d4c6b7;
+ --hanami-shadow:0 4px 14px rgba(48,32,25,.14);
+ background:
+  radial-gradient(circle at 88% 8%,rgba(233,183,197,.30) 0 2px,transparent 3px),
+  radial-gradient(circle at 91% 12%,rgba(233,183,197,.20) 0 3px,transparent 4px),
+  linear-gradient(180deg,#f6eee3,#eee5d7)!important;
+ color:var(--hanami-ink)!important;
+}
+
+/* Left rail: warm wood, old-school app chrome, compact enough to keep the workspace balanced. */
+section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{
+ width:168px!important;
+ padding:10px 10px 12px!important;
+ background:
+  linear-gradient(90deg,rgba(255,255,255,.035),transparent 12%,transparent 88%,rgba(0,0,0,.08)),
+  repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0 1px,rgba(0,0,0,.018) 1px 3px),
+  linear-gradient(180deg,#5b3b2c,#3e2a21 58%,#302019)!important;
+ border-right:1px solid #2b1c16!important;
+ box-shadow:inset -1px 0 rgba(255,255,255,.08),3px 0 10px rgba(34,24,19,.16)!important;
+}
+section[aria-labelledby="dashboard-title"]>main{
+ margin-left:168px!important;
+ width:calc(100vw - 168px)!important;
+ max-width:calc(100vw - 168px)!important;
+ min-width:0!important;
+ overflow-x:hidden!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="logoButton"]{
+ min-height:116px!important;
+ margin-bottom:8px!important;
+ border:1px solid rgba(255,255,255,.14)!important;
+ background:rgba(255,250,241,.07)!important;
+ box-shadow:inset 0 0 0 1px rgba(0,0,0,.16)!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="logoButton"]::after{
+ content:"HANAMI HIGH\A SCHOOL NETWORK";
+ white-space:pre;
+ display:block;
+ margin-top:86px;
+ color:#fff!important;
+ text-align:center;
+ font:700 8px/1.35 Verdana,Arial,sans-serif;
+ letter-spacing:.08em;
+}
+section[aria-labelledby="dashboard-title"] [class*="primaryNav"]:before{
+ color:#f6dddf!important;
+ letter-spacing:.12em!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]>button,
+section[aria-labelledby="dashboard-title"] [class*="navBottom"] a,
+section[aria-labelledby="dashboard-title"] [class*="navBottom"] button{
+ min-height:39px!important;
+ border:1px solid rgba(255,255,255,.08)!important;
+ border-radius:6px!important;
+ color:#fff!important;
+ background:rgba(255,255,255,.025)!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.04)!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]>button:hover,
+section[aria-labelledby="dashboard-title"] [class*="navBottom"] a:hover,
+section[aria-labelledby="dashboard-title"] [class*="navBottom"] button:hover{
+ background:rgba(233,183,197,.16)!important;
+ border-color:rgba(233,183,197,.32)!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="navActive"]{
+ background:linear-gradient(180deg,#f3ccd6,#d996aa)!important;
+ color:#2d2020!important;
+ border-color:#f7dce4!important;
+ box-shadow:inset 0 1px #fff5f8,0 2px 5px rgba(0,0,0,.18)!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="navActive"] *{color:#2d2020!important;}
+section[aria-labelledby="dashboard-title"] [class*="subNav"]{border-left-color:rgba(242,213,219,.38)!important;}
+section[aria-labelledby="dashboard-title"] [class*="subNav"] button{color:#f8f0ea!important;border-radius:4px!important;}
+section[aria-labelledby="dashboard-title"] [class*="subNav"] [class*="Active"]{background:rgba(255,255,255,.12)!important;color:#fff!important;}
+
+/* Top utility bar: cream stationery, subtle blossom motif, modern behavior under a retro shell. */
+section[aria-labelledby="dashboard-title"]>main>header{
+ position:sticky!important;
+ top:0!important;
+ z-index:55!important;
+ min-height:78px!important;
+ padding:12px 24px!important;
+ background:
+  radial-gradient(circle at 74% 24%,rgba(220,138,159,.19) 0 3px,transparent 4px),
+  radial-gradient(circle at 77% 60%,rgba(220,138,159,.13) 0 2px,transparent 3px),
+  linear-gradient(180deg,rgba(255,251,244,.97),rgba(247,239,226,.96))!important;
+ border-bottom:1px solid #cab9aa!important;
+ box-shadow:0 2px 8px rgba(53,39,31,.10)!important;
+ backdrop-filter:blur(10px)!important;
+}
+section[aria-labelledby="dashboard-title"]>main>header:after{
+ content:"✿  HANAMI SCHOOL DESK  ✿";
+ color:#a46c7c!important;
+ font:700 8px Verdana,Arial,sans-serif;
+ letter-spacing:.08em;
+ opacity:.85;
+}
+section[aria-labelledby="dashboard-title"]>main>header h1{font-family:Georgia,"Times New Roman",serif!important;color:#253349!important;}
+section[aria-labelledby="dashboard-title"]>main>header [class*="identity"]{
+ border:1px solid #c9b9ab!important;
+ border-radius:8px!important;
+ background:#fffaf1!important;
+ box-shadow:inset 0 1px #fff,0 2px 5px rgba(50,35,28,.08)!important;
+}
+
+/* Main stage: wallpaper still belongs to the character, but page chrome feels intentional. */
+section[aria-labelledby="dashboard-title"]>main:before{left:168px!important;filter:saturate(.92) contrast(.96)!important;}
+section[aria-labelledby="dashboard-title"] [class*="contentView"],
+section[aria-labelledby="dashboard-title"] [class*="accountContent"]{
+ width:100%!important;
+ max-width:none!important;
+ padding:18px 22px 34px!important;
+ gap:14px!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="dashboardView"]{
+ width:100%!important;
+ max-width:none!important;
+ grid-template-columns:minmax(0,1fr) minmax(270px,320px)!important;
+ gap:16px!important;
+}
+
+/* Paper cards and game-style dashboard modules. */
+section[aria-labelledby="dashboard-title"] [class*="contentView"]>section,
+section[aria-labelledby="dashboard-title"] [class*="contentView"]>div>section,
+section[aria-labelledby="dashboard-title"] [class*="accountContent"]>section,
+section[aria-labelledby="dashboard-title"] [class*="featureStack"]>section,
+section[aria-labelledby="dashboard-title"] article,
+section[aria-labelledby="dashboard-title"] fieldset,
+section[aria-labelledby="dashboard-title"] details,
+section[aria-labelledby="dashboard-title"] #hanami-message-center,
+section[aria-labelledby="dashboard-title"] .status-banner,
+section[aria-labelledby="dashboard-title"] .site-search{
+ border:1px solid var(--hanami-line)!important;
+ border-radius:9px!important;
+ background:linear-gradient(180deg,rgba(255,252,246,.98),rgba(250,244,234,.98))!important;
+ box-shadow:inset 0 1px #fff,var(--hanami-shadow)!important;
+ overflow:hidden!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>div:first-child,
+section[aria-labelledby="dashboard-title"] [class*="contentView"]>section>header,
+section[aria-labelledby="dashboard-title"] [class*="accountContent"]>section>header,
+section[aria-labelledby="dashboard-title"] article>header{
+ background:linear-gradient(180deg,#f9e4e9,#edc3cf)!important;
+ border-bottom:1px solid #d4a5b2!important;
+ color:#2c3440!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="pageIntro"]{
+ position:relative;
+ border:1px solid #cabcae!important;
+ border-left:5px solid #d594a6!important;
+ border-radius:8px!important;
+ background:linear-gradient(180deg,#fffaf3,#f7ede1)!important;
+ box-shadow:0 3px 10px rgba(60,43,33,.08)!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="pageIntro"]:after{
+ content:"✿";
+ position:absolute;
+ right:14px;
+ top:12px;
+ color:#c77e94!important;
+ font-size:18px;
+ opacity:.8;
+}
+
+/* Right-side dashboard rail: compact activity board feel. */
+section[aria-labelledby="dashboard-title"] [class*="dashboardView"]>:last-child{
+ align-self:start!important;
+ position:sticky!important;
+ top:96px!important;
+ min-width:0!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="dashboardView"]>:last-child section,
+section[aria-labelledby="dashboard-title"] [class*="dashboardView"]>:last-child article{
+ box-shadow:0 3px 10px rgba(58,40,31,.10)!important;
+}
+
+/* Controls: small glossy 2006 actions, not modern pills. */
+section[aria-labelledby="dashboard-title"] button:not([class*="nav"]):not([class*="identity"]),
+section[aria-labelledby="dashboard-title"] a[role="button"]{
+ border:1px solid #a99e91!important;
+ border-radius:5px!important;
+ background:linear-gradient(180deg,#fffdf8 0%,#ebe3d7 100%)!important;
+ color:#25303a!important;
+ box-shadow:inset 0 1px #fff,0 1px 2px rgba(50,35,28,.08)!important;
+}
+section[aria-labelledby="dashboard-title"] button:not([class*="nav"]):not([class*="identity"]):hover,
+section[aria-labelledby="dashboard-title"] a[role="button"]:hover{
+ background:linear-gradient(180deg,#fff6f8,#efd7df)!important;
+ border-color:#c68da0!important;
+}
+section[aria-labelledby="dashboard-title"] [aria-pressed="true"],
+section[aria-labelledby="dashboard-title"] [aria-selected="true"]{
+ background:linear-gradient(180deg,#34516f,#17283c)!important;
+ color:#fff!important;
+ border-color:#102136!important;
+}
+
+/* Forms and tables keep school-office density while feeling softer. */
+section[aria-labelledby="dashboard-title"] input,
+section[aria-labelledby="dashboard-title"] select,
+section[aria-labelledby="dashboard-title"] textarea{
+ border:1px solid #bdb1a5!important;
+ border-radius:5px!important;
+ background:#fffefb!important;
+ color:#1f2630!important;
+ box-shadow:inset 1px 1px 2px rgba(42,30,23,.06)!important;
+}
+section[aria-labelledby="dashboard-title"] table{
+ border:1px solid #cfc0b3!important;
+ border-radius:7px!important;
+ overflow:hidden!important;
+ background:#fffaf1!important;
+}
+section[aria-labelledby="dashboard-title"] thead th{
+ background:linear-gradient(180deg,#e8eadf,#d9decf)!important;
+ color:#334238!important;
+ border-color:#c8cec0!important;
+}
+section[aria-labelledby="dashboard-title"] tbody td{background:#fffaf1!important;color:#313936!important;border-color:#e4d9cd!important;}
+section[aria-labelledby="dashboard-title"] tbody tr:nth-child(even) td{background:#fbf5eb!important;}
+
+/* Account/profile area borrows the personal-web reference: portrait rail + decorated content canvas. */
+section[aria-labelledby="dashboard-title"] [class*="accountLayout"]{
+ grid-template-columns:250px minmax(0,1fr)!important;
+ background:transparent!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="accountNav"]{
+ margin:14px 0 20px 16px!important;
+ padding:16px 13px!important;
+ border:1px solid #c6b5a8!important;
+ border-radius:10px!important;
+ background:linear-gradient(180deg,#fffaf2,#eee4d7)!important;
+ box-shadow:var(--hanami-shadow)!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="accountNav"] button,
+section[aria-labelledby="dashboard-title"] [class*="accountNav"] a{
+ border-radius:4px!important;
+ border-bottom:1px dotted #c9b8a9!important;
+ color:#26332f!important;
+}
+
+/* Community/message areas gain a restrained dark social-network treatment. */
+section[aria-labelledby="dashboard-title"] #hanami-message-center{
+ background:#20252d!important;
+ border-color:#11161c!important;
+ color:#fff!important;
+}
+section[aria-labelledby="dashboard-title"] #hanami-message-center :where(h1,h2,h3,h4,p,span,strong,small,label,a){color:#fff!important;}
+section[aria-labelledby="dashboard-title"] #hanami-message-center textarea,
+section[aria-labelledby="dashboard-title"] #hanami-message-center input{
+ background:#2c333d!important;
+ color:#fff!important;
+ border-color:#46505d!important;
+}
+
+/* A tiny sakura edge detail without relying on generated artwork. */
+section[aria-labelledby="dashboard-title"]>main:after{
+ content:"✿   ✿"!important;
+ display:block!important;
+ position:fixed!important;
+ right:18px!important;
+ bottom:14px!important;
+ z-index:20!important;
+ width:auto!important;
+ height:auto!important;
+ color:#d58fa3!important;
+ background:none!important;
+ font:700 18px Georgia,serif!important;
+ letter-spacing:8px!important;
+ opacity:.35!important;
+ pointer-events:none!important;
+}
+
+@media(max-width:1180px){
+ section[aria-labelledby="dashboard-title"] [class*="dashboardView"]{grid-template-columns:1fr!important;}
+ section[aria-labelledby="dashboard-title"] [class*="dashboardView"]>:last-child{position:static!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;}
+}
+@media(max-width:760px){
+ section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{width:100%!important;padding:4px!important;background:#3d2b22!important;}
+ section[aria-labelledby="dashboard-title"]>main{margin-left:0!important;width:100%!important;max-width:100%!important;}
+ section[aria-labelledby="dashboard-title"]>main:before{left:0!important;}
+ section[aria-labelledby="dashboard-title"]>main>header{position:relative!important;padding:10px 14px!important;}
+ section[aria-labelledby="dashboard-title"]>main>header:after{display:none!important;}
+ section[aria-labelledby="dashboard-title"] [class*="contentView"],section[aria-labelledby="dashboard-title"] [class*="accountContent"]{padding:12px!important;}
+ section[aria-labelledby="dashboard-title"] [class*="dashboardView"]>:last-child{grid-template-columns:1fr!important;}
+ section[aria-labelledby="dashboard-title"] [class*="accountLayout"]{display:block!important;}
+ section[aria-labelledby="dashboard-title"] [class*="accountNav"]{margin:12px!important;}
+}
