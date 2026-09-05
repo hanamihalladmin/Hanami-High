@@ -54,6 +54,7 @@ import "./cozy-hanami-workspace.css";
 import "./cozy-hanami-workspace-details.css";
 import "./cozy-hanami-geometry-lock.css";
 import "./portal-breathing-room.css";
+import "./rebuild-v3.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
