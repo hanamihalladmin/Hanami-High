@@ -51,6 +51,7 @@ import "./portal-reference-layout.css";
 import "./final-portal-geometry.css";
 import "./live-regression-hotfix.css";
 import "./cozy-hanami-workspace.css";
+import "./cozy-hanami-workspace-details.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
