@@ -72,7 +72,7 @@ export default function PublicSchoolShell({
 
         {home ? (
           <figure className={styles.campusBanner}>
-            <img src={siteHref("/hanami-school-banner.jpg")} alt="Hanami High School campus framed by cherry blossoms" />
+            <img src="./hanami-school-banner.jpg" alt="Hanami High School campus framed by cherry blossoms" />
             <figcaption>Welcome to Hanami High School</figcaption>
           </figure>
         ) : (
