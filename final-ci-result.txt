@@ -257,55 +257,55 @@ not ok 268 - Help has a direct router and support anchor
 # Subtest: student schedule renders class periods from the published homeroom schedule
 ok 260 - student schedule renders class periods from the published homeroom schedule
   ---
-  duration_ms: 1.331019
+  duration_ms: 1.314516
   type: 'test'
   ...
 # Subtest: student schedule ignores duplicated per-homeroom copies of shared school blocks
 ok 261 - student schedule ignores duplicated per-homeroom copies of shared school blocks
   ---
-  duration_ms: 0.305391
+  duration_ms: 0.248636
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 262 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.8981
+  duration_ms: 1.153103
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 263 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.270486
+  duration_ms: 0.35213
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 264 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 6.044776
+  duration_ms: 5.676198
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 265 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.451595
+  duration_ms: 1.389587
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 266 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.419855
+  duration_ms: 1.226471
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 267 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.703346
+  duration_ms: 1.7274
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 not ok 268 - Help has a direct router and support anchor
   ---
-  duration_ms: 2.158557
+  duration_ms: 1.950769
   type: 'test'
   location: '/home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:39:1'
   failureType: 'testCodeFailure'
@@ -352,7 +352,7 @@ not ok 268 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1805.097352
+# duration_ms 1709.643649
 === build ===
 
 > hanami-high@0.1.0 build
@@ -368,15 +368,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 7.0s
+✓ Compiled successfully in 6.6s
   Running TypeScript ...
-  Finished TypeScript in 14.5s ...
+  Finished TypeScript in 13.5s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/48) ...
   Generating static pages using 3 workers (12/48) 
   Generating static pages using 3 workers (24/48) 
   Generating static pages using 3 workers (36/48) 
-✓ Generating static pages using 3 workers (48/48) in 871ms
+✓ Generating static pages using 3 workers (48/48) in 824ms
   Finalizing page optimization ...
 
 Route (app)
