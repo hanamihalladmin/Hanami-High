@@ -4,12 +4,22 @@ import {useEffect} from "react";
 
 const CONTROL_TAGS=new Set(["BUTTON","INPUT","TEXTAREA","SELECT","OPTION","SUMMARY"]);
 
-function parseRgb(value:string){
+type Rgba={r:number;g:number;b:number;a:number};
+
+function parseRgb(value:string):Rgba|null{
  const match=value.match(/rgba?\(([^)]+)\)/i);
  if(!match)return null;
  const parts=match[1].split(",").map(v=>Number.parseFloat(v.trim()));
  if(parts.length<3||parts.slice(0,3).some(Number.isNaN))return null;
  return {r:parts[0],g:parts[1],b:parts[2],a:parts.length>3&&Number.isFinite(parts[3])?parts[3]:1};
+}
+
+function parseGradient(value:string):Rgba|null{
+ if(!value||value==="none")return null;
+ const matches=[...value.matchAll(/rgba?\(([^)]+)\)/gi)];
+ const colors=matches.map(match=>parseRgb(match[0])).filter((color):color is Rgba=>Boolean(color&&color.a>.08));
+ if(!colors.length)return null;
+ return colors.reduce((sum,color)=>({r:sum.r+color.r/colors.length,g:sum.g+color.g/colors.length,b:sum.b+color.b/colors.length,a:1}),{r:0,g:0,b:0,a:1});
 }
 
 function channel(v:number){
@@ -22,8 +32,11 @@ function luminance(r:number,g:number,b:number){return 0.2126*channel(r)+0.7152*c
 function backgroundFor(element:HTMLElement){
  let current:HTMLElement|null=element;
  while(current){
-  const parsed=parseRgb(getComputedStyle(current).backgroundColor);
-  if(parsed&&parsed.a>.08)return parsed;
+  const style=getComputedStyle(current);
+  const solid=parseRgb(style.backgroundColor);
+  if(solid&&solid.a>.08)return solid;
+  const gradient=parseGradient(style.backgroundImage);
+  if(gradient)return gradient;
   current=current.parentElement;
  }
  return {r:255,g:255,b:255,a:1};

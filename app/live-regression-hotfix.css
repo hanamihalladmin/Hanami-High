@@ -1,0 +1,26 @@
+/* Deterministic fixes for known dark gradient surfaces.
+   StrictTextContrastRuntime only sees solid background-color values, so gradient
+   navigation can otherwise be misclassified as a light surface. */
+[class*="PublicSchoolShell_navWrap"] a,
+[class*="PublicSchoolShell_navWrap"] a [data-hanami-contrast],
+[class*="PublicSchoolShell_navWrap"] a[data-hanami-contrast]{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+[class*="PublicSchoolShell_navWrap"] a:hover,
+[class*="PublicSchoolShell_navWrap"] a[class*="active"],
+[class*="PublicSchoolShell_navWrap"] a:hover [data-hanami-contrast],
+[class*="PublicSchoolShell_navWrap"] a[class*="active"] [data-hanami-contrast]{
+  color:#000!important;
+  -webkit-text-fill-color:#000!important;
+}
+
+[class*="DashboardShell_globalNav"] :where(a,button,span,b,small,[data-hanami-contrast]){
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+[class*="DashboardShell_globalNav"] [class*="navActive"],
+[class*="DashboardShell_globalNav"] [class*="navActive"] :where(span,b,small,[data-hanami-contrast]){
+  color:#000!important;
+  -webkit-text-fill-color:#000!important;
+}
