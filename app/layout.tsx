@@ -17,6 +17,7 @@ import ScheduleDedupRuntime from "./components/ScheduleDedupRuntime";
 import PostRebuildRegressionRuntime from "./components/PostRebuildRegressionRuntime";
 import StrictTextContrastRuntime from "./components/StrictTextContrastRuntime";
 import "./globals.css";
+import "./styles/rebuild/tokens.css";
 import "./mobile.css";
 import "./accessibility.css";
 import "./readability.css";
