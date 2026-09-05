@@ -1,0 +1,38 @@
+:root {
+  /* Hanami rebuild — canonical visual tokens */
+  --hh-navy: #17283c;
+  --hh-wood: #5b3929;
+  --hh-ivory: #fffaf2;
+  --hh-cream: #f3efe4;
+  --hh-sage: #9ba891;
+  --hh-dusty-rose: #c58e93;
+  --hh-sakura: #e7a6b7;
+  --hh-ink: #1d1a18;
+  --hh-border: #d7ccbd;
+
+  --hh-nav-width: 220px;
+  --hh-context-width: 280px;
+  --hh-content-max: 1180px;
+  --hh-page-gutter: 32px;
+  --hh-section-gap: 24px;
+  --hh-card-gap: 20px;
+  --hh-card-padding: 22px;
+  --hh-topbar-height: 52px;
+  --hh-page-header-min-height: 72px;
+
+  --hh-radius-sm: 6px;
+  --hh-radius-md: 10px;
+  --hh-radius-lg: 14px;
+  --hh-shadow-soft: 0 8px 24px rgba(58, 42, 31, 0.08);
+
+  --hh-font-display: Georgia, "Times New Roman", serif;
+  --hh-font-interface: Verdana, Arial, sans-serif;
+  --hh-font-system: Arial, Helvetica, sans-serif;
+
+  --hh-breakpoint-desktop: 1366px;
+  --hh-breakpoint-tablet: 1024px;
+  --hh-breakpoint-mobile: 768px;
+}
+
+/* Structural tokens are owned here. Theme files may alter color/decoration tokens,
+   but must not redefine shell widths, gutters, gaps, or breakpoints. */
