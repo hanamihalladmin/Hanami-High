@@ -1,0 +1,142 @@
+/* Second-pass Hanami portal detailing: combines cozy game UI, MySpace-era community structure,
+   and school-intranet information density without changing portal logic. */
+section[aria-labelledby="dashboard-title"] [class*="PortalContextBar_"]{
+  margin:10px 14px 0!important;
+  padding:9px 12px!important;
+  border:1px solid #cdbcae!important;
+  border-radius:8px!important;
+  background:linear-gradient(180deg,#fff9f0,#f2e6d8)!important;
+  box-shadow:inset 0 1px #fff,0 2px 6px rgba(58,40,31,.08)!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="SystemAnnouncementBanner_"]{
+  margin:10px 14px 0!important;
+  border:1px solid #c9899b!important;
+  border-radius:7px!important;
+  background:linear-gradient(180deg,#f8dfe6,#e9b9c7)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.72),0 2px 6px rgba(58,40,31,.08)!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="SystemAnnouncementBanner_"] :where(h1,h2,h3,h4,p,span,strong,small,a){
+  color:#2b2630!important;
+  -webkit-text-fill-color:#2b2630!important;
+}
+
+/* Denser card rhythm inspired by game dashboards and old community portals. */
+section[aria-labelledby="dashboard-title"] [class*="dashboardMain"]{
+  gap:12px!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="featureStack"]{
+  gap:12px!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="secondaryWidgets"]{
+  gap:12px!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="contentView"] :where(section,article,fieldset,details) > :where(h2,h3,h4):first-child{
+  margin-top:0!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="contentView"] :where(section,article,fieldset,details){
+  scroll-margin-top:104px!important;
+}
+
+/* Compact retro section tabs. */
+section[aria-labelledby="dashboard-title"] :where([role="tablist"],[class*="tabs"],[class*="tabRow"],[class*="tabList"]){
+  padding:3px!important;
+  border:1px solid #c9b8aa!important;
+  border-radius:7px!important;
+  background:#eee4d7!important;
+  box-shadow:inset 0 1px #fff!important;
+}
+section[aria-labelledby="dashboard-title"] :where([role="tablist"],[class*="tabs"],[class*="tabRow"],[class*="tabList"])>button{
+  min-height:31px!important;
+  padding:6px 9px!important;
+  border:1px solid transparent!important;
+  border-radius:4px!important;
+  background:transparent!important;
+  color:#3d4540!important;
+  font:700 9px Verdana,Arial,sans-serif!important;
+}
+section[aria-labelledby="dashboard-title"] :where([role="tablist"],[class*="tabs"],[class*="tabRow"],[class*="tabList"])>button:hover{
+  background:#fff8ef!important;
+  border-color:#d8c8ba!important;
+}
+section[aria-labelledby="dashboard-title"] :where([role="tablist"],[class*="tabs"],[class*="tabRow"],[class*="tabList"])>button[aria-selected="true"],
+section[aria-labelledby="dashboard-title"] :where([role="tablist"],[class*="tabs"],[class*="tabRow"],[class*="tabList"])>button[aria-pressed="true"]{
+  background:linear-gradient(180deg,#36546f,#17283c)!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  border-color:#10243a!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.14)!important;
+}
+
+/* Account/profile controls feel like a personal-web side panel instead of a plain settings page. */
+section[aria-labelledby="dashboard-title"] [class*="accountHero"]{
+  padding:10px 8px 16px!important;
+  border-bottom:3px double #cdbfb1!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="largeAvatar"]{
+  width:88px!important;
+  height:88px!important;
+  border:4px double #bda99b!important;
+  background:#f6e6e9!important;
+  box-shadow:0 2px 6px rgba(58,40,31,.12)!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="accountNav"] button,
+section[aria-labelledby="dashboard-title"] [class*="accountNav"] a{
+  min-height:32px!important;
+  padding:7px 8px!important;
+  font:600 9px Verdana,Arial,sans-serif!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="accountNav"] button:hover,
+section[aria-labelledby="dashboard-title"] [class*="accountNav"] a:hover{
+  background:#fff7ed!important;
+}
+
+/* Community/friends/profile-social surfaces: darker social network panels, still Hanami themed. */
+section[aria-labelledby="dashboard-title"] :where([class*="Community"],[class*="Friends"],[class*="SocialCustomization"],[class*="RumorsBoard"])[class*="Panel"]{
+  border-color:#2d333c!important;
+  background:linear-gradient(180deg,#262c35,#20252d)!important;
+  color:#fff!important;
+  box-shadow:0 4px 14px rgba(15,18,23,.22)!important;
+}
+section[aria-labelledby="dashboard-title"] :where([class*="Community"],[class*="Friends"],[class*="SocialCustomization"],[class*="RumorsBoard"])[class*="Panel"] :where(h1,h2,h3,h4,p,span,strong,small,label,a,li){
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+section[aria-labelledby="dashboard-title"] :where([class*="Community"],[class*="Friends"],[class*="SocialCustomization"],[class*="RumorsBoard"])[class*="Panel"] :where(input,textarea,select){
+  background:#2e3540!important;
+  border-color:#4a5562!important;
+  color:#fff!important;
+}
+
+/* Right-hand utility / activity modules read like an online-members and updates rail. */
+section[aria-labelledby="dashboard-title"] [class*="dashboardView"]>:last-child{
+  padding:0!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="dashboardView"]>:last-child :where(section,article){
+  border-radius:8px!important;
+  background:linear-gradient(180deg,#fff9f0,#f3e9dd)!important;
+}
+section[aria-labelledby="dashboard-title"] [class*="dashboardView"]>:last-child :where(h2,h3,h4):first-child{
+  padding-bottom:7px!important;
+  border-bottom:1px dotted #cbb9aa!important;
+}
+
+/* Tiny era details. */
+section[aria-labelledby="dashboard-title"] [class*="contentView"] :where(section,article):has(>h2)::after,
+section[aria-labelledby="dashboard-title"] [class*="contentView"] :where(section,article):has(>h3)::after{
+  content:"";
+  display:block;
+  height:2px;
+  margin:10px 0 0;
+  background:linear-gradient(90deg,transparent,#e6c6cf 18%,#b7c0aa 50%,#e6c6cf 82%,transparent);
+  opacity:.45;
+}
+
+@media(max-width:1180px){
+  section[aria-labelledby="dashboard-title"] [class*="PortalContextBar_"],
+  section[aria-labelledby="dashboard-title"] [class*="SystemAnnouncementBanner_"]{margin-left:12px!important;margin-right:12px!important;}
+}
+@media(max-width:760px){
+  section[aria-labelledby="dashboard-title"] [class*="PortalContextBar_"],
+  section[aria-labelledby="dashboard-title"] [class*="SystemAnnouncementBanner_"]{margin-left:8px!important;margin-right:8px!important;border-radius:5px!important;}
+  section[aria-labelledby="dashboard-title"] :where([role="tablist"],[class*="tabs"],[class*="tabRow"],[class*="tabList"]){display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+}
