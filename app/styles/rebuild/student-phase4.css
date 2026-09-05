@@ -1,0 +1,23 @@
+/* Phase 4 — Student Portal. Student-only navigation order and task-first workspace polish. */
+aside[aria-label="Student global navigation"] nav{display:grid!important;gap:6px!important}
+aside[aria-label="Student global navigation"] nav>div:nth-child(1){order:7}
+aside[aria-label="Student global navigation"] nav>div:nth-child(2){order:1}
+aside[aria-label="Student global navigation"] nav>div:nth-child(3){order:3}
+aside[aria-label="Student global navigation"] nav>div:nth-child(4){order:2}
+aside[aria-label="Student global navigation"] nav>div:nth-child(5){display:none!important}
+aside[aria-label="Student global navigation"] nav>div:nth-child(6){order:4}
+aside[aria-label="Student global navigation"] nav>div:nth-child(7){order:5}
+aside[aria-label="Student global navigation"] nav>div:nth-child(8){order:6}
+aside[aria-label="Student global navigation"] nav>div:nth-child(1)>button b{font-size:0!important}
+aside[aria-label="Student global navigation"] nav>div:nth-child(1)>button b:after{content:"Profile";font-size:10px}
+aside[aria-label="Student global navigation"] nav>div:nth-child(4)>button b{font-size:0!important}
+aside[aria-label="Student global navigation"] nav>div:nth-child(4)>button b:after{content:"Classes";font-size:10px}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="dashboardView"]{grid-template-columns:minmax(0,1fr) minmax(260px,300px)!important;gap:24px!important}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="dashboardMain"]{gap:22px!important}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="pageIntro"]{background:#fffaf2;border:1px solid #d7ccbd;padding:15px 18px!important;margin-bottom:0!important;box-shadow:0 4px 12px rgba(23,40,60,.025)}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="pageIntro"]:before{content:"STUDENT WORKSPACE"!important;color:#8c6a70!important}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="pageIntro"] p{max-width:760px!important;font-size:10px!important;line-height:1.6!important}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="contentView"]> :first-child{margin-top:0!important}
+@media(max-width:1180px){section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="dashboardView"]{grid-template-columns:1fr!important}}
+@media(max-width:900px){aside[aria-label="Student global navigation"] nav{display:flex!important}aside[aria-label="Student global navigation"] nav>div:nth-child(1){order:7!important}aside[aria-label="Student global navigation"] nav>div:nth-child(2){order:1!important}aside[aria-label="Student global navigation"] nav>div:nth-child(3){order:3!important}aside[aria-label="Student global navigation"] nav>div:nth-child(4){order:2!important}aside[aria-label="Student global navigation"] nav>div:nth-child(5){display:none!important}aside[aria-label="Student global navigation"] nav>div:nth-child(6){order:4!important}aside[aria-label="Student global navigation"] nav>div:nth-child(7){order:5!important}aside[aria-label="Student global navigation"] nav>div:nth-child(8){order:6!important}section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="pageIntro"]{padding:13px 14px!important}}
+@media(max-width:620px){section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Student global navigation"]) [class*="pageIntro"] h2{font-size:23px!important}}
