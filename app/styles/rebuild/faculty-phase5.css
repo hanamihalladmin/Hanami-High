@@ -1,0 +1,55 @@
+/* Phase 5 — Faculty Portal. Faculty-first workspace hierarchy and responsive polish. */
+
+aside[aria-label="Faculty global navigation"] nav{display:grid!important;gap:6px!important}
+aside[aria-label="Faculty global navigation"] nav>div:nth-child(1){order:8}
+aside[aria-label="Faculty global navigation"] nav>div:nth-child(2){order:1}
+aside[aria-label="Faculty global navigation"] nav>div:nth-child(3){order:2}
+aside[aria-label="Faculty global navigation"] nav>div:nth-child(4){order:5}
+aside[aria-label="Faculty global navigation"] nav>div:nth-child(5){order:6}
+aside[aria-label="Faculty global navigation"] nav>div:nth-child(6){order:3}
+aside[aria-label="Faculty global navigation"] nav>div:nth-child(7){order:7}
+
+aside[aria-label="Faculty global navigation"] nav>div:nth-child(1)>button b{font-size:0!important}
+aside[aria-label="Faculty global navigation"] nav>div:nth-child(1)>button b:after{content:"Profile";font-size:10px}
+aside[aria-label="Faculty global navigation"] nav>div:nth-child(3)>button b{font-size:0!important}
+aside[aria-label="Faculty global navigation"] nav>div:nth-child(3)>button b:after{content:"Classes";font-size:10px}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="dashboardView"]{grid-template-columns:minmax(0,1fr) minmax(285px,320px)!important;gap:24px!important}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="dashboardMain"]{gap:22px!important}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="pageIntro"]{background:#f8fbff;border:1px solid #c5d3e1;padding:15px 18px!important;margin-bottom:0!important;box-shadow:0 4px 12px rgba(23,40,60,.03)}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="pageIntro"]:before{content:"FACULTY WORKSPACE"!important;color:#536b82!important}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="pageIntro"] p{max-width:820px!important;font-size:10px!important;line-height:1.65!important}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="contentView"]> :first-child{margin-top:0!important}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="subNav"]{grid-template-columns:repeat(auto-fit,minmax(132px,1fr))!important}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="subNav"] button{min-height:36px!important;line-height:1.2!important}
+
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) table{font-size:11px!important}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) th{white-space:nowrap}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) input,
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) select,
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) textarea{min-height:36px}
+section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) button{touch-action:manipulation}
+
+@media(max-width:1180px){
+ section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="dashboardView"]{grid-template-columns:1fr!important}
+}
+
+@media(max-width:900px){
+ aside[aria-label="Faculty global navigation"] nav{display:flex!important}
+ aside[aria-label="Faculty global navigation"] nav>div:nth-child(1){order:8!important}
+ aside[aria-label="Faculty global navigation"] nav>div:nth-child(2){order:1!important}
+ aside[aria-label="Faculty global navigation"] nav>div:nth-child(3){order:2!important}
+ aside[aria-label="Faculty global navigation"] nav>div:nth-child(4){order:5!important}
+ aside[aria-label="Faculty global navigation"] nav>div:nth-child(5){order:6!important}
+ aside[aria-label="Faculty global navigation"] nav>div:nth-child(6){order:3!important}
+ aside[aria-label="Faculty global navigation"] nav>div:nth-child(7){order:7!important}
+ section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="pageIntro"]{padding:13px 14px!important}
+ section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="subNav"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+
+@media(max-width:620px){
+ section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="pageIntro"] h2{font-size:23px!important}
+ section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) [class*="subNav"]{grid-template-columns:1fr!important}
+ section[aria-labelledby="dashboard-title"]:has(aside[aria-label="Faculty global navigation"]) table{font-size:10px!important}
+}
