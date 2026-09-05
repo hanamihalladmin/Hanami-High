@@ -12,40 +12,52 @@ import styles from "./Home.module.css";
 type Props={currentDate:string};
 
 export default function HomeDashboard({currentDate}:Props){
- return <PublicSchoolShell active="home" sectionTitle="PUBLIC NETWORK" breadcrumb="Home" stickyUtility lastUpdated="08.27.2026">
-  <div className={styles.homeGrid}>
-   <aside className={styles.leftRail}>
-    <section className={styles.panel}><h2>📢 ANNOUNCEMENTS</h2><nav className={styles.linkList}><a href="./whats-new/">What&apos;s New</a><a href="./calendar/">School Calendar</a><a href="./newspaper/">Hanami Chronicle</a><a href="./status/">Network Notices</a></nav></section>
-    <section className={styles.panel}><h2>🔗 QUICK LINKS</h2><nav className={styles.linkList}><a href="./directory/">School Directory</a><a href="./newspaper/archive/">Chronicle Archive</a><a href="./gallery/">Photo Gallery</a><a href="./radio/">School Radio</a><a href="./homerooms/">Homerooms</a><a href="./yearbook/">Yearbook</a><a href="./club-sites/">Club Microsites</a><a href="./new-student/">FAQ / New Student Guide</a><a href="./webmaster/">Webmaster Page</a></nav></section>
-    <section className={styles.panel}><h2>👤 NETWORK ACCESS</h2><div className={styles.loginBox}><a className={styles.primaryButton} href="./portal/">Student / Faculty Login</a><a href="./apply/">Apply to Hanami</a></div></section>
-   </aside>
-
-   <main className={styles.centerColumn}>
-    <section className={styles.fullSearch} id="network-search"><h2>🔎 HANAMI SEARCH</h2><SiteSearch/></section>
-
-    <section className={`${styles.panel} ${styles.welcome}`}><h2>✿ WELCOME TO HANAMI HIGH SCHOOL</h2><div className={styles.welcomeBody}><div><p className={styles.dateLine}>HANAMI HIGH SCHOOL NETWORK · <span data-hanami-roleplay-clock>{currentDate.toUpperCase()}</span></p><h3>A school day is more than a schedule.</h3><p>Explore academics, student life, school traditions, news, events, and community resources through a school website that still looks proudly at home in 2006.</p><div className={styles.actions}><a href="./about/">About Hanami</a><a href="./academics/">Explore Academics</a><a href="./campus-life/">Student Life</a></div></div><img src="./hanami-high-portal-icon.png" alt="Hanami High School logo"/></div></section>
-
-    <section className={`${styles.panel} ${styles.announcement}`}><h2>★ FEATURED ANNOUNCEMENTS</h2><div className={styles.panelBody}><LiveAnnouncements/></div></section>
-
-    <div className={styles.twoCol}>
-     <section className={styles.panel}><h2>📰 HANAMI CHRONICLE</h2><div className={styles.panelBody}><p>School notices, feature stories, club updates, event coverage, and archived issues from the Hanami school newspaper.</p><a className={styles.textLink} href="./newspaper/">Read the latest Chronicle »</a><br/><a className={styles.textLink} href="./newspaper/archive/">Browse the newspaper archive »</a></div></section>
-     <section className={styles.panel}><h2>📅 UPCOMING SCHOOL EVENTS</h2><div className={styles.panelBody}><LiveUpcomingEvents/></div></section>
+ return <PublicSchoolShell active="home" sectionTitle="PUBLIC NETWORK" breadcrumb="Home" stickyUtility lastUpdated="09.05.2026">
+  <div className={styles.page}>
+   <section className={styles.hero}>
+    <div className={styles.heroImage} role="img" aria-label="Hanami High School campus framed by cherry blossoms"/>
+    <div className={styles.heroCopy}>
+     <p className={styles.kicker}>花見高等学校 · HANAMI HIGH SCHOOL</p>
+     <h1>Hanami High School</h1>
+     <p className={styles.tagline}>Tradition · Learning · Community</p>
+     <p className={styles.heroMeta}>School Network est. 2006 · <span data-hanami-roleplay-clock>{currentDate.toUpperCase()}</span></p>
+     <div className={styles.heroActions}><a href="./about/">About Hanami</a><a href="./academics/">Academics</a><a href="./portal/">Student / Faculty Login</a></div>
     </div>
+   </section>
 
-    <section className={styles.panel}><h2>🏫 TODAY AT HANAMI</h2><div className={styles.todayGrid}><div><strong>Current school network date</strong><span data-hanami-roleplay-clock>{currentDate.toUpperCase()}</span></div><div><strong>Next school event</strong><LiveNextEvent/></div><div><strong>Academic resources</strong><a href="./academics/">Departments, courses & guidance »</a></div></div></section>
+   <section className={styles.searchPanel} id="network-search"><div><p>HANAMI NETWORK SEARCH</p><span>Search school pages, people, clubs, news, rules and resources.</span></div><SiteSearch/></section>
 
-    <div className={styles.twoCol}>
-     <section className={styles.panel}><h2>🌸 STUDENT LIFE</h2><div className={styles.panelBody}><p>Homerooms, yearbook, clubs, activities, school radio, community boards, Lost & Found, classifieds, polls, guestbooks, badges and more.</p><a className={styles.textLink} href="./campus-life/">Explore student life »</a></div></section>
-     <section className={styles.panel}><h2>💬 COMMUNITY PARTICIPATION</h2><div className={styles.panelBody}><p>Signed-in students can vote in school polls, post Lost & Found notices and classifieds, RSVP to events, submit anonymous suggestions, and open help tickets.</p><a className={styles.textLink} href="./portal/">Sign in to use community tools »</a></div></section>
-    </div>
-   </main>
+   <div className={styles.layout}>
+    <aside className={styles.leftRail}>
+     <section className={styles.card}><h2>Quick Links</h2><nav className={styles.linkList}><a href="./calendar/">School Calendar</a><a href="./directory/">School Directory</a><a href="./newspaper/">Hanami Chronicle</a><a href="./homerooms/">Homeroom Pages</a><a href="./yearbook/">Student Yearbook</a><a href="./club-sites/">Club Microsites</a><a href="./gallery/">Photo Gallery</a><a href="./radio/">School Radio</a></nav></section>
+     <section className={styles.card}><h2>Student Access</h2><div className={styles.stackButtons}><a className={styles.primaryButton} href="./portal/">Open School Portal</a><a href="./apply/">Apply to Hanami</a></div></section>
+     <section className={styles.card}><h2>Site Tools</h2><nav className={styles.linkList}><a href="./new-student/">New Student Guide</a><a href="./status/">Network Status</a><a href="./webmaster/">Webmaster</a><a href="./support/">Report a Problem</a></nav></section>
+    </aside>
 
-   <aside className={styles.rightRail}>
-    <section className={styles.panel}><h2>❗ IMPORTANT / NETWORK STATUS</h2><div className={styles.panelBody}><LiveSchoolStatus/><VisitorNetworkStatus className={styles.visitor}/><a className={styles.textLink} href="./status/">Full maintenance & status page »</a></div></section>
-    <section className={styles.panel}><h2>📡 RSS FEEDS</h2><nav className={styles.rssList}><a href="./feeds/">▣ The Chronicle</a><a href="./feeds/">▣ Announcements</a><a href="./feeds/">▣ Clubs & Activities</a><a href="./feeds/">▣ Website Updates</a></nav></section>
-    <section className={styles.panel}><h2>✦ SCHOOL NETWORK</h2><nav className={styles.linkList}><a href="./directory/">Staff Directory</a><a href="./homerooms/">Homeroom Pages</a><a href="./yearbook/">Student Yearbook</a><a href="./club-sites/">Club Sites</a><a href="./gallery/">Photo Gallery</a><a href="./radio/">School Radio</a></nav></section>
-    <section className={styles.panel}><h2>🛠 SITE INFORMATION</h2><dl className={styles.siteInfo}><div><dt>Network era</dt><dd>2006</dd></div><div><dt>Last updated</dt><dd>08/27/2026</dd></div><div><dt>Site tools</dt><dd><a href="./webmaster/">Webmaster</a></dd></div><div><dt>Support</dt><dd><a href="./support/">Report a Problem</a></dd></div></dl></section>
-   </aside>
+    <main className={styles.mainColumn}>
+     <section className={`${styles.card} ${styles.feature}`}><h2>Welcome to Hanami High</h2><div className={styles.featureBody}><div><p className={styles.dateLine}>HANAMI HIGH SCHOOL NETWORK · <span data-hanami-roleplay-clock>{currentDate.toUpperCase()}</span></p><h3>A school day is more than a schedule.</h3><p>Explore academics, student life, traditions, news, events and community resources through a school website that still feels proudly at home in 2006.</p></div></div></section>
+
+     <section className={styles.card}><h2>Featured Announcements</h2><div className={styles.cardBody}><LiveAnnouncements/></div></section>
+
+     <div className={styles.twoColumn}>
+      <section className={styles.card}><h2>Hanami Chronicle</h2><div className={styles.cardBody}><p>School notices, feature stories, club updates, event coverage and archived issues.</p><a className={styles.textLink} href="./newspaper/">Read the latest Chronicle »</a><br/><a className={styles.textLink} href="./newspaper/archive/">Browse the archive »</a></div></section>
+      <section className={styles.card}><h2>Upcoming Events</h2><div className={styles.cardBody}><LiveUpcomingEvents/></div></section>
+     </div>
+
+     <section className={styles.card}><h2>Today at Hanami</h2><div className={styles.todayGrid}><div><strong>Current school date</strong><span data-hanami-roleplay-clock>{currentDate.toUpperCase()}</span></div><div><strong>Next school event</strong><LiveNextEvent/></div><div><strong>Academic resources</strong><a href="./academics/">Departments, courses & guidance »</a></div></div></section>
+
+     <div className={styles.twoColumn}>
+      <section className={styles.card}><h2>Student Life</h2><div className={styles.cardBody}><p>Homerooms, yearbook, clubs, radio, community boards, Lost & Found, classifieds, polls, guestbooks and badges.</p><a className={styles.textLink} href="./campus-life/">Explore student life »</a></div></section>
+      <section className={styles.card}><h2>Community Participation</h2><div className={styles.cardBody}><p>Signed-in students can vote in polls, RSVP to events, post notices, submit suggestions and open help tickets.</p><a className={styles.textLink} href="./portal/">Sign in to participate »</a></div></section>
+     </div>
+    </main>
+
+    <aside className={styles.rightRail}>
+     <section className={styles.card}><h2>Network Status</h2><div className={styles.cardBody}><LiveSchoolStatus/><VisitorNetworkStatus className={styles.visitor}/><a className={styles.textLink} href="./status/">Full status page »</a></div></section>
+     <section className={styles.card}><h2>School Network</h2><nav className={styles.linkList}><a href="./directory/">Staff Directory</a><a href="./homerooms/">Homerooms</a><a href="./yearbook/">Yearbook</a><a href="./club-sites/">Club Sites</a><a href="./gallery/">Gallery</a><a href="./radio/">Radio</a></nav></section>
+     <section className={styles.card}><h2>RSS / Updates</h2><nav className={styles.linkList}><a href="./feeds/">Chronicle Feed</a><a href="./feeds/">Announcements Feed</a><a href="./feeds/">Club Feed</a><a href="./whats-new/">What&apos;s New</a></nav></section>
+    </aside>
+   </div>
   </div>
  </PublicSchoolShell>;
 }
