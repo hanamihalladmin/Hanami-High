@@ -1,4 +1,5 @@
 import PublicSchoolShell from "../components/PublicSchoolShell";
+import AdminOwnerOnly from "../components/AdminOwnerOnly";
 import styles from "../network-pages.module.css";
 
 const feeds=[
@@ -7,8 +8,7 @@ const feeds=[
  {title:"Clubs & Activities",desc:"Recruitment notices, meetings, campus events, and organization updates.",href:"../campus-life/"},
  {title:"Website Updates",desc:"New pages, fixes, portal changes, and network maintenance notes.",href:"../whats-new/"}
 ];
-export default function FeedsPage(){return <PublicSchoolShell sectionTitle="SCHOOL FEEDS" breadcrumb="RSS-style Feeds" lastUpdated="08.26.2026"><div className={styles.page}>
- <section className={styles.hero}><div className={styles.heroHeader}>SUBSCRIBE TO HANAMI HIGH</div><div className={styles.heroBody}><h2>RSS-style School Feeds</h2><p>These are visual feed shortcuts inspired by the orange RSS buttons found across 2000s websites. They open the live Hanami pages instead of requiring a separate feed reader.</p></div></section>
+export default function FeedsPage(){return <PublicSchoolShell sectionTitle="SCHOOL FEEDS" breadcrumb="Internal Feeds" lastUpdated="09.06.2006"><AdminOwnerOnly label="RSS-style school feeds"><div className={styles.page}>
+ <section className={styles.hero}><div className={styles.heroHeader}>HANAMI INTERNAL FEEDS</div><div className={styles.heroBody}><h2>School Network Feeds</h2><p>Administration and Owner shortcuts for monitoring published school-network sections.</p></div></section>
  <section className={styles.panel}><div className={styles.panelHeader}>AVAILABLE FEEDS</div><div className={`${styles.panelBody} ${styles.rssList}`}>{feeds.map(feed=><div className={styles.rssRow} key={feed.title}><span className={styles.rssBadge}>RSS</span><div><b>{feed.title}</b><div className={styles.small}>{feed.desc}</div></div><a className={styles.button} href={feed.href}>Open feed</a></div>)}</div></section>
- <section className={styles.panel}><div className={styles.panelHeader}>FEED NOTES</div><div className={styles.panelBody}><p><span className={styles.newBadge}>NEW!</span> Tiny orange feed badges can be reused beside Chronicle headlines, announcement modules, club pages, and the What&apos;s New page as those sections expand.</p></div></section>
- </div></PublicSchoolShell>}
+ </div></AdminOwnerOnly></PublicSchoolShell>}
