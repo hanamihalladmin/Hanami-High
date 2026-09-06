@@ -61,10 +61,12 @@ jobs:
             out/directory/index.html \
             out/elections/index.html \
             out/feeds/index.html \
+            out/gallery/index.html \
             out/guide/index.html \
             out/homeroom/index.html \
             out/new-student/index.html \
             out/newspaper/index.html \
+            out/newspaper/archive/index.html \
             out/organizations/index.html \
             out/portal/index.html \
             out/portal/admin/index.html \
@@ -77,6 +79,7 @@ jobs:
             out/portal/roadmap/index.html \
             out/portal/student/index.html \
             out/portal/student/class/index.html \
+            out/radio/index.html \
             out/rooms/index.html \
             out/rules/index.html \
             out/sports/index.html \
