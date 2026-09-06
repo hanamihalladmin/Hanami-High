@@ -1,0 +1,13 @@
+@media(max-width:760px){
+ section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{display:flex!important;align-items:center!important;gap:4px!important;overflow-x:auto!important;overflow-y:hidden!important;white-space:nowrap!important;scrollbar-width:none!important}
+ section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]::-webkit-scrollbar{display:none!important}
+ section[aria-labelledby="dashboard-title"] [class*="logoButton"]{flex:0 0 44px!important;width:44px!important;min-height:44px!important;height:44px!important;margin:0!important;padding:0!important}
+ section[aria-labelledby="dashboard-title"] [class*="logoButton"]::before{width:38px!important;height:38px!important}
+ section[aria-labelledby="dashboard-title"] [class*="primaryNav"]{display:flex!important;align-items:center!important;flex:1 1 auto!important;gap:4px!important;min-width:0!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important}
+ section[aria-labelledby="dashboard-title"] [class*="primaryNav"]::-webkit-scrollbar{display:none!important}
+ section[aria-labelledby="dashboard-title"] [class*="navGroup"]{display:block!important;flex:0 0 auto!important}
+ section[aria-labelledby="dashboard-title"] [class*="primaryNav"] [class*="navGroup"]>button{width:42px!important;min-height:42px!important;height:42px!important}
+ section[aria-labelledby="dashboard-title"] [class*="navBottom"]{display:flex!important;align-items:center!important;flex:0 0 auto!important;gap:4px!important;margin-top:0!important;padding-top:0!important;border-top:0!important}
+ section[aria-labelledby="dashboard-title"] [class*="navBottom"]>button,
+ section[aria-labelledby="dashboard-title"] [class*="navBottom"]>a{width:42px!important;min-height:42px!important;height:42px!important}
+}
