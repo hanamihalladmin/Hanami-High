@@ -1,5 +1,11 @@
 /* Phase 6 — Profiles & Community. Unifies profile identity, social surfaces, and creator tools into the SocialShell contract. */
 
+/* Account/Profile workspace should read as a social identity hub, not a generic settings page. */
+section[aria-labelledby="dashboard-title"] [data-portal-view="account"] [class*="accountContent"]{max-width:1180px!important}
+section[aria-labelledby="dashboard-title"] [data-portal-view="account"] [class*="pageIntro"]{background:#fffaf2;border:1px solid #d8ccbc;padding:14px 16px!important;box-shadow:0 4px 12px rgba(23,40,60,.035)}
+section[aria-labelledby="dashboard-title"] [data-portal-view="account"] [class*="pageIntro"]:before{content:"HANAMI SOCIAL IDENTITY"!important;color:#8a6774!important}
+section[aria-labelledby="dashboard-title"] [data-portal-view="account"] [class*="pageIntro"] h2{font-size:25px!important}
+
 /* Privacy-aware profile lookup becomes the canonical SocialShell viewer. */
 section[aria-labelledby="profile-search-title"]{overflow:hidden!important;border:1px solid #cdbfc6!important;background:#fffaf7!important;box-shadow:0 6px 18px rgba(38,31,45,.05)!important}
 section[aria-labelledby="profile-search-title"]>div:first-child{background:linear-gradient(135deg,#fffaf7,#f2e7ec)!important;border-bottom-color:#cdbfc6!important}
