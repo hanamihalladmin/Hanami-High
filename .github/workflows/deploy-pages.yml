@@ -42,6 +42,8 @@ jobs:
         run: npm run lint
       - name: Typecheck
         run: npm run typecheck
+      - name: Enforce English-only website UI
+        run: node --test tests/no-japanese-ui.test.mjs
       - name: Run tests (legacy specification audit)
         continue-on-error: true
         run: npm test
