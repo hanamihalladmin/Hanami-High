@@ -13,6 +13,7 @@ import RoleplayClockRuntime from "./components/RoleplayClockRuntime";
 import ForumReplyLimitRuntime from "./components/ForumReplyLimitRuntime";
 import GlobalUpdateAccess from "./components/GlobalUpdateAccess";
 import PortalCustomizationRuntime from "./components/PortalCustomizationRuntime";
+import DailyPetalLoginRuntime from "./components/DailyPetalLoginRuntime";
 import ScheduleDedupRuntime from "./components/ScheduleDedupRuntime";
 import PostRebuildRegressionRuntime from "./components/PostRebuildRegressionRuntime";
 import StrictTextContrastRuntime from "./components/StrictTextContrastRuntime";
@@ -61,6 +62,7 @@ import "./styles/rebuild/faculty-phase5.css";
 import "./styles/rebuild/profile-community-phase6.css";
 import "./styles/rebuild/rewards-phase7.css";
 import "./styles/rebuild/owner-phase10.css";
+import "./styles/rebuild/collectibles-postlaunch.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
@@ -69,5 +71,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><ProfileOpenBridge/><SiteThemeRuntime/><PortalCustomizationRuntime/><ExamWeekRuntime/><RoleplaySchoolYearInputs/><RoleplayClockRuntime/><ForumReplyLimitRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/><GlobalUpdateAccess/><ScheduleDedupRuntime/><PostRebuildRegressionRuntime/><StrictTextContrastRuntime/>{children}</body></html>;
+  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><ProfileOpenBridge/><SiteThemeRuntime/><PortalCustomizationRuntime/><DailyPetalLoginRuntime/><ExamWeekRuntime/><RoleplaySchoolYearInputs/><RoleplayClockRuntime/><ForumReplyLimitRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/><GlobalUpdateAccess/><ScheduleDedupRuntime/><PostRebuildRegressionRuntime/><StrictTextContrastRuntime/>{children}</body></html>;
 }

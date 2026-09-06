@@ -48,7 +48,6 @@ jobs:
       - name: Build static site
         run: npm run build
       - name: Verify all exported routes
-        if: github.event_name != 'pull_request'
         run: |
           for route in \
             out/index.html \
@@ -58,9 +57,16 @@ jobs:
             out/calendar/index.html \
             out/campus-life/index.html \
             out/changelog/index.html \
+            out/club-sites/index.html \
+            out/directory/index.html \
             out/elections/index.html \
+            out/feeds/index.html \
+            out/gallery/index.html \
             out/guide/index.html \
             out/homeroom/index.html \
+            out/new-student/index.html \
+            out/newspaper/index.html \
+            out/newspaper/archive/index.html \
             out/organizations/index.html \
             out/portal/index.html \
             out/portal/admin/index.html \
@@ -73,11 +79,17 @@ jobs:
             out/portal/roadmap/index.html \
             out/portal/student/index.html \
             out/portal/student/class/index.html \
+            out/radio/index.html \
             out/rooms/index.html \
             out/rules/index.html \
             out/sports/index.html \
+            out/status/index.html \
+            out/support/index.html \
             out/traditions/index.html \
-            out/updates/index.html; do
+            out/updates/index.html \
+            out/webmaster/index.html \
+            out/whats-new/index.html \
+            out/yearbook/index.html; do
             test -f "$route"
           done
       - uses: actions/upload-pages-artifact@v3
