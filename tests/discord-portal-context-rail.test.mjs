@@ -4,6 +4,7 @@ import test from "node:test";
 
 const shell=fs.readFileSync(new URL("../app/portal/DashboardShell.tsx",import.meta.url),"utf8");
 const shellCss=fs.readFileSync(new URL("../app/portal/DashboardShell.module.css",import.meta.url),"utf8");
+const responsiveCss=fs.readFileSync(new URL("../app/portal/DashboardShellResponsiveFixes.css",import.meta.url),"utf8");
 const rail=fs.readFileSync(new URL("../app/portal/DiscordPortalContextRail.tsx",import.meta.url),"utf8");
 const css=fs.readFileSync(new URL("../app/portal/DiscordPortalContextRail.module.css",import.meta.url),"utf8");
 
@@ -36,4 +37,12 @@ test("redesigned shell does not reserve the removed secondary-nav gutter",()=>{
 
 test("desktop context rail begins below the redesigned 82px portal header",()=>{
  assert.match(css,/\.rail\{[^}]*top:82px/);
+});
+
+test("mobile portal loads compact horizontal navigation fixes",()=>{
+ assert.match(shell,/import "\.\/DashboardShellResponsiveFixes\.css"/);
+ assert.match(responsiveCss,/@media\(max-width:760px\)/);
+ assert.match(responsiveCss,/\[class\*="primaryNav"\]\{display:flex!important/);
+ assert.match(responsiveCss,/overflow-x:auto!important/);
+ assert.match(responsiveCss,/\[class\*="navBottom"\]\{display:flex!important/);
 });
