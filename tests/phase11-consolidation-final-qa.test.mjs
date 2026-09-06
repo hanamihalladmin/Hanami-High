@@ -5,6 +5,7 @@ import {readFile,access} from "node:fs/promises";
 const layout=await readFile(new URL("../app/layout.tsx",import.meta.url),"utf8");
 const auth=await readFile(new URL("../app/portal/PortalAuthPanel.tsx",import.meta.url),"utf8");
 const classroom=await readFile(new URL("../app/portal/ClassroomOperationsPanel.tsx",import.meta.url),"utf8");
+const customization=await readFile(new URL("../app/components/PortalCustomizationRuntime.tsx",import.meta.url),"utf8");
 const regressionCss=await readFile(new URL("../app/post-rebuild-regressions.css",import.meta.url),"utf8");
 const phase6=await readFile(new URL("../app/styles/rebuild/profile-community-phase6.css",import.meta.url),"utf8");
 
@@ -18,6 +19,12 @@ test("portal logout scopes character deactivation and browser memory to the auth
   assert.match(auth,/owner_user_id=eq\.\$\{encodeURIComponent\(userId\)\}/);
   assert.match(auth,/hanami\.portal\.character\.v2\.\$\{userId\}/);
   assert.match(auth,/clearSession\(userId\)/);
+});
+
+test("character customization cannot leak palette or effects across identity changes",()=>{
+  for(const variable of ["--hanami-custom-accent","--hanami-custom-text","--hanami-custom-sidebar","--hanami-custom-surface","--hanami-cosmetic-font"])assert.match(customization,new RegExp(`removeProperty\\(\\"${variable}\\"\\)`));
+  assert.match(customization,/delete root\.dataset\.hanamiCosmeticEffect/);
+  assert.match(customization,/const refresh=\(\)=>\{resetCosmetics\(\);void applyTheme\(\)/);
 });
 
 test("classroom seating is component-owned as a five by four grid",()=>{
