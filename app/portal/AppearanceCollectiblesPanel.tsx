@@ -11,7 +11,7 @@ type Ownership={item_id:string};
 type Equipped={slot:string;item_id:string};
 
 function headers(token:string,extra:Record<string,string>={}){return {apikey:K,Authorization:`Bearer ${token}`,...extra};}
-function metadataLabel(item:StoreItem){const parts:string[]=[];const metadata=item.metadata??{};if(typeof metadata.accent_color==="string")parts.push("Accent");if(typeof metadata.surface_color==="string")parts.push("Panel treatment");if(typeof metadata.font_key==="string")parts.push("Font");if(typeof metadata.effect_key==="string")parts.push("Effect");return parts.length?parts.join(" · "):"Approved cosmetic";}
+function metadataLabel(item:StoreItem){const parts:string[]=[];const metadata=item.metadata??{};if(typeof metadata.accent==="string")parts.push("Accent");if(typeof metadata.surface==="string"||typeof metadata.sidebar==="string")parts.push("Panel treatment");if(typeof metadata.font==="string")parts.push("Font");if(typeof metadata.effect==="string")parts.push("Effect");return parts.length?parts.join(" · "):"Approved cosmetic";}
 
 export default function AppearanceCollectiblesPanel({accessToken,characterId}:{accessToken:string;characterId:string}){
  const [items,setItems]=useState<StoreItem[]>([]);const [owned,setOwned]=useState<Ownership[]>([]);const [equipped,setEquipped]=useState<Equipped[]>([]);const [busy,setBusy]=useState("");const [message,setMessage]=useState("");
