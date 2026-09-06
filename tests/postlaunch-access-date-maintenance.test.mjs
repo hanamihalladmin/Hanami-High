@@ -40,8 +40,10 @@ test("upcoming event widgets compare against Hanami's roleplay clock",()=>{
  }
 });
 
-test("private redesign preserves the Owner maintenance gate",()=>{
- assert.match(layout,/import MaintenanceGate from "\.\/components\/MaintenanceGate"/);
- assert.match(layout,/<MaintenanceGate>/);
- assert.match(layout,/<\/MaintenanceGate>/);
+test("Hanami High remains publicly open unless maintenance is explicitly re-enabled",()=>{
+ assert.doesNotMatch(layout,/import MaintenanceGate from "\.\/components\/MaintenanceGate"/);
+ assert.doesNotMatch(layout,/<MaintenanceGate>/);
+ assert.doesNotMatch(layout,/<\/MaintenanceGate>/);
+ assert.match(layout,/title: "Hanami High"/);
+ assert.match(layout,/The official public school network for Hanami High School\./);
 });
