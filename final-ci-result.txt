@@ -135,9 +135,6 @@ exit_code=0
   17:162  warning  'roleSync' is assigned a value but never used                                                                                                                                                                                                                           @typescript-eslint/no-unused-vars
   22:111  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
-/home/runner/work/Hanami-High/Hanami-High/app/portal/admin/AdminWorkspace.tsx
-  57:508  warning  React Hook useEffect has missing dependencies: 'nav' and 'toolMap'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
-
 /home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerFeedbackInboxPanel.tsx
   7:921  warning  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
 
@@ -157,7 +154,7 @@ exit_code=0
 /home/runner/work/Hanami-High/Hanami-High/app/yearbook/page.tsx
   20:486  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
-✖ 67 problems (0 errors, 67 warnings)
+✖ 66 problems (0 errors, 66 warnings)
 
 --- failing legacy audit tests ---
 not ok 1 - About Hanami includes all approved public requirements
@@ -241,35 +238,38 @@ not ok 136 - public chronology is anchored to April 7 2006 and calendar stays in
 not ok 145 - Hanami High does not collect or store birthdays
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 180 - portal gateway explains authentication, privacy, and two-character rule
+not ok 176 - Administration dashboard quick actions use canonical destinations and hide unauthorized actions
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 192 - Top Friends remain strictly accepted-friend and platonic controls
+not ok 184 - portal gateway explains authentication, privacy, and two-character rule
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 217 - TEST Faculty fixture is explicit test data, owner scoped, and Owner only
+not ok 196 - Top Friends remain strictly accepted-friend and platonic controls
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 239 - public version and changelog are discoverable site-wide
+not ok 221 - TEST Faculty fixture is explicit test data, owner scoped, and Owner only
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 241 - role portal restores the selected character session
+not ok 243 - public version and changelog are discoverable site-wide
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 243 - role portal logout clears character and account session
+not ok 245 - role portal restores the selected character session
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 251 - weekly scheduler keeps Period naming for academic rows
+not ok 247 - role portal logout clears character and account session
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 268 - Help has a direct router and support anchor
+not ok 255 - weekly scheduler keeps Period naming for academic rows
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+not ok 272 - Help has a direct router and support anchor
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
 --- hard failing checks ---
 --- test summary ---
-# tests 268
-# pass 233
-# fail 35
+# tests 272
+# pass 236
+# fail 36
 # cancelled 0
 # skipped 0
 # todo 0
@@ -277,57 +277,57 @@ not ok 268 - Help has a direct router and support anchor
   type: 'test'
   ...
 # Subtest: student schedule renders class periods from the published homeroom schedule
-ok 260 - student schedule renders class periods from the published homeroom schedule
+ok 264 - student schedule renders class periods from the published homeroom schedule
   ---
-  duration_ms: 1.060266
+  duration_ms: 1.046304
   type: 'test'
   ...
 # Subtest: student schedule ignores duplicated per-homeroom copies of shared school blocks
-ok 261 - student schedule ignores duplicated per-homeroom copies of shared school blocks
+ok 265 - student schedule ignores duplicated per-homeroom copies of shared school blocks
   ---
-  duration_ms: 0.189912
+  duration_ms: 0.166751
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 262 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 266 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.594104
+  duration_ms: 1.109612
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 263 - Student life feeds validate owned Student character even for privileged accounts
+ok 267 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.178376
+  duration_ms: 0.339474
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 264 - accessibility and notification preferences bind to signed-in user automatically
+ok 268 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 3.978006
+  duration_ms: 5.379155
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 265 - group chat creation uses a validated private helper and creator management
+ok 269 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 0.989962
+  duration_ms: 1.292524
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 266 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 270 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 0.897004
+  duration_ms: 1.19432
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 267 - School Office separates staff action waiting member and archive queues
+ok 271 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.318871
+  duration_ms: 1.584319
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-not ok 268 - Help has a direct router and support anchor
+not ok 272 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.638026
+  duration_ms: 1.843923
   type: 'test'
   location: '/home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:39:1'
   failureType: 'testCodeFailure'
@@ -366,22 +366,22 @@ not ok 268 - Help has a direct router and support anchor
     async Test.run (node:internal/test_runner/test:1054:7)
     async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
-1..268
-# tests 268
+1..272
+# tests 272
 # suites 0
-# pass 233
-# fail 35
+# pass 236
+# fail 36
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1332.289364
+# duration_ms 1740.622532
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 21ms
+✓ Running next.config.ts took 24ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -390,15 +390,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.5s
+✓ Compiled successfully in 6.5s
   Running TypeScript ...
-  Finished TypeScript in 11.1s ...
+  Finished TypeScript in 13.9s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/48) ...
   Generating static pages using 3 workers (12/48) 
   Generating static pages using 3 workers (24/48) 
   Generating static pages using 3 workers (36/48) 
-✓ Generating static pages using 3 workers (48/48) in 661ms
+✓ Generating static pages using 3 workers (48/48) in 836ms
   Finalizing page optimization ...
 
 Route (app)
