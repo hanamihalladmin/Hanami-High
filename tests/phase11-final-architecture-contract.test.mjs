@@ -13,12 +13,13 @@ const approvedShells=["PublicShell","PortalShell","OperationsShell","SocialShell
 
 test("rebuild keeps exactly the five approved shell geometries",()=>{
   for(const shell of approvedShells)assert.match(blueprint,new RegExp(shell));
-  assert.match(blueprint,/No sixth geometry/i);
+  assert.match(blueprint,/No feature should introduce a sixth geometry system/i);
 });
 
 test("portal customization remains presentation-only and does not own structural geometry",()=>{
   for(const forbidden of ["rail width","column count","page margins","structural breakpoints","raw CSS"])assert.match(blueprint,new RegExp(forbidden,"i"));
   assert.doesNotMatch(rewardsCss,/grid-template-columns:\s*repeat\(\d+,/i,"Phase 7 cosmetic runtime must not prescribe shell column geometry");
+  assert.doesNotMatch(rewardsCss,/data-portal-view=.?account/i,"Removed Account-shell workaround must not return to the cosmetic layer");
   assert.match(rewardsCss,/pointer-events:\s*none/i);
 });
 
