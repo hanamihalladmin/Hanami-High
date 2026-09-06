@@ -29,14 +29,22 @@ test("context rail uses active character state and responsive collapse",()=>{
  assert.doesNotMatch(rail,/mailto:/i);
 });
 
-test("redesigned shell does not reserve the removed secondary-nav gutter",()=>{
- assert.match(shellCss,/\.main\{[^}]*padding-left:0/);
- assert.doesNotMatch(shellCss,/padding-left:238px/);
- assert.doesNotMatch(shellCss,/padding-left:218px/);
+test("desktop Discord shell preserves school rail plus channel rail geometry",()=>{
+ assert.match(shellCss,/grid-template-columns:72px minmax\(0,1fr\)/);
+ assert.match(shellCss,/\.main\{[^}]*padding-left:238px/);
+ assert.match(shellCss,/@media\(max-width:1120px\)\{\.main\{padding-left:218px\}/);
+ assert.match(responsiveCss,/@media\(min-width:761px\)/);
+ assert.match(responsiveCss,/global navigation"\]\{width:72px!important/);
+ assert.match(responsiveCss,/>main\{margin-left:72px!important;width:calc\(100% - 72px\)!important/);
 });
 
-test("desktop context rail begins below the redesigned 82px portal header",()=>{
- assert.match(css,/\.rail\{[^}]*top:82px/);
+test("desktop context rail begins below the redesigned 82px portal header and remains fixed",()=>{
+ assert.match(css,/\.rail\{position:fixed;top:82px/);
+});
+
+test("workspace remains vertically scrollable for dense portal surfaces",()=>{
+ assert.match(responsiveCss,/>main\{margin-left:72px!important;width:calc\(100% - 72px\)!important;overflow-x:hidden!important;overflow-y:auto!important\}/);
+ assert.match(responsiveCss,/@media\(max-width:760px\)[\s\S]*>main\{overflow-x:hidden!important;overflow-y:auto!important\}/);
 });
 
 test("mobile portal loads compact horizontal navigation fixes",()=>{
