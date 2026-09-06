@@ -296,55 +296,55 @@ not ok 294 - Help has a direct router and support anchor
 # Subtest: student schedule renders class periods from the published homeroom schedule
 ok 286 - student schedule renders class periods from the published homeroom schedule
   ---
-  duration_ms: 1.254536
+  duration_ms: 0.667421
   type: 'test'
   ...
 # Subtest: student schedule ignores duplicated per-homeroom copies of shared school blocks
 ok 287 - student schedule ignores duplicated per-homeroom copies of shared school blocks
   ---
-  duration_ms: 0.233898
+  duration_ms: 0.125685
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
 ok 288 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.272029
+  duration_ms: 0.590158
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
 ok 289 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.336619
+  duration_ms: 0.179083
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
 ok 290 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 6.183476
+  duration_ms: 4.09319
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
 ok 291 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.835643
+  duration_ms: 1.000281
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
 ok 292 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.351478
+  duration_ms: 0.902147
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
 ok 293 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.889885
+  duration_ms: 1.209319
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
 not ok 294 - Help has a direct router and support anchor
   ---
-  duration_ms: 2.504033
+  duration_ms: 1.480428
   type: 'test'
   location: '/home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:39:1'
   failureType: 'testCodeFailure'
@@ -391,14 +391,14 @@ not ok 294 - Help has a direct router and support anchor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1811.717984
+# duration_ms 1459.735289
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 26ms
+✓ Running next.config.ts took 19ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -407,15 +407,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.7s
+✓ Compiled successfully in 5.6s
   Running TypeScript ...
-  Finished TypeScript in 14.1s ...
+  Finished TypeScript in 11.2s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/49) ...
   Generating static pages using 3 workers (12/49) 
   Generating static pages using 3 workers (24/49) 
   Generating static pages using 3 workers (36/49) 
-✓ Generating static pages using 3 workers (49/49) in 729ms
+✓ Generating static pages using 3 workers (49/49) in 654ms
   Finalizing page optimization ...
 
 Route (app)

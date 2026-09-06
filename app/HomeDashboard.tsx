@@ -6,14 +6,13 @@ import LiveNextEvent from "./components/live-next-event";
 import LiveUpcomingEvents from "./components/live-upcoming-events";
 import LiveSchoolStatus from "./components/live-school-status";
 import PublicSchoolShell from "./components/PublicSchoolShell";
-import VisitorNetworkStatus from "./components/VisitorNetworkStatus";
 import styles from "./Home.module.css";
 
 type Props = { currentDate: string };
 
 export default function HomeDashboard({ currentDate }: Props) {
   return (
-    <PublicSchoolShell active="home" sectionTitle="PUBLIC NETWORK" breadcrumb="Home" stickyUtility lastUpdated="09.05.2026">
+    <PublicSchoolShell active="home" sectionTitle="PUBLIC NETWORK" breadcrumb="Home" stickyUtility lastUpdated="09.06.2006">
       <section className={styles.searchBand} id="network-search" aria-labelledby="search-title">
         <div>
           <p className={styles.eyebrow}>HANAMI HIGH SCHOOL NETWORK</p>
@@ -32,7 +31,7 @@ export default function HomeDashboard({ currentDate }: Props) {
               <a href="./calendar/">School Calendar</a>
               <a href="./directory/">Faculty & Staff Directory</a>
               <a href="./new-student/">New Student Guide</a>
-              <a href="./club-sites/">Clubs & Activities</a>
+              <a href="./campus-life/">Activities</a>
               <a href="./yearbook/">Yearbook</a>
               <a href="./rules/">Rules & Policies</a>
               <a href="./portal/">Portal Login</a>
@@ -64,7 +63,7 @@ export default function HomeDashboard({ currentDate }: Props) {
               <p className={styles.dateLine}>HANAMI HIGH SCHOOL NETWORK · <span data-hanami-roleplay-clock>{currentDate.toUpperCase()}</span></p>
               <h3>A school day is more than a schedule.</h3>
               <p>Explore Hanami academics, student life, school traditions, community resources, news, and events through a school network that feels proudly at home in 2006.</p>
-              <div className={styles.actions}><a href="./about/">About Hanami</a><a href="./academics/">Explore Academics</a><a href="./campus-life/">Student Life</a></div>
+              <div className={styles.actions}><a href="./about/">About Hanami</a><a href="./academics/">Explore Academics</a><a href="./campus-life/">Activities</a></div>
             </div>
           </section>
 
@@ -100,7 +99,7 @@ export default function HomeDashboard({ currentDate }: Props) {
           <section className={styles.panel}>
             <h2>STUDENT LIFE</h2>
             <div className={styles.studentLifeGrid}>
-              <a href="./club-sites/"><b>Clubs</b><span>Explore club microsites and activities.</span></a>
+              <a href="./campus-life/"><b>Activities</b><span>Explore clubs, events, opportunities, and school life.</span></a>
               <a href="./yearbook/"><b>Yearbook</b><span>Browse approved school memories and pages.</span></a>
               <a href="./gallery/"><b>Gallery</b><span>View approved campus and event photos.</span></a>
               <a href="./radio/"><b>School Radio</b><span>See programs, schedules, and school broadcasts.</span></a>
@@ -111,7 +110,7 @@ export default function HomeDashboard({ currentDate }: Props) {
         <aside className={styles.rightRail} aria-label="School network information">
           <section className={styles.panel}>
             <h2>SCHOOL STATUS</h2>
-            <div className={styles.panelBody}><LiveSchoolStatus /><VisitorNetworkStatus className={styles.visitor} /><a className={styles.textLink} href="./status/">Full network status »</a></div>
+            <div className={styles.panelBody}><LiveSchoolStatus /></div>
           </section>
 
           <section className={styles.panel}>
@@ -131,10 +130,9 @@ export default function HomeDashboard({ currentDate }: Props) {
           <section className={styles.panel}>
             <h2>SCHOOL NETWORK</h2>
             <nav className={styles.linkList}>
-              <a href="./feeds/">RSS Feeds</a>
-              <a href="./status/">Network Status</a>
               <a href="./webmaster/">Webmaster</a>
               <a href="./support/">Report a Problem</a>
+              <a href="./directory/">Directory</a>
             </nav>
           </section>
         </aside>

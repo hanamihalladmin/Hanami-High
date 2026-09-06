@@ -16,9 +16,9 @@ export default function PortalPage() {
 
       <header className={styles.masthead}>
         <a className={styles.brandBlock} href="../" aria-label="Hanami High School home">
-          <div className={styles.schoolMark} aria-hidden="true"><span>花</span><small>見</small></div>
+          <div className={styles.schoolMark} aria-hidden="true"><span>H</span><small>H</small></div>
           <div>
-            <p>花見高等学校</p>
+            <p>HANAMI HIGH SCHOOL</p>
             <h1>HANAMI HIGH SCHOOL</h1>
             <span>School Network Account Gateway</span>
           </div>

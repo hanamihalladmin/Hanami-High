@@ -1,0 +1,26 @@
+/* Dense workspace containment for the Discord-style Student/Faculty portal.
+   Keeps wide academic/social tools inside their owning workspace without changing
+   the internal geometry of those tools. */
+section[aria-labelledby="dashboard-title"] [class*="contentView"],
+section[aria-labelledby="dashboard-title"] [class*="accountContent"],
+section[aria-labelledby="dashboard-title"] [class*="stage"],
+section[aria-labelledby="dashboard-title"] [class*="canvasFrame"]{min-width:0!important;max-width:100%;box-sizing:border-box}
+
+section[aria-labelledby="dashboard-title"] input,
+section[aria-labelledby="dashboard-title"] select,
+section[aria-labelledby="dashboard-title"] textarea{min-width:0;max-width:100%;box-sizing:border-box}
+
+@media(max-width:980px){
+ section[aria-labelledby="dashboard-title"] table{display:block;max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+ section[aria-labelledby="dashboard-title"] thead,
+ section[aria-labelledby="dashboard-title"] tbody,
+ section[aria-labelledby="dashboard-title"] tfoot{min-width:max-content}
+ section[aria-labelledby="dashboard-title"] [class*="canvasFrame"]{overflow-x:auto!important;-webkit-overflow-scrolling:touch}
+}
+
+@media(max-width:760px){
+ section[aria-labelledby="dashboard-title"] [class*="pageIntro"]{padding:11px 12px!important}
+ section[aria-labelledby="dashboard-title"] [class*="contentView"],
+ section[aria-labelledby="dashboard-title"] [class*="accountContent"]{max-width:100%!important;overflow-x:hidden}
+ section[aria-labelledby="dashboard-title"] [class*="actions"]{max-width:100%;box-sizing:border-box}
+}

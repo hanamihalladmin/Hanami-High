@@ -1,0 +1,20 @@
+@media(min-width:761px){
+ section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{width:72px!important;padding:10px 8px!important;overflow-y:auto!important;overflow-x:visible!important}
+ section[aria-labelledby="dashboard-title"]>main{margin-left:72px!important;width:calc(100% - 72px)!important;overflow-x:hidden!important;overflow-y:auto!important}
+ section[aria-labelledby="dashboard-title"] [class*="logoButton"]{width:52px!important;min-height:52px!important;height:52px!important;margin:0 auto 10px!important;padding:0!important;border:2px solid #9ba891!important;border-radius:18px!important;background-color:#fffaf2!important;background-image:url("/Hanami-High/hanami-high-portal-icon.png?v=20260825c"),url("/hanami-high-portal-icon.png?v=20260825c")!important;background-position:center,center!important;background-size:44px 44px,44px 44px!important;background-repeat:no-repeat,no-repeat!important}
+ section[aria-labelledby="dashboard-title"] [class*="logoButton"]::before{display:none!important}
+}
+@media(max-width:760px){
+ section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{display:flex!important;align-items:center!important;gap:4px!important;overflow-x:auto!important;overflow-y:hidden!important;white-space:nowrap!important;scrollbar-width:none!important}
+ section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]::-webkit-scrollbar{display:none!important}
+ section[aria-labelledby="dashboard-title"]>main{overflow-x:hidden!important;overflow-y:auto!important}
+ section[aria-labelledby="dashboard-title"] [class*="logoButton"]{flex:0 0 44px!important;width:44px!important;min-height:44px!important;height:44px!important;margin:0!important;padding:0!important}
+ section[aria-labelledby="dashboard-title"] [class*="logoButton"]::before{width:38px!important;height:38px!important}
+ section[aria-labelledby="dashboard-title"] [class*="primaryNav"]{display:flex!important;align-items:center!important;flex:1 1 auto!important;gap:4px!important;min-width:0!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important}
+ section[aria-labelledby="dashboard-title"] [class*="primaryNav"]::-webkit-scrollbar{display:none!important}
+ section[aria-labelledby="dashboard-title"] [class*="navGroup"]{display:block!important;flex:0 0 auto!important}
+ section[aria-labelledby="dashboard-title"] [class*="primaryNav"] [class*="navGroup"]>button{width:42px!important;min-height:42px!important;height:42px!important}
+ section[aria-labelledby="dashboard-title"] [class*="navBottom"]{display:flex!important;align-items:center!important;flex:0 0 auto!important;gap:4px!important;margin-top:0!important;padding-top:0!important;border-top:0!important}
+ section[aria-labelledby="dashboard-title"] [class*="navBottom"]>button,
+ section[aria-labelledby="dashboard-title"] [class*="navBottom"]>a{width:42px!important;min-height:42px!important;height:42px!important}
+}

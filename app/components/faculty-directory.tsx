@@ -21,6 +21,6 @@ export default function FacultyDirectory() {
   return <section className="info-section directory-section" id="directory">
     <div className="section-heading"><h2>FACULTY & STAFF DIRECTORY</h2><span>{filtered.length} DIRECTORY AREAS</span></div>
     <div className="directory-controls"><label><span>Search directory</span><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search names, roles, or departments" /></label><label><span>Department</span><select value={department} onChange={(event) => setDepartment(event.target.value)}><option>All</option><option>Humanities</option><option>STEM</option><option>Student Services</option></select></label></div>
-    <div className="directory-results" aria-live="polite">{filtered.length ? filtered.map((person) => <article key={person.role}><div className="directory-avatar" aria-hidden="true">花</div><div><p className="eyebrow">{person.department}</p><h3>{person.name}</h3><strong>{person.role}</strong><p>{person.room}</p></div></article>) : <p className="no-results">No directory entries match your search.</p>}</div>
+    <div className="directory-results" aria-live="polite">{filtered.length ? filtered.map((person) => <article key={person.role}><div className="directory-avatar" aria-hidden="true">H</div><div><p className="eyebrow">{person.department}</p><h3>{person.name}</h3><strong>{person.role}</strong><p>{person.room}</p></div></article>) : <p className="no-results">No directory entries match your search.</p>}</div>
   </section>;
 }
