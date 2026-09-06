@@ -1,7 +1,7 @@
 "use client";
 
 import type {ReactNode} from "react";
-import {useEffect,useMemo,useState} from "react";
+import {useEffect,useState} from "react";
 import styles from "./AdminWorkspace.module.css";
 import AdminSchoolStatusManager from "./AdminSchoolStatusManager";
 import AdminAnnouncementManager from "./AdminAnnouncementManager";
@@ -76,11 +76,21 @@ const adminToolMap:Record<string,ToolItem[]>={
 export default function AdminWorkspace({accessToken,userId,access,ownerMode=false,ownerOverview,actions}:Props){
  const [view,setView]=useState<View>("home");const [tool,setTool]=useState<Tool>("overview");const [secondaryOpen,setSecondaryOpen]=useState(true);
  const canModerate=access.site_admin||access.moderator;const canEditContent=access.site_admin||access.content_editor;const hasAdminAccess=access.site_admin||access.content_editor||access.moderator;
- const nav=ownerMode?ownerNav:adminNav;
+ function canUseTool(candidate:Tool){
+  if(ownerMode)return true;
+  if(["overview","status","directory","studentOverview","ids","passes","narrative"].includes(candidate))return hasAdminAccess;
+  if(["academics","homerooms","dayChanges","schedule","deletion","operations","exams","applications","campusOps","continuity","governance","analytics"].includes(candidate))return access.site_admin;
+  if(["announcements","publishing","events","clubs","drafts","opportunities","approvals","roadmap","lore","requests","economy","roadmapOps","transit","city","community"].includes(candidate))return canEditContent;
+  if(["moderation","tickets"].includes(candidate))return canModerate;
+  if(candidate==="roleplay")return access.site_admin||canModerate;
+  return false;
+ }
  const toolMap=ownerMode?ownerToolMap:adminToolMap;
- const visibleTools=useMemo(()=>toolMap[view]??toolMap.home??[],[toolMap,view]);
- function changeView(next:View){const tools=toolMap[next];if(!tools?.length)return;setView(next);setTool(tools[0][0]);}
- useEffect(()=>{function route(event:Event){const detail=(event as CustomEvent<{view?:string;tool?:string}>).detail;if(!detail?.tool)return;const requestedView=detail.view as View|undefined;const requestedTool=detail.tool as Tool;let nextView=requestedView&&toolMap[requestedView]?.some(([id])=>id===requestedTool)?requestedView:undefined;if(!nextView){const match=nav.find(([candidate])=>toolMap[candidate]?.some(([id])=>id===requestedTool));nextView=match?.[0];}if(!nextView)return;setView(nextView);setTool(requestedTool);window.scrollTo({top:0,behavior:"smooth"});}window.addEventListener("hanami-admin-command",route);return()=>window.removeEventListener("hanami-admin-command",route);},[nav,toolMap]);
+ const toolsForView=(candidate:View)=>(toolMap[candidate]??[]).filter(([id])=>canUseTool(id));
+ const nav=(ownerMode?ownerNav:adminNav).filter(([id])=>toolsForView(id).length>0);
+ const visibleTools=toolsForView(view);
+ function changeView(next:View){const tools=toolsForView(next);if(!tools.length)return;setView(next);setTool(tools[0][0]);}
+ useEffect(()=>{function route(event:Event){const detail=(event as CustomEvent<{view?:string;tool?:string}>).detail;if(!detail?.tool)return;const requestedView=detail.view as View|undefined;const requestedTool=detail.tool as Tool;if(!canUseTool(requestedTool))return;let nextView=requestedView&&toolsForView(requestedView).some(([id])=>id===requestedTool)?requestedView:undefined;if(!nextView){const match=nav.find(([candidate])=>toolsForView(candidate).some(([id])=>id===requestedTool));nextView=match?.[0];}if(!nextView)return;setView(nextView);setTool(requestedTool);window.scrollTo({top:0,behavior:"smooth"});}window.addEventListener("hanami-admin-command",route);return()=>window.removeEventListener("hanami-admin-command",route);});
  return <section className={styles.shell}>
   <aside className={styles.globalNav} aria-label={`${ownerMode?"Owner":"Administration"} global navigation`}><a className={styles.logoButton} href="../../" aria-label="Hanami High home"/><nav>{nav.map(([key,icon,label])=><button key={key} type="button" className={view===key?styles.active:""} onClick={()=>changeView(key)}><span aria-hidden="true">{icon}</span><b>{label}</b></button>)}</nav>{actions&&<div className={styles.globalActions}>{actions}</div>}</aside>
   <main className={`${styles.main} ${secondaryOpen?"":styles.secondaryCollapsed}`}><header className={styles.header}><div><p>{ownerMode?"Owner":"Administration"} Portal</p><h1>{nav.find(item=>item[0]===view)?.[2]??"Administration"}</h1></div><div className={styles.headerActions}><button type="button" className={styles.secondaryToggle} aria-expanded={secondaryOpen} onClick={()=>setSecondaryOpen(v=>!v)}>{secondaryOpen?"Hide tools":"Show tools"}</button><span className={styles.badge}>{ownerMode?"OWNER":"ADMIN"}</span></div></header>
