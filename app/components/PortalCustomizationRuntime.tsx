@@ -17,7 +17,7 @@ type CharacterPreference={portal_skin?:Skin};
 type Equipped={item_id:string};
 type CosmeticItem={id:string;metadata:Record<string,unknown>};
 
-const COSMETIC_FONTS:Record<string,string>={schoolbook:"Georgia, 'Times New Roman', serif",clean:"Arial, Helvetica, sans-serif",notebook:"'Trebuchet MS', Arial, sans-serif"};
+const COSMETIC_FONTS:Record<string,string>={classic:"Georgia, 'Times New Roman', serif",modern:"Arial, Helvetica, sans-serif",rounded:"'Trebuchet MS', Arial, sans-serif",schoolbook:"Georgia, 'Times New Roman', serif",clean:"Arial, Helvetica, sans-serif",notebook:"'Trebuchet MS', Arial, sans-serif"};
 const COSMETIC_EFFECTS=new Set(["none","petals","sparkle","paper"]);
 function safeHex(value:unknown){return typeof value==="string"&&/^#[0-9a-f]{6}$/i.test(value)?value:"";}
 function safeFont(value:unknown){return typeof value==="string"&&COSMETIC_FONTS[value]?COSMETIC_FONTS[value]:"";}
