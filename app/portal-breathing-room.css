@@ -1,11 +1,6 @@
-/* Final portal spacing pass: reduce crowding, keep every workspace inside its column,
-   and use the signed-in character card instead of the broken Hanami logo block. */
+/* Legacy portal spacing layer retained for live avatar, spacing, wrapping, and overflow safeguards.
+   Canonical Student/Faculty shell geometry is owned by styles/rebuild/portal-shell-phase3.css. */
 body:has(section[aria-labelledby="dashboard-title"]){overflow-x:hidden!important;}
-
-section[aria-labelledby="dashboard-title"]{
-  --cozy-rail:184px;
-  grid-template-columns:var(--cozy-rail) minmax(0,1fr)!important;
-}
 
 /* Remove the broken school-logo block. The first Account button already carries
    the signed-in character's uploaded login/avatar image, so promote that instead. */
@@ -20,9 +15,7 @@ section[aria-labelledby="dashboard-title"] [class*="primaryNav"]:before{
   padding:10px 8px 8px!important;
   margin-bottom:2px!important;
 }
-section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]:first-child{
-  margin-bottom:10px!important;
-}
+section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]:first-child{margin-bottom:10px!important;}
 section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]:first-child>button{
   grid-template-columns:42px minmax(0,1fr)!important;
   min-height:62px!important;
@@ -51,27 +44,16 @@ section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGro
   object-fit:cover!important;
 }
 
-/* Keep the rail readable without making the workspace feel squeezed. */
-section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{
-  width:var(--cozy-rail)!important;
-  min-width:var(--cozy-rail)!important;
-  max-width:var(--cozy-rail)!important;
-  padding:12px 10px 14px!important;
-}
+/* Keep navigation controls readable; Phase 3 owns the rail width itself. */
+section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{padding:12px 10px 14px!important;}
 section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]>button,
 section[aria-labelledby="dashboard-title"] [class*="navBottom"] a,
 section[aria-labelledby="dashboard-title"] [class*="navBottom"] button{
   min-height:43px!important;
   padding:8px 10px!important;
 }
-section[aria-labelledby="dashboard-title"] [class*="subNav"]{
-  margin-top:5px!important;
-  margin-bottom:10px!important;
-}
-section[aria-labelledby="dashboard-title"] [class*="subNav"] button{
-  min-height:32px!important;
-  padding:7px 8px!important;
-}
+section[aria-labelledby="dashboard-title"] [class*="subNav"]{margin-top:5px!important;margin-bottom:10px!important;}
+section[aria-labelledby="dashboard-title"] [class*="subNav"] button{min-height:32px!important;padding:7px 8px!important;}
 
 /* Header and context controls get their own breathing room instead of sharing one crowded line. */
 section[aria-labelledby="dashboard-title"]>main>header{
@@ -101,53 +83,23 @@ section[aria-labelledby="dashboard-title"] [class*="PortalContextBar_bar"] nav{
   align-self:center!important;
   gap:8px!important;
 }
-section[aria-labelledby="dashboard-title"] [class*="PortalContextBar_change"]{
-  grid-column:1/-1!important;
-  padding-top:10px!important;
-  border-top:1px dotted #d2c5b7!important;
-}
-section[aria-labelledby="dashboard-title"] [class*="PortalContextBar_change"] strong{
-  white-space:normal!important;
-  overflow:visible!important;
-  text-overflow:clip!important;
-}
 
 /* More whitespace between major content areas. */
-section[aria-labelledby="dashboard-title"] [class*="contentView"],
-section[aria-labelledby="dashboard-title"] [class*="accountContent"]{
+section[aria-labelledby="dashboard-title"] [class*="contentView"]{
   gap:22px!important;
   padding:26px clamp(20px,2.5vw,34px) 50px!important;
 }
 section[aria-labelledby="dashboard-title"] [class*="dashboardMain"],
-section[aria-labelledby="dashboard-title"] [class*="featureStack"]{
-  gap:20px!important;
-}
-section[aria-labelledby="dashboard-title"] [class*="dashboardView"]{
-  gap:22px!important;
-  grid-template-columns:minmax(0,1fr) minmax(270px,310px)!important;
-}
-section[aria-labelledby="dashboard-title"] [class*="pageIntro"]{
-  padding:16px 18px!important;
-  margin:0!important;
-}
-section[aria-labelledby="dashboard-title"] :where(section,article,fieldset,details){
-  scroll-margin-top:110px;
-}
-section[aria-labelledby="dashboard-title"] :where(p,li,td,th,label,small,strong,span,a,button){
-  overflow-wrap:anywhere;
-}
-section[aria-labelledby="dashboard-title"] :where(table){
-  width:100%!important;
-  max-width:100%!important;
-  table-layout:auto;
-}
+section[aria-labelledby="dashboard-title"] [class*="featureStack"]{gap:20px!important;}
+section[aria-labelledby="dashboard-title"] [class*="dashboardView"]{gap:22px!important;}
+section[aria-labelledby="dashboard-title"] [class*="pageIntro"]{padding:16px 18px!important;margin:0!important;}
+section[aria-labelledby="dashboard-title"] :where(section,article,fieldset,details){scroll-margin-top:110px;}
+section[aria-labelledby="dashboard-title"] :where(p,li,td,th,label,small,strong,span,a,button){overflow-wrap:anywhere;}
+section[aria-labelledby="dashboard-title"] :where(table){width:100%!important;max-width:100%!important;table-layout:auto;}
 
-/* The iPad/medium-desktop layout should favor one wide content column over a cramped
-   dashboard plus rail. The secondary rail becomes a roomy two-column row below. */
+/* The dashboard utility rail can present its cards as a roomy row when space permits.
+   Phase 3 owns whether the dashboard itself is one or two columns. */
 @media(max-width:1500px){
-  section[aria-labelledby="dashboard-title"] [class*="dashboardView"]{
-    grid-template-columns:1fr!important;
-  }
   section[aria-labelledby="dashboard-title"] [class*="dashboardView"]>:last-child{
     position:static!important;
     display:grid!important;
@@ -161,26 +113,16 @@ section[aria-labelledby="dashboard-title"] :where(table){
     grid-template-columns:1fr!important;
     margin:14px 18px 18px!important;
   }
-  section[aria-labelledby="dashboard-title"] [class*="PortalContextBar_bar"] nav{
-    justify-content:flex-start!important;
-  }
-  section[aria-labelledby="dashboard-title"] [class*="PortalContextBar_change"]{grid-column:auto!important;}
+  section[aria-labelledby="dashboard-title"] [class*="PortalContextBar_bar"] nav{justify-content:flex-start!important;}
 }
 
 @media(max-width:820px){
-  section[aria-labelledby="dashboard-title"]{--cozy-rail:100%;display:block!important;}
-  section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{
-    width:100%!important;min-width:0!important;max-width:100%!important;padding:4px!important;
-  }
-  section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]:first-child{
-    margin-bottom:0!important;
-  }
+  section[aria-labelledby="dashboard-title"]>aside[aria-label$="global navigation"]{padding:4px!important;}
+  section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]:first-child{margin-bottom:0!important;}
   section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]:first-child>button{
     grid-template-columns:1fr!important;min-height:58px!important;padding:5px!important;background:transparent!important;color:#fff!important;
   }
-  section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]:first-child>button *{
-    color:#fff!important;-webkit-text-fill-color:#fff!important;
-  }
+  section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]:first-child>button *{color:#fff!important;-webkit-text-fill-color:#fff!important;}
   section[aria-labelledby="dashboard-title"] [class*="primaryNav"]>[class*="navGroup"]:first-child [class*="navIcon"]{
     width:28px!important;height:28px!important;border-radius:50%!important;border:0!important;
   }
@@ -190,7 +132,6 @@ section[aria-labelledby="dashboard-title"] :where(table){
     padding:12px 14px!important;
   }
   section[aria-labelledby="dashboard-title"] [class*="PortalContextBar_bar"]{margin:10px 12px 14px!important;padding:12px!important;}
-  section[aria-labelledby="dashboard-title"] [class*="contentView"],
-  section[aria-labelledby="dashboard-title"] [class*="accountContent"]{padding:16px 12px 32px!important;gap:16px!important;}
+  section[aria-labelledby="dashboard-title"] [class*="contentView"]{padding:16px 12px 32px!important;gap:16px!important;}
   section[aria-labelledby="dashboard-title"] [class*="dashboardView"]>:last-child{grid-template-columns:1fr!important;}
 }

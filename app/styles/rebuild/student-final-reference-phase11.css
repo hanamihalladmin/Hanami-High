@@ -1,0 +1,207 @@
+/* Phase 11 — final Student Portal reference layer.
+   Canvas provides the academic information architecture, Notion the modular workspace rhythm,
+   and SpaceHey/MySpace the expressive Account/Profile identity. Student-only; no shell geometry leaks. */
+
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]){
+  --student-ink:var(--hanami-custom-text,#253547);
+  --student-accent:var(--hanami-custom-accent,#17283c);
+  --student-rail:var(--hanami-custom-sidebar,#8f7db9);
+  --student-surface:var(--hanami-custom-surface,#fffaf2);
+  --student-line:color-mix(in srgb,var(--student-accent) 18%,#d9d3c8 82%);
+  background:#f4f0e8!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"])>aside[aria-label="Student global navigation"]{
+  background:linear-gradient(180deg,color-mix(in srgb,var(--student-rail) 86%,#17283c 14%),color-mix(in srgb,var(--student-rail) 70%,#17283c 30%))!important;
+  border-right:1px solid color-mix(in srgb,var(--student-accent) 42%,#302c35 58%)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"])>aside[aria-label="Student global navigation"]:before{
+  content:"HANAMI STUDENT DESK"!important;
+  color:#fff!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="primaryNav"]>[class*="navGroup"]>button{
+  border:1px solid transparent!important;
+  background:transparent!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="primaryNav"]>[class*="navGroup"]>button:hover{
+  background:rgba(255,255,255,.10)!important;
+  border-color:rgba(255,255,255,.14)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="primaryNav"]>[class*="navGroup"]>button[class*="navActive"]{
+  background:#fffaf2!important;
+  border-color:#fffaf2!important;
+  color:var(--student-accent)!important;
+  box-shadow:inset 4px 0 0 var(--student-accent)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="primaryNav"]>[class*="navGroup"]>button[class*="navActive"] *{
+  color:var(--student-accent)!important;
+  -webkit-text-fill-color:var(--student-accent)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="navBottom"]{
+  border-top:1px solid rgba(255,255,255,.2)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="navBottom"] a,
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="navBottom"] button{
+  color:#fff!important;
+}
+
+/* Canvas-like top framing: large page title, light work area, slim utility border. */
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"])>main{
+  background:linear-gradient(180deg,#fbf8f2 0,#f7f3eb 100%)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"])>main>header{
+  min-height:84px!important;
+  padding:16px clamp(22px,3vw,42px)!important;
+  background:rgba(255,253,248,.98)!important;
+  border-bottom:1px solid var(--student-line)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"])>main>header p{
+  color:#8b7a83!important;
+  font:700 8px/1.2 Arial,sans-serif!important;
+  letter-spacing:.12em!important;
+  text-transform:uppercase!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"])>main>header h1{
+  color:var(--student-ink)!important;
+  font:600 clamp(28px,3vw,40px)/1 Georgia,"Times New Roman",serif!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="identity"]{
+  border:1px solid var(--student-line)!important;
+  background:#fff!important;
+  box-shadow:0 2px 8px rgba(35,40,50,.04)!important;
+}
+
+/* Notion-style modular content spacing. */
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="contentView"]{
+  max-width:1500px!important;
+  padding:24px clamp(18px,2.4vw,34px) 52px!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="dashboardView"]{
+  grid-template-columns:minmax(0,1fr) minmax(270px,305px)!important;
+  gap:30px!important;
+  align-items:start!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="dashboardMain"]{
+  gap:20px!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="pageIntro"]{
+  border:0!important;
+  border-bottom:2px solid color-mix(in srgb,var(--student-accent) 65%,#9ba891 35%)!important;
+  background:transparent!important;
+  padding:4px 0 15px!important;
+  box-shadow:none!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="pageIntro"]:before{
+  content:"HANAMI STUDENT WORKSPACE"!important;
+  color:#9a6f7d!important;
+}
+
+/* Dashboard cards: Canvas course-card density + Notion database headers. */
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_command"],
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_panel"]{
+  border:1px solid var(--student-line)!important;
+  border-radius:2px!important;
+  background:#fffdf8!important;
+  box-shadow:0 3px 10px rgba(32,40,52,.055)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_heading"]{
+  min-height:44px!important;
+  background:color-mix(in srgb,var(--student-accent) 8%,#edf2f4 92%)!important;
+  border-bottom:1px solid var(--student-line)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_heading"] h3{
+  color:var(--student-ink)!important;
+  font:700 13px/1.2 Arial,sans-serif!important;
+  letter-spacing:.02em!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_courses"]{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:14px!important;
+  padding:14px!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_courses"] button{
+  position:relative!important;
+  display:grid!important;
+  align-content:end!important;
+  min-height:150px!important;
+  padding:72px 13px 14px!important;
+  overflow:hidden!important;
+  border:1px solid #d5d0c8!important;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--student-accent) 24%,#efe7f2 76%) 0 58px,#fffdf8 58px)!important;
+  box-shadow:0 2px 6px rgba(30,35,45,.08)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_courses"] button:nth-child(3n+2){
+  background:linear-gradient(180deg,#dfe8df 0 58px,#fffdf8 58px)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_courses"] button:nth-child(3n+3){
+  background:linear-gradient(180deg,#f0dfe5 0 58px,#fffdf8 58px)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_courses"] button:hover{
+  transform:translateY(-1px)!important;
+  box-shadow:0 5px 12px rgba(30,35,45,.10)!important;
+}
+
+/* Canvas-style persistent right rail: visually light, information-dense, no card-wall effect. */
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="CanvasTodoRail_rail"]{
+  position:sticky!important;
+  top:18px!important;
+  padding:0 2px 28px!important;
+  background:transparent!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="CanvasTodoRail_head"]{
+  padding-bottom:10px!important;
+  border-bottom:1px solid var(--student-line)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="CanvasTodoRail_head"] h3{
+  color:var(--student-ink)!important;
+  font:700 14px Arial,sans-serif!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="CanvasTodoRail_rail"] article{
+  border:0!important;
+  border-bottom:1px solid #e4ded5!important;
+  background:transparent!important;
+  padding:9px 2px!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="CanvasTodoRail_rail"] section h4{
+  border:0!important;
+  border-bottom:1px solid var(--student-line)!important;
+  background:transparent!important;
+  padding:8px 0!important;
+}
+
+/* Account/Profile: intentionally more expressive, borrowing SpaceHey/MySpace profile density.
+   This changes presentation only; Profile Studio still owns widget layout inside its canvas. */
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [aria-label="Profile social controls"],
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [aria-label="Profile guestbook and questions"],
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) section[aria-labelledby="profile-search-title"]{
+  border-color:#d8bcc7!important;
+  background:#fff9fb!important;
+  box-shadow:0 3px 10px rgba(116,78,96,.06)!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) section[aria-labelledby="profile-search-title"]>div:first-child,
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [aria-label="Profile guestbook and questions"]>div:first-child{
+  background:linear-gradient(180deg,#f6dfe8,#f0ccd9)!important;
+  color:#5f3547!important;
+  border-bottom:1px solid #cfabb9!important;
+}
+section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [aria-label="Profile social details"]>article{
+  border-color:#dec7d0!important;
+  background:#fffafb!important;
+}
+
+@media(max-width:1260px){
+  section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_courses"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:1080px){
+  section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="dashboardView"]{grid-template-columns:1fr!important}
+  section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="CanvasTodoRail_rail"]{position:static!important}
+}
+@media(max-width:900px){
+  section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"])>aside[aria-label="Student global navigation"]{background:color-mix(in srgb,var(--student-rail) 80%,#17283c 20%)!important}
+  section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="contentView"]{padding:18px 14px 34px!important}
+}
+@media(max-width:620px){
+  section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_courses"]{grid-template-columns:1fr!important}
+  section[aria-labelledby="dashboard-title"]:has(>aside[aria-label="Student global navigation"]) [class*="StudentDashboardOverview_courses"] button{min-height:124px!important;padding-top:66px!important}
+}
