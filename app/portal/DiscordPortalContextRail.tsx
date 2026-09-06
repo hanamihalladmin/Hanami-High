@@ -46,6 +46,6 @@ export default function DiscordPortalContextRail({role,view,subView,displayName,
    <p className={styles.label}>QUICK JUMP</p>
    <nav className={styles.quick} aria-label="Portal quick navigation">{quick.map(target=><button key={target} type="button" className={view===target?styles.active:""} onClick={()=>onNavigate(target)}><span>{target==="classes"?"#":target==="schedule"?"▦":target==="community"?"◎":target==="school"?"◆":"●"}</span>{target==="classes"?"Courses":target==="schedule"?"Schedule":target==="community"?"Community":target==="school"?"School":"Account"}</button>)}</nav>
   </section>
-  <section className={styles.privateNote}><strong>HANAMI NETWORK</strong><span>This rail reflects the active portal character and current workspace. It does not expose another user's private data.</span></section>
+  <section className={styles.privateNote}><strong>HANAMI NETWORK</strong><span>This rail reflects the active portal character and current workspace. It does not expose private data from other users.</span></section>
  </aside>;
 }
