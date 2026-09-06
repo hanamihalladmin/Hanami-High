@@ -69,7 +69,7 @@ export default function StudentBulletinSocialFeed({accessToken,characterId}:Prop
      <span>{postComments.length} comment{postComments.length===1?"":"s"}</span>
     </div>
     {openLikes[post.id]&&<div className={styles.likedBy}>{postLikes.length?postLikes.map(row=><span key={row.character_id}>{names.get(row.character_id)?.display_name??"Hanami Student"}</span>):<span>No likes yet.</span>}</div>}
-    <div className={styles.comments}>{postComments.map(row=>{const person=names.get(row.character_id);return <div className={styles.comment} key={row.id}><div><strong>{person?.display_name??"Hanami Student"}</strong><small>@{person?.handle??"student"} · {stamp(row.created_at)}</small></div><p>{row.body}</p>{row.character_id===characterId&&<button type="button" onClick={()=>void removeComment(row)}>Delete</button>}</div>)}</div>
+    <div className={styles.comments}>{postComments.map(row=>{const person=names.get(row.character_id);return <div className={styles.comment} key={row.id}><div><strong>{person?.display_name??"Hanami Student"}</strong><small>@{person?.handle??"student"} · {stamp(row.created_at)}</small></div><p>{row.body}</p>{row.character_id===characterId&&<button type="button" onClick={()=>void removeComment(row)}>Delete</button>}</div>})}</div>
     <form className={styles.commentForm} onSubmit={e=>void comment(e,post.id)}><input maxLength={800} value={drafts[post.id]??""} onChange={e=>setDrafts(v=>({...v,[post.id]:e.target.value}))} placeholder="Write a comment…" aria-label={`Comment on ${post.title}`}/><button type="submit">Post comment</button></form>
    </article>
   }):<div className={styles.empty}>No open school-wide bulletin posts yet. Use the Classifieds board below to publish the first one.</div>}</div>
