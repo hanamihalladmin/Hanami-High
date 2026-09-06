@@ -143,7 +143,7 @@ exit_code=0
   8:2324  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerPortalClient.tsx
-  24:162  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+  15:236  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/owner/OwnerSchoolStatePanel.tsx
   19:31  warning  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
@@ -157,9 +157,6 @@ exit_code=0
 ✖ 66 problems (0 errors, 66 warnings)
 
 --- failing legacy audit tests ---
-not ok 1 - About Hanami includes all approved public requirements
-  code: 'ERR_ASSERTION'
-  name: 'AssertionError'
 not ok 3 - About keeps the shared Tokyo 2006 roleplay clock while preserving 1836 school history
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
@@ -223,6 +220,9 @@ not ok 77 - website applications hand off to the configured Hanami Discord
 not ok 88 - Discord role sync uses member OAuth authorization without a bot token
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
+not ok 105 - full staff Owner operations roadmap remains wired
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
 not ok 121 - homepage includes every approved public-home requirement
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
@@ -238,38 +238,50 @@ not ok 136 - public chronology is anchored to April 7 2006 and calendar stays in
 not ok 145 - Hanami High does not collect or store birthdays
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 176 - Administration dashboard quick actions use canonical destinations and hide unauthorized actions
+not ok 157 - Owner portal renders the Bug Detector only inside Owner Control Center
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 184 - portal gateway explains authentication, privacy, and two-character rule
+not ok 168 - Owner controls are integrated into the shared Canvas administration shell
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 196 - Top Friends remain strictly accepted-friend and platonic controls
+not ok 179 - Phase 9 Admin uses the canonical ten-section OperationsShell while Owner remains separate
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 221 - TEST Faculty fixture is explicit test data, owner scoped, and Owner only
+not ok 182 - Administration dashboard quick actions use canonical destinations and hide unauthorized actions
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 243 - public version and changelog are discoverable site-wide
+not ok 190 - portal gateway explains authentication, privacy, and two-character rule
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 245 - role portal restores the selected character session
+not ok 202 - Top Friends remain strictly accepted-friend and platonic controls
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 247 - role portal logout clears character and account session
+not ok 227 - TEST Faculty fixture is explicit test data, owner scoped, and Owner only
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 255 - weekly scheduler keeps Period naming for academic rows
+not ok 249 - public version and changelog are discoverable site-wide
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 272 - Help has a direct router and support anchor
+not ok 251 - role portal restores the selected character session
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+not ok 253 - role portal logout clears character and account session
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+not ok 261 - weekly scheduler keeps Period naming for academic rows
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+not ok 262 - Owner receives system health and aggregate staff analytics
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+not ok 278 - Help has a direct router and support anchor
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
 --- hard failing checks ---
 --- test summary ---
-# tests 272
-# pass 236
-# fail 36
+# tests 278
+# pass 237
+# fail 41
 # cancelled 0
 # skipped 0
 # todo 0
@@ -277,57 +289,57 @@ not ok 272 - Help has a direct router and support anchor
   type: 'test'
   ...
 # Subtest: student schedule renders class periods from the published homeroom schedule
-ok 264 - student schedule renders class periods from the published homeroom schedule
+ok 270 - student schedule renders class periods from the published homeroom schedule
   ---
-  duration_ms: 1.046304
+  duration_ms: 1.367503
   type: 'test'
   ...
 # Subtest: student schedule ignores duplicated per-homeroom copies of shared school blocks
-ok 265 - student schedule ignores duplicated per-homeroom copies of shared school blocks
+ok 271 - student schedule ignores duplicated per-homeroom copies of shared school blocks
   ---
-  duration_ms: 0.166751
+  duration_ms: 0.235519
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 266 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 272 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 1.109612
+  duration_ms: 1.489731
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 267 - Student life feeds validate owned Student character even for privileged accounts
+ok 273 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.339474
+  duration_ms: 0.310028
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 268 - accessibility and notification preferences bind to signed-in user automatically
+ok 274 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 5.379155
+  duration_ms: 5.581028
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 269 - group chat creation uses a validated private helper and creator management
+ok 275 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.292524
+  duration_ms: 1.388612
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 270 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 276 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 1.19432
+  duration_ms: 1.308532
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 271 - School Office separates staff action waiting member and archive queues
+ok 277 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.584319
+  duration_ms: 1.833733
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-not ok 272 - Help has a direct router and support anchor
+not ok 278 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.843923
+  duration_ms: 2.231285
   type: 'test'
   location: '/home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:39:1'
   failureType: 'testCodeFailure'
@@ -366,22 +378,22 @@ not ok 272 - Help has a direct router and support anchor
     async Test.run (node:internal/test_runner/test:1054:7)
     async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
-1..272
-# tests 272
+1..278
+# tests 278
 # suites 0
-# pass 236
-# fail 36
+# pass 237
+# fail 41
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1740.622532
+# duration_ms 1856.820238
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 24ms
+✓ Running next.config.ts took 28ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -390,15 +402,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.5s
+✓ Compiled successfully in 6.9s
   Running TypeScript ...
-  Finished TypeScript in 13.9s ...
+  Finished TypeScript in 14.5s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/48) ...
   Generating static pages using 3 workers (12/48) 
   Generating static pages using 3 workers (24/48) 
   Generating static pages using 3 workers (36/48) 
-✓ Generating static pages using 3 workers (48/48) in 836ms
+✓ Generating static pages using 3 workers (48/48) in 837ms
   Finalizing page optimization ...
 
 Route (app)
