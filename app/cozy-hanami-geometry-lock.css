@@ -1,5 +1,4 @@
-/* Final geometry lock for the cozy Hanami portal shell.
-   This file intentionally wins over every previous portal layout generation. */
+/* Legacy containment layer retained for overflow safety. Canonical Student/Faculty geometry is owned by styles/rebuild/portal-shell-phase3.css. */
 body:has(section[aria-labelledby="dashboard-title"]){overflow-x:hidden!important}
 section[aria-labelledby="dashboard-title"]{
   --cozy-rail:168px;
@@ -41,13 +40,9 @@ section[aria-labelledby="dashboard-title"]>main{
   overflow-x:hidden!important;
   box-sizing:border-box!important;
 }
-section[aria-labelledby="dashboard-title"]>main:before{
-  inset:0!important;
-}
+section[aria-labelledby="dashboard-title"]>main:before{inset:0!important}
 section[aria-labelledby="dashboard-title"] [class*="contentView"],
 section[aria-labelledby="dashboard-title"] [class*="dashboardView"],
-section[aria-labelledby="dashboard-title"] [class*="accountLayout"],
-section[aria-labelledby="dashboard-title"] [class*="accountContent"],
 section[aria-labelledby="dashboard-title"] [class*="featureStack"]{
   width:100%!important;
   max-width:100%!important;
@@ -56,18 +51,7 @@ section[aria-labelledby="dashboard-title"] [class*="featureStack"]{
   margin-right:0!important;
   box-sizing:border-box!important;
 }
-section[aria-labelledby="dashboard-title"] [class*="dashboardView"]{
-  grid-template-columns:minmax(0,1fr) minmax(250px,310px)!important;
-}
-section[aria-labelledby="dashboard-title"] [class*="accountLayout"]{
-  grid-template-columns:240px minmax(0,1fr)!important;
-  overflow:visible!important;
-}
-section[aria-labelledby="dashboard-title"] [class*="accountNav"]{
-  width:auto!important;
-  min-width:0!important;
-  max-width:100%!important;
-}
+section[aria-labelledby="dashboard-title"] [class*="dashboardView"]{grid-template-columns:minmax(0,1fr) minmax(250px,310px)!important}
 section[aria-labelledby="dashboard-title"] :where(div,section,article,aside,header,footer,nav,form,fieldset,details,ul,ol,li,table){
   min-width:0!important;
   max-width:100%;
@@ -90,5 +74,4 @@ section[aria-labelledby="dashboard-title"] :where([class*="actions"],[class*="Ac
     height:auto!important;
   }
   section[aria-labelledby="dashboard-title"]>main{width:100%!important;max-width:100%!important;margin:0!important}
-  section[aria-labelledby="dashboard-title"] [class*="accountLayout"]{display:block!important}
 }
