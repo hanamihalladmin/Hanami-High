@@ -60,6 +60,16 @@ test("retired Account wrapper selectors stay out of rebuild and containment laye
   }
 });
 
+test("legacy containment and spacing layers no longer own PortalShell rail geometry",()=>{
+  for(const css of [finalGeometry,cozyGeometry,breathingRoom]){
+    assert.doesNotMatch(css,/--(?:cozy|final-portal)-rail\s*:/i);
+    assert.doesNotMatch(css,/grid-template-columns:\s*var\(--(?:cozy|final-portal)-rail\)/i);
+    assert.doesNotMatch(css,/grid-column:\s*[12]\s*!important/i);
+  }
+  assert.match(portalShell,/--hh-portal-rail/);
+  assert.match(portalShell,/grid-template-columns:var\(--hh-portal-rail\)/);
+});
+
 test("Student and Faculty account context resolves characters through the authenticated owner",()=>{
   assert.match(contextBar,/\/auth\/v1\/user/);
   assert.match(contextBar,/owner_user_id=eq\./);
