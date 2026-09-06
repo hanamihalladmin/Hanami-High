@@ -8,3 +8,9 @@
   aside[aria-label="Owner global navigation"] > nav > button > b{font-size:8px!important;line-height:1.1!important}
   aside[aria-label="Owner global navigation"] + main > aside[aria-label$=" tools"]{max-height:calc(100dvh - 82px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
 }
+
+@media (max-width:760px){
+  aside[aria-label="Owner global navigation"] > div{display:flex!important;gap:3px!important;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;margin-top:4px!important;padding-top:4px!important;border-top:1px solid rgba(255,255,255,.18)!important}
+  aside[aria-label="Owner global navigation"] > div > a,
+  aside[aria-label="Owner global navigation"] > div > button{flex:0 0 auto!important;display:grid!important;grid-template-columns:18px auto!important;align-items:center!important;gap:5px!important;min-height:34px!important;padding:5px 8px!important;white-space:nowrap!important}
+}
