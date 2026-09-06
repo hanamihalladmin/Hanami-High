@@ -15,6 +15,9 @@ const ownerCss=await readFile(new URL("../app/styles/rebuild/owner-phase10.css",
 const finalGeometry=await readFile(new URL("../app/final-portal-geometry.css",import.meta.url),"utf8");
 const cozyGeometry=await readFile(new URL("../app/cozy-hanami-geometry-lock.css",import.meta.url),"utf8");
 const breathingRoom=await readFile(new URL("../app/portal-breathing-room.css",import.meta.url),"utf8");
+const siteThemes=await readFile(new URL("../app/site-themes.css",import.meta.url),"utf8");
+const tokyoSlate=await readFile(new URL("../app/tokyo-slate-theme.css",import.meta.url),"utf8");
+const portalCustomization=await readFile(new URL("../app/portal-customization-runtime.css",import.meta.url),"utf8");
 
 const approvedShells=["PublicShell","PortalShell","OperationsShell","SocialShell","FocusShell"];
 
@@ -29,6 +32,11 @@ test("canonical rebuild tokens are the single global token source",()=>{
   for(const alias of ["--hh-rose:","--hh-line:","--hh-sidebar:","--hh-font-ui:"])assert.match(tokens,new RegExp(alias));
   assert.match(tokens,/--hh-ivory:\s*#fffaf2/i);
   assert.match(tokens,/--hh-cream:\s*#f3efe4/i);
+});
+
+test("theme layers cannot redefine canonical structural tokens",()=>{
+  const structuralDefinition=/--hh-(?:nav-width|context-width|content-max|page-gutter|section-gap|card-gap|card-padding|topbar-height|page-header-min-height|breakpoint-[a-z-]+)\s*:/i;
+  for(const theme of [siteThemes,tokyoSlate,portalCustomization,rewardsCss])assert.doesNotMatch(theme,structuralDefinition);
 });
 
 test("portal customization remains presentation-only and does not own structural geometry",()=>{
