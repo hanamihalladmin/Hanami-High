@@ -1,0 +1,47 @@
+/* Phase 6 — Profiles & Community. Unifies profile identity, social surfaces, and creator tools into the SocialShell contract. */
+
+/* Account/Profile workspace should read as a social identity hub, not a generic settings page. */
+section[aria-labelledby="dashboard-title"] [data-portal-view="account"] [class*="accountContent"]{max-width:1180px!important}
+section[aria-labelledby="dashboard-title"] [data-portal-view="account"] [class*="pageIntro"]{background:#fffaf2;border:1px solid #d8ccbc;padding:14px 16px!important;box-shadow:0 4px 12px rgba(23,40,60,.035)}
+section[aria-labelledby="dashboard-title"] [data-portal-view="account"] [class*="pageIntro"]:before{content:"HANAMI SOCIAL IDENTITY"!important;color:#8a6774!important}
+section[aria-labelledby="dashboard-title"] [data-portal-view="account"] [class*="pageIntro"] h2{font-size:25px!important}
+
+/* Privacy-aware profile lookup becomes the canonical SocialShell viewer. */
+section[aria-labelledby="profile-search-title"]{overflow:hidden!important;border:1px solid #cdbfc6!important;background:#fffaf7!important;box-shadow:0 6px 18px rgba(38,31,45,.05)!important}
+section[aria-labelledby="profile-search-title"]>div:first-child{background:linear-gradient(135deg,#fffaf7,#f2e7ec)!important;border-bottom-color:#cdbfc6!important}
+section[aria-labelledby="profile-search-title"] form{background:#f8f1f4!important;border-bottom:1px solid #ded1d7!important}
+section[aria-labelledby="profile-search-title"] [class*="card"]{grid-template-columns:84px minmax(180px,240px) minmax(0,1fr)!important;gap:18px!important;padding:20px!important;background:#fff!important;border-bottom:1px solid #e3d8dd}
+section[aria-labelledby="profile-search-title"] [class*="avatar"]{width:78px!important;height:78px!important;border:2px solid #cdbfc6!important;box-shadow:0 0 0 4px #fff,0 3px 10px rgba(38,31,45,.08)}
+section[aria-labelledby="profile-search-title"] [class*="identity"] h5{font-family:Georgia,serif!important;font-size:24px!important}
+section[aria-labelledby="profile-search-title"] [class*="copy"]{background:#fffaf7!important;border-color:#ded1d7!important;padding:14px!important}
+section[aria-labelledby="profile-search-title"] [class*="designWrap"]{margin-top:14px!important;background:#f4edf0!important;border-color:#cdbfc6!important}
+section[aria-labelledby="profile-search-title"] [class*="previewScroller"]{padding:20px!important;background:repeating-linear-gradient(45deg,#f2eaee 0 12px,#faf7f8 12px 24px)}
+
+/* Existing social metadata (Top Friends / badges) should feel like part of the page, not debug cards. */
+section[aria-labelledby="profile-search-title"] [aria-label="Profile social details"]{margin:0 16px 16px!important;grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr)!important;gap:12px!important}
+section[aria-labelledby="profile-search-title"] [aria-label="Profile social details"]>article{margin:0!important;border:1px solid #d8c9d0!important;background:#fffaf7!important;padding:14px!important;box-shadow:0 3px 10px rgba(38,31,45,.035)}
+section[aria-labelledby="profile-search-title"] [aria-label="Profile social details"] h5{color:#26364a!important}
+
+/* Profile Studio remains creator-first, but its chrome should read as one focused editor. */
+[aria-label="Profile Designer"]{max-width:1180px;margin:0 auto}
+[aria-label="Profile Designer"] [aria-label="Profile Designer sections"]{top:8px!important}
+[aria-label="Profile Designer"] [aria-label="Profile Studio workspace controls"]{border-color:#cdbfc6!important;background:#fffaf7!important}
+
+/* Community/social surfaces use a denser editorial rhythm than school-work pages. */
+[aria-label="Community Hub"],
+[aria-label="Friends"],
+[aria-label="Profile social controls"]{max-width:1180px;margin-inline:auto}
+
+@media(max-width:900px){
+ section[aria-labelledby="profile-search-title"] [class*="card"]{grid-template-columns:72px minmax(0,1fr)!important}
+ section[aria-labelledby="profile-search-title"] [class*="copy"]{grid-column:1/-1!important}
+ section[aria-labelledby="profile-search-title"] [aria-label="Profile social details"]{grid-template-columns:1fr!important;margin-inline:12px!important}
+}
+
+@media(max-width:620px){
+ section[aria-labelledby="profile-search-title"] [class*="card"]{grid-template-columns:1fr!important;text-align:left}
+ section[aria-labelledby="profile-search-title"] [class*="avatar"]{width:66px!important;height:66px!important}
+ section[aria-labelledby="profile-search-title"] [class*="copy"]{grid-column:auto!important}
+ section[aria-labelledby="profile-search-title"] [class*="designWrap"]{margin-inline:8px!important}
+ section[aria-labelledby="profile-search-title"] [class*="previewScroller"]{padding:10px!important}
+}
