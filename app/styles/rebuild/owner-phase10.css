@@ -1,0 +1,9 @@
+@media (min-width:761px){
+  aside[aria-label="Owner global navigation"]{padding-top:8px!important;padding-bottom:8px!important}
+  aside[aria-label="Owner global navigation"] > a[aria-label="Hanami High home"]{min-height:58px!important;background-size:48px 48px,48px 48px!important}
+  aside[aria-label="Owner global navigation"] > nav{flex:1 1 auto;min-height:0;align-content:start;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;margin-top:6px!important;padding-right:2px}
+  aside[aria-label="Owner global navigation"] > nav:before{padding:7px 6px 3px!important}
+  aside[aria-label="Owner global navigation"] > nav > button{grid-template-columns:21px minmax(0,1fr)!important;gap:5px!important;min-height:36px!important;padding:5px 6px!important}
+  aside[aria-label="Owner global navigation"] > nav > button > span{font-size:14px!important}
+  aside[aria-label="Owner global navigation"] > nav > button > b{font-size:8px!important;line-height:1.1!important}
+}
