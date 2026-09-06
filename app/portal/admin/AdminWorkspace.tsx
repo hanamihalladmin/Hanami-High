@@ -41,11 +41,13 @@ import AdminEconomyManager from "./AdminEconomyManager";
 import AdminPublishingHub from "./AdminPublishingHub";
 import AdminClubPublishingPanel from "./AdminClubPublishingPanel";
 import AdminReportsOverview from "./AdminReportsOverview";
+import AdminWebsiteOverview from "./AdminWebsiteOverview";
+import AdminSettingsOverview from "./AdminSettingsOverview";
 import OwnerClassroomControlCenter from "../owner/OwnerClassroomControlCenter";
 
 type Access={site_admin:boolean;content_editor:boolean;moderator:boolean};
 type View="home"|"classes"|"people"|"content"|"support"|"systems"|"academics"|"communications"|"campus"|"events"|"moderation"|"website"|"reports"|"settings";
-type Tool="overview"|"status"|"announcements"|"academics"|"homerooms"|"classroomControl"|"dayChanges"|"schedule"|"deletion"|"operations"|"exams"|"directory"|"studentOverview"|"ids"|"passes"|"narrative"|"moderation"|"publishing"|"events"|"clubs"|"campusOps"|"drafts"|"opportunities"|"applications"|"approvals"|"roadmap"|"lore"|"requests"|"tickets"|"roleplay"|"economy"|"continuity"|"roadmapOps"|"transit"|"city"|"community"|"governance"|"analytics"|"reportsOverview";
+type Tool="overview"|"status"|"announcements"|"academics"|"homerooms"|"classroomControl"|"dayChanges"|"schedule"|"deletion"|"operations"|"exams"|"directory"|"studentOverview"|"ids"|"passes"|"narrative"|"moderation"|"publishing"|"events"|"clubs"|"campusOps"|"drafts"|"opportunities"|"applications"|"approvals"|"roadmap"|"lore"|"requests"|"tickets"|"roleplay"|"economy"|"continuity"|"roadmapOps"|"transit"|"city"|"community"|"governance"|"analytics"|"reportsOverview"|"websiteOverview"|"settingsOverview";
 type Props={accessToken:string;userId:string;access:Access;ownerMode?:boolean;ownerOverview?:ReactNode;actions?:ReactNode};
 type NavItem=[View,string,string];
 type ToolItem=[Tool,string];
@@ -69,9 +71,9 @@ const adminToolMap:Record<string,ToolItem[]>={
  campus:[["clubs","Club Publishing"],["opportunities","Opportunities"],["campusOps","Campus Operations"],["community","Community Ops"],["transit","Transit"],["city","City Lifecycle"]],
  events:[["events","Events"]],
  moderation:[["moderation","Moderation"],["narrative","Narrative Review"],["approvals","Content Approvals"]],
- website:[["publishing","School Publishing"],["roadmap","Website Roadmap"],["lore","Lore & Canon"]],
+ website:[["websiteOverview","Website Overview"],["publishing","School Publishing"],["roadmap","Website Roadmap"],["lore","Lore & Canon"]],
  reports:[["reportsOverview","Reports Overview"],["analytics","Staff Analytics"],["continuity","Continuity Archive"],["roadmapOps","Roadmap Operations"]],
- settings:[["governance","Governance"],["economy","Economy & Exchange"],["roleplay","Roleplay Systems"]]
+ settings:[["settingsOverview","Settings Overview"],["governance","Governance"],["economy","Economy & Exchange"],["roleplay","Roleplay Systems"]]
 };
 
 export default function AdminWorkspace({accessToken,userId,access,ownerMode=false,ownerOverview,actions}:Props){
@@ -81,6 +83,8 @@ export default function AdminWorkspace({accessToken,userId,access,ownerMode=fals
   if(ownerMode)return true;
   if(["overview","status","directory","studentOverview","ids","passes","narrative"].includes(candidate))return hasAdminAccess;
   if(candidate==="reportsOverview")return access.site_admin||canEditContent;
+  if(candidate==="websiteOverview")return canEditContent;
+  if(candidate==="settingsOverview")return access.site_admin||canEditContent||canModerate;
   if(["academics","homerooms","dayChanges","schedule","deletion","operations","exams","applications","campusOps","continuity","governance","analytics"].includes(candidate))return access.site_admin;
   if(["announcements","publishing","events","clubs","drafts","opportunities","approvals","roadmap","lore","requests","economy","roadmapOps","transit","city","community"].includes(candidate))return canEditContent;
   if(["moderation","tickets"].includes(candidate))return canModerate;
@@ -105,7 +109,7 @@ export default function AdminWorkspace({accessToken,userId,access,ownerMode=fals
     {tool==="publishing"&&canEditContent&&<AdminPublishingHub accessToken={accessToken}/>} {tool==="events"&&canEditContent&&<AdminEventManager accessToken={accessToken} userId={userId} access={access}/>} {tool==="clubs"&&canEditContent&&<AdminClubPublishingPanel accessToken={accessToken}/>} {tool==="campusOps"&&access.site_admin&&<AdminCampusOperationsPanel accessToken={accessToken}/>} {tool==="drafts"&&canEditContent&&<AdminDraftWorkspace accessToken={accessToken}/>} {tool==="opportunities"&&canEditContent&&<AdminOpportunityManager accessToken={accessToken} userId={userId}/>} {tool==="applications"&&access.site_admin&&<AdminApplicationReviewPanel accessToken={accessToken} userId={userId}/>} {tool==="approvals"&&canEditContent&&<AdminContentApprovalPanel accessToken={accessToken}/>} {tool==="roadmap"&&canEditContent&&<AdminRoadmapManager accessToken={accessToken} userId={userId}/>} {tool==="lore"&&canEditContent&&<AdminLoreCanonEditor accessToken={accessToken}/>} 
     {tool==="requests"&&canEditContent&&<AdminOfficeRequestManager accessToken={accessToken} userId={userId}/>} {tool==="tickets"&&canModerate&&<AdminSupportTicketManager accessToken={accessToken} userId={userId}/>} 
     {tool==="economy"&&canEditContent&&<AdminEconomyManager accessToken={accessToken} ownerMode={ownerMode}/>} {tool==="roleplay"&&(access.site_admin||canModerate)&&<AdminRoleplaySystemsManager accessToken={accessToken} access={access}/>} {tool==="continuity"&&access.site_admin&&<AdminContinuityArchiveManager accessToken={accessToken} userId={userId}/>} {tool==="roadmapOps"&&canEditContent&&<AdminRoadmapOperationsPanel accessToken={accessToken} userId={userId} canModerate={canModerate}/>} {tool==="transit"&&canEditContent&&<AdminCityTransitManager accessToken={accessToken}/>} {tool==="city"&&canEditContent&&<AdminCityLifecyclePanel accessToken={accessToken}/>} {tool==="community"&&canEditContent&&<AdminCommunityOperationsPanel accessToken={accessToken} userId={userId}/>} 
-    {tool==="reportsOverview"&&!ownerMode&&<AdminReportsOverview siteAdmin={access.site_admin} canEditContent={canEditContent}/>} {tool==="governance"&&access.site_admin&&<AdminGovernancePanel accessToken={accessToken} ownerMode={ownerMode}/>} {tool==="analytics"&&access.site_admin&&<AdminStaffAnalyticsPanel accessToken={accessToken}/>} 
+    {tool==="websiteOverview"&&!ownerMode&&<AdminWebsiteOverview canEditContent={canEditContent}/>} {tool==="reportsOverview"&&!ownerMode&&<AdminReportsOverview siteAdmin={access.site_admin} canEditContent={canEditContent}/>} {tool==="settingsOverview"&&!ownerMode&&<AdminSettingsOverview siteAdmin={access.site_admin} canEditContent={canEditContent} canModerate={canModerate}/>} {tool==="governance"&&access.site_admin&&<AdminGovernancePanel accessToken={accessToken} ownerMode={ownerMode}/>} {tool==="analytics"&&access.site_admin&&<AdminStaffAnalyticsPanel accessToken={accessToken}/>} 
    </section>
   </main>
  </section>;
