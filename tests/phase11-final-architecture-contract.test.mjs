@@ -6,6 +6,8 @@ const blueprint=await readFile(new URL("../docs/REBUILD_BLUEPRINT.md",import.met
 const layout=await readFile(new URL("../app/layout.tsx",import.meta.url),"utf8");
 const dashboard=await readFile(new URL("../app/portal/DashboardShell.tsx",import.meta.url),"utf8");
 const contextBar=await readFile(new URL("../app/portal/PortalContextBar.tsx",import.meta.url),"utf8");
+const bulletin=await readFile(new URL("../app/portal/StudentBulletinSocialFeed.tsx",import.meta.url),"utf8");
+const bulletinMigration=await readFile(new URL("../supabase/migrations/20260906084533_phase11_student_bulletin_social_interactions.sql",import.meta.url),"utf8");
 const adminWorkspace=await readFile(new URL("../app/portal/admin/AdminWorkspace.tsx",import.meta.url),"utf8");
 const tokens=await readFile(new URL("../app/styles/rebuild/tokens.css",import.meta.url),"utf8");
 const portalShell=await readFile(new URL("../app/styles/rebuild/portal-shell-phase3.css",import.meta.url),"utf8");
@@ -75,6 +77,25 @@ test("Student and Faculty account context resolves characters through the authen
   assert.match(contextBar,/owner_user_id=eq\./);
   assert.match(contextBar,/is_active=eq\.true/);
   assert.match(contextBar,/role=eq\.\$\{role\}/);
+});
+
+test("Student bulletin social feed is scoped to Community Boards and school-wide posts",()=>{
+  assert.match(contextBar,/role===\"student\"&&view===\"community\"&&subView===\"boards\"/);
+  assert.match(contextBar,/StudentBulletinSocialFeed/);
+  assert.match(bulletin,/visibility=eq\.school/);
+  assert.match(bulletin,/See who liked this/);
+  assert.match(bulletin,/Post comment/);
+  assert.doesNotMatch(bulletin,/Faculty|Administration|Owner global navigation/);
+});
+
+test("bulletin likes and comments use character-owned RLS tables",()=>{
+  assert.match(bulletinMigration,/student_request_board_likes/);
+  assert.match(bulletinMigration,/primary key \(post_id, character_id\)/i);
+  assert.match(bulletinMigration,/student_request_board_comments/);
+  assert.match(bulletinMigration,/between 1 and 800/i);
+  assert.match(bulletinMigration,/current_user_owns_character\(character_id\)/);
+  assert.match(bulletinMigration,/school_staff_can_manage\(\)/);
+  assert.match(bulletinMigration,/revoke all .* from anon/is);
 });
 
 test("Admin and Owner retain separate canonical OperationsShell maps",()=>{
