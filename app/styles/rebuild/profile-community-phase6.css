@@ -22,6 +22,10 @@ section[aria-labelledby="profile-search-title"] [aria-label="Profile social deta
 section[aria-labelledby="profile-search-title"] [aria-label="Profile social details"]>article{margin:0!important;border:1px solid #d8c9d0!important;background:#fffaf7!important;padding:14px!important;box-shadow:0 3px 10px rgba(38,31,45,.035)}
 section[aria-labelledby="profile-search-title"] [aria-label="Profile social details"] h5{color:#26364a!important}
 
+/* Guestbook and memory surfaces belong to SocialShell, not the school-work shell. */
+[aria-label="Profile guestbook and questions"]{max-width:1180px;margin-inline:auto}
+[aria-label="Profile guestbook and questions"] textarea{min-height:96px}
+
 /* Profile Studio remains creator-first, but its chrome should read as one focused editor. */
 [aria-label="Profile Designer"]{max-width:1180px;margin:0 auto}
 [aria-label="Profile Designer"] [aria-label="Profile Designer sections"]{top:8px!important}
