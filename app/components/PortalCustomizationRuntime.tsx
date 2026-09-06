@@ -5,7 +5,7 @@ import {useEffect} from "react";
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
 const SESSION_KEY="hanami.portal.session.v1";
-const CHARACTER_SESSION_KEY="hanami.portal.character.v1";
+const LEGACY_CHARACTER_SESSION_KEY="hanami.portal.character.v1";
 const IMAGE_TYPES=["image/jpeg","image/png","image/gif","image/webp"];
 const MAX_IMAGE_SIZE=5*1024*1024;
 const STORAGE_PREFIX="hanami-storage://profile-media/";
@@ -14,106 +14,35 @@ type Session={accessToken:string};
 type PortalPreference={text_color:string;accent_color:string};
 type Skin={sidebar?:string;surface?:string;accent?:string;text?:string};
 type CharacterPreference={portal_skin?:Skin};
+type Equipped={item_id:string};
+type CosmeticItem={id:string;metadata:Record<string,unknown>};
 
+const COSMETIC_FONTS:Record<string,string>={classic:"Georgia, 'Times New Roman', serif",modern:"Arial, Helvetica, sans-serif",rounded:"'Trebuchet MS', Arial, sans-serif",schoolbook:"Georgia, 'Times New Roman', serif",clean:"Arial, Helvetica, sans-serif",notebook:"'Trebuchet MS', Arial, sans-serif"};
+const COSMETIC_EFFECTS=new Set(["none","petals","sparkle","paper"]);
+function safeHex(value:unknown){return typeof value==="string"&&/^#[0-9a-f]{6}$/i.test(value)?value:"";}
+function safeFont(value:unknown){return typeof value==="string"&&COSMETIC_FONTS[value]?COSMETIC_FONTS[value]:"";}
+function safeEffect(value:unknown){return typeof value==="string"&&COSMETIC_EFFECTS.has(value)?value:"none";}
+function encodeObjectPath(path:string){return path.split("/").map(part=>encodeURIComponent(part)).join("/");}
 function readSession(){try{const raw=localStorage.getItem(SESSION_KEY);if(!raw)return null;const value=JSON.parse(raw) as Partial<Session>;return typeof value.accessToken==="string"?{accessToken:value.accessToken}:null;}catch{return null;}}
-function readCharacterId(){try{return localStorage.getItem(CHARACTER_SESSION_KEY)||"";}catch{return "";}}
+function characterSessionKey(userId:string){return `hanami.portal.character.v2.${userId}`;}
+function readCharacterId(userId:string){try{return localStorage.getItem(characterSessionKey(userId))||"";}catch{return "";}}
 function headers(token:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${token}`,...extra};}
 function validCharacterId(value:string){return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);}
-function isImageUrlField(input:HTMLInputElement){
- const placeholder=input.placeholder||"";
- const parentText=input.closest("label")?.textContent||input.parentElement?.textContent||"";
- const text=`${placeholder} ${parentText}`.replace(/\s+/g," ").toLowerCase();
- const imageWord=/(image|photo|portrait|picture|banner|logo|background|cover|sticker|thumbnail)/.test(text);
- const urlWord=/\burl\b/.test(text);
- return imageWord&&urlWord;
-}
+async function currentUserId(token:string){try{const response=await fetch(`${SUPABASE_URL}/auth/v1/user`,{headers:headers(token)});if(!response.ok)return "";const user=await response.json() as {id?:string};return typeof user.id==="string"?user.id:"";}catch{return "";}}
+function isImageUrlField(input:HTMLInputElement){const placeholder=input.placeholder||"";const parentText=input.closest("label")?.textContent||input.parentElement?.textContent||"";const text=`${placeholder} ${parentText}`.replace(/\s+/g," ").toLowerCase();return /(image|photo|portrait|picture|banner|logo|background|cover|sticker|thumbnail)/.test(text)&&/\burl\b/.test(text);}
 function setReactInputValue(input:HTMLInputElement,value:string){const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value")?.set;if(setter)setter.call(input,value);else input.value=value;input.dispatchEvent(new Event("input",{bubbles:true}));input.dispatchEvent(new Event("change",{bubbles:true}));}
 function fileExtension(file:File){if(file.type==="image/jpeg")return "jpg";if(file.type==="image/png")return "png";if(file.type==="image/gif")return "gif";return "webp";}
 
 export default function PortalCustomizationRuntime(){
  useEffect(()=>{
-  let dead=false;
-  const blobUrls=new Set<string>();
-  const enhancedInputs=new WeakSet<HTMLInputElement>();
-  const resolvingImages=new WeakSet<HTMLImageElement>();
-
-  async function applyTheme(){
-   const session=readSession();const characterId=readCharacterId();
-   if(!session||!validCharacterId(characterId))return;
-   try{
-    const [portalResponse,characterResponse]=await Promise.all([
-     fetch(`${SUPABASE_URL}/rest/v1/portal_ui_preferences?select=text_color,accent_color&limit=1`,{headers:headers(session.accessToken)}),
-     fetch(`${SUPABASE_URL}/rest/v1/character_portal_preferences?select=portal_skin&character_id=eq.${encodeURIComponent(characterId)}&limit=1`,{headers:headers(session.accessToken)})
-    ]);
-    if(dead)return;
-    const portal=portalResponse.ok?((await portalResponse.json() as PortalPreference[])[0]??null):null;
-    const character=characterResponse.ok?((await characterResponse.json() as CharacterPreference[])[0]??null):null;
-    const accent=character?.portal_skin?.accent||portal?.accent_color||"#17375f";
-    const text=character?.portal_skin?.text||portal?.text_color||"#2d3b45";
-    const sidebar=character?.portal_skin?.sidebar||`color-mix(in srgb, ${accent} 80%, #fff 20%)`;
-    const surface=character?.portal_skin?.surface||`color-mix(in srgb, ${accent} 4%, #fff 96%)`;
-    const root=document.documentElement;
-    root.style.setProperty("--hanami-custom-accent",accent);
-    root.style.setProperty("--hanami-custom-text",text);
-    root.style.setProperty("--hanami-custom-sidebar",sidebar);
-    root.style.setProperty("--hanami-custom-surface",surface);
-   }catch{}
-  }
-
-  async function resolveStoredImage(img:HTMLImageElement){
-   const src=img.getAttribute("src")||"";
-   if(!src.startsWith(STORAGE_PREFIX)||resolvingImages.has(img))return;
-   const session=readSession();if(!session)return;
-   const path=src.slice(STORAGE_PREFIX.length);if(!path)return;
-   resolvingImages.add(img);
-   try{
-    const response=await fetch(`${SUPABASE_URL}/storage/v1/object/authenticated/profile-media/${encodeURI(path)}`,{headers:headers(session.accessToken)});
-    if(!response.ok)return;
-    const url=URL.createObjectURL(await response.blob());blobUrls.add(url);img.src=url;
-   }catch{}finally{resolvingImages.delete(img);}
-  }
-
-  function enhanceInput(input:HTMLInputElement){
-   if(enhancedInputs.has(input)||!isImageUrlField(input))return;
-   enhancedInputs.add(input);
-   input.dataset.hanamiImageUrlSource="true";
-   input.setAttribute("aria-hidden","true");
-   input.tabIndex=-1;
-   input.style.display="none";
-   const picker=document.createElement("label");picker.className="hanami-device-image-picker";
-   const text=document.createElement("span");text.textContent="Choose image from device";
-   const file=document.createElement("input");file.type="file";file.accept="image/jpeg,image/png,image/gif,image/webp";
-   picker.append(text,file);input.insertAdjacentElement("afterend",picker);
-   file.addEventListener("change",async()=>{
-    const selected=file.files?.[0];file.value="";if(!selected)return;
-    const session=readSession();const characterId=readCharacterId();
-    if(!session||!validCharacterId(characterId)){text.textContent="Open a character first";return;}
-    if(!IMAGE_TYPES.includes(selected.type)){text.textContent="Use JPEG, PNG, GIF, or WebP";return;}
-    if(selected.size>MAX_IMAGE_SIZE){text.textContent="Image must be 5 MB or smaller";return;}
-    const old=text.textContent;text.textContent="Uploading…";file.disabled=true;
-    const path=`${characterId}/device-${crypto.randomUUID()}.${fileExtension(selected)}`;
-    try{
-     const response=await fetch(`${SUPABASE_URL}/storage/v1/object/profile-media/${path}`,{method:"POST",headers:headers(session.accessToken,{"Content-Type":selected.type,"x-upsert":"false"}),body:selected});
-     if(!response.ok)throw new Error();
-     setReactInputValue(input,`${STORAGE_PREFIX}${path}`);
-     text.textContent="Image selected";
-    }catch{text.textContent="Upload failed — try again";}finally{file.disabled=false;window.setTimeout(()=>{if(text.textContent==="Image selected")text.textContent=old||"Choose image from device";},1800);}
-   });
-  }
-
-  function scan(root:ParentNode=document){
-   root.querySelectorAll?.("input").forEach(node=>{if(node instanceof HTMLInputElement)enhanceInput(node);});
-   root.querySelectorAll?.("img").forEach(node=>{if(node instanceof HTMLImageElement)void resolveStoredImage(node);});
-  }
-
-  void applyTheme();scan();
-  const observer=new MutationObserver(records=>{for(const record of records){if(record.type==="attributes"&&record.target instanceof HTMLImageElement){void resolveStoredImage(record.target);continue;}for(const node of record.addedNodes){if(node instanceof HTMLInputElement)enhanceInput(node);else if(node instanceof HTMLImageElement)void resolveStoredImage(node);else if(node instanceof HTMLElement)scan(node);}}});
-  observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["src"]});
-  const refresh=()=>{void applyTheme();window.setTimeout(()=>scan(),0);};
-  window.addEventListener("hanami-portal-theme-changed",refresh);
-  window.addEventListener("hanami-character-identity-changed",refresh);
-  window.addEventListener("storage",refresh);
-  return()=>{dead=true;observer.disconnect();window.removeEventListener("hanami-portal-theme-changed",refresh);window.removeEventListener("hanami-character-identity-changed",refresh);window.removeEventListener("storage",refresh);for(const url of blobUrls)URL.revokeObjectURL(url);};
- },[]);
- return null;
+  let dead=false;const blobUrls=new Set<string>();const enhancedInputs=new WeakSet<HTMLInputElement>();const resolvingImages=new WeakSet<HTMLImageElement>();try{localStorage.removeItem(LEGACY_CHARACTER_SESSION_KEY);}catch{}
+  function resetCosmetics(){const root=document.documentElement;root.style.removeProperty("--hanami-cosmetic-font");delete root.dataset.hanamiCosmeticEffect;}
+  async function activeCharacter(){const session=readSession();if(!session)return null;const userId=await currentUserId(session.accessToken);if(!userId||dead)return null;const characterId=readCharacterId(userId);if(!validCharacterId(characterId))return null;try{const response=await fetch(`${SUPABASE_URL}/rest/v1/characters?select=id&owner_user_id=eq.${encodeURIComponent(userId)}&id=eq.${encodeURIComponent(characterId)}&limit=1`,{headers:headers(session.accessToken)});if(!response.ok)return null;const rows=await response.json() as Array<{id:string}>;return rows[0]?.id===characterId?{session,userId,characterId}:null;}catch{return null;}}
+  async function equippedMetadata(token:string,characterId:string){try{const equippedResponse=await fetch(`${SUPABASE_URL}/rest/v1/character_equipped_store_items?select=item_id&character_id=eq.${encodeURIComponent(characterId)}`,{headers:headers(token),cache:"no-store"});if(!equippedResponse.ok)return [] as Record<string,unknown>[];const equipped=await equippedResponse.json() as Equipped[];if(!equipped.length)return [];const ids=equipped.map(row=>row.item_id).filter(validCharacterId);if(!ids.length)return [];const itemResponse=await fetch(`${SUPABASE_URL}/rest/v1/school_store_items?select=id,metadata&id=in.(${ids.join(",")})&active=eq.true`,{headers:headers(token),cache:"no-store"});if(!itemResponse.ok)return [];return (await itemResponse.json() as CosmeticItem[]).map(row=>row.metadata??{});}catch{return [];}}
+  async function applyTheme(){const active=await activeCharacter();if(!active){resetCosmetics();return;}try{const [portalResponse,characterResponse,cosmetics]=await Promise.all([fetch(`${SUPABASE_URL}/rest/v1/portal_ui_preferences?select=text_color,accent_color&limit=1`,{headers:headers(active.session.accessToken)}),fetch(`${SUPABASE_URL}/rest/v1/character_portal_preferences?select=portal_skin&character_id=eq.${encodeURIComponent(active.characterId)}&limit=1`,{headers:headers(active.session.accessToken)}),equippedMetadata(active.session.accessToken,active.characterId)]);if(dead)return;const portal=portalResponse.ok?((await portalResponse.json() as PortalPreference[])[0]??null):null;const character=characterResponse.ok?((await characterResponse.json() as CharacterPreference[])[0]??null):null;let accent=character?.portal_skin?.accent||portal?.accent_color||"#17375f";let text=character?.portal_skin?.text||portal?.text_color||"#2d3b45";let sidebar=character?.portal_skin?.sidebar||`color-mix(in srgb, ${accent} 80%, #fff 20%)`;let surface=character?.portal_skin?.surface||`color-mix(in srgb, ${accent} 4%, #fff 96%)`;let font="";let effect="none";for(const metadata of cosmetics){accent=safeHex(metadata.accent)||accent;text=safeHex(metadata.text)||text;sidebar=safeHex(metadata.sidebar)||sidebar;surface=safeHex(metadata.surface)||surface;font=safeFont(metadata.font)||font;const nextEffect=safeEffect(metadata.effect);if(nextEffect!=="none")effect=nextEffect;}const root=document.documentElement;root.style.setProperty("--hanami-custom-accent",accent);root.style.setProperty("--hanami-custom-text",text);root.style.setProperty("--hanami-custom-sidebar",sidebar);root.style.setProperty("--hanami-custom-surface",surface);if(font)root.style.setProperty("--hanami-cosmetic-font",font);else root.style.removeProperty("--hanami-cosmetic-font");root.dataset.hanamiCosmeticEffect=effect;}catch{resetCosmetics();}}
+  async function resolveStoredImage(img:HTMLImageElement){const src=img.getAttribute("src")||"";if(!src.startsWith(STORAGE_PREFIX)||resolvingImages.has(img))return;const active=await activeCharacter();if(!active)return;const path=src.slice(STORAGE_PREFIX.length);if(!path)return;resolvingImages.add(img);try{const response=await fetch(`${SUPABASE_URL}/storage/v1/object/authenticated/profile-media/${encodeObjectPath(path)}`,{headers:headers(active.session.accessToken)});if(!response.ok)return;const url=URL.createObjectURL(await response.blob());blobUrls.add(url);img.src=url;}catch{}finally{resolvingImages.delete(img);}}
+  function enhanceInput(input:HTMLInputElement){if(enhancedInputs.has(input)||!isImageUrlField(input))return;enhancedInputs.add(input);input.dataset.hanamiImageUrlSource="true";input.setAttribute("aria-hidden","true");input.tabIndex=-1;input.style.display="none";const picker=document.createElement("label");picker.className="hanami-device-image-picker";const text=document.createElement("span");text.textContent="Choose image from device";const file=document.createElement("input");file.type="file";file.accept="image/jpeg,image/png,image/gif,image/webp";picker.append(text,file);input.insertAdjacentElement("afterend",picker);file.addEventListener("change",async()=>{const selected=file.files?.[0];file.value="";if(!selected)return;const active=await activeCharacter();if(!active){text.textContent="Open your character first";return;}if(!IMAGE_TYPES.includes(selected.type)){text.textContent="Use JPEG, PNG, GIF, or WebP";return;}if(selected.size>MAX_IMAGE_SIZE){text.textContent="Image must be 5 MB or smaller";return;}const old=text.textContent;text.textContent="Uploading…";file.disabled=true;const path=`${active.characterId}/device-${crypto.randomUUID()}.${fileExtension(selected)}`;try{const response=await fetch(`${SUPABASE_URL}/storage/v1/object/profile-media/${path}`,{method:"POST",headers:headers(active.session.accessToken,{"Content-Type":selected.type,"x-upsert":"false"}),body:selected});if(!response.ok)throw new Error();setReactInputValue(input,`${STORAGE_PREFIX}${path}`);text.textContent="Image selected";}catch{text.textContent="Upload failed — try again";}finally{file.disabled=false;window.setTimeout(()=>{if(text.textContent==="Image selected")text.textContent=old||"Choose image from device";},1800);}});}
+  function scan(root:ParentNode=document){root.querySelectorAll?.("input").forEach(node=>{if(node instanceof HTMLInputElement)enhanceInput(node);});root.querySelectorAll?.("img").forEach(node=>{if(node instanceof HTMLImageElement)void resolveStoredImage(node);});}
+  void applyTheme();scan();const observer=new MutationObserver(records=>{for(const record of records){if(record.type==="attributes"&&record.target instanceof HTMLImageElement){void resolveStoredImage(record.target);continue;}for(const node of record.addedNodes){if(node instanceof HTMLInputElement)enhanceInput(node);else if(node instanceof HTMLImageElement)void resolveStoredImage(node);else if(node instanceof HTMLElement)scan(node);}}});observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["src"]});const refresh=()=>{void applyTheme();window.setTimeout(()=>scan(),0);};window.addEventListener("hanami-portal-theme-changed",refresh);window.addEventListener("hanami-character-identity-changed",refresh);window.addEventListener("storage",refresh);return()=>{dead=true;resetCosmetics();observer.disconnect();window.removeEventListener("hanami-portal-theme-changed",refresh);window.removeEventListener("hanami-character-identity-changed",refresh);window.removeEventListener("storage",refresh);for(const url of blobUrls)URL.revokeObjectURL(url);};
+ },[]);return null;
 }
