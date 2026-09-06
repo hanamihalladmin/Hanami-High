@@ -52,6 +52,16 @@ test("Owner-only controls are distributed into owning sections and long desktop 
   assert.match(ownerCss,/overflow-y:auto/);
 });
 
+test("Owner mobile keeps critical control actions available",()=>{
+  assert.match(ownerCss,/@media \(max-width:760px\)/);
+  assert.match(ownerCss,/Owner global navigation/);
+  assert.match(ownerCss,/display:flex!important/);
+  assert.match(ownerCss,/overflow-x:auto/);
+  assert.match(ownerClient,/Portal Viewer/);
+  assert.match(ownerClient,/>Lock</);
+  assert.match(ownerClient,/>Logout</);
+});
+
 test("Owner lock preserves normal portal session while logout clears account-scoped character memory",()=>{
   assert.match(ownerClient,/end_privileged_portal_session/);
   assert.match(ownerClient,/Normal Hanami sign-in remains active/);
