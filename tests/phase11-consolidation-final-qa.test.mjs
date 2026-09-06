@@ -6,6 +6,8 @@ const layout=await readFile(new URL("../app/layout.tsx",import.meta.url),"utf8")
 const auth=await readFile(new URL("../app/portal/PortalAuthPanel.tsx",import.meta.url),"utf8");
 const classroom=await readFile(new URL("../app/portal/ClassroomOperationsPanel.tsx",import.meta.url),"utf8");
 const customization=await readFile(new URL("../app/components/PortalCustomizationRuntime.tsx",import.meta.url),"utf8");
+const customizationCss=await readFile(new URL("../app/portal-customization-runtime.css",import.meta.url),"utf8");
+const portalShell=await readFile(new URL("../app/styles/rebuild/portal-shell-phase3.css",import.meta.url),"utf8");
 const regressionCss=await readFile(new URL("../app/post-rebuild-regressions.css",import.meta.url),"utf8");
 const phase6=await readFile(new URL("../app/styles/rebuild/profile-community-phase6.css",import.meta.url),"utf8");
 
@@ -25,6 +27,15 @@ test("character customization cannot leak palette or effects across identity cha
   for(const variable of ["--hanami-custom-accent","--hanami-custom-text","--hanami-custom-sidebar","--hanami-custom-surface","--hanami-cosmetic-font"])assert.match(customization,new RegExp(`removeProperty\\(\\"${variable}\\"\\)`));
   assert.match(customization,/delete root\.dataset\.hanamiCosmeticEffect/);
   assert.match(customization,/const refresh=\(\)=>\{resetCosmetics\(\);void applyTheme\(\)/);
+});
+
+test("canonical Phase 3 PortalShell owns palette consumption without changing structural geometry",()=>{
+  for(const variable of ["--hanami-custom-accent","--hanami-custom-text","--hanami-custom-sidebar","--hanami-custom-surface"])assert.match(portalShell,new RegExp(variable));
+  assert.match(portalShell,/--hh-portal-sidebar:var\(--hanami-custom-sidebar,var\(--user-nav/);
+  assert.match(portalShell,/--hh-portal-surface:var\(--hanami-custom-surface,var\(--user-surface/);
+  assert.match(portalShell,/grid-template-columns:var\(--hh-portal-rail\) minmax\(0,1fr\)/);
+  assert.doesNotMatch(customizationCss,/dashboard-title/);
+  assert.match(customizationCss,/hanami-device-image-picker/);
 });
 
 test("classroom seating is component-owned as a five by four grid",()=>{
