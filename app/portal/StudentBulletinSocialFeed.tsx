@@ -27,7 +27,7 @@ export default function StudentBulletinSocialFeed({accessToken,characterId}:Prop
  async function load(){
   try{
    const [p,l,c,ch]=await Promise.all([
-    json<Post[]>(accessToken,"student_request_board?select=id,character_id,request_type,title,body,visibility,status,created_at&status=eq.open&order=created_at.desc&limit=30"),
+    json<Post[]>(accessToken,"student_request_board?select=id,character_id,request_type,title,body,visibility,status,created_at&status=eq.open&visibility=eq.school&order=created_at.desc&limit=30"),
     json<Like[]>(accessToken,"student_request_board_likes?select=post_id,character_id,created_at&order=created_at.asc"),
     json<Comment[]>(accessToken,"student_request_board_comments?select=id,post_id,character_id,body,created_at&order=created_at.asc"),
     json<Character[]>(accessToken,"characters?select=id,display_name,handle&role=eq.student")
@@ -72,6 +72,6 @@ export default function StudentBulletinSocialFeed({accessToken,characterId}:Prop
     <div className={styles.comments}>{postComments.map(row=>{const person=names.get(row.character_id);return <div className={styles.comment} key={row.id}><div><strong>{person?.display_name??"Hanami Student"}</strong><small>@{person?.handle??"student"} · {stamp(row.created_at)}</small></div><p>{row.body}</p>{row.character_id===characterId&&<button type="button" onClick={()=>void removeComment(row)}>Delete</button>}</div>)}</div>
     <form className={styles.commentForm} onSubmit={e=>void comment(e,post.id)}><input maxLength={800} value={drafts[post.id]??""} onChange={e=>setDrafts(v=>({...v,[post.id]:e.target.value}))} placeholder="Write a comment…" aria-label={`Comment on ${post.title}`}/><button type="submit">Post comment</button></form>
    </article>
-  }):<div className={styles.empty}>No open student bulletin posts yet. Use the Classifieds board below to publish the first one.</div>}</div>
+  }):<div className={styles.empty}>No open school-wide bulletin posts yet. Use the Classifieds board below to publish the first one.</div>}</div>
  </section>;
 }
