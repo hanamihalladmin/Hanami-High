@@ -56,6 +56,7 @@ import "./cozy-hanami-geometry-lock.css";
 import "./portal-breathing-room.css";
 import "./styles/rebuild/portal-shell-phase3.css";
 import "./styles/rebuild/student-phase4.css";
+import "./styles/rebuild/student-final-reference-phase11.css";
 import "./styles/rebuild/faculty-phase5.css";
 import "./styles/rebuild/profile-community-phase6.css";
 import "./styles/rebuild/rewards-phase7.css";
