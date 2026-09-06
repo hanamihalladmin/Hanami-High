@@ -39,7 +39,7 @@ test("Owner uses the canonical Phase 10 OperationsShell map while Admin keeps Ph
   assert.match(workspace,/ownerGovernance/);
 });
 
-test("Owner-only controls are distributed into owning sections and short desktop rail scrolls",()=>{
+test("Owner-only controls are distributed into owning sections and long desktop lists scroll",()=>{
   assert.match(workspace,/OwnerDiscordRoleSyncPanel/);
   assert.match(workspace,/OwnerSystemHealthAnalyticsPanel/);
   assert.match(workspace,/OwnerFeedbackInboxPanel/);
@@ -47,5 +47,14 @@ test("Owner-only controls are distributed into owning sections and short desktop
   assert.match(workspace,/OwnerGovernanceExpansionPanel/);
   assert.match(ownerCss,/Owner global navigation/);
   assert.match(ownerCss,/flex:1 1 auto/);
+  assert.match(ownerCss,/aria-label\$=\" tools\"/);
+  assert.match(ownerCss,/max-height:calc\(100dvh - 82px\)/);
   assert.match(ownerCss,/overflow-y:auto/);
+});
+
+test("Owner lock preserves normal portal session while logout clears account-scoped character memory",()=>{
+  assert.match(ownerClient,/end_privileged_portal_session/);
+  assert.match(ownerClient,/Normal Hanami sign-in remains active/);
+  assert.match(ownerClient,/localStorage\.removeItem\(`hanami\.portal\.character\.v2\.\$\{userId\}`\)/);
+  assert.match(ownerClient,/localStorage\.removeItem\(SESSION_KEY\)/);
 });
