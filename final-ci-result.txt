@@ -13,7 +13,7 @@ exit_code=0
   11:24  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
 
 /home/runner/work/Hanami-High/Hanami-High/app/components/PublicSchoolShell.tsx
-  17:531  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  17:523  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/AcademicProgressPanel.tsx
   55:31  warning  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
@@ -28,12 +28,15 @@ exit_code=0
   8:3144  warning  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/DashboardShell.tsx
-  13:377   warning  React Hook useEffect has a missing dependency: 'character'. Either include it or remove the dependency array                                                                                                                                                                             react-hooks/exhaustive-deps
-  14:811   warning  React Hook useEffect has a missing dependency: 'character'. Either include it or remove the dependency array                                                                                                                                                                             react-hooks/exhaustive-deps
-  15:452   warning  React Hook useEffect has a missing dependency: 'character'. Either include it or remove the dependency array                                                                                                                                                                             react-hooks/exhaustive-deps
-  22:545   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-  22:1859  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-  29:207   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  15:377   warning  React Hook useEffect has a missing dependency: 'character'. Either include it or remove the dependency array                                                                                                                                                                             react-hooks/exhaustive-deps
+  16:811   warning  React Hook useEffect has a missing dependency: 'character'. Either include it or remove the dependency array                                                                                                                                                                             react-hooks/exhaustive-deps
+  17:452   warning  React Hook useEffect has a missing dependency: 'character'. Either include it or remove the dependency array                                                                                                                                                                             react-hooks/exhaustive-deps
+  24:545   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  24:1911  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  31:207   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/runner/work/Hanami-High/Hanami-High/app/portal/DiscordPortalContextRail.tsx
+  36:46  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/FacultyStaffToolsPanel.tsx
   34:80  warning  'sectionIdentities' is assigned a value but never used  @typescript-eslint/no-unused-vars
@@ -46,9 +49,9 @@ exit_code=0
   8:4777  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/InboxPanel.tsx
-  39:76    warning  The 'selectedParticipants' conditional could make the dependencies of useMemo Hook (at line 39) change on every render. To fix this, wrap the initialization of 'selectedParticipants' in its own useMemo() Hook                                                                         react-hooks/exhaustive-deps
-  40:3855  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-  40:5749  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  40:8     warning  The 'selectedParticipants' conditional could make the dependencies of useMemo Hook (at line 43) change on every render. To fix this, wrap the initialization of 'selectedParticipants' in its own useMemo() Hook                                                                         react-hooks/exhaustive-deps
+  52:1984  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  55:640   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/OfficeHourBookingPanel.tsx
   8:1233  warning  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
@@ -63,7 +66,7 @@ exit_code=0
   8:2100  warning  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/PortalWorkspaceShell.tsx
-  33:54  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  42:52  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/ProfileDesignWorkspace.tsx
   38:5  warning  React Hook useEffect has a missing dependency: 'refreshStudio'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
@@ -109,7 +112,7 @@ exit_code=0
   93:941   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/StudentAcademicRecordPanel.tsx
-  45:477  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  45:482  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 /home/runner/work/Hanami-High/Hanami-High/app/portal/StudentAcceptanceExperience.tsx
   15:2  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
@@ -160,7 +163,7 @@ exit_code=0
 /home/runner/work/Hanami-High/Hanami-High/app/yearbook/page.tsx
   20:486  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
-✖ 68 problems (0 errors, 68 warnings)
+✖ 69 problems (0 errors, 69 warnings)
 
 --- failing legacy audit tests ---
 not ok 3 - About keeps the shared Tokyo 2006 roleplay clock while preserving 1836 school history
@@ -220,73 +223,73 @@ not ok 72 - dashboard is driven by the active character role and full Canvas she
 not ok 74 - role dashboards read school status notices and calendar from Administration
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 77 - website applications hand off to the configured Hanami Discord
+not ok 83 - website applications hand off to the configured Hanami Discord
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 88 - Discord role sync uses member OAuth authorization without a bot token
+not ok 104 - Discord role sync uses member OAuth authorization without a bot token
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 105 - full staff Owner operations roadmap remains wired
+not ok 121 - full staff Owner operations roadmap remains wired
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 121 - homepage includes every approved public-home requirement
+not ok 137 - homepage includes every approved public-home requirement
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 125 - roleplay locale is Tokyo and public chronology is fixed to 2006
+not ok 141 - roleplay locale is Tokyo and public chronology is fixed to 2006
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 131 - Owner TEST Faculty fixture remains usable after Discord role sync is enabled
+not ok 147 - Owner TEST Faculty fixture remains usable after Discord role sync is enabled
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 136 - public chronology is anchored to April 7 2006 and calendar stays in-universe
+not ok 152 - public chronology is anchored to April 7 2006 and calendar stays in-universe
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 145 - Hanami High does not collect or store birthdays
+not ok 161 - Hanami High does not collect or store birthdays
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 157 - Owner portal renders the Bug Detector only inside Owner Control Center
+not ok 174 - Owner portal renders the Bug Detector only inside Owner Control Center
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 168 - Owner controls are integrated into the shared Canvas administration shell
+not ok 185 - Owner controls are integrated into the shared Canvas administration shell
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 191 - Phase 9 Admin uses the canonical ten-section OperationsShell while Owner remains separate
+not ok 208 - Phase 9 Admin uses the canonical ten-section OperationsShell while Owner remains separate
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 194 - Administration dashboard quick actions use canonical destinations and hide unauthorized actions
+not ok 211 - Administration dashboard quick actions use canonical destinations and hide unauthorized actions
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 202 - portal gateway explains authentication, privacy, and two-character rule
+not ok 219 - portal gateway explains authentication, privacy, and two-character rule
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 218 - Top Friends remain strictly accepted-friend and platonic controls
+not ok 242 - Top Friends remain strictly accepted-friend and platonic controls
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 243 - TEST Faculty fixture is explicit test data, owner scoped, and Owner only
+not ok 267 - TEST Faculty fixture is explicit test data, owner scoped, and Owner only
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 265 - public version and changelog are discoverable site-wide
+not ok 289 - public version and changelog are discoverable site-wide
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 267 - role portal restores the selected character session
+not ok 291 - role portal restores the selected character session
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 269 - role portal logout clears character and account session
+not ok 293 - role portal logout clears character and account session
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 277 - weekly scheduler keeps Period naming for academic rows
+not ok 301 - weekly scheduler keeps Period naming for academic rows
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 278 - Owner receives system health and aggregate staff analytics
+not ok 302 - Owner receives system health and aggregate staff analytics
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
-not ok 294 - Help has a direct router and support anchor
+not ok 318 - Help has a direct router and support anchor
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
 --- hard failing checks ---
 --- test summary ---
-# tests 294
-# pass 253
+# tests 318
+# pass 277
 # fail 41
 # cancelled 0
 # skipped 0
@@ -294,57 +297,57 @@ not ok 294 - Help has a direct router and support anchor
 --- tail ---
   ...
 # Subtest: student schedule renders class periods from the published homeroom schedule
-ok 286 - student schedule renders class periods from the published homeroom schedule
+ok 310 - student schedule renders class periods from the published homeroom schedule
   ---
-  duration_ms: 0.667421
+  duration_ms: 1.535647
   type: 'test'
   ...
 # Subtest: student schedule ignores duplicated per-homeroom copies of shared school blocks
-ok 287 - student schedule ignores duplicated per-homeroom copies of shared school blocks
+ok 311 - student schedule ignores duplicated per-homeroom copies of shared school blocks
   ---
-  duration_ms: 0.125685
+  duration_ms: 0.301676
   type: 'test'
   ...
 # Subtest: Student hall passes and attendance excuses are scoped to the active Student character
-ok 288 - Student hall passes and attendance excuses are scoped to the active Student character
+ok 312 - Student hall passes and attendance excuses are scoped to the active Student character
   ---
-  duration_ms: 0.590158
+  duration_ms: 0.848439
   type: 'test'
   ...
 # Subtest: Student life feeds validate owned Student character even for privileged accounts
-ok 289 - Student life feeds validate owned Student character even for privileged accounts
+ok 313 - Student life feeds validate owned Student character even for privileged accounts
   ---
-  duration_ms: 0.179083
+  duration_ms: 0.228388
   type: 'test'
   ...
 # Subtest: accessibility and notification preferences bind to signed-in user automatically
-ok 290 - accessibility and notification preferences bind to signed-in user automatically
+ok 314 - accessibility and notification preferences bind to signed-in user automatically
   ---
-  duration_ms: 4.09319
+  duration_ms: 5.507267
   type: 'test'
   ...
 # Subtest: group chat creation uses a validated private helper and creator management
-ok 291 - group chat creation uses a validated private helper and creator management
+ok 315 - group chat creation uses a validated private helper and creator management
   ---
-  duration_ms: 1.000281
+  duration_ms: 1.375717
   type: 'test'
   ...
 # Subtest: Nurse dashboard refresh is explicit and input fields are visually defined
-ok 292 - Nurse dashboard refresh is explicit and input fields are visually defined
+ok 316 - Nurse dashboard refresh is explicit and input fields are visually defined
   ---
-  duration_ms: 0.902147
+  duration_ms: 1.251114
   type: 'test'
   ...
 # Subtest: School Office separates staff action waiting member and archive queues
-ok 293 - School Office separates staff action waiting member and archive queues
+ok 317 - School Office separates staff action waiting member and archive queues
   ---
-  duration_ms: 1.209319
+  duration_ms: 1.738286
   type: 'test'
   ...
 # Subtest: Help has a direct router and support anchor
-not ok 294 - Help has a direct router and support anchor
+not ok 318 - Help has a direct router and support anchor
   ---
-  duration_ms: 1.480428
+  duration_ms: 1.955073
   type: 'test'
   location: '/home/runner/work/Hanami-High/Hanami-High/tests/usability-hotfixes.test.mjs:39:1'
   failureType: 'testCodeFailure'
@@ -383,22 +386,22 @@ not ok 294 - Help has a direct router and support anchor
     async Test.run (node:internal/test_runner/test:1054:7)
     async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
   ...
-1..294
-# tests 294
+1..318
+# tests 318
 # suites 0
-# pass 253
+# pass 277
 # fail 41
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1459.735289
+# duration_ms 2103.457568
 === build ===
 
 > hanami-high@0.1.0 build
 > next build
 
 ▲ Next.js 16.3.1 (Turbopack)
-✓ Running next.config.ts took 19ms
+✓ Running next.config.ts took 28ms
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -407,15 +410,15 @@ https://nextjs.org/telemetry
 
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.6s
+✓ Compiled successfully in 7.3s
   Running TypeScript ...
-  Finished TypeScript in 11.2s ...
+  Finished TypeScript in 14.7s ...
   Collecting page data using 3 workers ...
   Generating static pages using 3 workers (0/49) ...
   Generating static pages using 3 workers (12/49) 
   Generating static pages using 3 workers (24/49) 
   Generating static pages using 3 workers (36/49) 
-✓ Generating static pages using 3 workers (49/49) in 654ms
+✓ Generating static pages using 3 workers (49/49) in 757ms
   Finalizing page optimization ...
 
 Route (app)
