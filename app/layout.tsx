@@ -62,6 +62,7 @@ import "./styles/rebuild/faculty-phase5.css";
 import "./styles/rebuild/profile-community-phase6.css";
 import "./styles/rebuild/rewards-phase7.css";
 import "./styles/rebuild/owner-phase10.css";
+import "./styles/rebuild/collectibles-postlaunch.css";
 
 export const metadata: Metadata = {
   title: "Hanami High",
