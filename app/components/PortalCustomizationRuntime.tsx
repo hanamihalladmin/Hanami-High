@@ -5,7 +5,7 @@ import {useEffect} from "react";
 const SUPABASE_URL=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://mperfphbhqpjlqmaysmg.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_G-Pg-XwLz6rpRdlIWXcIgg_kxyd4gb0";
 const SESSION_KEY="hanami.portal.session.v1";
-const CHARACTER_SESSION_KEY="hanami.portal.character.v1";
+const LEGACY_CHARACTER_SESSION_KEY="hanami.portal.character.v1";
 const IMAGE_TYPES=["image/jpeg","image/png","image/gif","image/webp"];
 const MAX_IMAGE_SIZE=5*1024*1024;
 const STORAGE_PREFIX="hanami-storage://profile-media/";
@@ -16,9 +16,11 @@ type Skin={sidebar?:string;surface?:string;accent?:string;text?:string};
 type CharacterPreference={portal_skin?:Skin};
 
 function readSession(){try{const raw=localStorage.getItem(SESSION_KEY);if(!raw)return null;const value=JSON.parse(raw) as Partial<Session>;return typeof value.accessToken==="string"?{accessToken:value.accessToken}:null;}catch{return null;}}
-function readCharacterId(){try{return localStorage.getItem(CHARACTER_SESSION_KEY)||"";}catch{return "";}}
+function characterSessionKey(userId:string){return `hanami.portal.character.v2.${userId}`;}
+function readCharacterId(userId:string){try{return localStorage.getItem(characterSessionKey(userId))||"";}catch{return "";}}
 function headers(token:string,extra:Record<string,string>={}){return {apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${token}`,...extra};}
 function validCharacterId(value:string){return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);}
+async function currentUserId(token:string){try{const response=await fetch(`${SUPABASE_URL}/auth/v1/user`,{headers:headers(token)});if(!response.ok)return "";const user=await response.json() as {id?:string};return typeof user.id==="string"?user.id:"";}catch{return "";}}
 function isImageUrlField(input:HTMLInputElement){
  const placeholder=input.placeholder||"";
  const parentText=input.closest("label")?.textContent||input.parentElement?.textContent||"";
@@ -36,14 +38,26 @@ export default function PortalCustomizationRuntime(){
   const blobUrls=new Set<string>();
   const enhancedInputs=new WeakSet<HTMLInputElement>();
   const resolvingImages=new WeakSet<HTMLImageElement>();
+  try{localStorage.removeItem(LEGACY_CHARACTER_SESSION_KEY);}catch{}
+
+  async function activeCharacter(){
+   const session=readSession();if(!session)return null;
+   const userId=await currentUserId(session.accessToken);if(!userId||dead)return null;
+   const characterId=readCharacterId(userId);if(!validCharacterId(characterId))return null;
+   try{
+    const response=await fetch(`${SUPABASE_URL}/rest/v1/characters?select=id&owner_user_id=eq.${encodeURIComponent(userId)}&id=eq.${encodeURIComponent(characterId)}&limit=1`,{headers:headers(session.accessToken)});
+    if(!response.ok)return null;
+    const rows=await response.json() as Array<{id:string}>;
+    return rows[0]?.id===characterId?{session,userId,characterId}:null;
+   }catch{return null;}
+  }
 
   async function applyTheme(){
-   const session=readSession();const characterId=readCharacterId();
-   if(!session||!validCharacterId(characterId))return;
+   const active=await activeCharacter();if(!active)return;
    try{
     const [portalResponse,characterResponse]=await Promise.all([
-     fetch(`${SUPABASE_URL}/rest/v1/portal_ui_preferences?select=text_color,accent_color&limit=1`,{headers:headers(session.accessToken)}),
-     fetch(`${SUPABASE_URL}/rest/v1/character_portal_preferences?select=portal_skin&character_id=eq.${encodeURIComponent(characterId)}&limit=1`,{headers:headers(session.accessToken)})
+     fetch(`${SUPABASE_URL}/rest/v1/portal_ui_preferences?select=text_color,accent_color&limit=1`,{headers:headers(active.session.accessToken)}),
+     fetch(`${SUPABASE_URL}/rest/v1/character_portal_preferences?select=portal_skin&character_id=eq.${encodeURIComponent(active.characterId)}&limit=1`,{headers:headers(active.session.accessToken)})
     ]);
     if(dead)return;
     const portal=portalResponse.ok?((await portalResponse.json() as PortalPreference[])[0]??null):null;
@@ -63,11 +77,11 @@ export default function PortalCustomizationRuntime(){
   async function resolveStoredImage(img:HTMLImageElement){
    const src=img.getAttribute("src")||"";
    if(!src.startsWith(STORAGE_PREFIX)||resolvingImages.has(img))return;
-   const session=readSession();if(!session)return;
+   const active=await activeCharacter();if(!active)return;
    const path=src.slice(STORAGE_PREFIX.length);if(!path)return;
    resolvingImages.add(img);
    try{
-    const response=await fetch(`${SUPABASE_URL}/storage/v1/object/authenticated/profile-media/${encodeURI(path)}`,{headers:headers(session.accessToken)});
+    const response=await fetch(`${SUPABASE_URL}/storage/v1/object/authenticated/profile-media/${encodeURI(path)}`,{headers:headers(active.session.accessToken)});
     if(!response.ok)return;
     const url=URL.createObjectURL(await response.blob());blobUrls.add(url);img.src=url;
    }catch{}finally{resolvingImages.delete(img);}
@@ -86,14 +100,14 @@ export default function PortalCustomizationRuntime(){
    picker.append(text,file);input.insertAdjacentElement("afterend",picker);
    file.addEventListener("change",async()=>{
     const selected=file.files?.[0];file.value="";if(!selected)return;
-    const session=readSession();const characterId=readCharacterId();
-    if(!session||!validCharacterId(characterId)){text.textContent="Open a character first";return;}
+    const active=await activeCharacter();
+    if(!active){text.textContent="Open your character first";return;}
     if(!IMAGE_TYPES.includes(selected.type)){text.textContent="Use JPEG, PNG, GIF, or WebP";return;}
     if(selected.size>MAX_IMAGE_SIZE){text.textContent="Image must be 5 MB or smaller";return;}
     const old=text.textContent;text.textContent="Uploading…";file.disabled=true;
-    const path=`${characterId}/device-${crypto.randomUUID()}.${fileExtension(selected)}`;
+    const path=`${active.characterId}/device-${crypto.randomUUID()}.${fileExtension(selected)}`;
     try{
-     const response=await fetch(`${SUPABASE_URL}/storage/v1/object/profile-media/${path}`,{method:"POST",headers:headers(session.accessToken,{"Content-Type":selected.type,"x-upsert":"false"}),body:selected});
+     const response=await fetch(`${SUPABASE_URL}/storage/v1/object/profile-media/${path}`,{method:"POST",headers:headers(active.session.accessToken,{"Content-Type":selected.type,"x-upsert":"false"}),body:selected});
      if(!response.ok)throw new Error();
      setReactInputValue(input,`${STORAGE_PREFIX}${path}`);
      text.textContent="Image selected";
