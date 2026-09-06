@@ -1,0 +1,8 @@
+/* Phase 7 cosmetic presentation. These rules may decorate the existing PortalShell, never reshape it. */
+html[data-hanami-cosmetic-effect] [class*="canvasShell"]{font-family:var(--hanami-cosmetic-font,inherit)}
+html[data-hanami-cosmetic-effect="paper"] [class*="canvasShell"] [class*="main"]{background-image:linear-gradient(rgba(23,55,95,.025) 1px,transparent 1px);background-size:100% 24px}
+html[data-hanami-cosmetic-effect="sparkle"] body::after,
+html[data-hanami-cosmetic-effect="petals"] body::after{position:fixed;inset:0;z-index:999;pointer-events:none;overflow:hidden;content:"";opacity:.32;background-repeat:repeat;background-position:0 0}
+html[data-hanami-cosmetic-effect="sparkle"] body::after{background-image:radial-gradient(circle at 15% 24%,rgba(255,255,255,.95) 0 1px,transparent 2px),radial-gradient(circle at 72% 18%,rgba(255,255,255,.8) 0 1px,transparent 2px),radial-gradient(circle at 48% 78%,rgba(255,255,255,.75) 0 1px,transparent 2px);background-size:180px 160px,230px 210px,270px 240px}
+html[data-hanami-cosmetic-effect="petals"] body::after{background-image:radial-gradient(ellipse at center,rgba(185,95,131,.52) 0 2px,transparent 3px),radial-gradient(ellipse at center,rgba(155,168,145,.4) 0 2px,transparent 3px);background-size:170px 210px,240px 280px;background-position:20px 30px,90px 120px}
+@media(prefers-reduced-motion:reduce){html[data-hanami-cosmetic-effect] body::after{animation:none!important}}
