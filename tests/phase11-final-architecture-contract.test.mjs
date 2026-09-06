@@ -9,6 +9,7 @@ const contextBar=await readFile(new URL("../app/portal/PortalContextBar.tsx",imp
 const adminWorkspace=await readFile(new URL("../app/portal/admin/AdminWorkspace.tsx",import.meta.url),"utf8");
 const tokens=await readFile(new URL("../app/styles/rebuild/tokens.css",import.meta.url),"utf8");
 const portalShell=await readFile(new URL("../app/styles/rebuild/portal-shell-phase3.css",import.meta.url),"utf8");
+const studentFinal=await readFile(new URL("../app/styles/rebuild/student-final-reference-phase11.css",import.meta.url),"utf8");
 const profileCss=await readFile(new URL("../app/styles/rebuild/profile-community-phase6.css",import.meta.url),"utf8");
 const rewardsCss=await readFile(new URL("../app/styles/rebuild/rewards-phase7.css",import.meta.url),"utf8");
 const ownerCss=await readFile(new URL("../app/styles/rebuild/owner-phase10.css",import.meta.url),"utf8");
@@ -36,7 +37,14 @@ test("canonical rebuild tokens are the single global token source",()=>{
 
 test("theme layers cannot redefine canonical structural tokens",()=>{
   const structuralDefinition=/--hh-(?:nav-width|context-width|content-max|page-gutter|section-gap|card-gap|card-padding|topbar-height|page-header-min-height|breakpoint-[a-z-]+)\s*:/i;
-  for(const theme of [siteThemes,tokyoSlate,portalCustomization,rewardsCss])assert.doesNotMatch(theme,structuralDefinition);
+  for(const theme of [siteThemes,tokyoSlate,portalCustomization,rewardsCss,studentFinal])assert.doesNotMatch(theme,structuralDefinition);
+});
+
+test("final Student reference layer stays scoped to the Student portal",()=>{
+  assert.match(layout,/student-final-reference-phase11\.css/);
+  assert.match(studentFinal,/Student global navigation/);
+  assert.doesNotMatch(studentFinal,/Faculty global navigation|Administration global navigation|Owner global navigation/);
+  assert.doesNotMatch(studentFinal,/--hh-(?:nav-width|page-gutter|breakpoint-[a-z-]+)\s*:/i);
 });
 
 test("portal customization remains presentation-only and does not own structural geometry",()=>{
