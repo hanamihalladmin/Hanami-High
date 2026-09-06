@@ -17,7 +17,6 @@ import DailyPetalLoginRuntime from "./components/DailyPetalLoginRuntime";
 import ScheduleDedupRuntime from "./components/ScheduleDedupRuntime";
 import PostRebuildRegressionRuntime from "./components/PostRebuildRegressionRuntime";
 import StrictTextContrastRuntime from "./components/StrictTextContrastRuntime";
-import MaintenanceGate from "./components/MaintenanceGate";
 import "./globals.css";
 import "./styles/rebuild/tokens.css";
 import "./mobile.css";
@@ -66,11 +65,11 @@ import "./styles/rebuild/owner-phase10.css";
 import "./styles/rebuild/collectibles-postlaunch.css";
 
 export const metadata: Metadata = {
-  title: "Hanami High — Maintenance",
-  description: "Hanami High School Network is temporarily unavailable while maintenance is in progress.",
+  title: "Hanami High",
+  description: "The official public school network for Hanami High School.",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><MaintenanceGate><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><ProfileOpenBridge/><SiteThemeRuntime/><PortalCustomizationRuntime/><DailyPetalLoginRuntime/><ExamWeekRuntime/><RoleplaySchoolYearInputs/><RoleplayClockRuntime/><ForumReplyLimitRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/><GlobalUpdateAccess/><ScheduleDedupRuntime/><PostRebuildRegressionRuntime/><StrictTextContrastRuntime/>{children}</MaintenanceGate></body></html>;
+  return <html lang="en"><body><RuntimeBugReporter/><RuntimeOperationsBridge/><PublicSessionBridge/><PublicPageTextEditor/><ProfileOpenBridge/><SiteThemeRuntime/><PortalCustomizationRuntime/><DailyPetalLoginRuntime/><ExamWeekRuntime/><RoleplaySchoolYearInputs/><RoleplayClockRuntime/><ForumReplyLimitRuntime/><GlobalRulesNotice/><RoleplayWeatherEffects/><GlobalUpdateAccess/><ScheduleDedupRuntime/><PostRebuildRegressionRuntime/><StrictTextContrastRuntime/>{children}</body></html>;
 }
