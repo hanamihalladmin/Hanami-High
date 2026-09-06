@@ -6,4 +6,5 @@
   aside[aria-label="Owner global navigation"] > nav > button{grid-template-columns:21px minmax(0,1fr)!important;gap:5px!important;min-height:36px!important;padding:5px 6px!important}
   aside[aria-label="Owner global navigation"] > nav > button > span{font-size:14px!important}
   aside[aria-label="Owner global navigation"] > nav > button > b{font-size:8px!important;line-height:1.1!important}
+  aside[aria-label="Owner global navigation"] + main > aside[aria-label$=" tools"]{max-height:calc(100dvh - 82px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
 }
