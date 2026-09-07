@@ -1,0 +1,109 @@
+.guestbook-activity-card {
+  border: 1px solid var(--line-dark);
+  background: var(--paper);
+  padding: 14px;
+}
+
+.guestbook-activity-card > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.guestbook-activity-card > header h2 {
+  margin: 4px 0 5px;
+  color: var(--navy-900);
+  font-family: var(--font-display);
+}
+
+.guestbook-activity-card > header p {
+  margin: 0;
+  max-width: 720px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.guestbook-activity-card > header > strong {
+  min-width: 44px;
+  border: 1px solid var(--line-dark);
+  background: var(--paper-deep, #f3eee5);
+  padding: 8px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
+.guestbook-activity-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.guestbook-activity-row {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  border: 1px solid var(--line-dark);
+  background: rgba(255,255,255,.3);
+  padding: 9px;
+}
+
+.guestbook-activity-row.hidden-entry {
+  opacity: .7;
+}
+
+.guestbook-activity-row > div {
+  min-width: 0;
+}
+
+.guestbook-activity-row p {
+  margin: 0 0 5px;
+}
+
+.guestbook-activity-row p button {
+  border: 0;
+  background: transparent;
+  color: var(--navy-900);
+  font: inherit;
+  font-weight: 800;
+  padding: 0;
+  cursor: pointer;
+}
+
+.guestbook-activity-row blockquote {
+  margin: 0 0 6px;
+  padding: 7px 9px;
+  border-left: 2px solid var(--navy-900);
+  background: var(--paper-deep, #f3eee5);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+}
+
+.guestbook-activity-row > div > span {
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.guestbook-activity-row > .secondary-action {
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .guestbook-activity-card > header {
+    display: grid;
+  }
+
+  .guestbook-activity-row {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .guestbook-activity-row > .secondary-action {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
