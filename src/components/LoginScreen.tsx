@@ -1,19 +1,24 @@
 import { useState } from 'react'
 import { useIdentity } from '../state/IdentityContext'
+import type { LoginIntent } from '../lib/supabase'
 
 export function LoginScreen() {
   const { configured, signIn } = useIdentity()
-  const [signingIn, setSigningIn] = useState(false)
-  const [localError, setLocalError] = useState<string | null>(null)
+  const [signingIn, setSigningIn] = useState<LoginIntent | null>(null)
+  const [localError, setLocalError] = useState<string | null>(() => {
+    const message = sessionStorage.getItem('hanami-access-error')
+    if (message) sessionStorage.removeItem('hanami-access-error')
+    return message
+  })
 
-  async function handleSignIn() {
-    setSigningIn(true)
+  async function handleSignIn(intent: LoginIntent) {
+    setSigningIn(intent)
     setLocalError(null)
     try {
-      await signIn()
+      await signIn(intent)
     } catch (error) {
       setLocalError(error instanceof Error ? error.message : 'Discord sign-in could not start.')
-      setSigningIn(false)
+      setSigningIn(null)
     }
   }
 
@@ -29,8 +34,8 @@ export function LoginScreen() {
           <span className="eyebrow">PRIVATE CAMPUS NETWORK</span>
           <h1>Welcome to Hanami High.</h1>
           <p>
-            Sign in with the Discord account connected to your Hanami membership. Your Discord account
-            identifies the member; your Hanami character is selected after sign-in.
+            Choose how you are entering Hanami High. Every option authenticates through Discord; Owner and
+            Administrator access are granted only to Discord accounts with the matching platform role.
           </p>
 
           {!configured && (
@@ -40,15 +45,43 @@ export function LoginScreen() {
           )}
           {localError && <div className="identity-notice error">{localError}</div>}
 
-          <button
-            className="discord-login-button"
-            type="button"
-            disabled={!configured || signingIn}
-            onClick={handleSignIn}
-          >
-            <span>◈</span>
-            {signingIn ? 'Opening Discord…' : 'Continue with Discord'}
-          </button>
+          <div className="login-choice-stack">
+            <button
+              className="discord-login-button member-login-button"
+              type="button"
+              disabled={!configured || Boolean(signingIn)}
+              onClick={() => void handleSignIn('member')}
+            >
+              <span>◈</span>
+              {signingIn === 'member' ? 'Opening Discord…' : 'Member Login'}
+            </button>
+
+            <button
+              className="discord-login-button owner-login-button"
+              type="button"
+              disabled={!configured || Boolean(signingIn)}
+              onClick={() => void handleSignIn('owner')}
+            >
+              <span>◆</span>
+              {signingIn === 'owner' ? 'Opening Owner Login…' : 'Owner Login'}
+            </button>
+
+            <button
+              className="discord-login-button administrator-login-button"
+              type="button"
+              disabled={!configured || Boolean(signingIn)}
+              onClick={() => void handleSignIn('administrator')}
+            >
+              <span>▣</span>
+              {signingIn === 'administrator' ? 'Opening Administrator Login…' : 'Administrator Login'}
+            </button>
+          </div>
+
+          <div className="login-access-note">
+            <span><strong>Member</strong> uses your character slots.</span>
+            <span><strong>Owner</strong> is account-level and requires no character.</span>
+            <span><strong>Administrator</strong> opens platform administration with assigned admin permissions.</span>
+          </div>
 
           <div className="login-rules">
             <span>1 Discord member</span>
