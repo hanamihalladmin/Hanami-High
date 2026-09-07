@@ -6,6 +6,7 @@ import './styles/tokens.css'
 import './styles/global.css'
 import './styles/identity.css'
 import './styles/enrollment.css'
+import './styles/orientation.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
