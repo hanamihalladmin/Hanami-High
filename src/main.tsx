@@ -26,6 +26,7 @@ import './styles/rewards.css'
 import './styles/settings.css'
 import './styles/owner-operations.css'
 import './styles/access-modes.css'
+import './styles/discord-shell.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
