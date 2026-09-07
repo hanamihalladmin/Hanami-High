@@ -29,6 +29,7 @@ import { PetalsPage } from '../components/PetalsPage'
 import { BoutiquePage } from '../components/BoutiquePage'
 import { AchievementsPage } from '../components/AchievementsPage'
 import { SettingsPage } from '../components/SettingsPage'
+import { AppearanceSettingsPage } from '../components/AppearanceSettingsPage'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
@@ -157,9 +158,13 @@ export function App() {
     if (route.section === 'boutique' && route.subsection === 'featured') return <BoutiquePage mode="featured" {...shared} />
     if (route.section === 'boutique' && route.subsection === 'new') return <BoutiquePage mode="new" {...shared} />
     if (route.section === 'boutique' && route.subsection === 'seasonal') return <BoutiquePage mode="seasonal" {...shared} />
+    if (route.section === 'boutique' && route.subsection === 'avatar-decorations') return <BoutiquePage mode="avatar-decorations" {...shared} />
     if (route.section === 'boutique' && route.subsection === 'frames') return <BoutiquePage mode="frames" {...shared} />
     if (route.section === 'boutique' && route.subsection === 'effects') return <BoutiquePage mode="effects" {...shared} />
     if (route.section === 'boutique' && route.subsection === 'nameplates') return <BoutiquePage mode="nameplates" {...shared} />
+    if (route.section === 'boutique' && route.subsection === 'profile-cards') return <BoutiquePage mode="profile-cards" {...shared} />
+    if (route.section === 'boutique' && route.subsection === 'background-packs') return <BoutiquePage mode="background-packs" {...shared} />
+    if (route.section === 'boutique' && route.subsection === 'stickers') return <BoutiquePage mode="stickers" {...shared} />
     if (route.section === 'boutique' && route.subsection === 'hanami-plus-passes') return <BoutiquePage mode="hanami-plus-passes" {...shared} />
     if (route.section === 'boutique' && route.subsection === 'my-inventory') return <BoutiquePage mode="my-inventory" {...shared} />
 
@@ -171,7 +176,7 @@ export function App() {
     if (route.section === 'settings' && route.subsection === 'character') return <SettingsPage mode="character" {...shared} />
     if (route.section === 'settings' && route.subsection === 'privacy-safety') return <SettingsPage mode="privacy-safety" {...shared} />
     if (route.section === 'settings' && route.subsection === 'notifications') return <SettingsPage mode="notifications" {...shared} />
-    if (route.section === 'settings' && route.subsection === 'accessibility') return <SettingsPage mode="accessibility" {...shared} />
+    if (route.section === 'settings' && route.subsection === 'accessibility') return <AppearanceSettingsPage {...shared} />
     if (route.section === 'settings' && route.subsection === 'connections') return <SettingsPage mode="connections" {...shared} />
 
     return <HomePreview {...shared} />
