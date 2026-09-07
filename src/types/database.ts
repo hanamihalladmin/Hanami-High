@@ -106,6 +106,72 @@ export type Database = {
         Update: Partial<Database['public']['Tables']['character_profiles']['Insert']>
         Relationships: []
       }
+      conversation_threads: {
+        Row: {
+          id: string
+          conversation_type: string
+          title: string | null
+          created_by_character_id: string
+          direct_character_a_id: string | null
+          direct_character_b_id: string | null
+          request_state: string
+          request_recipient_character_id: string | null
+          created_at: string
+          updated_at: string
+          last_message_at: string
+        }
+        Insert: {
+          id?: string
+          conversation_type: string
+          title?: string | null
+          created_by_character_id: string
+          direct_character_a_id?: string | null
+          direct_character_b_id?: string | null
+          request_state?: string
+          request_recipient_character_id?: string | null
+          created_at?: string
+          updated_at?: string
+          last_message_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['conversation_threads']['Insert']>
+        Relationships: []
+      }
+      conversation_members: {
+        Row: {
+          conversation_id: string
+          character_id: string
+          member_role: string
+          joined_at: string
+          last_read_at: string | null
+        }
+        Insert: {
+          conversation_id: string
+          character_id: string
+          member_role?: string
+          joined_at?: string
+          last_read_at?: string | null
+        }
+        Update: Partial<Database['public']['Tables']['conversation_members']['Insert']>
+        Relationships: []
+      }
+      conversation_messages: {
+        Row: {
+          id: string
+          conversation_id: string
+          sender_character_id: string
+          body: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          conversation_id: string
+          sender_character_id: string
+          body: string
+          created_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['conversation_messages']['Insert']>
+        Relationships: []
+      }
       friendships: {
         Row: {
           id: string
@@ -588,6 +654,10 @@ export type Database = {
         Args: { p_character_id: string; p_task_code: string }
         Returns: string
       }
+      create_group_conversation: {
+        Args: { p_member_character_ids: string[]; p_title: string }
+        Returns: string
+      }
       create_student_character_slot: {
         Args: { p_slot_no: number }
         Returns: Database['public']['Tables']['characters']['Row']
@@ -624,9 +694,9 @@ export type Database = {
         Args: { p_friendship_id: string; p_accept: boolean }
         Returns: string
       }
-      set_top_friends: {
-        Args: { p_friend_character_ids: string[] }
-        Returns: number
+      respond_message_request: {
+        Args: { p_conversation_id: string; p_accept: boolean }
+        Returns: string
       }
       search_hanami: {
         Args: { p_query: string; p_limit?: number }
@@ -641,8 +711,20 @@ export type Database = {
           rank: number
         }[]
       }
+      send_conversation_message: {
+        Args: { p_conversation_id: string; p_body: string }
+        Returns: string
+      }
       set_active_character: {
         Args: { p_character_id: string }
+        Returns: string
+      }
+      set_top_friends: {
+        Args: { p_friend_character_ids: string[] }
+        Returns: number
+      }
+      start_direct_message: {
+        Args: { p_target_character_id: string; p_body: string }
         Returns: string
       }
       submit_student_application: {
@@ -658,6 +740,9 @@ export type Database = {
 export type HanamiAccount = Database['public']['Tables']['accounts']['Row']
 export type HanamiCharacter = Database['public']['Tables']['characters']['Row']
 export type CharacterProfile = Database['public']['Tables']['character_profiles']['Row']
+export type ConversationThread = Database['public']['Tables']['conversation_threads']['Row']
+export type ConversationMember = Database['public']['Tables']['conversation_members']['Row']
+export type ConversationMessage = Database['public']['Tables']['conversation_messages']['Row']
 export type Friendship = Database['public']['Tables']['friendships']['Row']
 export type GuestbookEntry = Database['public']['Tables']['guestbook_entries']['Row']
 export type TopFriend = Database['public']['Tables']['top_friends']['Row']
