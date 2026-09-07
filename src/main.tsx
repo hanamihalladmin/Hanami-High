@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RootApp } from './app/RootApp'
+import { MemberProfileNavigationBridge } from './components/MemberProfileNavigationBridge'
 import { ProfileStudioTools } from './components/ProfileStudioTools'
 import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
@@ -43,6 +44,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <IdentityProvider>
       <RootApp />
+      <MemberProfileNavigationBridge />
       <ProfileStudioTools />
     </IdentityProvider>
   </StrictMode>,
