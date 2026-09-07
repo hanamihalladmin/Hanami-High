@@ -10,7 +10,7 @@ import { GuestbookPanel } from './GuestbookPanel'
 import { ShellTopbar } from './ShellTopbar'
 
 type Props = { targetCharacterId?: string; onSearch: () => void; onNotifications: () => void; unreadCount: number }
-type Tab = 'board' | 'activity' | 'guestbook'
+type Tab = 'board' | 'activity' | 'blog' | 'guestbook'
 type Theme = { background: string; panel: string; accent: string; ink: string; grid: boolean; displayFont: string; displayEffect: string; displayColor: string; displayColor2: string }
 type Cosmetics = { avatarDecoration?: string; frame?: string; effect?: string; nameplate?: string; profileCard?: string; backgroundPack?: string }
 
@@ -81,7 +81,7 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
       client.from('published_character_profiles').select('*').eq('character_id', characterId).maybeSingle(),
       client.from('characters').select('created_at').eq('id', characterId).maybeSingle(),
       client.from('published_profile_widgets').select('*').eq('character_id', characterId).order('y').order('x'),
-      client.from('social_posts').select('*').eq('author_character_id', characterId).eq('state', 'published').order('published_at', { ascending: false }).limit(10),
+      client.from('social_posts').select('*').eq('author_character_id', characterId).eq('state', 'published').order('published_at', { ascending: false }).limit(30),
     ])
     setLoading(false)
     const first = profileResult.error || characterResult.error || widgetResult.error || activityResult.error
@@ -100,6 +100,7 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
   const pageBackground = useMemo(() => profilePageBackgroundFrom(profile?.theme ?? {}), [profile?.theme])
   const layout = useMemo(() => profilePageLayoutFrom(profile?.theme ?? {}), [profile?.theme])
   const cosmetics = useMemo(() => cosmeticsFrom(profile?.cosmetics ?? {}), [profile?.cosmetics])
+  const blogPosts = useMemo(() => posts.filter((post) => post.post_type === 'blog'), [posts])
   if (!activeCharacter || !characterId) return null
   const ownName = activeCharacter.display_name || [activeCharacter.first_name, activeCharacter.last_name].filter(Boolean).join(' ') || 'Your Character'
   const name = profile?.display_name || (own ? ownName : 'Hanami Profile')
@@ -133,15 +134,16 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
       <section className="hanami-profile-hero">
         <div className="hanami-profile-banner" style={{ background: theme.accent }}>{profile.banner_path && media[profile.banner_path] && <img src={media[profile.banner_path]} alt={`${name} banner`}/>}</div>
         <div className="hanami-profile-avatar-wrap"><div className="hanami-profile-avatar">{profile.avatar_path && media[profile.avatar_path] ? <img src={media[profile.avatar_path]} alt={`${name} avatar`}/> : name.slice(0, 2).toUpperCase()}</div><span className="hanami-avatar-decoration" aria-hidden="true"/></div>
-        <div className="hanami-profile-heading"><div><span className="eyebrow">HANAMI PROFILE</span><h1 className={`profile-display-name profile-font-${theme.displayFont} profile-effect-${theme.displayEffect}`}>{name}</h1><p>{handle}{profile.pronouns ? ` · ${profile.pronouns}` : ''}</p>{profile.custom_status && <blockquote>{profile.custom_status}</blockquote>}</div><div className="hanami-profile-actions">{own ? <><a className="primary-action" href="#/profile/profile-studio">Edit Profile</a><a className="secondary-action" href="#/profile/display-name-style">Name Style</a></> : <><a className="primary-action" href="#/messages/friends">Message</a><button className="secondary-action" type="button" onClick={() => setTab('guestbook')}>Guestbook</button></>}</div></div>
+        <div className="hanami-profile-heading"><div><span className="eyebrow">HANAMI PROFILE</span><h1 className={`profile-display-name profile-font-${theme.displayFont} profile-effect-${theme.displayEffect}`}>{name}</h1><p>{handle}{profile.pronouns ? ` · ${profile.pronouns}` : ''}</p>{profile.custom_status && <blockquote>{profile.custom_status}</blockquote>}</div><div className="hanami-profile-actions">{own ? <><a className="primary-action" href="#/profile/profile-studio">Edit Profile</a><button className="secondary-action" type="button" onClick={() => setTab('blog')}>My Blog</button><a className="secondary-action" href="#/profile/display-name-style">Name Style</a></> : <><a className="primary-action" href="#/messages/friends">Message</a><button className="secondary-action" type="button" onClick={() => setTab('blog')}>Blog</button><button className="secondary-action" type="button" onClick={() => setTab('guestbook')}>Guestbook</button></>}</div></div>
       </section>
 
       <div className="hanami-profile-layout">
         {layout.sidebarSide === 'left' && sidebar}
         <section className="hanami-profile-main">
-          <nav className="hanami-profile-tabs"><button className={tab === 'board' ? 'active' : ''} onClick={() => setTab('board')}>Profile Board</button><button className={tab === 'activity' ? 'active' : ''} onClick={() => setTab('activity')}>Activity</button><button className={tab === 'guestbook' ? 'active' : ''} onClick={() => setTab('guestbook')}>Guestbook</button></nav>
+          <nav className="hanami-profile-tabs"><button className={tab === 'board' ? 'active' : ''} onClick={() => setTab('board')}>Profile Board</button><button className={tab === 'activity' ? 'active' : ''} onClick={() => setTab('activity')}>Activity</button><button className={tab === 'blog' ? 'active' : ''} onClick={() => setTab('blog')}>Blog</button><button className={tab === 'guestbook' ? 'active' : ''} onClick={() => setTab('guestbook')}>Guestbook</button></nav>
           {tab === 'board' && <div className="hanami-profile-board">{widgets.length === 0 ? <div className="hanami-profile-empty">{own ? 'Your board is empty. Add widgets in Profile Studio.' : 'This member has not added profile widgets yet.'}</div> : <div className="published-widget-canvas">{widgets.map((widget) => <article className={`published-widget widget-${safeClass(widget.widget_type)}`} key={widget.id} style={{ gridColumn: `span ${Math.min(Math.max(widget.width, 1), 12)}`, minHeight: `${Math.max(widget.height, 1) * 48}px` }}><header><strong>{widget.title || widget.widget_type.replaceAll('_', ' ')}</strong></header><div className="published-widget-body">{renderWidgetBody(widget, media)}</div></article>)}</div>}</div>}
           {tab === 'activity' && <div className="hanami-profile-activity">{posts.length === 0 ? <div className="hanami-profile-empty">No public activity yet.</div> : posts.map((post) => <article key={post.id}><span>{post.post_type}</span><div><strong>{post.title || name}</strong><p>{post.body}</p><small>{new Date(post.published_at || post.created_at).toLocaleString()}</small></div></article>)}</div>}
+          {tab === 'blog' && <div className="hanami-profile-blog">{blogPosts.length === 0 ? <div className="hanami-profile-empty">{own ? 'You have not published a blog entry yet.' : 'No public blog entries yet.'}</div> : blogPosts.map((post) => <article key={post.id}><header><div><span className="eyebrow">BLOG ENTRY</span><h2>{post.title || 'Untitled entry'}</h2></div><time>{new Date(post.published_at || post.created_at).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}</time></header><p>{post.body}</p><footer><span>{post.comments_enabled ? 'Comments open' : 'Comments closed'}</span><a href={`#/social/blogs/${encodeURIComponent(post.id)}`}>Open post & comments →</a></footer></article>)}</div>}
           {tab === 'guestbook' && <div id="profile-guestbook" className="hanami-profile-guestbook"><GuestbookPanel targetCharacterId={characterId} guestbookVisibility={profile.guestbook_visibility} management={own}/></div>}
         </section>
         {layout.sidebarSide === 'right' && sidebar}
