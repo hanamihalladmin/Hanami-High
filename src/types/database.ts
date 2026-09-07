@@ -266,6 +266,36 @@ export type Database = {
         Update: Partial<Database['public']['Tables']['published_profile_widgets']['Insert']>
         Relationships: []
       }
+      social_posts: {
+        Row: {
+          id: string
+          author_character_id: string
+          post_type: string
+          state: string
+          visibility: string
+          title: string | null
+          body: string
+          comments_enabled: boolean
+          published_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          author_character_id: string
+          post_type: string
+          state?: string
+          visibility?: string
+          title?: string | null
+          body: string
+          comments_enabled?: boolean
+          published_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['social_posts']['Insert']>
+        Relationships: []
+      }
       student_applications: {
         Row: {
           acceptance_letter_opened_at: string | null
@@ -574,6 +604,7 @@ export type ProfileWidget = Database['public']['Tables']['profile_widgets']['Row
 export type ProfileThemePreset = Database['public']['Tables']['profile_theme_presets']['Row']
 export type PublishedCharacterProfile = Database['public']['Tables']['published_character_profiles']['Row']
 export type PublishedProfileWidget = Database['public']['Tables']['published_profile_widgets']['Row']
+export type SocialPost = Database['public']['Tables']['social_posts']['Row']
 export type StudentApplication = Database['public']['Tables']['student_applications']['Row']
 export type StudentApplicationUpdate = Database['public']['Tables']['student_applications']['Update']
 export type ApplicationReview = Database['public']['Tables']['application_reviews']['Row']
