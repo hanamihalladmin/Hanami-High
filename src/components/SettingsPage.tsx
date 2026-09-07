@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
 import { notifyInterfacePreferencesChanged } from '../hooks/useInterfacePreferences'
 import type { AccountPreferences, CharacterPreferences } from '../types/database-settings'
+import type { ModerationReportRow } from '../types/database-platform'
 import { ShellTopbar } from './ShellTopbar'
 
 type Mode = 'account' | 'character' | 'privacy-safety' | 'notifications' | 'accessibility' | 'connections'
@@ -11,7 +12,7 @@ type Props = { mode: Mode; onSearch: () => void; onNotifications: () => void; un
 const meta: Record<Mode, { title: string; description: string }> = {
   account: { title: 'Account', description: 'Discord-linked Hanami account and session controls.' },
   character: { title: 'Character', description: 'Preferences for the character currently active on this account.' },
-  'privacy-safety': { title: 'Privacy & Safety', description: 'Control messages, requests, presence, and profile interactions.' },
+  'privacy-safety': { title: 'Privacy & Safety', description: 'Control messages, requests, presence, profile interactions, and safety reports.' },
   notifications: { title: 'Notifications', description: 'Choose which kinds of Hanami activity should notify you.' },
   accessibility: { title: 'Accessibility', description: 'Adjust motion, density, contrast, and interface text size.' },
   connections: { title: 'Connections', description: 'Review services connected to your Hanami account.' },
@@ -29,6 +30,8 @@ export function SettingsPage({ mode, onSearch, onNotifications, unreadCount }: P
   const { account, activeCharacter, characters, clearActiveCharacter, signOut } = useIdentity()
   const [accountPrefs, setAccountPrefs] = useState<AccountPreferences | null>(null)
   const [characterPrefs, setCharacterPrefs] = useState<CharacterPreferences | null>(null)
+  const [reports, setReports] = useState<ModerationReportRow[]>([])
+  const [reportDraft, setReportDraft] = useState({ reason: '', details: '' })
   const [loading, setLoading] = useState(true)
   const [working, setWorking] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -38,14 +41,16 @@ export function SettingsPage({ mode, onSearch, onNotifications, unreadCount }: P
     const client = supabase
     if (!client || !account || !activeCharacter) return
     setLoading(true); setError(null)
-    const [accountResult, characterResult] = await Promise.all([
+    const [accountResult, characterResult, reportResult] = await Promise.all([
       client.from('account_preferences').select('*').eq('account_id', account.id).maybeSingle(),
       client.from('character_preferences').select('*').eq('character_id', activeCharacter.id).maybeSingle(),
+      client.from('moderation_reports').select('*').eq('reporter_character_id', activeCharacter.id).order('created_at', { ascending: false }).limit(30),
     ])
     setLoading(false)
-    if (accountResult.error || characterResult.error) return setError((accountResult.error || characterResult.error)?.message || 'Unable to load preferences.')
+    if (accountResult.error || characterResult.error || reportResult.error) return setError((accountResult.error || characterResult.error || reportResult.error)?.message || 'Unable to load preferences.')
     setAccountPrefs(accountResult.data)
     setCharacterPrefs(characterResult.data)
+    setReports(reportResult.data ?? [])
   }, [account, activeCharacter])
 
   useEffect(() => { void load() }, [load])
@@ -73,6 +78,26 @@ export function SettingsPage({ mode, onSearch, onNotifications, unreadCount }: P
     setNotice('Character preferences saved.')
   }
 
+  async function submitReport() {
+    const client = supabase
+    if (!client || !activeCharacter) return
+    const reason = reportDraft.reason.trim()
+    if (reason.length < 2) return setError('Please give the report a short reason.')
+    setWorking(true); setError(null); setNotice(null)
+    const { error: reportError } = await client.from('moderation_reports').insert({
+      reporter_character_id: activeCharacter.id,
+      target_type: 'other',
+      reason,
+      details: reportDraft.details.trim() || null,
+      status: 'open',
+    })
+    setWorking(false)
+    if (reportError) return setError(reportError.message)
+    setReportDraft({ reason: '', details: '' })
+    setNotice('Safety report submitted to the moderation queue.')
+    await load()
+  }
+
   if (!account || !activeCharacter) return null
 
   function renderAccount() {
@@ -88,7 +113,7 @@ export function SettingsPage({ mode, onSearch, onNotifications, unreadCount }: P
 
   function renderPrivacy() {
     if (!accountPrefs || !characterPrefs) return null
-    return <div className="settings-stack"><section className="settings-panel"><header><div><span className="eyebrow">ACCOUNT PRIVACY</span><h2>Who can reach you</h2></div></header><div className="settings-form-list"><label><div><strong>Direct messages</strong><span>Who may start a direct conversation.</span></div><select disabled={working} value={accountPrefs.dm_policy} onChange={(event) => void saveAccount({ dm_policy: event.target.value })}><option value="everyone">Everyone</option><option value="friends">Friends only</option><option value="none">Nobody</option></select></label><label><div><strong>Friend requests</strong><span>Who may send this account a request.</span></div><select disabled={working} value={accountPrefs.friend_request_policy} onChange={(event) => void saveAccount({ friend_request_policy: event.target.value })}><option value="everyone">Everyone</option><option value="friends_of_friends">Friends of friends</option><option value="none">Nobody</option></select></label><label><div><strong>Show online status</strong><span>When off, other members cannot read this account’s presence row.</span></div><input type="checkbox" disabled={working} checked={accountPrefs.show_online_status} onChange={(event) => void saveAccount({ show_online_status: event.target.checked })}/></label></div></section><section className="settings-panel"><header><div><span className="eyebrow">CHARACTER PRIVACY</span><h2>Profile interactions</h2></div></header><div className="settings-form-list"><label><div><strong>Profile comments</strong><span>Allow comments where profile modules support them.</span></div><input type="checkbox" disabled={working} checked={characterPrefs.allow_profile_comments} onChange={(event) => void saveCharacter({ allow_profile_comments: event.target.checked })}/></label><label><div><strong>Guestbook</strong><span>Allow members to leave guestbook entries.</span></div><input type="checkbox" disabled={working} checked={characterPrefs.allow_guestbook} onChange={(event) => void saveCharacter({ allow_guestbook: event.target.checked })}/></label><label><div><strong>Activity status</strong><span>Allow profile surfaces to display this character’s activity status.</span></div><input type="checkbox" disabled={working} checked={characterPrefs.show_activity_status} onChange={(event) => void saveCharacter({ show_activity_status: event.target.checked })}/></label></div></section></div>
+    return <div className="settings-stack"><section className="settings-panel"><header><div><span className="eyebrow">ACCOUNT PRIVACY</span><h2>Who can reach you</h2></div></header><div className="settings-form-list"><label><div><strong>Direct messages</strong><span>Who may start a direct conversation.</span></div><select disabled={working} value={accountPrefs.dm_policy} onChange={(event) => void saveAccount({ dm_policy: event.target.value })}><option value="everyone">Everyone</option><option value="friends">Friends only</option><option value="none">Nobody</option></select></label><label><div><strong>Friend requests</strong><span>Who may send this account a request.</span></div><select disabled={working} value={accountPrefs.friend_request_policy} onChange={(event) => void saveAccount({ friend_request_policy: event.target.value })}><option value="everyone">Everyone</option><option value="friends_of_friends">Friends of friends</option><option value="none">Nobody</option></select></label><label><div><strong>Show online status</strong><span>When off, other members cannot read this account’s presence row.</span></div><input type="checkbox" disabled={working} checked={accountPrefs.show_online_status} onChange={(event) => void saveAccount({ show_online_status: event.target.checked })}/></label></div></section><section className="settings-panel"><header><div><span className="eyebrow">CHARACTER PRIVACY</span><h2>Profile interactions</h2></div></header><div className="settings-form-list"><label><div><strong>Profile comments</strong><span>Allow comments where profile modules support them.</span></div><input type="checkbox" disabled={working} checked={characterPrefs.allow_profile_comments} onChange={(event) => void saveCharacter({ allow_profile_comments: event.target.checked })}/></label><label><div><strong>Guestbook</strong><span>Allow members to leave guestbook entries.</span></div><input type="checkbox" disabled={working} checked={characterPrefs.allow_guestbook} onChange={(event) => void saveCharacter({ allow_guestbook: event.target.checked })}/></label><label><div><strong>Activity status</strong><span>Allow profile surfaces to display this character’s activity status.</span></div><input type="checkbox" disabled={working} checked={characterPrefs.show_activity_status} onChange={(event) => void saveCharacter({ show_activity_status: event.target.checked })}/></label></div></section><section className="settings-panel safety-report-panel"><header><div><span className="eyebrow">SAFETY REPORT</span><h2>Report a concern</h2></div><strong>Moderation queue</strong></header><form className="safety-report-form" onSubmit={(event) => { event.preventDefault(); void submitReport() }}><input required minLength={2} maxLength={200} placeholder="Short reason for the report" value={reportDraft.reason} onChange={(event) => setReportDraft({ ...reportDraft, reason: event.target.value })}/><textarea placeholder="Describe what happened and include enough context for moderation to review it." value={reportDraft.details} onChange={(event) => setReportDraft({ ...reportDraft, details: event.target.value })}/><button className="primary-action" disabled={working}>Submit report</button></form>{reports.length > 0 && <div className="safety-report-history"><strong>Your recent reports</strong>{reports.map((report) => <article key={report.id}><div><b>{report.reason}</b><span>{new Date(report.created_at).toLocaleString()}</span></div><div><span className={`report-status ${report.status}`}>{report.status}</span>{report.resolution_note && <small>{report.resolution_note}</small>}</div></article>)}</div>}</section></div>
   }
 
   function renderNotifications() {
