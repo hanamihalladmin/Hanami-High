@@ -21,6 +21,7 @@ import { SocialPostsPage } from '../components/SocialPostsPage'
 import { GuestbookActivityPage } from '../components/GuestbookActivityPage'
 import { MessagesPage } from '../components/MessagesPage'
 import { AcademicsPage } from '../components/AcademicsPage'
+import { CampusPage } from '../components/CampusPage'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
@@ -144,6 +145,12 @@ export function App() {
     if (route.section === 'academics' && route.subsection === 'assignments') return <AcademicsPage mode="assignments" targetId={route.targetId} {...shared} />
     if (route.section === 'academics' && route.subsection === 'grades') return <AcademicsPage mode="grades" targetId={route.targetId} {...shared} />
     if (route.section === 'academics' && route.subsection === 'attendance') return <AcademicsPage mode="attendance" targetId={route.targetId} {...shared} />
+    if (route.section === 'campus' && route.subsection === 'campus-overview') return <CampusPage mode="campus-overview" targetId={route.targetId} {...shared} />
+    if (route.section === 'campus' && route.subsection === 'events') return <CampusPage mode="events" targetId={route.targetId} {...shared} />
+    if (route.section === 'campus' && route.subsection === 'clubs') return <CampusPage mode="clubs" targetId={route.targetId} {...shared} />
+    if (route.section === 'campus' && route.subsection === 'organizations') return <CampusPage mode="organizations" targetId={route.targetId} {...shared} />
+    if (route.section === 'campus' && route.subsection === 'opportunities') return <CampusPage mode="opportunities" targetId={route.targetId} {...shared} />
+    if (route.section === 'campus' && route.subsection === 'student-council') return <CampusPage mode="student-council" targetId={route.targetId} {...shared} />
     return <ShellPage route={route} {...shared} />
   }
 
