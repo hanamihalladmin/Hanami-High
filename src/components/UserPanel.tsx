@@ -25,7 +25,9 @@ export function UserPanel() {
     selectCharacter,
     clearActiveCharacter,
     isOwner,
+    isPlatformAdmin,
     enterOwnerMode,
+    enterAdminMode,
     signOut,
     mutating,
   } = useIdentity()
@@ -66,13 +68,21 @@ export function UserPanel() {
           <button type="button" disabled={mutating} onClick={() => void clearActiveCharacter()}>
             Character selection…
           </button>
+
+          {(isOwner || isPlatformAdmin) && <div className="user-menu-rule" />}
           {isOwner && (
             <>
-              <div className="user-menu-rule" />
               <span className="user-menu-label">OWNER</span>
               <button type="button" onClick={enterOwnerMode}>Open Owner Console</button>
             </>
           )}
+          {isPlatformAdmin && (
+            <>
+              <span className="user-menu-label">ADMINISTRATOR</span>
+              <button type="button" onClick={enterAdminMode}>Open Administrator Console</button>
+            </>
+          )}
+
           <div className="user-menu-rule" />
           <button type="button" onClick={() => void signOut()}>Sign out</button>
         </div>
