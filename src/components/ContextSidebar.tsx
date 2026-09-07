@@ -29,6 +29,7 @@ export function ContextSidebar({ route, onSelect }: Props) {
 
   return (
     <aside className="context-sidebar">
+      <div className="context-top-stamp">❀ hanami side notes ❀</div>
       <section>
         <h3>YOU ARE HERE</h3>
         <article className="context-current-card">
@@ -44,7 +45,7 @@ export function ContextSidebar({ route, onSelect }: Props) {
           <div className="context-link-list">
             {nearby.map((item) => (
               <button type="button" key={item.id} onClick={() => onSelect(item.id)}>
-                <strong>{item.label}</strong><span>→</span>
+                <span aria-hidden="true">✿</span><strong>{item.label}</strong><span>→</span>
               </button>
             ))}
           </div>
@@ -63,6 +64,13 @@ export function ContextSidebar({ route, onSelect }: Props) {
           </div>
         </section>
       )}
+
+      <section className="context-linkme">
+        <h3>LINK HANAMI</h3>
+        <div className="context-linkme-badge"><span>HANAMI HIGH</span><small>✿ bloom online ✿</small></div>
+        <code>&lt;a href="#/home"&gt;hanami&lt;/a&gt;</code>
+      </section>
+      <div className="context-footer-flowers" aria-hidden="true">❀ ❁ ✿ ❀ ❁ ✿</div>
     </aside>
   )
 }
