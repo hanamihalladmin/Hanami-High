@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
-import type { SearchDocument, SocialPost } from '../types/database'
+import type { SearchDocument, SocialPost, SocialPostComment, SocialPostReaction } from '../types/database'
 import { ShellTopbar } from './ShellTopbar'
 
 type Mode = 'feed' | 'bulletins' | 'blogs'
+type ReactionType = 'heart' | 'star' | 'laugh' | 'support'
 
 type Props = {
   mode: Mode
@@ -50,6 +51,13 @@ const modeMeta: Record<Mode, {
   },
 }
 
+const reactions: { type: ReactionType; icon: string; label: string }[] = [
+  { type: 'heart', icon: '♥', label: 'Heart' },
+  { type: 'star', icon: '★', label: 'Star' },
+  { type: 'laugh', icon: '☺', label: 'Laugh' },
+  { type: 'support', icon: '✿', label: 'Support' },
+]
+
 function profileHash(characterId: string) {
   return `#/profile/view-profile/${encodeURIComponent(characterId)}`
 }
@@ -83,14 +91,18 @@ export function SocialPostsPage({ mode, targetPostId, onSearch, onNotifications,
   const { activeCharacter } = useIdentity()
   const meta = modeMeta[mode]
   const [posts, setPosts] = useState<SocialPost[]>([])
+  const [postReactions, setPostReactions] = useState<SocialPostReaction[]>([])
+  const [postComments, setPostComments] = useState<SocialPostComment[]>([])
   const [identities, setIdentities] = useState<Record<string, IdentitySummary>>({})
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const [visibility, setVisibility] = useState('hanami')
   const [commentsEnabled, setCommentsEnabled] = useState(true)
+  const [commentBodies, setCommentBodies] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState<'draft' | 'published' | null>(null)
   const [workingId, setWorkingId] = useState<string | null>(null)
+  const [interactionKey, setInteractionKey] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
 
@@ -126,7 +138,41 @@ export function SocialPostsPage({ mode, targetPostId, onSearch, onNotifications,
     ))
     setPosts(visiblePosts)
 
-    const authorIds = Array.from(new Set(visiblePosts.map((post) => post.author_character_id)))
+    const publishedPostIds = visiblePosts.filter((post) => post.state === 'published').map((post) => post.id)
+    let nextReactions: SocialPostReaction[] = []
+    let nextComments: SocialPostComment[] = []
+
+    if (publishedPostIds.length > 0) {
+      const [reactionResult, commentResult] = await Promise.all([
+        client
+          .from('social_post_reactions')
+          .select('*')
+          .in('post_id', publishedPostIds),
+        client
+          .from('social_post_comments')
+          .select('*')
+          .in('post_id', publishedPostIds)
+          .order('created_at')
+          .limit(400),
+      ])
+
+      if (reactionResult.error || commentResult.error) {
+        setLoading(false)
+        setError(reactionResult.error?.message || commentResult.error?.message || 'Post interactions could not be loaded.')
+        return
+      }
+      nextReactions = reactionResult.data ?? []
+      nextComments = commentResult.data ?? []
+    }
+
+    setPostReactions(nextReactions)
+    setPostComments(nextComments)
+
+    const authorIds = Array.from(new Set([
+      ...visiblePosts.map((post) => post.author_character_id),
+      ...nextComments.map((comment) => comment.author_character_id),
+    ]))
+
     if (authorIds.length === 0) {
       setIdentities({})
       setLoading(false)
@@ -164,6 +210,22 @@ export function SocialPostsPage({ mode, targetPostId, onSearch, onNotifications,
     () => posts.filter((post) => post.author_character_id === activeCharacter?.id && post.state === 'draft').length,
     [posts, activeCharacter],
   )
+
+  const reactionsByPost = useMemo(() => {
+    const grouped: Record<string, SocialPostReaction[]> = {}
+    for (const reaction of postReactions) {
+      ;(grouped[reaction.post_id] ??= []).push(reaction)
+    }
+    return grouped
+  }, [postReactions])
+
+  const commentsByPost = useMemo(() => {
+    const grouped: Record<string, SocialPostComment[]> = {}
+    for (const comment of postComments) {
+      ;(grouped[comment.post_id] ??= []).push(comment)
+    }
+    return grouped
+  }, [postComments])
 
   function identityFor(characterId: string) {
     if (characterId === activeCharacter?.id) {
@@ -251,6 +313,79 @@ export function SocialPostsPage({ mode, targetPostId, onSearch, onNotifications,
     await load()
   }
 
+  async function toggleReaction(post: SocialPost, reactionType: ReactionType) {
+    const client = supabase
+    if (!client || !activeCharacter || post.state !== 'published') return
+    const key = `${post.id}:reaction:${reactionType}`
+    setInteractionKey(key)
+    setError(null)
+
+    const current = (reactionsByPost[post.id] ?? []).find((reaction) => reaction.character_id === activeCharacter.id)
+    if (current?.reaction_type === reactionType) {
+      const { error: deleteError } = await client
+        .from('social_post_reactions')
+        .delete()
+        .eq('post_id', post.id)
+        .eq('character_id', activeCharacter.id)
+      setInteractionKey(null)
+      if (deleteError) {
+        setError(deleteError.message)
+        return
+      }
+    } else {
+      const { error: upsertError } = await client
+        .from('social_post_reactions')
+        .upsert({
+          post_id: post.id,
+          character_id: activeCharacter.id,
+          reaction_type: reactionType,
+        }, { onConflict: 'post_id,character_id' })
+      setInteractionKey(null)
+      if (upsertError) {
+        setError(upsertError.message)
+        return
+      }
+    }
+    await load()
+  }
+
+  async function submitComment(post: SocialPost) {
+    const client = supabase
+    if (!client || !activeCharacter || !post.comments_enabled) return
+    const comment = (commentBodies[post.id] ?? '').trim()
+    if (!comment) return
+    const key = `${post.id}:comment`
+    setInteractionKey(key)
+    setError(null)
+    const { error: insertError } = await client.from('social_post_comments').insert({
+      post_id: post.id,
+      author_character_id: activeCharacter.id,
+      body: comment,
+    })
+    setInteractionKey(null)
+    if (insertError) {
+      setError(insertError.message)
+      return
+    }
+    setCommentBodies((current) => ({ ...current, [post.id]: '' }))
+    await load()
+  }
+
+  async function deleteComment(post: SocialPost, comment: SocialPostComment) {
+    const client = supabase
+    if (!client) return
+    const key = `${comment.id}:delete`
+    setInteractionKey(key)
+    setError(null)
+    const { error: deleteError } = await client.from('social_post_comments').delete().eq('id', comment.id)
+    setInteractionKey(null)
+    if (deleteError) {
+      setError(deleteError.message)
+      return
+    }
+    await load()
+  }
+
   if (!activeCharacter) return null
 
   const composerName = activeCharacter.display_name || activeCharacter.first_name || 'Your character'
@@ -331,6 +466,9 @@ export function SocialPostsPage({ mode, targetPostId, onSearch, onNotifications,
               const identity = identityFor(post.author_character_id)
               const own = post.author_character_id === activeCharacter.id
               const targeted = post.id === targetPostId
+              const currentReactions = reactionsByPost[post.id] ?? []
+              const currentComments = commentsByPost[post.id] ?? []
+              const myReaction = currentReactions.find((reaction) => reaction.character_id === activeCharacter.id)?.reaction_type
               return (
                 <article id={`social-post-${post.id}`} className={`social-post-card type-${post.post_type} state-${post.state} ${targeted ? 'targeted' : ''}`} key={post.id}>
                   <header>
@@ -348,8 +486,74 @@ export function SocialPostsPage({ mode, targetPostId, onSearch, onNotifications,
                     {post.title && <h3>{post.title}</h3>}
                     <p>{post.body}</p>
                   </div>
+
+                  {post.state === 'published' && (
+                    <div className="social-interactions">
+                      <div className="reaction-strip" aria-label="Post reactions">
+                        {reactions.map((reaction) => {
+                          const count = currentReactions.filter((item) => item.reaction_type === reaction.type).length
+                          const active = myReaction === reaction.type
+                          return (
+                            <button
+                              type="button"
+                              key={reaction.type}
+                              className={active ? 'active' : ''}
+                              disabled={interactionKey?.startsWith(`${post.id}:reaction:`)}
+                              title={reaction.label}
+                              onClick={() => void toggleReaction(post, reaction.type)}
+                            >
+                              <span>{reaction.icon}</span><b>{count}</b>
+                            </button>
+                          )
+                        })}
+                      </div>
+
+                      {post.comments_enabled && (
+                        <div className="comment-thread">
+                          {currentComments.length > 0 && (
+                            <div className="comment-list">
+                              {currentComments.map((comment) => {
+                                const commentIdentity = identityFor(comment.author_character_id)
+                                const canDelete = comment.author_character_id === activeCharacter.id || own
+                                return (
+                                  <article className="comment-row" key={comment.id}>
+                                    <button className="comment-avatar" type="button" onClick={() => { window.location.hash = profileHash(comment.author_character_id) }}>{commentIdentity.title.slice(0, 2).toUpperCase()}</button>
+                                    <div>
+                                      <div className="comment-meta"><button type="button" onClick={() => { window.location.hash = profileHash(comment.author_character_id) }}>{commentIdentity.title}</button><time>{relativeTime(comment.created_at)}</time></div>
+                                      <p>{comment.body}</p>
+                                    </div>
+                                    {canDelete && <button className="comment-delete" type="button" disabled={interactionKey === `${comment.id}:delete`} onClick={() => void deleteComment(post, comment)}>×</button>}
+                                  </article>
+                                )
+                              })}
+                            </div>
+                          )}
+                          <div className="comment-composer">
+                            <input
+                              maxLength={2000}
+                              value={commentBodies[post.id] ?? ''}
+                              placeholder="Write a comment…"
+                              aria-label="Comment"
+                              onChange={(event) => setCommentBodies((current) => ({ ...current, [post.id]: event.target.value }))}
+                              onKeyDown={(event) => {
+                                if (event.key === 'Enter' && !event.shiftKey) {
+                                  event.preventDefault()
+                                  void submitComment(post)
+                                }
+                              }}
+                            />
+                            <button type="button" disabled={interactionKey === `${post.id}:comment` || !(commentBodies[post.id] ?? '').trim()} onClick={() => void submitComment(post)}>
+                              {interactionKey === `${post.id}:comment` ? 'Posting…' : 'Comment'}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   <footer>
-                    <span>{post.comments_enabled ? 'Comments open' : 'Comments off'}</span>
+                    <span>{post.comments_enabled ? `${currentComments.length} comment${currentComments.length === 1 ? '' : 's'}` : 'Comments off'}</span>
+                    <span>{currentReactions.length} reaction{currentReactions.length === 1 ? '' : 's'}</span>
                     {post.state === 'draft' && <strong>Private draft</strong>}
                     {own && (
                       <div className="social-post-actions">
