@@ -1,5 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+} from 'react'
 import { supabase } from '../lib/supabase'
+import { getSignedProfileMediaUrl, uploadProfileImage } from '../lib/profileMedia'
 import { useIdentity } from '../state/IdentityContext'
 import type { CharacterProfile, Json, ProfileWidget } from '../types/database'
 import { ShellTopbar } from './ShellTopbar'
@@ -18,6 +27,17 @@ type Props = {
   unreadCount: number
 }
 
+type Interaction = {
+  id: string
+  mode: 'move' | 'resize'
+  startClientX: number
+  startClientY: number
+  startX: number
+  startY: number
+  startWidth: number
+  startHeight: number
+}
+
 const defaultTheme: ThemeDraft = {
   background: '#f4f0e8',
   panel: '#fffdf8',
@@ -31,7 +51,7 @@ const widgetPalette = [
   { type: 'text', label: 'Text', width: 4, height: 3, content: 'Add your own text…' },
   { type: 'links', label: 'Links', width: 4, height: 3, content: 'Favorite places\nClub page\nBlog' },
   { type: 'status', label: 'Status', width: 4, height: 2, content: 'What are you up to?' },
-  { type: 'image', label: 'Image', width: 4, height: 4, content: 'Image uploads will connect through Storage.' },
+  { type: 'image', label: 'Image', width: 4, height: 4, content: 'Add a caption…' },
   { type: 'sticker', label: 'Sticker', width: 2, height: 2, content: '✿' },
 ] as const
 
@@ -47,34 +67,74 @@ function normalizeTheme(value: Json): ThemeDraft {
   }
 }
 
+function configObject(value: Json) {
+  return value && !Array.isArray(value) && typeof value === 'object'
+    ? value as Record<string, Json | undefined>
+    : {}
+}
+
 function configContent(value: Json) {
-  if (!value || Array.isArray(value) || typeof value !== 'object') return ''
-  const content = (value as Record<string, Json | undefined>).content
+  const content = configObject(value).content
   return typeof content === 'string' ? content : ''
 }
 
+function configStoragePath(value: Json) {
+  const path = configObject(value).storagePath
+  return typeof path === 'string' ? path : null
+}
+
 function withContent(value: Json, content: string): Json {
-  const base = value && !Array.isArray(value) && typeof value === 'object'
-    ? value as Record<string, Json | undefined>
-    : {}
-  return { ...base, content }
+  return { ...configObject(value), content }
+}
+
+function withStoragePath(value: Json, storagePath: string | null): Json {
+  return { ...configObject(value), storagePath }
 }
 
 function clamp(value: number, minimum: number, maximum: number) {
   return Math.max(minimum, Math.min(maximum, value))
 }
 
+function messageFromError(error: unknown) {
+  if (error instanceof Error) return error.message
+  if (typeof error === 'object' && error && 'message' in error) return String((error as { message: unknown }).message)
+  return 'Profile Studio could not complete that action.'
+}
+
 export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props) {
-  const { activeCharacter, refreshIdentity } = useIdentity()
+  const { activeCharacter, account, refreshIdentity } = useIdentity()
+  const canvasRef = useRef<HTMLDivElement>(null)
   const [profile, setProfile] = useState<CharacterProfile | null>(null)
   const [widgets, setWidgets] = useState<ProfileWidget[]>([])
+  const [mediaUrls, setMediaUrls] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(true)
   const [revision, setRevision] = useState(0)
   const [saving, setSaving] = useState(false)
   const [saveLabel, setSaveLabel] = useState('Loading draft…')
   const [publishing, setPublishing] = useState(false)
+  const [uploading, setUploading] = useState<string | null>(null)
+  const [interaction, setInteraction] = useState<Interaction | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [lastPublished, setLastPublished] = useState<string | null>(null)
+
+  const hydrateMedia = useCallback(async (nextProfile: CharacterProfile, nextWidgets: ProfileWidget[]) => {
+    const paths = Array.from(new Set([
+      nextProfile.avatar_path,
+      nextProfile.banner_path,
+      ...nextWidgets.map((widget) => configStoragePath(widget.config)),
+    ].filter((path): path is string => Boolean(path))))
+
+    const entries = await Promise.all(paths.map(async (path) => {
+      try {
+        const url = await getSignedProfileMediaUrl(path)
+        return url ? [path, url] as const : null
+      } catch {
+        return null
+      }
+    }))
+
+    setMediaUrls(Object.fromEntries(entries.filter((entry): entry is readonly [string, string] => Boolean(entry))))
+  }, [])
 
   const load = useCallback(async () => {
     const client = supabase
@@ -90,11 +150,13 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
       setError(profileResult.error?.message || widgetResult.error?.message || 'Profile Studio could not be loaded.')
       return
     }
+    const nextWidgets = widgetResult.data ?? []
     setProfile(profileResult.data)
-    setWidgets(widgetResult.data ?? [])
+    setWidgets(nextWidgets)
     setLastPublished(profileResult.data.published_at)
     setSaveLabel('Draft loaded')
-  }, [activeCharacter])
+    void hydrateMedia(profileResult.data, nextWidgets)
+  }, [activeCharacter, hydrateMedia])
 
   useEffect(() => {
     void load()
@@ -110,6 +172,8 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
     const profileResult = await client
       .from('character_profiles')
       .update({
+        avatar_path: profile.avatar_path,
+        banner_path: profile.banner_path,
         bio: profile.bio,
         custom_status: profile.custom_status,
         pronouns: profile.pronouns,
@@ -154,12 +218,10 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
   }
 
   useEffect(() => {
-    if (revision === 0 || !profile || loading) return
-    const timer = window.setTimeout(() => {
-      void saveAll(true)
-    }, 850)
+    if (revision === 0 || !profile || loading || interaction) return
+    const timer = window.setTimeout(() => void saveAll(true), 850)
     return () => window.clearTimeout(timer)
-  }, [revision])
+  }, [revision, interaction])
 
   function touch() {
     setRevision((current) => current + 1)
@@ -172,13 +234,68 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
 
   function patchTheme<K extends keyof ThemeDraft>(key: K, value: ThemeDraft[K]) {
     if (!profile) return
-    const theme = normalizeTheme(profile.theme_draft)
-    patchProfile('theme_draft', { ...theme, [key]: value })
+    patchProfile('theme_draft', { ...normalizeTheme(profile.theme_draft), [key]: value })
   }
 
-  function patchWidget(id: string, patch: Partial<ProfileWidget>) {
+  function patchWidget(id: string, patch: Partial<ProfileWidget>, autosave = true) {
     setWidgets((current) => current.map((widget) => widget.id === id ? { ...widget, ...patch } : widget))
-    touch()
+    if (autosave) touch()
+  }
+
+  useEffect(() => {
+    if (!interaction) return
+
+    const handleMove = (event: PointerEvent) => {
+      const canvas = canvasRef.current
+      if (!canvas) return
+      const rect = canvas.getBoundingClientRect()
+      const innerWidth = Math.max(240, rect.width - 24)
+      const columnWidth = Math.max(20, (innerWidth - (11 * 6)) / 12)
+      const stepX = columnWidth + 6
+      const stepY = 50
+      const deltaColumns = Math.round((event.clientX - interaction.startClientX) / stepX)
+      const deltaRows = Math.round((event.clientY - interaction.startClientY) / stepY)
+
+      if (interaction.mode === 'move') {
+        patchWidget(interaction.id, {
+          x: clamp(interaction.startX + deltaColumns, 1, 13 - interaction.startWidth),
+          y: clamp(interaction.startY + deltaRows, 1, 200),
+        }, false)
+      } else {
+        patchWidget(interaction.id, {
+          width: clamp(interaction.startWidth + deltaColumns, 1, 13 - interaction.startX),
+          height: clamp(interaction.startHeight + deltaRows, 1, 20),
+        }, false)
+      }
+    }
+
+    const handleUp = () => {
+      setInteraction(null)
+      touch()
+    }
+
+    window.addEventListener('pointermove', handleMove)
+    window.addEventListener('pointerup', handleUp)
+    window.addEventListener('pointercancel', handleUp)
+    return () => {
+      window.removeEventListener('pointermove', handleMove)
+      window.removeEventListener('pointerup', handleUp)
+      window.removeEventListener('pointercancel', handleUp)
+    }
+  }, [interaction])
+
+  function beginInteraction(event: ReactPointerEvent, widget: ProfileWidget, mode: Interaction['mode']) {
+    event.preventDefault()
+    setInteraction({
+      id: widget.id,
+      mode,
+      startClientX: event.clientX,
+      startClientY: event.clientY,
+      startX: widget.x,
+      startY: widget.y,
+      startWidth: widget.width,
+      startHeight: widget.height,
+    })
   }
 
   async function addWidget(type: (typeof widgetPalette)[number]) {
@@ -220,6 +337,52 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
     }
     setWidgets((current) => current.filter((widget) => widget.id !== id))
     setSaveLabel('Widget removed')
+  }
+
+  async function uploadHeaderMedia(kind: 'avatar' | 'banner', file: File) {
+    const client = supabase
+    if (!client || !account || !activeCharacter) return
+    setUploading(kind)
+    setError(null)
+    try {
+      const uploaded = await uploadProfileImage(account.id, activeCharacter.id, kind, file)
+      const column = kind === 'avatar' ? 'avatar_path' : 'banner_path'
+      const { error: updateError } = await client
+        .from('character_profiles')
+        .update({ [column]: uploaded.path, updated_at: new Date().toISOString() })
+        .eq('character_id', activeCharacter.id)
+      if (updateError) throw updateError
+      setProfile((current) => current ? { ...current, [column]: uploaded.path } : current)
+      if (uploaded.url) setMediaUrls((current) => ({ ...current, [uploaded.path]: uploaded.url }))
+      setSaveLabel(`${kind === 'avatar' ? 'Avatar' : 'Banner'} uploaded`)
+    } catch (nextError) {
+      setError(messageFromError(nextError))
+    } finally {
+      setUploading(null)
+    }
+  }
+
+  async function uploadWidgetMedia(widget: ProfileWidget, file: File) {
+    const client = supabase
+    if (!client || !account || !activeCharacter) return
+    setUploading(widget.id)
+    setError(null)
+    try {
+      const uploaded = await uploadProfileImage(account.id, activeCharacter.id, `widget-${widget.id}`, file)
+      const nextConfig = withStoragePath(widget.config, uploaded.path)
+      const { error: updateError } = await client
+        .from('profile_widgets')
+        .update({ config: nextConfig, updated_at: new Date().toISOString() })
+        .eq('id', widget.id)
+      if (updateError) throw updateError
+      patchWidget(widget.id, { config: nextConfig }, false)
+      if (uploaded.url) setMediaUrls((current) => ({ ...current, [uploaded.path]: uploaded.url }))
+      setSaveLabel('Image uploaded')
+    } catch (nextError) {
+      setError(messageFromError(nextError))
+    } finally {
+      setUploading(null)
+    }
   }
 
   async function publish() {
@@ -298,6 +461,36 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
           <aside className="studio-panel">
             <section>
               <span className="eyebrow">PROFILE</span>
+              <div className="profile-media-grid">
+                <label className="profile-media-field">
+                  <span>Avatar</span>
+                  <div className="profile-media-preview avatar-preview">
+                    {profile.avatar_path && mediaUrls[profile.avatar_path]
+                      ? <img src={mediaUrls[profile.avatar_path]} alt="Current avatar" />
+                      : <strong>{characterName.slice(0, 2).toUpperCase()}</strong>}
+                  </div>
+                  <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" disabled={uploading !== null} onChange={(event) => {
+                    const file = event.target.files?.[0]
+                    if (file) void uploadHeaderMedia('avatar', file)
+                    event.currentTarget.value = ''
+                  }} />
+                  <small>{uploading === 'avatar' ? 'Uploading…' : 'JPEG, PNG, WebP or GIF · 5 MB max'}</small>
+                </label>
+                <label className="profile-media-field">
+                  <span>Banner</span>
+                  <div className="profile-media-preview banner-preview">
+                    {profile.banner_path && mediaUrls[profile.banner_path]
+                      ? <img src={mediaUrls[profile.banner_path]} alt="Current banner" />
+                      : <strong>Banner</strong>}
+                  </div>
+                  <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" disabled={uploading !== null} onChange={(event) => {
+                    const file = event.target.files?.[0]
+                    if (file) void uploadHeaderMedia('banner', file)
+                    event.currentTarget.value = ''
+                  }} />
+                  <small>{uploading === 'banner' ? 'Uploading…' : 'Private until you publish'}</small>
+                </label>
+              </div>
               <label>Status<input value={profile.custom_status ?? ''} onChange={(event) => patchProfile('custom_status', event.target.value || null)} /></label>
               <label>Pronouns<input value={profile.pronouns ?? ''} onChange={(event) => patchProfile('pronouns', event.target.value || null)} /></label>
               <label>Bio<textarea rows={5} value={profile.bio ?? ''} onChange={(event) => patchProfile('bio', event.target.value || null)} /></label>
@@ -344,45 +537,71 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
           <section className="studio-workspace">
             <header>
               <div><span className="eyebrow">CANVAS</span><strong>12-column profile layout</strong></div>
-              <span>Move and resize with precision controls</span>
+              <span>Drag widgets · resize from the corner · precision controls below</span>
             </header>
             <div
-              className={`profile-canvas ${theme.grid ? 'show-grid' : ''}`}
-              style={{ background: theme.background, color: theme.ink, '--profile-panel': theme.panel, '--profile-accent': theme.accent } as React.CSSProperties}
+              ref={canvasRef}
+              className={`profile-canvas ${theme.grid ? 'show-grid' : ''} ${interaction ? 'is-interacting' : ''}`}
+              style={{ background: theme.background, color: theme.ink, '--profile-panel': theme.panel, '--profile-accent': theme.accent } as CSSProperties}
             >
               {widgets.length === 0 && (
                 <div className="canvas-empty"><strong>Your canvas is empty.</strong><span>Add a widget from the left to start designing.</span></div>
               )}
-              {widgets.map((widget) => (
-                <article
-                  className={`studio-widget ${widget.is_visible ? '' : 'hidden-widget'}`}
-                  key={widget.id}
-                  style={{ gridColumn: `${widget.x} / span ${widget.width}`, gridRow: `${widget.y} / span ${widget.height}`, zIndex: widget.z_index }}
-                >
-                  <header><input value={widget.title ?? ''} onChange={(event) => patchWidget(widget.id, { title: event.target.value || null })} /><span>{widget.widget_type}</span></header>
-                  <textarea
-                    value={configContent(widget.config)}
-                    onChange={(event) => patchWidget(widget.id, { config: withContent(widget.config, event.target.value) })}
-                    aria-label={`${widget.title || widget.widget_type} content`}
-                  />
-                  <footer>
-                    <div className="widget-nudge-controls">
-                      <button type="button" title="Move left" onClick={() => patchWidget(widget.id, { x: clamp(widget.x - 1, 1, 13 - widget.width) })}>←</button>
-                      <button type="button" title="Move right" onClick={() => patchWidget(widget.id, { x: clamp(widget.x + 1, 1, 13 - widget.width) })}>→</button>
-                      <button type="button" title="Move up" onClick={() => patchWidget(widget.id, { y: clamp(widget.y - 1, 1, 200) })}>↑</button>
-                      <button type="button" title="Move down" onClick={() => patchWidget(widget.id, { y: clamp(widget.y + 1, 1, 200) })}>↓</button>
+              {widgets.map((widget) => {
+                const imagePath = configStoragePath(widget.config)
+                return (
+                  <article
+                    className={`studio-widget ${widget.is_visible ? '' : 'hidden-widget'} ${interaction?.id === widget.id ? 'active-interaction' : ''}`}
+                    key={widget.id}
+                    style={{ gridColumn: `${widget.x} / span ${widget.width}`, gridRow: `${widget.y} / span ${widget.height}`, zIndex: widget.z_index }}
+                  >
+                    <header>
+                      <button className="widget-drag-handle" type="button" title="Drag widget" onPointerDown={(event) => beginInteraction(event, widget, 'move')}>⠿</button>
+                      <input value={widget.title ?? ''} onChange={(event) => patchWidget(widget.id, { title: event.target.value || null })} />
+                      <span>{widget.widget_type}</span>
+                    </header>
+                    <div className="studio-widget-content">
+                      {widget.widget_type === 'image' && (
+                        <div className="widget-image-editor">
+                          {imagePath && mediaUrls[imagePath]
+                            ? <img src={mediaUrls[imagePath]} alt={widget.title || 'Profile widget'} />
+                            : <div className="widget-image-placeholder">No image selected</div>}
+                          <label>
+                            <span>{uploading === widget.id ? 'Uploading…' : 'Choose image'}</span>
+                            <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" disabled={uploading !== null} onChange={(event) => {
+                              const file = event.target.files?.[0]
+                              if (file) void uploadWidgetMedia(widget, file)
+                              event.currentTarget.value = ''
+                            }} />
+                          </label>
+                        </div>
+                      )}
+                      <textarea
+                        value={configContent(widget.config)}
+                        onChange={(event) => patchWidget(widget.id, { config: withContent(widget.config, event.target.value) })}
+                        aria-label={`${widget.title || widget.widget_type} content`}
+                      />
                     </div>
-                    <div className="widget-size-controls">
-                      <button type="button" onClick={() => patchWidget(widget.id, { width: clamp(widget.width - 1, 1, 12), x: clamp(widget.x, 1, 13 - clamp(widget.width - 1, 1, 12)) })}>−W</button>
-                      <button type="button" onClick={() => patchWidget(widget.id, { width: clamp(widget.width + 1, 1, 12), x: clamp(widget.x, 1, 13 - clamp(widget.width + 1, 1, 12)) })}>+W</button>
-                      <button type="button" onClick={() => patchWidget(widget.id, { height: clamp(widget.height - 1, 1, 20) })}>−H</button>
-                      <button type="button" onClick={() => patchWidget(widget.id, { height: clamp(widget.height + 1, 1, 20) })}>+H</button>
-                    </div>
-                    <label title="Include this widget when published"><input type="checkbox" checked={widget.is_visible} onChange={(event) => patchWidget(widget.id, { is_visible: event.target.checked })} /> Visible</label>
-                    <button className="widget-delete" type="button" onClick={() => void removeWidget(widget.id)}>Delete</button>
-                  </footer>
-                </article>
-              ))}
+                    <footer>
+                      <div className="widget-nudge-controls">
+                        <button type="button" title="Move left" onClick={() => patchWidget(widget.id, { x: clamp(widget.x - 1, 1, 13 - widget.width) })}>←</button>
+                        <button type="button" title="Move right" onClick={() => patchWidget(widget.id, { x: clamp(widget.x + 1, 1, 13 - widget.width) })}>→</button>
+                        <button type="button" title="Move up" onClick={() => patchWidget(widget.id, { y: clamp(widget.y - 1, 1, 200) })}>↑</button>
+                        <button type="button" title="Move down" onClick={() => patchWidget(widget.id, { y: clamp(widget.y + 1, 1, 200) })}>↓</button>
+                      </div>
+                      <div className="widget-size-controls">
+                        <button type="button" onClick={() => patchWidget(widget.id, { width: clamp(widget.width - 1, 1, 12), x: clamp(widget.x, 1, 13 - clamp(widget.width - 1, 1, 12)) })}>−W</button>
+                        <button type="button" onClick={() => patchWidget(widget.id, { width: clamp(widget.width + 1, 1, 13 - widget.x) })}>+W</button>
+                        <button type="button" onClick={() => patchWidget(widget.id, { height: clamp(widget.height - 1, 1, 20) })}>−H</button>
+                        <button type="button" onClick={() => patchWidget(widget.id, { height: clamp(widget.height + 1, 1, 20) })}>+H</button>
+                      </div>
+                      <label title="Include this widget when published"><input type="checkbox" checked={widget.is_visible} onChange={(event) => patchWidget(widget.id, { is_visible: event.target.checked })} /> Visible</label>
+                      <button className="widget-delete" type="button" onClick={() => void removeWidget(widget.id)}>Delete</button>
+                      <button className="widget-resize-handle" type="button" title="Drag to resize" onPointerDown={(event) => beginInteraction(event, widget, 'resize')}>↘</button>
+                    </footer>
+                  </article>
+                )
+              })}
             </div>
           </section>
         </div>
