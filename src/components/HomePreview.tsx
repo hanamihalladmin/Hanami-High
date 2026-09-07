@@ -75,7 +75,9 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
 
   useEffect(() => {
     const client = supabase
-    if (!client || !account || !activeCharacter) return
+    const currentAccount = account
+    const currentCharacter = activeCharacter
+    if (!client || !currentAccount || !currentCharacter) return
     let cancelled = false
 
     async function loadHome() {
@@ -83,11 +85,11 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
       setDataError(null)
 
       const [enrollmentResult, staffResult, announcementResult, walletResult, plusResult] = await Promise.all([
-        client.from('academic_enrollments').select('section_id').eq('student_character_id', activeCharacter.id).eq('status', 'active'),
-        client.from('academic_section_staff').select('section_id').eq('character_id', activeCharacter.id),
+        client.from('academic_enrollments').select('section_id').eq('student_character_id', currentCharacter.id).eq('status', 'active'),
+        client.from('academic_section_staff').select('section_id').eq('character_id', currentCharacter.id),
         client.from('school_announcements').select('*').eq('state', 'published').order('pinned', { ascending: false }).order('created_at', { ascending: false }).limit(12),
-        client.from('petal_wallets').select('*').eq('account_id', account.id).maybeSingle(),
-        client.from('hanami_plus_entitlements').select('*').eq('account_id', account.id).maybeSingle(),
+        client.from('petal_wallets').select('*').eq('account_id', currentAccount.id).maybeSingle(),
+        client.from('hanami_plus_entitlements').select('*').eq('account_id', currentAccount.id).maybeSingle(),
       ])
 
       const firstError = enrollmentResult.error || staffResult.error || announcementResult.error || walletResult.error || plusResult.error
