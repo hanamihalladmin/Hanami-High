@@ -9,7 +9,7 @@ import {
 } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { hasSupabaseConfig, signInWithDiscord, supabase } from '../lib/supabase'
-import type { HanamiAccount, HanamiCharacter } from '../types/database'
+import type { HanamiAccount, HanamiCharacter, StudentApplication } from '../types/database'
 
 type IdentityContextValue = {
   configured: boolean
@@ -19,6 +19,7 @@ type IdentityContextValue = {
   session: Session | null
   account: HanamiAccount | null
   characters: HanamiCharacter[]
+  applications: StudentApplication[]
   activeCharacter: HanamiCharacter | null
   roles: string[]
   capabilities: string[]
@@ -48,6 +49,7 @@ export function IdentityProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null)
   const [account, setAccount] = useState<HanamiAccount | null>(null)
   const [characters, setCharacters] = useState<HanamiCharacter[]>([])
+  const [applications, setApplications] = useState<StudentApplication[]>([])
   const [roles, setRoles] = useState<string[]>([])
   const [capabilities, setCapabilities] = useState<string[]>([])
   const [authLoading, setAuthLoading] = useState(true)
@@ -59,6 +61,7 @@ export function IdentityProvider({ children }: PropsWithChildren) {
   const clearIdentity = useCallback(() => {
     setAccount(null)
     setCharacters([])
+    setApplications([])
     setRoles([])
     setCapabilities([])
     setOwnerMode(false)
@@ -80,20 +83,27 @@ export function IdentityProvider({ children }: PropsWithChildren) {
         return
       }
 
-      const [accountResult, characterResult, roleResult, capabilityResult] = await Promise.all([
+      const [accountResult, characterResult, applicationResult, roleResult, capabilityResult] = await Promise.all([
         client.from('accounts').select('*').eq('id', userData.user.id).single(),
         client.from('characters').select('*').order('slot_no', { ascending: true }),
+        client
+          .from('student_applications')
+          .select('*')
+          .eq('applicant_account_id', userData.user.id)
+          .order('created_at', { ascending: true }),
         client.rpc('current_platform_roles'),
         client.rpc('current_capabilities'),
       ])
 
       if (accountResult.error) throw accountResult.error
       if (characterResult.error) throw characterResult.error
+      if (applicationResult.error) throw applicationResult.error
       if (roleResult.error) throw roleResult.error
       if (capabilityResult.error) throw capabilityResult.error
 
       setAccount(accountResult.data)
       setCharacters(characterResult.data ?? [])
+      setApplications(applicationResult.data ?? [])
       setRoles((roleResult.data ?? []).map((row) => row.code))
       setCapabilities((capabilityResult.data ?? []).map((row) => row.code))
     } catch (nextError) {
@@ -155,7 +165,6 @@ export function IdentityProvider({ children }: PropsWithChildren) {
       await refreshIdentity()
     } catch (nextError) {
       setError(messageFromError(nextError))
-      throw nextError
     } finally {
       setMutating(false)
     }
@@ -163,7 +172,10 @@ export function IdentityProvider({ children }: PropsWithChildren) {
 
   const createStudentSlot = useCallback(async (slotNo: 1 | 2) => {
     const client = supabase
-    if (!client) throw new Error('Supabase is not configured.')
+    if (!client) {
+      setError('Supabase is not configured.')
+      return
+    }
     await runMutation(async () => {
       const { error: rpcError } = await client.rpc('create_student_character_slot', { p_slot_no: slotNo })
       if (rpcError) throw rpcError
@@ -172,7 +184,10 @@ export function IdentityProvider({ children }: PropsWithChildren) {
 
   const selectCharacter = useCallback(async (characterId: string) => {
     const client = supabase
-    if (!client) throw new Error('Supabase is not configured.')
+    if (!client) {
+      setError('Supabase is not configured.')
+      return
+    }
     await runMutation(async () => {
       const { error: rpcError } = await client.rpc('set_active_character', { p_character_id: characterId })
       if (rpcError) throw rpcError
@@ -202,7 +217,7 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     if (!client) return
     setError(null)
     const { error: signOutError } = await client.auth.signOut()
-    if (signOutError) throw signOutError
+    if (signOutError) setError(signOutError.message)
   }, [])
 
   const value = useMemo<IdentityContextValue>(() => ({
@@ -213,6 +228,7 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     session,
     account,
     characters,
+    applications,
     activeCharacter,
     roles,
     capabilities,
@@ -231,6 +247,7 @@ export function IdentityProvider({ children }: PropsWithChildren) {
   }), [
     account,
     activeCharacter,
+    applications,
     authLoading,
     capabilities,
     characters,
