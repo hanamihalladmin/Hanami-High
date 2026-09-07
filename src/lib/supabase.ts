@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import type { Database } from '../types/database'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined
 const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined
@@ -6,7 +7,7 @@ const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as 
 export const hasSupabaseConfig = Boolean(supabaseUrl && supabasePublishableKey)
 
 export const supabase = hasSupabaseConfig
-  ? createClient(supabaseUrl!, supabasePublishableKey!, {
+  ? createClient<Database>(supabaseUrl!, supabasePublishableKey!, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
@@ -14,6 +15,18 @@ export const supabase = hasSupabaseConfig
       },
     })
   : null
+
+function browserRedirectUrl() {
+  const url = new URL(window.location.href)
+  url.hash = ''
+  url.search = ''
+
+  if (!url.pathname.endsWith('/')) {
+    url.pathname = url.pathname.slice(0, url.pathname.lastIndexOf('/') + 1)
+  }
+
+  return url.toString()
+}
 
 export async function signInWithDiscord() {
   if (!supabase) {
@@ -23,7 +36,7 @@ export async function signInWithDiscord() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'discord',
     options: {
-      redirectTo: window.location.origin + window.location.pathname,
+      redirectTo: browserRedirectUrl(),
     },
   })
 
