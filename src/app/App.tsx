@@ -11,6 +11,8 @@ import { GlobalSearch } from '../components/GlobalSearch'
 import { NotificationCenter } from '../components/NotificationCenter'
 import { MobileSectionNav } from '../components/MobileSectionNav'
 import { ShellPage } from '../components/ShellPage'
+import { ProfileStudio } from '../components/ProfileStudio'
+import { ProfileView } from '../components/ProfileView'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
@@ -120,6 +122,35 @@ export function App() {
     navigate({ section: route.section, subsection })
   }
 
+  function openSearch() {
+    setSearchOpen(true)
+    setNotificationsOpen(false)
+  }
+
+  function openNotifications() {
+    setNotificationsOpen(true)
+    setSearchOpen(false)
+  }
+
+  function renderPage() {
+    const shared = {
+      onSearch: openSearch,
+      onNotifications: openNotifications,
+      unreadCount: notificationInbox.unreadCount,
+    }
+
+    if (route.section === 'home' && route.subsection === 'overview') {
+      return <HomePreview {...shared} />
+    }
+    if (route.section === 'profile' && route.subsection === 'profile-studio') {
+      return <ProfileStudio {...shared} />
+    }
+    if (route.section === 'profile' && route.subsection === 'view-profile') {
+      return <ProfileView {...shared} />
+    }
+    return <ShellPage route={route} {...shared} />
+  }
+
   if (loading) return <LoadingScreen />
   if (!session) return <LoginScreen />
   if (error && !account) return <IdentityErrorScreen />
@@ -138,43 +169,13 @@ export function App() {
             subsection={route.subsection}
             profileTitle={profileTitle}
             onSelect={selectSubsection}
-            onSearch={() => {
-              setSearchOpen(true)
-              setNotificationsOpen(false)
-            }}
+            onSearch={openSearch}
           />
           <UserPanel />
         </div>
 
         <MobileSectionNav section={route.section} subsection={route.subsection} onSelect={selectSubsection} />
-
-        {route.section === 'home' && route.subsection === 'overview' ? (
-          <HomePreview
-            onSearch={() => {
-              setSearchOpen(true)
-              setNotificationsOpen(false)
-            }}
-            onNotifications={() => {
-              setNotificationsOpen(true)
-              setSearchOpen(false)
-            }}
-            unreadCount={notificationInbox.unreadCount}
-          />
-        ) : (
-          <ShellPage
-            route={route}
-            onSearch={() => {
-              setSearchOpen(true)
-              setNotificationsOpen(false)
-            }}
-            onNotifications={() => {
-              setNotificationsOpen(true)
-              setSearchOpen(false)
-            }}
-            unreadCount={notificationInbox.unreadCount}
-          />
-        )}
-
+        {renderPage()}
         <ContextSidebar route={route} onSelect={selectSubsection} />
       </div>
 
