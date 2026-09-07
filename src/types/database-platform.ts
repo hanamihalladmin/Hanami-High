@@ -30,6 +30,14 @@ export type ModerationReportRow = {
   updated_at: string
 }
 
+export type PlatformRoleRow = {
+  id: string
+  code: string
+  label: string
+  description: string
+  created_at: string
+}
+
 export type OwnerEconomyRow = {
   account_id: string
   discord_username: string | null
@@ -50,6 +58,7 @@ type PlatformTables = {
     Pick<ModerationReportRow, 'reporter_character_id' | 'target_type' | 'reason'> & Partial<Omit<ModerationReportRow, 'reporter_character_id' | 'target_type' | 'reason'>>,
     Partial<ModerationReportRow>
   >
+  platform_roles: RowTable<PlatformRoleRow, Partial<PlatformRoleRow>, Partial<PlatformRoleRow>>
 }
 
 type PlatformFunctions = {
