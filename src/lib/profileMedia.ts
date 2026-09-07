@@ -25,7 +25,7 @@ export async function uploadProfileImage(
   characterId: string,
   kind: string,
   file: File,
-) {
+): Promise<{ path: string; url: string }> {
   const client = supabase
   if (!client) throw new Error('Supabase is not configured.')
   validateProfileImage(file)
@@ -44,6 +44,7 @@ export async function uploadProfileImage(
 
   if (error) throw error
   const url = await getSignedProfileMediaUrl(path)
+  if (!url) throw new Error('Uploaded image could not be previewed.')
   return { path, url }
 }
 
