@@ -67,6 +67,7 @@ type AcademicRoomTables = {
 type AcademicRoomFunctions = {
   academic_is_homeroom_member: { Args: { p_homeroom_code: string }; Returns: boolean }
   academic_can_manage_homeroom: { Args: { p_homeroom_code: string }; Returns: boolean }
+  delete_my_character: { Args: { p_character_id: string; p_confirmation: string }; Returns: number }
 }
 
 export type HanamiAcademicRoomDatabase = Omit<HanamiCustomizationDatabase, 'public'> & {
