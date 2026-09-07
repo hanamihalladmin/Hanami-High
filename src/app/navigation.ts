@@ -9,6 +9,7 @@ export const sections: SectionDefinition[] = [
       { id: 'school-calendar', label: 'School Calendar', description: 'Academic dates and campus events.' },
       { id: 'whos-online', label: "Who's Online", description: 'See who is currently around campus.' },
       { id: 'my-schedule', label: 'My Schedule', description: 'Today’s classes and school-day timeline.' },
+      { id: 'my-homeroom', label: 'My Homeroom', description: 'Open your private homeroom conversation space.' },
       { id: 'my-classes', label: 'My Classes', description: 'Your enrolled class spaces.' },
       { id: 'my-clubs', label: 'My Clubs', description: 'Clubs and organizations you belong to.' },
     ],
@@ -38,7 +39,8 @@ export const sections: SectionDefinition[] = [
     subsections: [
       { id: 'overview', label: 'Overview', description: 'Academic status and upcoming work.' },
       { id: 'my-schedule', label: 'My Schedule', description: 'Your weekly class schedule.' },
-      { id: 'classes', label: 'Classes', description: 'Course spaces, teachers, and resources.' },
+      { id: 'homeroom', label: 'Homeroom', description: 'Your private homeroom conversation room.' },
+      { id: 'classes', label: 'Classes', description: 'Course spaces, teachers, resources, and class chat.' },
       { id: 'assignments', label: 'Assignments', description: 'Assigned work and submissions.' },
       { id: 'grades', label: 'Grades', description: 'Grades and teacher feedback.' },
       { id: 'attendance', label: 'Attendance', description: 'Attendance records and history.' },
