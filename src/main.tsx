@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RootApp } from './app/RootApp'
 import { MemberProfileNavigationBridge } from './components/MemberProfileNavigationBridge'
+import { ProfileDraftPreviewLauncher } from './components/ProfileDraftPreviewLauncher'
 import { ProfileStudioTools } from './components/ProfileStudioTools'
 import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
@@ -20,6 +21,7 @@ import './styles/profile-display-styles.css'
 import './styles/profile-studio-tools.css'
 import './styles/profile-background-editor.css'
 import './styles/profile-spacehey-layouts.css'
+import './styles/profile-draft-preview.css'
 import './styles/saved-themes.css'
 import './styles/friends.css'
 import './styles/top-friends.css'
@@ -48,6 +50,7 @@ createRoot(document.getElementById('root')!).render(
       <RootApp />
       <MemberProfileNavigationBridge />
       <ProfileStudioTools />
+      <ProfileDraftPreviewLauncher />
     </IdentityProvider>
   </StrictMode>,
 )
