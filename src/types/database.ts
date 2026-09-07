@@ -170,42 +170,7 @@ export type Database = {
           updated_at?: string
           weaknesses?: string | null
         }
-        Update: {
-          acceptance_letter_opened_at?: string | null
-          accepted_at?: string | null
-          additional_notes?: string | null
-          age?: number | null
-          appearance_description?: string | null
-          applicant_account_id?: string
-          attendance_reason?: string | null
-          background?: string | null
-          birth_date?: string | null
-          character_id?: string
-          character_limit_ack?: boolean
-          club_interests?: string[]
-          created_at?: string
-          deletion_ack?: boolean
-          dislikes?: string | null
-          distinguishing_features?: string | null
-          elective_preference?: string | null
-          family_information?: string | null
-          height_cm?: number | null
-          hobbies?: string | null
-          likes?: string | null
-          nickname?: string | null
-          personality?: string | null
-          pronouns?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          rules_read?: boolean
-          school_year?: number | null
-          serious_rp_ack?: boolean
-          status?: string
-          strengths?: string | null
-          submitted_at?: string | null
-          updated_at?: string
-          weaknesses?: string | null
-        }
+        Update: Partial<Database['public']['Tables']['student_applications']['Insert']>
         Relationships: []
       }
       application_reviews: {
@@ -225,14 +190,7 @@ export type Database = {
           id?: string
           created_at?: string
         }
-        Update: {
-          character_id?: string
-          decision?: string
-          message?: string
-          reviewer_account_id?: string
-          id?: string
-          created_at?: string
-        }
+        Update: Partial<Database['public']['Tables']['application_reviews']['Insert']>
         Relationships: []
       }
       character_orientations: {
@@ -256,16 +214,7 @@ export type Database = {
           updated_at?: string
           version?: number
         }
-        Update: {
-          account_id?: string
-          character_id?: string
-          completed_at?: string | null
-          created_at?: string
-          started_at?: string
-          track?: string
-          updated_at?: string
-          version?: number
-        }
+        Update: Partial<Database['public']['Tables']['character_orientations']['Insert']>
         Relationships: []
       }
       character_orientation_tasks: {
@@ -281,12 +230,7 @@ export type Database = {
           required?: boolean
           task_code: string
         }
-        Update: {
-          character_id?: string
-          completed_at?: string | null
-          required?: boolean
-          task_code?: string
-        }
+        Update: Partial<Database['public']['Tables']['character_orientation_tasks']['Insert']>
         Relationships: []
       }
       student_status_actions: {
@@ -306,14 +250,76 @@ export type Database = {
           id?: string
           note?: string | null
         }
-        Update: {
-          actor_account_id?: string
-          character_id?: string
-          action?: string
+        Update: Partial<Database['public']['Tables']['student_status_actions']['Insert']>
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          account_id: string
+          actor_character_id: string | null
+          body: string
+          character_id: string | null
+          created_at: string
+          id: string
+          kind: string
+          metadata: Json
+          read_at: string | null
+          section: string | null
+          subsection: string | null
+          title: string
+        }
+        Insert: {
+          account_id: string
+          title: string
+          actor_character_id?: string | null
+          body?: string
+          character_id?: string | null
           created_at?: string
           id?: string
-          note?: string | null
+          kind?: string
+          metadata?: Json
+          read_at?: string | null
+          section?: string | null
+          subsection?: string | null
         }
+        Update: { read_at?: string | null }
+        Relationships: []
+      }
+      search_documents: {
+        Row: {
+          body: string
+          created_at: string
+          document_type: string
+          entity_id: string | null
+          id: string
+          owner_account_id: string | null
+          owner_character_id: string | null
+          search_vector: unknown
+          section: string
+          source_key: string
+          subsection: string | null
+          subtitle: string | null
+          title: string
+          updated_at: string
+          visibility: string
+        }
+        Insert: {
+          document_type: string
+          section: string
+          source_key: string
+          title: string
+          body?: string
+          created_at?: string
+          entity_id?: string | null
+          id?: string
+          owner_account_id?: string | null
+          owner_character_id?: string | null
+          subsection?: string | null
+          subtitle?: string | null
+          updated_at?: string
+          visibility?: string
+        }
+        Update: Partial<Database['public']['Tables']['search_documents']['Insert']>
         Relationships: []
       }
     }
@@ -343,6 +349,19 @@ export type Database = {
         Args: { p_character_id: string }
         Returns: string
       }
+      search_hanami: {
+        Args: { p_query: string; p_limit?: number }
+        Returns: {
+          id: string
+          document_type: string
+          entity_id: string | null
+          title: string
+          subtitle: string | null
+          section: string
+          subsection: string | null
+          rank: number
+        }[]
+      }
       set_active_character: {
         Args: { p_character_id: string }
         Returns: string
@@ -365,3 +384,6 @@ export type ApplicationReview = Database['public']['Tables']['application_review
 export type CharacterOrientation = Database['public']['Tables']['character_orientations']['Row']
 export type CharacterOrientationTask = Database['public']['Tables']['character_orientation_tasks']['Row']
 export type StudentStatusAction = Database['public']['Tables']['student_status_actions']['Row']
+export type HanamiNotification = Database['public']['Tables']['notifications']['Row']
+export type SearchDocument = Database['public']['Tables']['search_documents']['Row']
+export type HanamiSearchResult = Database['public']['Functions']['search_hanami']['Returns'][number]
