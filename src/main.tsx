@@ -11,6 +11,7 @@ import './styles/shell.css'
 import './styles/profile-studio.css'
 import './styles/profile-studio-enhancements.css'
 import './styles/saved-themes.css'
+import './styles/friends.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
