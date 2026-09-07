@@ -28,6 +28,7 @@ import './styles/owner-operations.css'
 import './styles/access-modes.css'
 import './styles/discord-shell.css'
 import './styles/discord-profile-studio.css'
+import './styles/discord-profile-exact.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
