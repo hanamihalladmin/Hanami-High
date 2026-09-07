@@ -48,6 +48,7 @@ import './styles/early-web-site.css'
 import './styles/discord-shell.css'
 import './styles/discord-shell-polish.css'
 import './styles/home-discord-channel.css'
+import './styles/discord-profile-experience.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
