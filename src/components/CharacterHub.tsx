@@ -57,6 +57,7 @@ export function CharacterHub() {
     applications,
     createStudentSlot,
     selectCharacter,
+    deleteCharacter,
     isOwner,
     isPlatformAdmin,
     enterOwnerMode,
@@ -67,6 +68,8 @@ export function CharacterHub() {
   } = useIdentity()
   const [applicationCharacterId, setApplicationCharacterId] = useState<string | null>(null)
   const [letterCharacterId, setLetterCharacterId] = useState<string | null>(null)
+  const [deleteCharacterId, setDeleteCharacterId] = useState<string | null>(null)
+  const [deleteConfirmation, setDeleteConfirmation] = useState('')
 
   const applicationCharacter = characters.find((character) => character.id === applicationCharacterId) ?? null
   const selectedApplication = applications.find((application) => application.character_id === applicationCharacterId) ?? null
@@ -96,6 +99,7 @@ export function CharacterHub() {
     slotNo,
     character: characters.find((character) => character.slot_no === slotNo) ?? null,
   }))
+  const deleteTarget = characters.find((character) => character.id === deleteCharacterId) ?? null
 
   function handleCharacterAction(character: HanamiCharacter, application: StudentApplication | null) {
     if (application?.status === 'accepted' && !application.acceptance_letter_opened_at) {
@@ -111,6 +115,24 @@ export function CharacterHub() {
     if (character.character_state === 'active') {
       void selectCharacter(character.id)
     }
+  }
+
+  function openDelete(characterId: string) {
+    setDeleteCharacterId(characterId)
+    setDeleteConfirmation('')
+  }
+
+  function closeDelete() {
+    if (mutating) return
+    setDeleteCharacterId(null)
+    setDeleteConfirmation('')
+  }
+
+  async function confirmDelete() {
+    if (!deleteTarget || deleteConfirmation !== 'DELETE') return
+    await deleteCharacter(deleteTarget.id, deleteConfirmation)
+    setDeleteCharacterId(null)
+    setDeleteConfirmation('')
   }
 
   return (
@@ -159,14 +181,24 @@ export function CharacterHub() {
                         <span>{roleLabel(character)}</span>
                         <small>{statusCopy(character, application)}</small>
                       </div>
-                      <button
-                        className={character.character_state === 'active' ? 'primary-action' : 'secondary-action'}
-                        type="button"
-                        disabled={mutating || !actionable || missingRequiredApplication}
-                        onClick={() => handleCharacterAction(character, application)}
-                      >
-                        {actionLabel(character, application)}
-                      </button>
+                      <div className="character-slot-actions">
+                        <button
+                          className={character.character_state === 'active' ? 'primary-action' : 'secondary-action'}
+                          type="button"
+                          disabled={mutating || !actionable || missingRequiredApplication}
+                          onClick={() => handleCharacterAction(character, application)}
+                        >
+                          {actionLabel(character, application)}
+                        </button>
+                        <button
+                          className="character-delete-trigger"
+                          type="button"
+                          disabled={mutating}
+                          onClick={() => openDelete(character.id)}
+                        >
+                          Delete Character
+                        </button>
+                      </div>
                     </>
                   ) : (
                     <>
@@ -191,6 +223,11 @@ export function CharacterHub() {
             })}
           </div>
 
+          <div className="character-deletion-note">
+            <strong>Character deletion is permanent.</strong>
+            <span>Deleting a character removes that character's profile, social history, submissions, memberships, and personal school records. Account-wide Petals, Hanami+, Boutique inventory, and account preferences are not deleted.</span>
+          </div>
+
           {(isOwner || isPlatformAdmin) && (
             <section className="owner-entry-card">
               <div>
@@ -206,6 +243,42 @@ export function CharacterHub() {
           )}
         </div>
       </section>
+
+      {deleteTarget && (
+        <div className="character-delete-overlay" onMouseDown={(event) => { if (event.currentTarget === event.target) closeDelete() }}>
+          <section className="character-delete-dialog" role="dialog" aria-modal="true" aria-labelledby="character-delete-title">
+            <header>
+              <div>
+                <span className="eyebrow">PERMANENT CHARACTER DELETION</span>
+                <h2 id="character-delete-title">Delete {characterName(deleteTarget)}?</h2>
+              </div>
+              <button type="button" disabled={mutating} onClick={closeDelete} aria-label="Close deletion dialog">×</button>
+            </header>
+            <div className="character-delete-warning">
+              <strong>This cannot be undone.</strong>
+              <p>The character in Slot {deleteTarget.slot_no}, their profile, posts, messages, friendships, class enrollments, submissions, achievements, club memberships, and other character-specific records will be permanently deleted.</p>
+              <p>Shared Hanami school records created by the character may remain as unattributed institutional history so other students' grades, events, and school records are not destroyed.</p>
+            </div>
+            <label className="character-delete-confirmation">
+              <span>Type <b>DELETE</b> to confirm</span>
+              <input
+                autoFocus
+                autoComplete="off"
+                value={deleteConfirmation}
+                onChange={(event) => setDeleteConfirmation(event.target.value)}
+                disabled={mutating}
+                placeholder="DELETE"
+              />
+            </label>
+            <footer>
+              <button className="secondary-action" type="button" disabled={mutating} onClick={closeDelete}>Cancel</button>
+              <button className="character-delete-confirm" type="button" disabled={mutating || deleteConfirmation !== 'DELETE'} onClick={() => void confirmDelete()}>
+                {mutating ? 'Deleting…' : 'Permanently Delete Character'}
+              </button>
+            </footer>
+          </section>
+        </div>
+      )}
     </main>
   )
 }
