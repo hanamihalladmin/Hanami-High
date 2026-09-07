@@ -63,6 +63,9 @@ export function GlobalSearch({ open, onClose, onNavigate }: Props) {
   function choose(result: HanamiSearchResult) {
     if (result.document_type === 'character' && result.entity_id) {
       onNavigate({ section: 'profile', subsection: 'view-profile', targetId: result.entity_id })
+    } else if (result.document_type === 'social_post' && result.entity_id) {
+      const route = normalizeRoute(result.section, result.subsection ?? undefined)
+      onNavigate({ ...route, targetId: result.entity_id })
     } else {
       onNavigate(normalizeRoute(result.section, result.subsection ?? undefined))
     }
@@ -91,19 +94,19 @@ export function GlobalSearch({ open, onClose, onNavigate }: Props) {
           {!query.trim() && (
             <div className="search-empty-state">
               <strong>Search the Hanami network</strong>
-              <span>Find pages and active campus identities. Clubs, classes, posts, and events will join this same index as their modules are built.</span>
+              <span>Find pages, active campus identities, and visible social posts. Friends-only results appear only when the active character is an accepted friend.</span>
             </div>
           )}
           {loading && <div className="search-status">Searching…</div>}
           {error && <div className="identity-notice error">{error}</div>}
           {!loading && query.trim() && !error && results.length === 0 && (
-            <div className="search-empty-state"><strong>No matches found</strong><span>Try another name or section.</span></div>
+            <div className="search-empty-state"><strong>No matches found</strong><span>Try another name, post, or section.</span></div>
           )}
           {results.map((result) => (
             <button className="search-result-row" type="button" key={result.id} onClick={() => choose(result)}>
-              <span className="search-result-type">{result.document_type === 'character' ? '☺' : '↗'}</span>
+              <span className="search-result-type">{result.document_type === 'character' ? '☺' : result.document_type === 'social_post' ? '✎' : '↗'}</span>
               <span><strong>{result.title}</strong><small>{result.subtitle || result.section}</small></span>
-              <em>{result.document_type}</em>
+              <em>{result.document_type.replaceAll('_', ' ')}</em>
             </button>
           ))}
         </div>
