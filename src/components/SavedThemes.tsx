@@ -92,7 +92,7 @@ export function SavedThemes({ onSearch, onNotifications, unreadCount }: Props) {
 
     setLoading(false)
     if (profileResult.error || presetResult.error) {
-      setError(profileResult.error?.message || presetResult.error?.message || 'Saved Themes could not be loaded.')
+      setError(profileResult.error?.message || presetResult.error?.message || 'Saved page presets could not be loaded.')
       return
     }
 
@@ -203,7 +203,7 @@ export function SavedThemes({ onSearch, onNotifications, unreadCount }: Props) {
     <main className="content-area saved-themes-page">
       <ShellTopbar
         eyebrow="PROFILE"
-        title="Saved Themes"
+        title="Saved Page Presets"
         onSearch={onSearch}
         onNotifications={onNotifications}
         unreadCount={unreadCount}
@@ -261,11 +261,11 @@ export function SavedThemes({ onSearch, onNotifications, unreadCount }: Props) {
         </section>
 
         <section className="theme-library-list">
-          <header><div><span className="eyebrow">SAVED PAGE PRESETS</span><h2>Your themes</h2></div><span>{presets.length}</span></header>
+          <header><div><span className="eyebrow">SAVED PAGE PRESETS</span><h2>Your page presets</h2></div><span>{presets.length}</span></header>
           {loading ? (
-            <div className="studio-loading">Loading saved themes…</div>
+            <div className="studio-loading">Loading saved page presets…</div>
           ) : presets.length === 0 ? (
-            <div className="theme-library-empty"><strong>No saved themes yet.</strong><span>Save the current draft to create your first reusable whole-page preset.</span></div>
+            <div className="theme-library-empty"><strong>No saved page presets yet.</strong><span>Save the current draft to create your first reusable whole-page preset.</span></div>
           ) : (
             <div className="theme-preset-grid">
               {presets.map((preset) => {
