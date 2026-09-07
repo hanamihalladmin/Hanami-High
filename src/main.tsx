@@ -21,6 +21,7 @@ import './styles/messages.css'
 import './styles/academics.css'
 import './styles/campus.css'
 import './styles/utilities.css'
+import './styles/rewards.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
