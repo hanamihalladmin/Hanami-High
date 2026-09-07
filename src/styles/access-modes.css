@@ -1,0 +1,45 @@
+.login-choice-stack {
+  display: grid;
+  gap: 8px;
+}
+
+.member-login-button {
+  background: #5865f2;
+  border-color: #3f4cad;
+}
+
+.owner-login-button {
+  background: var(--navy-950);
+  border-color: var(--navy-950);
+}
+
+.administrator-login-button {
+  background: var(--sage-700);
+  border-color: var(--sage-700);
+}
+
+.login-access-note {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-dark);
+  background: #f5f1e8;
+  text-align: left;
+  font-size: 10px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.login-access-note strong {
+  color: var(--navy-900);
+}
+
+.administrator-mode-banner {
+  border-color: var(--sage-700);
+  background: rgba(111, 138, 121, .12);
+}
+
+.administrator-screen .identity-titlebar {
+  border-bottom-color: var(--sage-700);
+}
