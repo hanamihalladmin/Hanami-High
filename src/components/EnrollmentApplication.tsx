@@ -216,6 +216,13 @@ export function EnrollmentApplication({ character, application, onClose }: Enrol
     && draft.deletionAck
   ), [draft])
 
+  async function saveAndExit() {
+    const saved = await saveDraft()
+    if (!saved) return
+    await refreshIdentity()
+    onClose()
+  }
+
   async function submitApplication() {
     const client = supabase
     if (!client || !requiredComplete) return
@@ -283,7 +290,7 @@ export function EnrollmentApplication({ character, application, onClose }: Enrol
       <section className="identity-window enrollment-window">
         <header className="identity-titlebar">
           <span>HANAMI HIGH · STUDENT ENROLLMENT</span>
-          <button type="button" onClick={onClose}>Save & Exit</button>
+          <button type="button" disabled={saving} onClick={() => void saveAndExit()}>{saving ? 'Saving…' : 'Save & Exit'}</button>
         </header>
 
         <div className="enrollment-layout">
