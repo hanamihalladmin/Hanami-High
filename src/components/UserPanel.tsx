@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { savedPresence, presenceStorageKey, type HanamiPresenceStatus } from '../hooks/usePresenceHeartbeat'
 import { useIdentity } from '../state/IdentityContext'
 import type { HanamiCharacter } from '../types/database'
@@ -39,6 +39,10 @@ export function UserPanel() {
   } = useIdentity()
 
   const [presence, setPresence] = useState<HanamiPresenceStatus>(() => activeCharacter ? savedPresence(activeCharacter.id) : 'online')
+
+  useEffect(() => {
+    if (activeCharacter) setPresence(savedPresence(activeCharacter.id))
+  }, [activeCharacter?.id])
 
   if (!activeCharacter) return null
 
