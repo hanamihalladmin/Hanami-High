@@ -26,10 +26,6 @@ import './styles/rewards.css'
 import './styles/settings.css'
 import './styles/owner-operations.css'
 import './styles/access-modes.css'
-import './styles/discord-shell.css'
-import './styles/discord-profile-studio.css'
-import './styles/discord-profile-exact.css'
-import './styles/discord-final-polish.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
