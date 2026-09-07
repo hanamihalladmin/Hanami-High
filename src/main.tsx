@@ -5,6 +5,7 @@ import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
 import './styles/global.css'
 import './styles/identity.css'
+import './styles/enrollment.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
