@@ -79,7 +79,160 @@ export type Database = {
           slot_no: number
           updated_at?: string
         }
-        Update: Partial<Database['public']['Tables']['characters']['Insert']>
+        Update: {
+          account_id?: string
+          character_kind?: string
+          character_state?: string
+          created_at?: string
+          display_name?: string | null
+          first_name?: string | null
+          handle?: string | null
+          id?: string
+          last_name?: string | null
+          orientation_completed_at?: string | null
+          promoted_to_student_at?: string | null
+          school_role?: string | null
+          slot_no?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      student_applications: {
+        Row: {
+          acceptance_letter_opened_at: string | null
+          accepted_at: string | null
+          additional_notes: string | null
+          age: number | null
+          appearance_description: string | null
+          applicant_account_id: string
+          attendance_reason: string | null
+          background: string | null
+          birth_date: string | null
+          character_id: string
+          character_limit_ack: boolean
+          club_interests: string[]
+          created_at: string
+          deletion_ack: boolean
+          dislikes: string | null
+          distinguishing_features: string | null
+          elective_preference: string | null
+          family_information: string | null
+          height_cm: number | null
+          hobbies: string | null
+          likes: string | null
+          nickname: string | null
+          personality: string | null
+          pronouns: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          rules_read: boolean
+          school_year: number | null
+          serious_rp_ack: boolean
+          status: string
+          strengths: string | null
+          submitted_at: string | null
+          updated_at: string
+          weaknesses: string | null
+        }
+        Insert: {
+          character_id: string
+          applicant_account_id: string
+          acceptance_letter_opened_at?: string | null
+          accepted_at?: string | null
+          additional_notes?: string | null
+          age?: number | null
+          appearance_description?: string | null
+          attendance_reason?: string | null
+          background?: string | null
+          birth_date?: string | null
+          character_limit_ack?: boolean
+          club_interests?: string[]
+          created_at?: string
+          deletion_ack?: boolean
+          dislikes?: string | null
+          distinguishing_features?: string | null
+          elective_preference?: string | null
+          family_information?: string | null
+          height_cm?: number | null
+          hobbies?: string | null
+          likes?: string | null
+          nickname?: string | null
+          personality?: string | null
+          pronouns?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          rules_read?: boolean
+          school_year?: number | null
+          serious_rp_ack?: boolean
+          status?: string
+          strengths?: string | null
+          submitted_at?: string | null
+          updated_at?: string
+          weaknesses?: string | null
+        }
+        Update: {
+          acceptance_letter_opened_at?: string | null
+          accepted_at?: string | null
+          additional_notes?: string | null
+          age?: number | null
+          appearance_description?: string | null
+          applicant_account_id?: string
+          attendance_reason?: string | null
+          background?: string | null
+          birth_date?: string | null
+          character_id?: string
+          character_limit_ack?: boolean
+          club_interests?: string[]
+          created_at?: string
+          deletion_ack?: boolean
+          dislikes?: string | null
+          distinguishing_features?: string | null
+          elective_preference?: string | null
+          family_information?: string | null
+          height_cm?: number | null
+          hobbies?: string | null
+          likes?: string | null
+          nickname?: string | null
+          personality?: string | null
+          pronouns?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          rules_read?: boolean
+          school_year?: number | null
+          serious_rp_ack?: boolean
+          status?: string
+          strengths?: string | null
+          submitted_at?: string | null
+          updated_at?: string
+          weaknesses?: string | null
+        }
+        Relationships: []
+      }
+      application_reviews: {
+        Row: {
+          character_id: string
+          created_at: string
+          decision: string
+          id: string
+          message: string
+          reviewer_account_id: string
+        }
+        Insert: {
+          character_id: string
+          decision: string
+          message: string
+          reviewer_account_id: string
+          id?: string
+          created_at?: string
+        }
+        Update: {
+          character_id?: string
+          decision?: string
+          message?: string
+          reviewer_account_id?: string
+          id?: string
+          created_at?: string
+        }
         Relationships: []
       }
     }
@@ -97,7 +250,19 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: { code: string }[]
       }
+      has_capability: {
+        Args: { p_capability: string }
+        Returns: boolean
+      }
+      mark_acceptance_letter_opened: {
+        Args: { p_character_id: string }
+        Returns: string
+      }
       set_active_character: {
+        Args: { p_character_id: string }
+        Returns: string
+      }
+      submit_student_application: {
         Args: { p_character_id: string }
         Returns: string
       }
@@ -109,3 +274,6 @@ export type Database = {
 
 export type HanamiAccount = Database['public']['Tables']['accounts']['Row']
 export type HanamiCharacter = Database['public']['Tables']['characters']['Row']
+export type StudentApplication = Database['public']['Tables']['student_applications']['Row']
+export type StudentApplicationUpdate = Database['public']['Tables']['student_applications']['Update']
+export type ApplicationReview = Database['public']['Tables']['application_reviews']['Row']
