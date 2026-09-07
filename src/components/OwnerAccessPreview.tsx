@@ -1,9 +1,14 @@
+import { useState } from 'react'
 import { ApplicationReviewPanel } from './ApplicationReviewPanel'
 import { NewStudentManagementPanel } from './NewStudentManagementPanel'
+import { OwnerOperationsPanel } from './OwnerOperationsPanel'
 import { useIdentity } from '../state/IdentityContext'
+
+type OwnerWorkspace = 'admissions' | 'new-students' | 'operations'
 
 export function OwnerAccessPreview() {
   const { account, characters, capabilities, exitOwnerMode, signOut } = useIdentity()
+  const [workspace, setWorkspace] = useState<OwnerWorkspace>('operations')
 
   return (
     <main className="identity-screen owner-screen">
@@ -15,7 +20,7 @@ export function OwnerAccessPreview() {
         <div className="identity-body owner-body">
           <div className="owner-mode-banner">
             <strong>OWNER VIEW MODE</strong>
-            <span>You are operating as the Hanami account owner, not as an RP character.</span>
+            <span>You are operating as the Hanami account owner, not as an RP character. Portal previews are read-only and clearly labeled.</span>
           </div>
 
           <div className="owner-summary-grid">
@@ -25,31 +30,28 @@ export function OwnerAccessPreview() {
               <small>{account?.account_state || 'active'}</small>
             </article>
             <article>
-              <span>CHARACTERS</span>
+              <span>OWN CHARACTERS</span>
               <strong>{characters.length} / 2</strong>
-              <small>Owner access is independent of these slots.</small>
+              <small>Owner access is independent of character slots.</small>
             </article>
             <article>
               <span>CAPABILITIES</span>
               <strong>{capabilities.length}</strong>
-              <small>Loaded from account-level platform roles.</small>
+              <small>Account-level Owner permissions loaded from Supabase.</small>
             </article>
           </div>
 
-          <ApplicationReviewPanel />
-          <NewStudentManagementPanel />
+          <nav className="owner-workspace-tabs" aria-label="Owner Console workspaces">
+            <button className={workspace === 'admissions' ? 'active' : ''} onClick={() => setWorkspace('admissions')}>Admissions</button>
+            <button className={workspace === 'new-students' ? 'active' : ''} onClick={() => setWorkspace('new-students')}>New Students</button>
+            <button className={workspace === 'operations' ? 'active' : ''} onClick={() => setWorkspace('operations')}>Operations</button>
+          </nav>
 
-          <section className="owner-console-placeholder">
-            <span className="eyebrow">OWNER FOUNDATION</span>
-            <h1>More Owner modules will plug into this account mode.</h1>
-            <p>
-              Admissions and New Student promotion are now functional here. Portal preview, moderation, economy,
-              school configuration, and the rest of the Owner Console will be added in their implementation phases
-              without ever attaching Owner authority to an OC.
-            </p>
-          </section>
+          {workspace === 'admissions' && <ApplicationReviewPanel />}
+          {workspace === 'new-students' && <NewStudentManagementPanel />}
+          {workspace === 'operations' && <OwnerOperationsPanel />}
 
-          <div className="identity-actions">
+          <div className="identity-actions owner-exit-actions">
             <button className="primary-action" type="button" onClick={exitOwnerMode}>Return to Characters</button>
             <button className="secondary-action" type="button" onClick={() => void signOut()}>Sign out</button>
           </div>
