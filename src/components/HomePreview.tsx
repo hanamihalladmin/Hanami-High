@@ -1,4 +1,5 @@
 import { OrientationPanel } from './OrientationPanel'
+import { ShellTopbar } from './ShellTopbar'
 import { useIdentity } from '../state/IdentityContext'
 
 function roleLabel(role: string | null) {
@@ -9,7 +10,13 @@ function roleLabel(role: string | null) {
     .join(' ')
 }
 
-export function HomePreview() {
+type Props = {
+  onSearch: () => void
+  onNotifications: () => void
+  unreadCount: number
+}
+
+export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
   const { activeCharacter } = useIdentity()
   if (!activeCharacter) return null
 
@@ -19,14 +26,13 @@ export function HomePreview() {
 
   return (
     <main className="content-area">
-      <div className="page-topbar">
-        <div>
-          <span className="eyebrow">HANAMI HOME</span>
-          <h1>Good afternoon, {firstName}.</h1>
-        </div>
-        <div className="global-search">⌕ <span>Search Hanami High</span><kbd>⌘ K</kbd></div>
-        <button className="notification-button" aria-label="Notifications">♢<span>3</span></button>
-      </div>
+      <ShellTopbar
+        eyebrow="HANAMI HOME"
+        title={`Good afternoon, ${firstName}.`}
+        onSearch={onSearch}
+        onNotifications={onNotifications}
+        unreadCount={unreadCount}
+      />
 
       <div className="date-strip">
         <div><span>TUESDAY</span><strong>April 18, 2006</strong></div>
