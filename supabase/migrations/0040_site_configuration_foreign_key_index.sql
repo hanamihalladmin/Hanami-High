@@ -1,0 +1,1 @@
+create index site_configuration_updated_by_account_idx on public.site_configuration(updated_by_account_id) where updated_by_account_id is not null;
