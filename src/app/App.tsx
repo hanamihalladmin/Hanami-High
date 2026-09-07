@@ -14,6 +14,7 @@ import { ShellPage } from '../components/ShellPage'
 import { ProfileStudio } from '../components/ProfileStudio'
 import { ProfileView } from '../components/ProfileView'
 import { SavedThemes } from '../components/SavedThemes'
+import { GuestbookPage } from '../components/GuestbookPage'
 import { FriendsPage } from '../components/FriendsPage'
 import { TopFriendsPage } from '../components/TopFriendsPage'
 import { SocialPostsPage } from '../components/SocialPostsPage'
@@ -154,6 +155,9 @@ export function App() {
     }
     if (route.section === 'profile' && route.subsection === 'saved-themes') {
       return <SavedThemes {...shared} />
+    }
+    if (route.section === 'profile' && route.subsection === 'guestbook') {
+      return <GuestbookPage targetEntryId={route.targetId} {...shared} />
     }
     if (route.section === 'social' && route.subsection === 'friends') {
       return <FriendsPage {...shared} />
