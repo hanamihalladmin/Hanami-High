@@ -29,6 +29,15 @@ function metadataObject(value: Json) {
     : {}
 }
 
+const conversationNotificationKinds = new Set([
+  'message_request',
+  'direct_message',
+  'message_request_accepted',
+  'message_request_declined',
+  'group_message',
+  'group_added',
+])
+
 function targetIdFromNotification(notification: HanamiNotification) {
   const metadata = metadataObject(notification.metadata)
   if (notification.kind === 'post_comment' && typeof metadata.post_id === 'string') {
@@ -36,6 +45,9 @@ function targetIdFromNotification(notification: HanamiNotification) {
   }
   if (notification.kind === 'guestbook_entry' && typeof metadata.entry_id === 'string') {
     return metadata.entry_id
+  }
+  if (conversationNotificationKinds.has(notification.kind) && typeof metadata.conversation_id === 'string') {
+    return metadata.conversation_id
   }
   return undefined
 }
