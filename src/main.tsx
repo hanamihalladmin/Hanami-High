@@ -13,6 +13,7 @@ import './styles/profile-studio-enhancements.css'
 import './styles/saved-themes.css'
 import './styles/friends.css'
 import './styles/top-friends.css'
+import './styles/social-posts.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
