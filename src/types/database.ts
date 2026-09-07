@@ -128,6 +128,24 @@ export type Database = {
         Update: Partial<Database['public']['Tables']['friendships']['Insert']>
         Relationships: []
       }
+      top_friends: {
+        Row: {
+          character_id: string
+          friend_character_id: string
+          position: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          character_id: string
+          friend_character_id: string
+          position: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['top_friends']['Insert']>
+        Relationships: []
+      }
       profile_widgets: {
         Row: {
           id: string
@@ -516,6 +534,10 @@ export type Database = {
         Args: { p_friendship_id: string; p_accept: boolean }
         Returns: string
       }
+      set_top_friends: {
+        Args: { p_friend_character_ids: string[] }
+        Returns: number
+      }
       search_hanami: {
         Args: { p_query: string; p_limit?: number }
         Returns: {
@@ -547,6 +569,7 @@ export type HanamiAccount = Database['public']['Tables']['accounts']['Row']
 export type HanamiCharacter = Database['public']['Tables']['characters']['Row']
 export type CharacterProfile = Database['public']['Tables']['character_profiles']['Row']
 export type Friendship = Database['public']['Tables']['friendships']['Row']
+export type TopFriend = Database['public']['Tables']['top_friends']['Row']
 export type ProfileWidget = Database['public']['Tables']['profile_widgets']['Row']
 export type ProfileThemePreset = Database['public']['Tables']['profile_theme_presets']['Row']
 export type PublishedCharacterProfile = Database['public']['Tables']['published_character_profiles']['Row']
