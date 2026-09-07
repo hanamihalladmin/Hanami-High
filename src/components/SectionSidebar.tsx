@@ -16,17 +16,24 @@ export function SectionSidebar({ active, subsection, profileTitle, onSelect, onS
   return (
     <aside className="section-sidebar">
       <header className="section-header">
-        <span className="eyebrow">{section.eyebrow}</span>
-        <strong>{title}</strong>
-        <small>Hanami High School Network · 2006</small>
+        <div>
+          <strong>{active === 'profile' ? title : 'Hanami High'}</strong>
+          <small>{active === 'profile' ? 'Profile space' : `${section.label} · 2006`}</small>
+        </div>
+        <button type="button" aria-label="Section menu" title="Section menu">⌄</button>
       </header>
-      <div className="section-decoration-strip" aria-hidden="true">❀ · ✿ · ❁ · ✿ · ❀</div>
+
       <button className="sidebar-search" type="button" onClick={onSearch}>
-        <span aria-hidden="true">⌕</span>
-        <span>search hanami...</span>
-        <kbd>⌘ K</kbd>
+        <span>Find or start a search</span>
+        <kbd>⌘K</kbd>
       </button>
-      <div className="sidebar-nav-label">navigation ✿</div>
+
+      <div className="sidebar-channel-category">
+        <span>⌄</span>
+        <strong>{section.eyebrow}</strong>
+        <button type="button" aria-label={`Add ${section.label} shortcut`} title="Hanami navigation is managed by the school">＋</button>
+      </div>
+
       <nav className="section-links" aria-label={`${title} navigation`}>
         {section.subsections.map((link) => (
           <button
@@ -34,16 +41,21 @@ export function SectionSidebar({ active, subsection, profileTitle, onSelect, onS
             key={link.id}
             type="button"
             onClick={() => onSelect(link.id)}
+            title={link.description}
           >
-            <span className="section-link-flower" aria-hidden="true">❀</span>
+            <span className="section-channel-hash" aria-hidden="true">#</span>
             <span>{link.label}</span>
           </button>
         ))}
       </nav>
-      <div className="sidebar-mini-banner">flowers bloom here ♡</div>
-      <div className="sidebar-note">
+
+      <div className="sidebar-channel-category secondary">
+        <span>⌄</span>
+        <strong>HANAMI NETWORK</strong>
+      </div>
+      <div className="sidebar-network-channel">
         <span className="status-dot online" />
-        <div><strong>Hanami Network</strong><small>campus access active</small></div>
+        <div><strong>Campus online</strong><small>Hanami High School · 2006</small></div>
       </div>
     </aside>
   )
