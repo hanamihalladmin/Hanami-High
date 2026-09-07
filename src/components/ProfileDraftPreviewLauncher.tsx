@@ -19,7 +19,7 @@ export function ProfileDraftPreviewLauncher() {
   if (!activeCharacter || !hash.startsWith('#/profile/profile-studio')) return null
 
   return <>
-    {!open && <button className="profile-draft-preview-launcher" type="button" onClick={() => setOpen(true)}>◉ Preview Draft</button>}
+    {!open && <button className="profile-draft-preview-launcher" type="button" onClick={() => setOpen(true)}>◉ Preview Profile</button>}
     {open && <ProfileDraftPreview onClose={() => setOpen(false)}/>} 
   </>
 }
