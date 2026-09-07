@@ -16,9 +16,13 @@ function characterName(character: NonNullable<ReturnType<typeof useIdentity>['ac
 function roleLabel(character: NonNullable<ReturnType<typeof useIdentity>['activeCharacter']>) {
   if (character.character_kind === 'faculty' && character.school_role === 'new_faculty') return 'New Teacher'
   if (character.character_kind === 'faculty' && (character.school_role === 'faculty' || character.school_role === null)) return 'Teacher'
-  if (character.school_role === 'administration') return 'Staff (future portal)'
+  if (character.school_role === 'administration') return 'Staff'
   if (!character.school_role) return character.character_kind === 'student' ? 'Student' : 'Applicant'
   return character.school_role.split('_').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ')
+}
+
+function initials(value: string) {
+  return value.split(/\s+/).filter(Boolean).map((part) => part[0]).join('').slice(0, 2).toUpperCase() || 'H'
 }
 
 export function ContextSidebar({ route, onSelect }: Props) {
@@ -26,51 +30,50 @@ export function ContextSidebar({ route, onSelect }: Props) {
   const section = sectionById[route.section]
   const current = section.subsections.find((item) => item.id === route.subsection) ?? section.subsections[0]
   const nearby = section.subsections.filter((item) => item.id !== current.id).slice(0, 4)
+  const activeName = activeCharacter ? characterName(activeCharacter) : ''
 
   return (
     <aside className="context-sidebar">
-      <div className="context-top-stamp">❀ hanami side notes ❀</div>
-      <section>
-        <h3>YOU ARE HERE</h3>
-        <article className="context-current-card">
-          <span>{section.label}</span>
-          <strong>{current.label}</strong>
-          <small>{current.description}</small>
+      <section className="context-activity-section">
+        <h3>ACTIVITY</h3>
+        <article className="context-activity-card">
+          <div className="context-activity-art">花</div>
+          <div>
+            <strong>{current.label}</strong>
+            <span>{section.label}</span>
+            <small>{current.description}</small>
+          </div>
         </article>
       </section>
 
+      {activeCharacter && (
+        <section>
+          <h3>ONLINE — 1</h3>
+          <a className="context-member-row" href={`#/profile/view-profile/${encodeURIComponent(activeCharacter.id)}`}>
+            <span className="context-member-avatar">{initials(activeName)}<i /></span>
+            <span><strong>{activeName}</strong><small>{roleLabel(activeCharacter)}</small></span>
+          </a>
+        </section>
+      )}
+
       {nearby.length > 0 && (
         <section>
-          <h3>IN THIS SECTION</h3>
+          <h3>QUICK ACCESS</h3>
           <div className="context-link-list">
             {nearby.map((item) => (
-              <button type="button" key={item.id} onClick={() => onSelect(item.id)}>
-                <span aria-hidden="true">✿</span><strong>{item.label}</strong><span>→</span>
+              <button type="button" key={item.id} onClick={() => onSelect(item.id)} title={item.description}>
+                <span aria-hidden="true">#</span><strong>{item.label}</strong>
               </button>
             ))}
           </div>
         </section>
       )}
 
-      {activeCharacter && (
-        <section>
-          <h3>CURRENT IDENTITY</h3>
-          <div className="context-identity-card">
-            <div className="mini-avatar">{characterName(activeCharacter).slice(0, 2).toUpperCase()}</div>
-            <div>
-              <strong>{characterName(activeCharacter)}</strong>
-              <small>{roleLabel(activeCharacter)} · Slot {activeCharacter.slot_no}</small>
-            </div>
-          </div>
-        </section>
-      )}
-
-      <section className="context-linkme">
-        <h3>LINK HANAMI</h3>
-        <div className="context-linkme-badge"><span>HANAMI HIGH</span><small>✿ bloom online ✿</small></div>
-        <code>&lt;a href="#/home"&gt;hanami&lt;/a&gt;</code>
+      <section className="context-network-status">
+        <h3>HANAMI HIGH</h3>
+        <div><span className="status-dot online" /><strong>Campus Network</strong></div>
+        <small>School year 2006 · connected</small>
       </section>
-      <div className="context-footer-flowers" aria-hidden="true">❀ ❁ ✿ ❀ ❁ ✿</div>
     </aside>
   )
 }
