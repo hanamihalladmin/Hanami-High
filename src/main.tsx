@@ -23,6 +23,7 @@ import './styles/campus.css'
 import './styles/utilities.css'
 import './styles/rewards.css'
 import './styles/settings.css'
+import './styles/owner-operations.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
