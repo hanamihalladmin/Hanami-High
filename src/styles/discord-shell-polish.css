@@ -1,0 +1,26 @@
+.app-shell .section-header-chevron {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  color: #b5bac1;
+  font-size: 14px;
+}
+
+.app-shell .sidebar-channel-plus {
+  text-align: center;
+  color: #949ba4;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.app-shell .page-header-icon {
+  cursor: default;
+  user-select: none;
+}
+
+.app-shell .page-header-icon:hover {
+  background: transparent;
+  color: #b5bac1;
+}
