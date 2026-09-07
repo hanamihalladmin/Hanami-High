@@ -33,17 +33,7 @@ export type Database = {
           id: string
           updated_at?: string
         }
-        Update: {
-          account_state?: string
-          active_character_id?: string | null
-          created_at?: string
-          discord_avatar_url?: string | null
-          discord_user_id?: string | null
-          discord_username?: string | null
-          first_enrollment_reward_claimed_at?: string | null
-          id?: string
-          updated_at?: string
-        }
+        Update: Partial<Database['public']['Tables']['accounts']['Insert']>
         Relationships: []
       }
       characters: {
@@ -79,22 +69,133 @@ export type Database = {
           slot_no: number
           updated_at?: string
         }
-        Update: {
-          account_id?: string
-          character_kind?: string
-          character_state?: string
+        Update: Partial<Database['public']['Tables']['characters']['Insert']>
+        Relationships: []
+      }
+      character_profiles: {
+        Row: {
+          avatar_path: string | null
+          banner_path: string | null
+          bio: string | null
+          character_id: string
+          created_at: string
+          custom_status: string | null
+          guestbook_visibility: string
+          profile_visibility: string
+          pronouns: string | null
+          published_at: string | null
+          theme_draft: Json
+          theme_published: Json
+          updated_at: string
+        }
+        Insert: {
+          character_id: string
+          avatar_path?: string | null
+          banner_path?: string | null
+          bio?: string | null
           created_at?: string
-          display_name?: string | null
-          first_name?: string | null
-          handle?: string | null
-          id?: string
-          last_name?: string | null
-          orientation_completed_at?: string | null
-          promoted_to_student_at?: string | null
-          school_role?: string | null
-          slot_no?: number
+          custom_status?: string | null
+          guestbook_visibility?: string
+          profile_visibility?: string
+          pronouns?: string | null
+          published_at?: string | null
+          theme_draft?: Json
+          theme_published?: Json
           updated_at?: string
         }
+        Update: Partial<Database['public']['Tables']['character_profiles']['Insert']>
+        Relationships: []
+      }
+      profile_widgets: {
+        Row: {
+          id: string
+          character_id: string
+          widget_type: string
+          title: string | null
+          config: Json
+          x: number
+          y: number
+          width: number
+          height: number
+          z_index: number
+          is_visible: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          character_id: string
+          widget_type: string
+          title?: string | null
+          config?: Json
+          x?: number
+          y?: number
+          width?: number
+          height?: number
+          z_index?: number
+          is_visible?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['profile_widgets']['Insert']>
+        Relationships: []
+      }
+      published_character_profiles: {
+        Row: {
+          character_id: string
+          avatar_path: string | null
+          banner_path: string | null
+          bio: string | null
+          custom_status: string | null
+          pronouns: string | null
+          profile_visibility: string
+          guestbook_visibility: string
+          theme: Json
+          published_at: string
+        }
+        Insert: {
+          character_id: string
+          avatar_path?: string | null
+          banner_path?: string | null
+          bio?: string | null
+          custom_status?: string | null
+          pronouns?: string | null
+          profile_visibility: string
+          guestbook_visibility: string
+          theme?: Json
+          published_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['published_character_profiles']['Insert']>
+        Relationships: []
+      }
+      published_profile_widgets: {
+        Row: {
+          id: string
+          character_id: string
+          widget_type: string
+          title: string | null
+          config: Json
+          x: number
+          y: number
+          width: number
+          height: number
+          z_index: number
+          published_at: string
+        }
+        Insert: {
+          id: string
+          character_id: string
+          widget_type: string
+          title?: string | null
+          config?: Json
+          x: number
+          y: number
+          width: number
+          height: number
+          z_index?: number
+          published_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['published_profile_widgets']['Insert']>
         Relationships: []
       }
       student_applications: {
@@ -349,6 +450,10 @@ export type Database = {
         Args: { p_character_id: string }
         Returns: string
       }
+      publish_character_profile: {
+        Args: { p_character_id: string }
+        Returns: string
+      }
       search_hanami: {
         Args: { p_query: string; p_limit?: number }
         Returns: {
@@ -378,6 +483,10 @@ export type Database = {
 
 export type HanamiAccount = Database['public']['Tables']['accounts']['Row']
 export type HanamiCharacter = Database['public']['Tables']['characters']['Row']
+export type CharacterProfile = Database['public']['Tables']['character_profiles']['Row']
+export type ProfileWidget = Database['public']['Tables']['profile_widgets']['Row']
+export type PublishedCharacterProfile = Database['public']['Tables']['published_character_profiles']['Row']
+export type PublishedProfileWidget = Database['public']['Tables']['published_profile_widgets']['Row']
 export type StudentApplication = Database['public']['Tables']['student_applications']['Row']
 export type StudentApplicationUpdate = Database['public']['Tables']['student_applications']['Update']
 export type ApplicationReview = Database['public']['Tables']['application_reviews']['Row']
