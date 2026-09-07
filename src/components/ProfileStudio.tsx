@@ -104,6 +104,7 @@ function messageFromError(error: unknown) {
 export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props) {
   const { activeCharacter, account, refreshIdentity } = useIdentity()
   const canvasRef = useRef<HTMLDivElement>(null)
+  const themeDirtyRef = useRef(false)
   const [profile, setProfile] = useState<CharacterProfile | null>(null)
   const [widgets, setWidgets] = useState<ProfileWidget[]>([])
   const [mediaUrls, setMediaUrls] = useState<Record<string, string>>({})
@@ -155,6 +156,7 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
     setWidgets(nextWidgets)
     setLastPublished(profileResult.data.published_at)
     setSaveLabel('Draft loaded')
+    themeDirtyRef.current = false
     void hydrateMedia(profileResult.data, nextWidgets)
   }, [activeCharacter, hydrateMedia])
 
@@ -162,12 +164,71 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
     void load()
   }, [load])
 
+  useEffect(() => {
+    const client = supabase
+    if (!client || !activeCharacter) return
+
+    const syncTheme = (event: Event) => {
+      const detail = (event as CustomEvent<{ characterId?: string }>).detail
+      if (detail?.characterId && detail.characterId !== activeCharacter.id) return
+      void (async () => {
+        const result = await client.from('character_profiles').select('theme_draft').eq('character_id', activeCharacter.id).single()
+        if (result.error) return
+        setProfile((current) => current ? { ...current, theme_draft: result.data.theme_draft } : current)
+        themeDirtyRef.current = false
+        setSaveLabel('Theme tools synced')
+      })()
+    }
+
+    const syncWidgets = (event: Event) => {
+      const detail = (event as CustomEvent<{ characterId?: string }>).detail
+      if (detail?.characterId && detail.characterId !== activeCharacter.id) return
+      void (async () => {
+        const result = await client.from('profile_widgets').select('*').eq('character_id', activeCharacter.id).order('y').order('x')
+        if (result.error) return
+        const nextWidgets = result.data ?? []
+        setWidgets(nextWidgets)
+        setSaveLabel('Widget library synced')
+        setProfile((current) => {
+          if (current) void hydrateMedia(current, nextWidgets)
+          return current
+        })
+      })()
+    }
+
+    window.addEventListener('hanami:profile-theme-changed', syncTheme)
+    window.addEventListener('hanami:profile-widgets-changed', syncWidgets)
+    return () => {
+      window.removeEventListener('hanami:profile-theme-changed', syncTheme)
+      window.removeEventListener('hanami:profile-widgets-changed', syncWidgets)
+    }
+  }, [activeCharacter, hydrateMedia])
+
   async function saveAll(quiet = false) {
     const client = supabase
     if (!client || !activeCharacter || !profile) return false
     setSaving(true)
     if (!quiet) setSaveLabel('Saving…')
     setError(null)
+
+    const remoteThemeResult = await client
+      .from('character_profiles')
+      .select('theme_draft')
+      .eq('character_id', activeCharacter.id)
+      .single()
+
+    if (remoteThemeResult.error) {
+      setSaving(false)
+      setError(remoteThemeResult.error.message)
+      setSaveLabel('Save failed')
+      return false
+    }
+
+    const remoteTheme = configObject(remoteThemeResult.data.theme_draft)
+    const localCoreTheme = normalizeTheme(profile.theme_draft)
+    const themeDraft = themeDirtyRef.current
+      ? { ...remoteTheme, ...localCoreTheme } as Json
+      : remoteThemeResult.data.theme_draft
 
     const profileResult = await client
       .from('character_profiles')
@@ -179,7 +240,7 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
         pronouns: profile.pronouns,
         profile_visibility: profile.profile_visibility,
         guestbook_visibility: profile.guestbook_visibility,
-        theme_draft: profile.theme_draft,
+        theme_draft: themeDraft,
         updated_at: new Date().toISOString(),
       })
       .eq('character_id', activeCharacter.id)
@@ -213,6 +274,8 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
       setSaveLabel('Save failed')
       return false
     }
+    themeDirtyRef.current = false
+    setProfile((current) => current ? { ...current, theme_draft: themeDraft } : current)
     setSaveLabel(quiet ? 'Autosaved' : 'Saved')
     return true
   }
@@ -234,7 +297,8 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
 
   function patchTheme<K extends keyof ThemeDraft>(key: K, value: ThemeDraft[K]) {
     if (!profile) return
-    patchProfile('theme_draft', { ...normalizeTheme(profile.theme_draft), [key]: value })
+    themeDirtyRef.current = true
+    patchProfile('theme_draft', { ...configObject(profile.theme_draft), ...normalizeTheme(profile.theme_draft), [key]: value })
   }
 
   function patchWidget(id: string, patch: Partial<ProfileWidget>, autosave = true) {
@@ -541,7 +605,7 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
                   </button>
                 ))}
               </div>
-              <small>{widgets.length} / 40 widgets</small>
+              <small>{widgets.length} / 40 widgets · More modules are in the floating Widget Library.</small>
             </section>
           </aside>
 
