@@ -1,0 +1,345 @@
+/*
+ * Hanami High early-web architecture.
+ * This is the default visual grammar for the school network itself.
+ * Messages and academic communication rooms deliberately override this file
+ * with their Discord-room styles later in the cascade.
+ */
+
+:root {
+  --retro-pink-line: color-mix(in srgb, var(--pink-300) 76%, white);
+  --retro-sage-line: color-mix(in srgb, var(--sage-500) 58%, white);
+  --retro-gloss: linear-gradient(180deg, rgba(255,255,255,.99) 0%, rgba(255,255,255,.96) 42%, color-mix(in srgb,var(--sage-100) 72%,white) 100%);
+  --retro-pink-gloss: linear-gradient(180deg, #fff 0%, color-mix(in srgb,var(--pink-100) 72%,white) 54%, color-mix(in srgb,var(--pink-300) 34%,white) 100%);
+  --retro-sage-gloss: linear-gradient(180deg, #fff 0%, color-mix(in srgb,var(--sage-100) 78%,white) 50%, color-mix(in srgb,var(--sage-200) 68%,white) 100%);
+  --retro-inset: inset 0 1px 0 #fff, inset 0 -1px 0 rgba(88,114,95,.08);
+  --retro-shadow: 2px 2px 0 rgba(88,114,95,.12);
+  --rail-width: 86px;
+  --sidebar-width: 226px;
+  --context-width: 238px;
+}
+
+body {
+  background:
+    radial-gradient(circle at 11px 11px, color-mix(in srgb,var(--pink-300) 20%,transparent) 0 1.4px, transparent 1.6px),
+    linear-gradient(rgba(88,114,95,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88,114,95,.035) 1px, transparent 1px),
+    #fbfdfb;
+  background-size: 28px 28px, 20px 20px, 20px 20px, auto;
+}
+
+/* A framed website, not a floating modern app. */
+.app-shell {
+  width: min(100%, 1540px);
+  margin: 0 auto;
+  border-left: 3px double var(--retro-sage-line);
+  border-right: 3px double var(--retro-sage-line);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.95), 0 0 26px rgba(88,114,95,.07);
+  background:
+    linear-gradient(rgba(88,114,95,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88,114,95,.028) 1px, transparent 1px),
+    rgba(255,255,255,.97);
+  background-size: 20px 20px;
+}
+
+/* Left link-button rail, like a 2000s fan/school homepage. */
+.main-rail {
+  padding: 9px 7px;
+  gap: 7px;
+  background:
+    linear-gradient(90deg, transparent 0 7px, rgba(226,127,159,.08) 7px 8px, transparent 8px),
+    var(--retro-gloss);
+  border-right: 3px double var(--retro-pink-line);
+}
+.rail-brand,
+.rail-button {
+  width: 70px;
+  border: 1px solid var(--retro-sage-line);
+  background: var(--retro-gloss);
+  color: var(--sage-700);
+  box-shadow: var(--retro-inset), 1px 1px 0 rgba(88,114,95,.10);
+}
+.rail-brand {
+  min-height: 66px;
+  height: auto;
+  padding: 5px 3px 6px;
+  display: grid;
+  place-items: center;
+  gap: 1px;
+  background: var(--retro-pink-gloss);
+  border: 2px double var(--pink-300);
+}
+.rail-brand-mark { font-family: var(--font-display); font-size: 27px; line-height: 1; }
+.rail-brand small { font-size: 7px; letter-spacing: .14em; color: var(--sage-700); }
+.rail-button {
+  height: 51px;
+  padding: 5px 3px 4px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 3px;
+}
+.rail-button:hover,
+.rail-button.is-active {
+  background: var(--retro-pink-gloss);
+  color: var(--pink-600);
+  border-color: var(--pink-300);
+  box-shadow: inset 3px 0 0 var(--pink-300), var(--retro-inset), 1px 1px 0 rgba(88,114,95,.11);
+}
+.rail-button.is-active::before { display: none; }
+.rail-icon { font-size: 16px; }
+.rail-label { width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 6.5px; font-weight: 800; letter-spacing: .02em; text-transform: lowercase; }
+.rail-mini-label { width: 70px; text-align: center; color: var(--pink-600); font: 700 6.5px/1.2 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; }
+.rail-rule { width: 70px; height: 13px; display: grid; place-items: center; color: var(--pink-500); background: transparent; border-top: 1px dotted var(--pink-300); border-bottom: 1px dotted var(--pink-300); font-size: 8px; }
+.rail-footer-stamp { width: 70px; margin-top: 2px; padding: 5px 2px; border: 1px dashed var(--pink-300); background: rgba(255,255,255,.62); color: var(--muted); text-align: center; font-size: 6px; line-height: 1.45; text-transform: uppercase; }
+
+/* Section navigation becomes an old-web framed sidebar. */
+.sidebar-column {
+  background: linear-gradient(180deg,#fff 0%,color-mix(in srgb,var(--sage-100) 56%,white) 100%);
+  border-right: 3px double var(--retro-sage-line);
+}
+.section-sidebar { padding-bottom: 8px; }
+.section-header {
+  padding: 11px 11px 10px;
+  color: var(--sage-700);
+  background: var(--retro-gloss);
+  border: 0;
+  border-top: 4px double var(--pink-300);
+  border-bottom: 4px double var(--pink-300);
+  text-align: center;
+}
+.section-header::after { display: none!important; }
+.section-header strong { font-size: 17px; color: var(--sage-700); text-shadow: 0 1px 0 #fff; }
+.section-header small { color: var(--muted); font-size: 6.5px; letter-spacing: .04em; }
+.section-header .eyebrow { color: var(--pink-600); }
+.section-decoration-strip { margin: 8px 10px 5px; padding: 4px; border-top: 1px dotted var(--pink-300); border-bottom: 1px dotted var(--pink-300); text-align: center; color: var(--pink-500); font-size: 8px; letter-spacing: .12em; }
+.sidebar-search {
+  width: calc(100% - 20px);
+  margin: 7px 10px 9px;
+  padding: 7px 8px;
+  border: 2px inset color-mix(in srgb,var(--sage-200) 75%,white);
+  background: #fff;
+  box-shadow: inset 0 1px 3px rgba(88,114,95,.06);
+  font-size: 9px;
+}
+.sidebar-nav-label { margin: 0 10px 5px; padding: 3px 6px; background: var(--retro-pink-gloss); border: 1px solid var(--pink-300); color: var(--pink-600); font-size: 7px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.section-links { padding: 0 10px; gap: 4px; }
+.section-links button {
+  min-height: 29px;
+  padding: 5px 7px;
+  display: grid;
+  grid-template-columns: 14px minmax(0,1fr);
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--retro-sage-line);
+  background: var(--retro-gloss);
+  color: var(--sage-700);
+  box-shadow: var(--retro-inset), 1px 1px 0 rgba(88,114,95,.08);
+  font-size: 9px;
+}
+.section-links button:hover { background: var(--retro-sage-gloss); border-color: var(--pink-300); }
+.section-links button.selected {
+  background: var(--retro-pink-gloss);
+  border: 1px solid var(--pink-300);
+  color: var(--pink-600);
+  box-shadow: inset 3px 0 0 var(--pink-500), var(--retro-inset), 1px 1px 0 rgba(88,114,95,.08);
+}
+.section-link-flower { color: var(--pink-500); font-size: 8px; }
+.sidebar-mini-banner { margin: 12px 10px 0; padding: 6px 7px; border: 2px double var(--pink-300); background: linear-gradient(90deg,var(--pink-100),#fff,var(--sage-100)); text-align: center; color: var(--sage-700); font: italic 8px Georgia,serif; }
+.sidebar-note { margin: 10px; padding: 8px; border: 1px dashed var(--retro-sage-line); background: rgba(255,255,255,.7); }
+
+.user-panel {
+  margin: 0 8px 8px;
+  border: 2px double var(--retro-sage-line);
+  background: var(--retro-gloss);
+  box-shadow: var(--retro-inset);
+}
+.avatar-placeholder,.mini-avatar { border: 2px double var(--pink-300); background: var(--retro-pink-gloss); color: var(--sage-700); }
+
+/* Every ordinary page gets a web-banner header. */
+.content-area {
+  padding: 18px 20px 34px;
+  background:
+    radial-gradient(circle at 8px 8px,rgba(226,127,159,.08) 0 1px,transparent 1.2px),
+    rgba(255,255,255,.84);
+  background-size: 22px 22px;
+}
+.page-topbar {
+  grid-template-columns: minmax(0,1fr) minmax(220px,340px) auto;
+  gap: 12px;
+  padding: 0 0 12px;
+  border-bottom: 0;
+  margin-bottom: 12px;
+}
+.page-topbar-banner {
+  grid-column: 1 / -1;
+  min-height: 44px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 4px double var(--pink-300);
+  background:
+    radial-gradient(circle at 14px 50%,rgba(226,127,159,.23) 0 3px,transparent 3.4px),
+    linear-gradient(90deg,var(--pink-100),#fff 42%,var(--sage-100));
+  background-size: 36px 100%, auto;
+  color: var(--sage-700);
+  box-shadow: var(--retro-shadow), var(--retro-inset);
+  font: 700 9px/1.2 Georgia,serif;
+  letter-spacing: .13em;
+}
+.page-topbar-banner small { font-family: var(--font-ui); font-size: 6.5px; color: var(--pink-600); letter-spacing: .05em; text-transform: lowercase; }
+.page-title-block {
+  padding: 8px 10px 7px;
+  border-left: 4px double var(--pink-300);
+  background: rgba(255,255,255,.65);
+}
+.page-title-block h1 { margin: 2px 0 0; color: var(--sage-700); text-shadow: 0 1px 0 #fff; }
+.page-title-divider { margin-top: 3px; color: var(--pink-500); font-size: 7px; letter-spacing: .08em; }
+.global-search {
+  min-height: 37px;
+  border: 2px inset color-mix(in srgb,var(--sage-200) 70%,white);
+  background: #fff;
+  box-shadow: inset 0 1px 3px rgba(88,114,95,.07);
+}
+.notification-button {
+  min-height: 37px;
+  border: 2px outset color-mix(in srgb,var(--pink-300) 50%,white);
+  background: var(--retro-pink-gloss);
+  color: var(--pink-600);
+  box-shadow: var(--retro-inset);
+}
+
+/* Generic early-web module treatment used throughout normal Hanami pages. */
+.panel,
+.shell-module-card,
+.settings-intro,.settings-panel,
+.campus-intro,.campus-panel,.campus-group-card,.campus-stat-grid article,
+.rewards-intro,.boutique-intro,.rewards-panel,.petal-wallet-hero,.earn-grid article,.boutique-card,.achievement-card,.achievement-stat-grid article,
+.rewards-empty,.campus-empty.loading {
+  border: 3px double var(--retro-sage-line)!important;
+  border-radius: 0!important;
+  background: var(--retro-gloss)!important;
+  box-shadow: var(--retro-shadow), var(--retro-inset)!important;
+}
+.panel > header,
+.settings-panel > header,
+.campus-panel > header,
+.rewards-panel > header {
+  background: linear-gradient(180deg,#fff,color-mix(in srgb,var(--sage-100) 68%,white));
+  border-bottom: 1px dotted var(--pink-300)!important;
+}
+.panel h2,.settings-panel h2,.campus-panel h2,.rewards-panel h2,
+.campus-group-card h2,.achievement-card h3 {
+  color: var(--sage-700)!important;
+  font-family: var(--font-display);
+}
+
+/* Inputs, tabs and actions should look like website controls, not app pills. */
+.primary-action,.secondary-action,.text-link,
+.campus-page button:not(.topbar-button),
+.rewards-page button:not(.topbar-button),
+.boutique-page button:not(.topbar-button),
+.settings-page button:not(.topbar-button) {
+  border-radius: 0!important;
+}
+.primary-action {
+  border: 2px outset color-mix(in srgb,var(--pink-300) 70%,white)!important;
+  background: var(--retro-pink-gloss)!important;
+  color: var(--pink-600)!important;
+  box-shadow: var(--retro-inset)!important;
+}
+.secondary-action {
+  border: 2px outset color-mix(in srgb,var(--sage-200) 70%,white)!important;
+  background: var(--retro-sage-gloss)!important;
+  color: var(--sage-700)!important;
+  box-shadow: var(--retro-inset)!important;
+}
+.content-area input:not([type='checkbox']):not([type='radio']):not([type='range']),
+.content-area select,
+.content-area textarea {
+  border-radius: 0!important;
+  border: 2px inset color-mix(in srgb,var(--sage-200) 72%,white)!important;
+  background: #fff!important;
+  box-shadow: inset 0 1px 3px rgba(88,114,95,.05);
+}
+
+/* Boutique keeps its imagery but becomes a collectible early-web shop. */
+.boutique-storefront { --shop-radius: 0!important; }
+.boutique-storebar,
+.boutique-feature-hero,
+.boutique-orb-card {
+  border-radius: 0!important;
+  border: 3px double var(--retro-pink-line)!important;
+  box-shadow: var(--retro-shadow), var(--retro-inset)!important;
+}
+.boutique-storebar { background: var(--retro-gloss)!important; }
+.boutique-feature-copy { background: linear-gradient(180deg,#fff,color-mix(in srgb,var(--pink-100) 48%,white)); }
+.boutique-orb-card { background: var(--retro-gloss)!important; }
+.boutique-orb-card:hover { transform: none!important; box-shadow: inset 4px 0 0 var(--pink-300), var(--retro-shadow)!important; }
+.boutique-feature-tags span,.boutique-orb-meta span,.boutique-owned-badge { border-radius: 0!important; }
+
+/* Right rail = side modules, link-me box and tiny web ephemera. */
+.context-sidebar {
+  padding: 10px 9px;
+  background: linear-gradient(180deg,#fff,color-mix(in srgb,var(--pink-100) 28%,white),color-mix(in srgb,var(--sage-100) 58%,white));
+  border-left: 3px double var(--retro-pink-line);
+}
+.context-top-stamp { margin-bottom: 9px; padding: 5px; border: 1px dashed var(--pink-300); color: var(--pink-600); background: #fff; text-align: center; font: italic 8px Georgia,serif; }
+.context-sidebar section { margin-top: 0; margin-bottom: 10px; padding: 8px; border: 2px double var(--retro-sage-line); background: rgba(255,255,255,.84); box-shadow: 1px 1px 0 rgba(88,114,95,.08); }
+.context-sidebar section + section { margin-top: 0; border-top: 2px double var(--retro-sage-line); padding-top: 8px; }
+.context-sidebar h3 { margin: -8px -8px 8px; padding: 4px 6px; background: var(--retro-pink-gloss); border-bottom: 1px dotted var(--pink-300); color: var(--pink-600); text-align: center; }
+.context-current-card,.context-identity-card { border: 1px dotted var(--retro-sage-line); background: rgba(255,255,255,.72); padding: 7px; }
+.context-current-card { display: grid; gap: 3px; }
+.context-current-card > span { color: var(--pink-600); font-size: 7px; text-transform: uppercase; letter-spacing: .1em; }
+.context-current-card > strong { color: var(--sage-700); font-family: var(--font-display); }
+.context-current-card > small { color: var(--muted); line-height: 1.45; }
+.context-link-list { display: grid; gap: 4px; }
+.context-link-list button { display: grid; grid-template-columns: 12px 1fr auto; align-items: center; gap: 4px; border: 1px solid var(--retro-sage-line); background: var(--retro-gloss); padding: 5px 6px; color: var(--sage-700); text-align: left; font-size: 8px; }
+.context-link-list button:hover { background: var(--retro-pink-gloss); color: var(--pink-600); }
+.context-identity-card { display: grid; grid-template-columns: 34px 1fr; gap: 7px; align-items: center; }
+.context-identity-card > div:last-child { min-width: 0; display: grid; gap: 2px; }
+.context-identity-card small { color: var(--muted); font-size: 7px; }
+.context-linkme-badge { padding: 7px; border: 2px double var(--pink-300); background: linear-gradient(90deg,var(--pink-100),#fff,var(--sage-100)); text-align: center; display: grid; gap: 2px; }
+.context-linkme-badge span { color: var(--sage-700); font: 700 10px Georgia,serif; letter-spacing: .06em; }
+.context-linkme-badge small { color: var(--pink-600); font-size: 7px; }
+.context-linkme code { display: block; margin-top: 5px; padding: 4px; overflow: hidden; border: 1px inset var(--line); background: #fff; color: var(--muted); font-size: 6.5px; white-space: nowrap; }
+.context-footer-flowers { padding: 4px; color: var(--pink-400,var(--pink-500)); text-align: center; letter-spacing: .14em; font-size: 8px; }
+
+/* Decorative web bits on common content strips. */
+.date-strip {
+  border: 3px double var(--retro-sage-line);
+  background: var(--retro-gloss);
+  box-shadow: var(--retro-shadow);
+}
+.date-strip > div { border-color: var(--retro-pink-line); }
+.tag,.hanami-plus { border-radius: 0!important; }
+.eyebrow { color: var(--pink-600); }
+kbd { border: 1px outset var(--line); background: #fff; }
+
+/* Preserve the intended Discord-only experiences. */
+.messages-page,
+.messages-page *,
+.academic-room-page,
+.academic-room-page * {
+  --retro-shadow: initial;
+}
+
+@media (max-width: 1100px) {
+  :root { --rail-width: 78px; --sidebar-width: 210px; }
+  .rail-brand,.rail-button,.rail-mini-label,.rail-rule,.rail-footer-stamp { width: 64px; }
+}
+
+@media (max-width: 760px) {
+  .app-shell { border-left: 0; border-right: 0; width: 100%; }
+  .main-rail { border-right: 0; border-top: 3px double var(--retro-pink-line); background: var(--retro-gloss); }
+  .rail-brand,.rail-button { width: 48px; height: 48px; min-height: 48px; }
+  .rail-brand small,.rail-label,.rail-mini-label,.rail-footer-stamp { display: none; }
+  .rail-rule { display: none; }
+  .content-area { padding: 12px 10px 26px; }
+  .page-topbar { grid-template-columns: 1fr auto; }
+  .page-topbar-banner { min-height: 38px; padding: 6px 8px; font-size: 7px; }
+  .page-topbar-banner small { display: none; }
+  .page-title-block { grid-column: 1 / -1; }
+  .global-search { grid-column: 1; grid-row: auto; }
+}
