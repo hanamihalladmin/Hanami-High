@@ -18,6 +18,7 @@ import { GuestbookPage } from '../components/GuestbookPage'
 import { FriendsPage } from '../components/FriendsPage'
 import { TopFriendsPage } from '../components/TopFriendsPage'
 import { SocialPostsPage } from '../components/SocialPostsPage'
+import { GuestbookActivityPage } from '../components/GuestbookActivityPage'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
@@ -173,6 +174,9 @@ export function App() {
     }
     if (route.section === 'social' && route.subsection === 'blogs') {
       return <SocialPostsPage mode="blogs" targetPostId={route.targetId} {...shared} />
+    }
+    if (route.section === 'social' && route.subsection === 'guestbook-activity') {
+      return <GuestbookActivityPage {...shared} />
     }
     return <ShellPage route={route} {...shared} />
   }
