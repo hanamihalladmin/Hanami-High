@@ -1,0 +1,59 @@
+.friends-search-card {
+  margin: 18px 0;
+  border: 1px solid var(--line-dark);
+  border-left: 5px solid var(--sage-600);
+  background: var(--paper);
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 360px);
+  gap: 18px;
+  align-items: end;
+  box-shadow: var(--panel-shadow);
+}
+.friends-search-card h2 { margin: 5px 0 7px; font-family: var(--font-display); font-size: 24px; font-weight: normal; color: var(--navy-900); }
+.friends-search-card p { margin: 0; color: var(--muted); line-height: 1.55; }
+.friends-search-card label { display: grid; gap: 5px; font-size: 9px; font-weight: 700; color: var(--navy-900); }
+.friends-search-card input { width: 100%; border: 1px solid var(--line-dark); background: #fffdf8; padding: 9px; border-radius: 0; }
+.friends-search-results,
+.friends-panel { border: 1px solid var(--line-dark); background: var(--paper); }
+.friends-search-results { margin-bottom: 16px; }
+.friends-search-results > header,
+.friends-panel > header { min-height: 50px; padding: 9px 11px; background: var(--navy-900); color: white; border-bottom: 3px solid var(--pink-500); display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+.friends-panel > header > div { display: flex; flex-direction: column; gap: 2px; }
+.friends-panel h2 { margin: 0; font-family: var(--font-display); font-size: 19px; font-weight: normal; }
+.friends-panel > header > strong { min-width: 30px; height: 26px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.3); }
+.friends-panel > header.secondary-header { margin-top: 8px; background: #e9e4da; color: var(--navy-900); border-top: 1px solid var(--line-dark); border-bottom-color: var(--sage-500); }
+.friends-panel > header.secondary-header > strong { border-color: var(--line-dark); }
+.friends-dashboard-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 16px; align-items: start; }
+.friend-row-list { display: grid; }
+.friend-row { min-width: 0; display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 11px; border-bottom: 1px solid #e4dfd5; }
+.friend-row:last-child { border-bottom: 0; }
+.friend-row:hover { background: #f6f1e8; }
+.friend-row > div:nth-child(2) { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.friend-row > div:nth-child(2) strong { color: var(--navy-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.friend-row > div:nth-child(2) span { color: var(--muted); font-size: 9px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.friend-avatar { width: 42px; height: 42px; border: 1px solid var(--navy-700); background: var(--sage-100); color: var(--navy-900); font-family: var(--font-display); font-weight: 700; cursor: pointer; }
+.friend-row-actions { display: flex; gap: 5px; align-items: center; }
+.friend-row-actions button { border: 1px solid var(--line-dark); background: var(--paper); padding: 6px 8px; cursor: pointer; font-size: 9px; font-weight: 700; }
+.friend-row-actions button:hover:not(:disabled) { background: var(--pink-100); border-color: var(--pink-600); }
+.friend-row-actions button.primary { background: var(--navy-900); color: white; border-color: var(--navy-950); }
+.friend-row-actions button.primary:hover:not(:disabled) { background: var(--pink-600); }
+.friend-row-actions button.danger { color: #8f2638; border-color: #a64b59; background: #fff0f2; }
+.friend-row-actions button:disabled { opacity: .5; cursor: default; }
+.friend-state { border: 1px solid var(--line-dark); background: #eee9df; color: var(--muted); padding: 6px 8px; font-size: 8px; text-transform: uppercase; letter-spacing: .06em; }
+.friend-state.accepted { color: #35523c; background: #edf5ee; border-color: #5e8168; }
+.friends-empty { min-height: 120px; display: grid; place-items: center; padding: 20px; text-align: center; color: var(--muted); line-height: 1.5; }
+.friends-empty.compact { min-height: 76px; }
+.request-row { grid-template-columns: 38px minmax(0, 1fr) auto; }
+.request-row .friend-avatar { width: 38px; height: 38px; }
+
+@media (max-width: 1000px) {
+  .friends-dashboard-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .friends-search-card { grid-template-columns: 1fr; }
+  .friend-row { grid-template-columns: 38px minmax(0, 1fr); }
+  .friend-row-actions { grid-column: 1 / -1; justify-content: flex-end; }
+  .friend-avatar { width: 38px; height: 38px; }
+}
