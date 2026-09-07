@@ -12,6 +12,9 @@ function characterName(character: HanamiCharacter) {
 
 function roleLabel(character: HanamiCharacter) {
   if (!character.school_role) return 'Applicant'
+  if (character.school_role === 'faculty') return 'Teacher'
+  if (character.school_role === 'new_faculty') return 'New Teacher'
+  if (character.school_role === 'administration') return 'Staff'
   return character.school_role
     .split('_')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
