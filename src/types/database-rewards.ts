@@ -71,7 +71,7 @@ export type RoleplaySession = {
   school_date: string
   status: string
   petal_reward: number
-  created_by_character_id: string
+  created_by_character_id: string | null
   created_at: string
   closed_at: string | null
   updated_at: string
