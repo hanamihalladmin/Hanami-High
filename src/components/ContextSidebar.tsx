@@ -13,9 +13,12 @@ function characterName(character: NonNullable<ReturnType<typeof useIdentity>['ac
     || `Character ${character.slot_no}`
 }
 
-function roleLabel(role: string | null) {
-  if (!role) return 'Student'
-  return role.split('_').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ')
+function roleLabel(character: NonNullable<ReturnType<typeof useIdentity>['activeCharacter']>) {
+  if (character.character_kind === 'faculty' && character.school_role === 'new_faculty') return 'New Teacher'
+  if (character.character_kind === 'faculty' && (character.school_role === 'faculty' || character.school_role === null)) return 'Teacher'
+  if (character.school_role === 'administration') return 'Staff (future portal)'
+  if (!character.school_role) return character.character_kind === 'student' ? 'Student' : 'Applicant'
+  return character.school_role.split('_').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ')
 }
 
 export function ContextSidebar({ route, onSelect }: Props) {
@@ -55,7 +58,7 @@ export function ContextSidebar({ route, onSelect }: Props) {
             <div className="mini-avatar">{characterName(activeCharacter).slice(0, 2).toUpperCase()}</div>
             <div>
               <strong>{characterName(activeCharacter)}</strong>
-              <small>{roleLabel(activeCharacter.school_role)} · Slot {activeCharacter.slot_no}</small>
+              <small>{roleLabel(activeCharacter)} · Slot {activeCharacter.slot_no}</small>
             </div>
           </div>
         </section>
