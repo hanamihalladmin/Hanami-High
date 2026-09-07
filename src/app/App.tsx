@@ -3,6 +3,8 @@ import { MainRail } from '../components/MainRail'
 import { SectionSidebar } from '../components/SectionSidebar'
 import { ContextSidebar } from '../components/ContextSidebar'
 import { HomePreview } from '../components/HomePreview'
+import { HomeUtilitiesPage } from '../components/HomeUtilitiesPage'
+import { MyClubsPage } from '../components/MyClubsPage'
 import { UserPanel } from '../components/UserPanel'
 import { LoginScreen } from '../components/LoginScreen'
 import { CharacterHub } from '../components/CharacterHub'
@@ -13,6 +15,7 @@ import { MobileSectionNav } from '../components/MobileSectionNav'
 import { ShellPage } from '../components/ShellPage'
 import { ProfileStudio } from '../components/ProfileStudio'
 import { ProfileView } from '../components/ProfileView'
+import { ProfileBlogPage } from '../components/ProfileBlogPage'
 import { SavedThemes } from '../components/SavedThemes'
 import { GuestbookPage } from '../components/GuestbookPage'
 import { FriendsPage } from '../components/FriendsPage'
@@ -22,9 +25,11 @@ import { GuestbookActivityPage } from '../components/GuestbookActivityPage'
 import { MessagesPage } from '../components/MessagesPage'
 import { AcademicsPage } from '../components/AcademicsPage'
 import { CampusPage } from '../components/CampusPage'
+import { DiscoverPage } from '../components/DiscoverPage'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
+import { usePresenceHeartbeat } from '../hooks/usePresenceHeartbeat'
 import type { ShellRoute, ShellSectionId } from '../types/navigation'
 
 function LoadingScreen() {
@@ -85,6 +90,7 @@ export function App() {
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const { loading, session, account, activeCharacter, ownerMode, isOwner, error } = useIdentity()
   const notificationInbox = useNotificationInbox()
+  usePresenceHeartbeat(route)
 
   useEffect(() => {
     const handleHashChange = () => setRoute(routeFromHash())
@@ -125,32 +131,51 @@ export function App() {
     const shared = { onSearch: openSearch, onNotifications: openNotifications, unreadCount: notificationInbox.unreadCount }
 
     if (route.section === 'home' && route.subsection === 'overview') return <HomePreview {...shared} />
+    if (route.section === 'home' && route.subsection === 'announcements') return <HomeUtilitiesPage mode="announcements" targetId={route.targetId} {...shared} />
+    if (route.section === 'home' && route.subsection === 'school-calendar') return <HomeUtilitiesPage mode="school-calendar" targetId={route.targetId} {...shared} />
+    if (route.section === 'home' && route.subsection === 'whos-online') return <HomeUtilitiesPage mode="whos-online" targetId={route.targetId} {...shared} />
+    if (route.section === 'home' && route.subsection === 'my-schedule') return <AcademicsPage mode="my-schedule" targetId={route.targetId} {...shared} />
+    if (route.section === 'home' && route.subsection === 'my-classes') return <AcademicsPage mode="classes" targetId={route.targetId} {...shared} />
+    if (route.section === 'home' && route.subsection === 'my-clubs') return <MyClubsPage {...shared} />
+
     if (route.section === 'profile' && route.subsection === 'profile-studio') return <ProfileStudio {...shared} />
     if (route.section === 'profile' && route.subsection === 'view-profile') return <ProfileView targetCharacterId={route.targetId} {...shared} />
+    if (route.section === 'profile' && route.subsection === 'blog') return <ProfileBlogPage targetPostId={route.targetId} {...shared} />
     if (route.section === 'profile' && route.subsection === 'saved-themes') return <SavedThemes {...shared} />
     if (route.section === 'profile' && route.subsection === 'guestbook') return <GuestbookPage targetEntryId={route.targetId} {...shared} />
+
     if (route.section === 'social' && route.subsection === 'friends') return <FriendsPage {...shared} />
     if (route.section === 'social' && route.subsection === 'top-friends') return <TopFriendsPage {...shared} />
     if (route.section === 'social' && route.subsection === 'feed') return <SocialPostsPage mode="feed" targetPostId={route.targetId} {...shared} />
     if (route.section === 'social' && route.subsection === 'bulletins') return <SocialPostsPage mode="bulletins" targetPostId={route.targetId} {...shared} />
     if (route.section === 'social' && route.subsection === 'blogs') return <SocialPostsPage mode="blogs" targetPostId={route.targetId} {...shared} />
     if (route.section === 'social' && route.subsection === 'guestbook-activity') return <GuestbookActivityPage {...shared} />
+
     if (route.section === 'messages' && route.subsection === 'friends') return <MessagesPage mode="friends" targetConversationId={route.targetId} {...shared} />
     if (route.section === 'messages' && route.subsection === 'message-requests') return <MessagesPage mode="message-requests" targetConversationId={route.targetId} {...shared} />
     if (route.section === 'messages' && route.subsection === 'direct-messages') return <MessagesPage mode="direct-messages" targetConversationId={route.targetId} {...shared} />
     if (route.section === 'messages' && route.subsection === 'groups') return <MessagesPage mode="groups" targetConversationId={route.targetId} {...shared} />
+
     if (route.section === 'academics' && route.subsection === 'overview') return <AcademicsPage mode="overview" targetId={route.targetId} {...shared} />
     if (route.section === 'academics' && route.subsection === 'my-schedule') return <AcademicsPage mode="my-schedule" targetId={route.targetId} {...shared} />
     if (route.section === 'academics' && route.subsection === 'classes') return <AcademicsPage mode="classes" targetId={route.targetId} {...shared} />
     if (route.section === 'academics' && route.subsection === 'assignments') return <AcademicsPage mode="assignments" targetId={route.targetId} {...shared} />
     if (route.section === 'academics' && route.subsection === 'grades') return <AcademicsPage mode="grades" targetId={route.targetId} {...shared} />
     if (route.section === 'academics' && route.subsection === 'attendance') return <AcademicsPage mode="attendance" targetId={route.targetId} {...shared} />
+
     if (route.section === 'campus' && route.subsection === 'campus-overview') return <CampusPage mode="campus-overview" targetId={route.targetId} {...shared} />
     if (route.section === 'campus' && route.subsection === 'events') return <CampusPage mode="events" targetId={route.targetId} {...shared} />
     if (route.section === 'campus' && route.subsection === 'clubs') return <CampusPage mode="clubs" targetId={route.targetId} {...shared} />
     if (route.section === 'campus' && route.subsection === 'organizations') return <CampusPage mode="organizations" targetId={route.targetId} {...shared} />
     if (route.section === 'campus' && route.subsection === 'opportunities') return <CampusPage mode="opportunities" targetId={route.targetId} {...shared} />
     if (route.section === 'campus' && route.subsection === 'student-council') return <CampusPage mode="student-council" targetId={route.targetId} {...shared} />
+
+    if (route.section === 'discover' && route.subsection === 'students') return <DiscoverPage mode="students" targetId={route.targetId} {...shared} />
+    if (route.section === 'discover' && route.subsection === 'faculty') return <DiscoverPage mode="faculty" targetId={route.targetId} {...shared} />
+    if (route.section === 'discover' && route.subsection === 'clubs') return <DiscoverPage mode="clubs" targetId={route.targetId} {...shared} />
+    if (route.section === 'discover' && route.subsection === 'posts') return <DiscoverPage mode="posts" targetId={route.targetId} {...shared} />
+    if (route.section === 'discover' && route.subsection === 'events') return <DiscoverPage mode="events" targetId={route.targetId} {...shared} />
+
     return <ShellPage route={route} {...shared} />
   }
 
