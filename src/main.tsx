@@ -14,6 +14,7 @@ import './styles/saved-themes.css'
 import './styles/friends.css'
 import './styles/top-friends.css'
 import './styles/social-posts.css'
+import './styles/social-interactions.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
