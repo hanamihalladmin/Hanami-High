@@ -1,3 +1,4 @@
+import { ApplicationReviewPanel } from './ApplicationReviewPanel'
 import { useIdentity } from '../state/IdentityContext'
 
 export function OwnerAccessPreview() {
@@ -34,13 +35,15 @@ export function OwnerAccessPreview() {
             </article>
           </div>
 
+          <ApplicationReviewPanel />
+
           <section className="owner-console-placeholder">
-            <span className="eyebrow">PHASE 2 VERIFIED</span>
-            <h1>Owner access is active without an OC.</h1>
+            <span className="eyebrow">OWNER FOUNDATION</span>
+            <h1>More Owner modules will plug into this account mode.</h1>
             <p>
-              Full Owner Console modules will be added in the staff-system phase. The identity and permission
-              boundary is already live, so portal preview, promotions, moderation, and administration can be
-              built without attaching Owner authority to a character.
+              Admissions is now functional here. Portal preview, New Student promotion, moderation, economy,
+              school configuration, and the rest of the Owner Console will be added in their implementation phases
+              without ever attaching Owner authority to an OC.
             </p>
           </section>
 
