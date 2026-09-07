@@ -296,6 +296,44 @@ export type Database = {
         Update: Partial<Database['public']['Tables']['social_posts']['Insert']>
         Relationships: []
       }
+      social_post_reactions: {
+        Row: {
+          post_id: string
+          character_id: string
+          reaction_type: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          post_id: string
+          character_id: string
+          reaction_type: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['social_post_reactions']['Insert']>
+        Relationships: []
+      }
+      social_post_comments: {
+        Row: {
+          id: string
+          post_id: string
+          author_character_id: string
+          body: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          post_id: string
+          author_character_id: string
+          body: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['social_post_comments']['Insert']>
+        Relationships: []
+      }
       student_applications: {
         Row: {
           acceptance_letter_opened_at: string | null
@@ -605,6 +643,8 @@ export type ProfileThemePreset = Database['public']['Tables']['profile_theme_pre
 export type PublishedCharacterProfile = Database['public']['Tables']['published_character_profiles']['Row']
 export type PublishedProfileWidget = Database['public']['Tables']['published_profile_widgets']['Row']
 export type SocialPost = Database['public']['Tables']['social_posts']['Row']
+export type SocialPostReaction = Database['public']['Tables']['social_post_reactions']['Row']
+export type SocialPostComment = Database['public']['Tables']['social_post_comments']['Row']
 export type StudentApplication = Database['public']['Tables']['student_applications']['Row']
 export type StudentApplicationUpdate = Database['public']['Tables']['student_applications']['Update']
 export type ApplicationReview = Database['public']['Tables']['application_reviews']['Row']
