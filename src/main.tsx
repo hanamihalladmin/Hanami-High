@@ -46,6 +46,7 @@ import './styles/school-administration.css'
 import './styles/access-modes.css'
 import './styles/early-web-site.css'
 import './styles/discord-shell.css'
+import './styles/discord-shell-polish.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
