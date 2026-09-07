@@ -64,6 +64,7 @@ export function ProfileStudioTools() {
       if (next.startsWith('#/profile/display-name-style')) {
         setTab('style')
         setOpen(true)
+        window.location.hash = '#/profile/profile-studio'
       }
     }
     window.addEventListener('hashchange', onHash)
