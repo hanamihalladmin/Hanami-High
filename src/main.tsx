@@ -18,6 +18,7 @@ import './styles/social-interactions.css'
 import './styles/guestbook.css'
 import './styles/guestbook-activity.css'
 import './styles/messages.css'
+import './styles/academics.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
