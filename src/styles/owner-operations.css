@@ -1,0 +1,83 @@
+.owner-window { width:min(1240px,100%); }
+.owner-body { padding:22px; }
+.owner-workspace-tabs,.owner-operations-tabs { display:flex; flex-wrap:wrap; gap:6px; margin:16px 0; border-bottom:1px solid var(--line-dark); padding-bottom:8px; }
+.owner-workspace-tabs button,.owner-operations-tabs button,.owner-operations-heading>button,.owner-table button,.owner-table select,.owner-ops-form button,.owner-ops-form input,.owner-ops-form select,.owner-report-editor button,.owner-report-editor input,.owner-report-editor select,.owner-config-list button,.owner-filter input,.owner-portal-preview button { border-radius:0; border:1px solid var(--line-dark); background:#f2eee5; color:var(--navy-900); padding:8px 10px; font:inherit; }
+.owner-workspace-tabs button,.owner-operations-tabs button,.owner-table button,.owner-operations-heading>button,.owner-portal-preview button { cursor:pointer; }
+.owner-workspace-tabs button.active,.owner-operations-tabs button.active,.owner-table button.enabled,.owner-toggle.enabled { background:var(--navy-900); color:white; border-color:var(--navy-900); }
+.owner-operations { border:1px solid var(--line-dark); background:#f9f6ef; padding:16px; }
+.owner-operations-heading { display:flex; justify-content:space-between; gap:18px; align-items:flex-start; }
+.owner-operations-heading h2 { margin:4px 0; font-family:var(--font-display); color:var(--navy-900); font-size:26px; }
+.owner-operations-heading p { margin:0; color:var(--muted); }
+.owner-operations-stack { display:grid; gap:14px; }
+.owner-ops-stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+.owner-ops-stats article,.owner-portal-summary article { border:1px solid var(--line-dark); background:white; padding:13px; display:grid; gap:4px; }
+.owner-ops-stats span,.owner-portal-summary span { font-size:8px; letter-spacing:.1em; color:var(--muted); font-weight:700; }
+.owner-ops-stats strong,.owner-portal-summary strong { font-family:var(--font-display); color:var(--navy-900); font-size:20px; }
+.owner-ops-stats small,.owner-portal-summary small { color:var(--muted); line-height:1.4; }
+.owner-ops-panel { border:1px solid var(--line-dark); background:white; }
+.owner-ops-panel>header { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:12px 14px; border-bottom:1px solid var(--line); background:#f2eee5; }
+.owner-ops-panel h2 { margin:2px 0 0; font-family:var(--font-display); font-size:19px; color:var(--navy-900); }
+.owner-config-cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; padding:12px; }
+.owner-config-cards article { border:1px solid var(--line); padding:12px; display:grid; gap:6px; }
+.owner-config-cards p { margin:0; color:var(--muted); line-height:1.5; }
+.owner-state { display:inline-flex; width:max-content; border:1px solid var(--line-dark); padding:3px 6px; font-size:9px; text-transform:uppercase; letter-spacing:.08em; }
+.owner-state.active,.owner-state.resolved { background:#e6f3e8; border-color:#5e815f; }
+.owner-state.inactive,.owner-state.dismissed { background:#eee9df; }
+.owner-state.open { background:#fff3d7; border-color:#a98326; }
+.owner-state.reviewing { background:#e8eef8; border-color:#54709a; }
+.owner-capability-grid { display:flex; flex-wrap:wrap; gap:6px; padding:12px; }
+.owner-capability-grid span { border:1px solid var(--line); background:#f7f3eb; padding:5px 7px; font-size:10px; }
+.owner-filter { padding:10px 12px; border-bottom:1px solid var(--line); }
+.owner-filter input { width:100%; box-sizing:border-box; background:white; }
+.owner-table-wrap { overflow:auto; }
+.owner-table { width:100%; border-collapse:collapse; min-width:800px; }
+.owner-table th,.owner-table td { border-bottom:1px solid var(--line); text-align:left; vertical-align:top; padding:10px; }
+.owner-table th { background:#f7f3eb; font-size:9px; letter-spacing:.08em; text-transform:uppercase; }
+.owner-table td>strong,.owner-table td>small { display:block; }
+.owner-table td>small { margin-top:3px; color:var(--muted); font-size:9px; }
+.owner-table tr:last-child td { border-bottom:0; }
+.owner-role-buttons { display:flex; flex-wrap:wrap; gap:5px; }
+.owner-role-buttons button { padding:5px 7px; font-size:9px; }
+.owner-table select { min-width:120px; background:white; }
+.owner-table button:disabled,.owner-operations button:disabled { opacity:.5; cursor:not-allowed; }
+.owner-portal-preview { border:2px solid var(--pink-600); background:#fff9fb; }
+.owner-portal-preview>header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 13px; background:var(--pink-100); border-bottom:1px solid var(--pink-600); }
+.owner-portal-preview>header div { display:grid; gap:2px; }
+.owner-portal-preview>header span { color:var(--muted); }
+.owner-portal-summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; padding:12px; }
+.owner-ops-two { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.owner-ops-form { display:grid; gap:8px; padding:12px; }
+.owner-ops-form input,.owner-ops-form select { width:100%; box-sizing:border-box; background:white; }
+.owner-report-list { display:grid; }
+.owner-report-list>article { padding:13px; border-bottom:1px solid var(--line); }
+.owner-report-list>article:last-child { border-bottom:0; }
+.owner-report-list article>header { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+.owner-report-list h3 { margin:3px 0; color:var(--navy-900); }
+.owner-report-list p { color:var(--muted); line-height:1.55; }
+.owner-report-list dl { display:flex; gap:18px; flex-wrap:wrap; }
+.owner-report-list dl div { display:grid; gap:2px; }
+.owner-report-list dt { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+.owner-report-list dd { margin:0; }
+.owner-report-editor { display:grid; grid-template-columns:150px 1fr auto; gap:7px; margin-top:10px; }
+.owner-report-editor input,.owner-report-editor select { background:white; }
+.owner-config-list { display:grid; }
+.owner-config-list article { padding:13px; border-bottom:1px solid var(--line); display:grid; gap:8px; }
+.owner-config-list article:last-child { border-bottom:0; }
+.owner-config-list article>header { display:flex; justify-content:space-between; gap:12px; }
+.owner-config-list article>header div { display:grid; gap:3px; }
+.owner-config-list article>header span,.owner-config-list article>header small { color:var(--muted); }
+.owner-config-list textarea { min-height:120px; resize:vertical; border:1px solid var(--line-dark); background:#fffefb; color:inherit; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; padding:10px; }
+.owner-config-list button { justify-self:start; }
+.owner-future-staff-note { border:1px dashed var(--line-dark); padding:13px; background:#f2eee5; }
+.owner-future-staff-note p { margin:4px 0 0; color:var(--muted); }
+.owner-audit-list { display:grid; }
+.owner-audit-list article { display:grid; grid-template-columns:1fr 1.3fr; gap:12px; padding:10px 12px; border-bottom:1px solid var(--line); }
+.owner-audit-list article:last-child { border-bottom:0; }
+.owner-audit-list article>div { display:grid; gap:3px; }
+.owner-audit-list span,.owner-audit-list small { color:var(--muted); }
+.owner-audit-list code { overflow-wrap:anywhere; font-size:10px; }
+.owner-empty { padding:28px 16px; text-align:center; color:var(--muted); border:1px solid var(--line-dark); background:white; }
+.owner-ops-panel>.owner-empty { border:0; }
+.owner-exit-actions { padding-top:2px; }
+@media(max-width:900px){.owner-ops-stats,.owner-portal-summary{grid-template-columns:repeat(2,1fr)}.owner-ops-two{grid-template-columns:1fr}.owner-report-editor{grid-template-columns:1fr}.owner-audit-list article{grid-template-columns:1fr}}
+@media(max-width:600px){.owner-body{padding:14px}.owner-ops-stats,.owner-portal-summary,.owner-config-cards{grid-template-columns:1fr}.owner-operations-heading,.owner-portal-preview>header{flex-direction:column;align-items:flex-start}.owner-workspace-tabs,.owner-operations-tabs{display:grid;grid-template-columns:repeat(2,1fr)}.owner-workspace-tabs button,.owner-operations-tabs button{width:100%}}
