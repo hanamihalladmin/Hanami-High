@@ -3,7 +3,8 @@ import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
 import type { SearchDocument } from '../types/database'
 import type { AcademicEnrollment, AcademicSection, AcademicSectionStaff, AcademicCourse } from '../types/database-academics'
-import type { AcademicRoomChannel, AcademicRoomMessage, AcademicRoomType } from '../types/database-academic-rooms'
+import type { AcademicRoomChannel, AcademicRoomMessage, AcademicRoomType, HomeroomMembership, SchoolHomeroom } from '../types/database-academic-rooms'
+import { MemberProfilePopover } from './MemberProfilePopover'
 
 type Props = {
   roomType: AcademicRoomType
@@ -42,7 +43,9 @@ export function AcademicRoomPage({ roomType, roomId }: Props) {
   const { activeCharacter } = useIdentity()
   const [sections, setSections] = useState<AcademicSection[]>([])
   const [course, setCourse] = useState<AcademicCourse | null>(null)
+  const [homeroom, setHomeroom] = useState<SchoolHomeroom | null>(null)
   const [enrollments, setEnrollments] = useState<AcademicEnrollment[]>([])
+  const [homeroomMemberships, setHomeroomMemberships] = useState<HomeroomMembership[]>([])
   const [staff, setStaff] = useState<AcademicSectionStaff[]>([])
   const [messages, setMessages] = useState<AcademicRoomMessage[]>([])
   const [identities, setIdentities] = useState<Record<string, IdentitySummary>>({})
@@ -52,6 +55,7 @@ export function AcademicRoomPage({ roomType, roomId }: Props) {
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [memberPopoverId, setMemberPopoverId] = useState<string | null>(null)
 
   const channels = roomType === 'class' ? classChannels : homeroomChannels
 
@@ -76,7 +80,11 @@ export function AcademicRoomPage({ roomType, roomId }: Props) {
 
     let nextSections: AcademicSection[] = []
     let nextCourse: AcademicCourse | null = null
-    let sectionIds: string[] = []
+    let nextHomeroom: SchoolHomeroom | null = null
+    let nextEnrollments: AcademicEnrollment[] = []
+    let nextMemberships: HomeroomMembership[] = []
+    let nextStaff: AcademicSectionStaff[] = []
+    let nextCanManage = false
 
     if (roomType === 'class') {
       const sectionResult = await client.from('academic_sections').select('*').eq('id', roomId).maybeSingle()
@@ -85,41 +93,64 @@ export function AcademicRoomPage({ roomType, roomId }: Props) {
         setError(sectionResult.error?.message || 'This class room is unavailable to your character.')
         return
       }
+
       nextSections = [sectionResult.data]
-      sectionIds = [sectionResult.data.id]
-      const courseResult = await client.from('academic_courses').select('*').eq('id', sectionResult.data.course_id).maybeSingle()
-      if (!courseResult.error) nextCourse = courseResult.data
-    } else {
-      const sectionResult = await client.from('academic_sections').select('*').eq('homeroom_code', roomId).eq('is_active', true).order('section_code')
-      if (sectionResult.error || !sectionResult.data?.length) {
+      const [courseResult, enrollmentResult, staffResult, manageResult] = await Promise.all([
+        client.from('academic_courses').select('*').eq('id', sectionResult.data.course_id).maybeSingle(),
+        client.from('academic_enrollments').select('*').eq('section_id', roomId).eq('status', 'active'),
+        client.from('academic_section_staff').select('*').eq('section_id', roomId),
+        client.rpc('academic_can_manage_section', { p_section_id: roomId }),
+      ])
+
+      const firstError = courseResult.error || enrollmentResult.error || staffResult.error || manageResult.error
+      if (firstError) {
         setLoading(false)
-        setError(sectionResult.error?.message || 'This homeroom is unavailable to your character.')
+        setError(firstError.message)
         return
       }
-      nextSections = sectionResult.data
-      sectionIds = nextSections.map((item) => item.id)
-    }
 
-    const [enrollmentResult, staffResult, manageResult] = await Promise.all([
-      client.from('academic_enrollments').select('*').in('section_id', sectionIds).eq('status', 'active'),
-      client.from('academic_section_staff').select('*').in('section_id', sectionIds),
-      roomType === 'class'
-        ? client.rpc('academic_can_manage_section', { p_section_id: roomId })
-        : client.rpc('academic_can_manage_homeroom', { p_homeroom_code: roomId }),
-    ])
+      nextCourse = courseResult.data
+      nextEnrollments = enrollmentResult.data ?? []
+      nextStaff = staffResult.data ?? []
+      nextCanManage = Boolean(manageResult.data)
+    } else {
+      const homeroomResult = await client
+        .from('school_homerooms')
+        .select('*')
+        .eq('code', roomId)
+        .eq('is_active', true)
+        .maybeSingle()
 
-    const firstError = enrollmentResult.error || staffResult.error || manageResult.error
-    if (firstError) {
-      setLoading(false)
-      setError(firstError.message)
-      return
+      if (homeroomResult.error || !homeroomResult.data) {
+        setLoading(false)
+        setError(homeroomResult.error?.message || 'This homeroom is unavailable to your character.')
+        return
+      }
+
+      nextHomeroom = homeroomResult.data
+      const [membershipResult, manageResult] = await Promise.all([
+        client.from('homeroom_memberships').select('*').eq('homeroom_id', homeroomResult.data.id).order('joined_at'),
+        client.rpc('academic_can_manage_homeroom', { p_homeroom_code: roomId }),
+      ])
+
+      const firstError = membershipResult.error || manageResult.error
+      if (firstError) {
+        setLoading(false)
+        setError(firstError.message)
+        return
+      }
+
+      nextMemberships = membershipResult.data ?? []
+      nextCanManage = Boolean(manageResult.data)
     }
 
     setSections(nextSections)
     setCourse(nextCourse)
-    setEnrollments(enrollmentResult.data ?? [])
-    setStaff(staffResult.data ?? [])
-    setCanManage(Boolean(manageResult.data))
+    setHomeroom(nextHomeroom)
+    setEnrollments(nextEnrollments)
+    setHomeroomMemberships(nextMemberships)
+    setStaff(nextStaff)
+    setCanManage(nextCanManage)
 
     let messageQuery = client.from('academic_room_messages').select('*').eq('room_type', roomType).is('deleted_at', null)
     messageQuery = roomType === 'class' ? messageQuery.eq('section_id', roomId) : messageQuery.eq('homeroom_code', roomId)
@@ -129,18 +160,31 @@ export function AcademicRoomPage({ roomType, roomId }: Props) {
       setError(messageResult.error.message)
       return
     }
+
     const nextMessages = messageResult.data ?? []
     setMessages(nextMessages)
 
+    const rosterStudentIds = roomType === 'class'
+      ? nextEnrollments.map((item) => item.student_character_id)
+      : nextMemberships.map((item) => item.student_character_id)
+    const rosterTeacherIds = roomType === 'class'
+      ? nextStaff.map((item) => item.character_id)
+      : nextHomeroom?.advisor_character_id ? [nextHomeroom.advisor_character_id] : []
+
     const identityIds = Array.from(new Set([
-      ...(enrollmentResult.data ?? []).map((item) => item.student_character_id),
-      ...(staffResult.data ?? []).map((item) => item.character_id),
+      ...rosterStudentIds,
+      ...rosterTeacherIds,
       ...nextMessages.map((item) => item.author_character_id),
       activeCharacter.id,
     ]))
-    const identityResult = await client.from('search_documents').select('entity_id,title,subtitle').eq('document_type', 'character').in('entity_id', identityIds)
-    if (!identityResult.error) {
-      setIdentities(Object.fromEntries((identityResult.data ?? []).filter((item) => item.entity_id).map((item) => [item.entity_id as string, item])))
+
+    if (identityIds.length > 0) {
+      const identityResult = await client.from('search_documents').select('entity_id,title,subtitle').eq('document_type', 'character').in('entity_id', identityIds)
+      if (!identityResult.error) {
+        setIdentities(Object.fromEntries((identityResult.data ?? []).filter((item) => item.entity_id).map((item) => [item.entity_id as string, item])))
+      }
+    } else {
+      setIdentities({})
     }
 
     setLoading(false)
@@ -153,15 +197,23 @@ export function AcademicRoomPage({ roomType, roomId }: Props) {
   }, [loadMessages])
 
   const visibleMessages = useMemo(() => messages.filter((message) => message.channel === channel), [channel, messages])
-  const studentIds = useMemo(() => Array.from(new Set(enrollments.map((item) => item.student_character_id))), [enrollments])
-  const teacherIds = useMemo(() => Array.from(new Set(staff.map((item) => item.character_id))), [staff])
+  const studentIds = useMemo(() => Array.from(new Set(
+    roomType === 'class'
+      ? enrollments.map((item) => item.student_character_id)
+      : homeroomMemberships.map((item) => item.student_character_id),
+  )), [enrollments, homeroomMemberships, roomType])
+  const teacherIds = useMemo(() => Array.from(new Set(
+    roomType === 'class'
+      ? staff.map((item) => item.character_id)
+      : homeroom?.advisor_character_id ? [homeroom.advisor_character_id] : [],
+  )), [homeroom, roomType, staff])
   const activeChannel = channels.find((item) => item.id === channel) ?? channels[0]
   const roomTitle = roomType === 'class'
     ? `${course?.code || sections[0]?.section_code || 'Class'} · ${course?.name || 'Class Room'}`
-    : `Homeroom ${roomId}`
+    : `Homeroom ${homeroom?.code || roomId}`
   const roomSubtitle = roomType === 'class'
     ? `${sections[0]?.room || 'Room TBA'} · ${studentIds.length} students`
-    : `${studentIds.length} classmates · Hanami High 2006`
+    : `${homeroom?.room_label || 'Room TBA'} · ${studentIds.length} classmates · Hanami High 2006`
   const announcementLocked = channel === 'announcements' && !canManage
 
   function identityName(characterId: string) {
@@ -220,7 +272,7 @@ export function AcademicRoomPage({ roomType, roomId }: Props) {
             <a href="#/home/announcements">◈ School Announcements</a>
           </>}
         </div>
-        <footer><span className="status-dot online"/><div><strong>{identityName(activeCharacter.id)}</strong><small>{canManage ? 'Teacher / manager' : roomType === 'class' ? 'Class member' : 'Homeroom member'}</small></div></footer>
+        <footer><span className="status-dot online"/><div><strong>{identityName(activeCharacter.id)}</strong><small>{canManage ? (roomType === 'class' ? 'Teacher / manager' : 'Adviser / manager') : roomType === 'class' ? 'Class member' : 'Homeroom member'}</small></div></footer>
       </aside>
 
       <section className="academic-room-chat">
@@ -232,9 +284,11 @@ export function AcademicRoomPage({ roomType, roomId }: Props) {
           <div className="academic-room-channel-intro"><span>#</span><h1>Welcome to #{activeChannel.label}</h1><p>{activeChannel.description}</p></div>
           {visibleMessages.length === 0 ? <div className="academic-room-empty">No messages here yet.</div> : visibleMessages.map((message) => {
             const name = identityName(message.author_character_id)
+            const isTeacher = teacherIds.includes(message.author_character_id)
+            const profileHref = `#/profile/view-profile/${encodeURIComponent(message.author_character_id)}`
             return <article className="academic-room-message" key={message.id}>
-              <a className="academic-room-avatar" href={`#/profile/view-profile/${encodeURIComponent(message.author_character_id)}`}>{initials(name)}</a>
-              <div><header><a href={`#/profile/view-profile/${encodeURIComponent(message.author_character_id)}`}>{name}</a>{teacherIds.includes(message.author_character_id) && <span className="academic-room-role">Teacher</span>}<time>{messageTime(message.created_at)}</time></header><p>{message.body}</p></div>
+              <a className="academic-room-avatar" href={profileHref} onClick={(event) => { event.preventDefault(); setMemberPopoverId(message.author_character_id) }}>{initials(name)}</a>
+              <div><header><a href={profileHref} onClick={(event) => { event.preventDefault(); setMemberPopoverId(message.author_character_id) }}>{name}</a>{isTeacher && <span className="academic-room-role">{roomType === 'homeroom' ? 'Adviser' : 'Teacher'}</span>}<time>{messageTime(message.created_at)}</time></header><p>{message.body}</p></div>
             </article>
           })}
         </div>
@@ -253,9 +307,10 @@ export function AcademicRoomPage({ roomType, roomId }: Props) {
       </section>
 
       <aside className="academic-room-members">
-        <section><h3>TEACHERS — {teacherIds.length}</h3>{teacherIds.length === 0 ? <small>Teacher TBA</small> : teacherIds.map((id) => <a key={id} href={`#/profile/view-profile/${encodeURIComponent(id)}`}><span className="academic-room-member-avatar">{initials(identityName(id))}<i/></span><div><strong>{identityName(id)}</strong><small>Teacher</small></div></a>)}</section>
-        <section><h3>STUDENTS — {studentIds.length}</h3>{studentIds.map((id) => <a key={id} href={`#/profile/view-profile/${encodeURIComponent(id)}`}><span className="academic-room-member-avatar">{initials(identityName(id))}<i/></span><div><strong>{identityName(id)}</strong><small>{id === activeCharacter.id ? 'You' : 'Classmate'}</small></div></a>)}</section>
+        <section><h3>{roomType === 'homeroom' ? 'ADVISER' : 'TEACHERS'} — {teacherIds.length}</h3>{teacherIds.length === 0 ? <small>{roomType === 'homeroom' ? 'Adviser TBA' : 'Teacher TBA'}</small> : teacherIds.map((id) => <a key={id} href={`#/profile/view-profile/${encodeURIComponent(id)}`} onClick={(event) => { event.preventDefault(); setMemberPopoverId(id) }}><span className="academic-room-member-avatar">{initials(identityName(id))}<i/></span><div><strong>{identityName(id)}</strong><small>{roomType === 'homeroom' ? 'Adviser' : 'Teacher'}</small></div></a>)}</section>
+        <section><h3>STUDENTS — {studentIds.length}</h3>{studentIds.map((id) => <a key={id} href={`#/profile/view-profile/${encodeURIComponent(id)}`} onClick={(event) => { event.preventDefault(); setMemberPopoverId(id) }}><span className="academic-room-member-avatar">{initials(identityName(id))}<i/></span><div><strong>{identityName(id)}</strong><small>{id === activeCharacter.id ? 'You' : roomType === 'homeroom' ? 'Homeroom classmate' : 'Classmate'}</small></div></a>)}</section>
       </aside>
     </div>}
+    <MemberProfilePopover characterId={memberPopoverId} onClose={() => setMemberPopoverId(null)} />
   </main>
 }
