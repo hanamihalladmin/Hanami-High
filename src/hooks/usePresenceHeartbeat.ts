@@ -10,14 +10,16 @@ export function usePresenceHeartbeat(route: ShellRoute) {
     const client = supabase
     if (!client || !account || !activeCharacter) return
 
+    const accountId = account.id
+    const characterId = activeCharacter.id
     let cancelled = false
 
     async function heartbeat(status: 'online' | 'idle' | 'away' = 'online') {
       if (cancelled) return
       const now = new Date().toISOString()
       await client.from('character_presence').upsert({
-        character_id: activeCharacter.id,
-        account_id: account.id,
+        character_id: characterId,
+        account_id: accountId,
         status,
         current_section: route.section,
         current_subsection: route.subsection,
