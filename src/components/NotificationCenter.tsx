@@ -34,6 +34,9 @@ function targetIdFromNotification(notification: HanamiNotification) {
   if (notification.kind === 'post_comment' && typeof metadata.post_id === 'string') {
     return metadata.post_id
   }
+  if (notification.kind === 'guestbook_entry' && typeof metadata.entry_id === 'string') {
+    return metadata.entry_id
+  }
   return undefined
 }
 
