@@ -15,6 +15,7 @@ import { ProfileStudio } from '../components/ProfileStudio'
 import { ProfileView } from '../components/ProfileView'
 import { SavedThemes } from '../components/SavedThemes'
 import { FriendsPage } from '../components/FriendsPage'
+import { TopFriendsPage } from '../components/TopFriendsPage'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
@@ -155,6 +156,9 @@ export function App() {
     }
     if (route.section === 'social' && route.subsection === 'friends') {
       return <FriendsPage {...shared} />
+    }
+    if (route.section === 'social' && route.subsection === 'top-friends') {
+      return <TopFriendsPage {...shared} />
     }
     return <ShellPage route={route} {...shared} />
   }
