@@ -235,9 +235,94 @@ export type Database = {
         }
         Relationships: []
       }
+      character_orientations: {
+        Row: {
+          account_id: string
+          character_id: string
+          completed_at: string | null
+          created_at: string
+          started_at: string
+          track: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          account_id: string
+          character_id: string
+          completed_at?: string | null
+          created_at?: string
+          started_at?: string
+          track: string
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          account_id?: string
+          character_id?: string
+          completed_at?: string | null
+          created_at?: string
+          started_at?: string
+          track?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: []
+      }
+      character_orientation_tasks: {
+        Row: {
+          character_id: string
+          completed_at: string | null
+          required: boolean
+          task_code: string
+        }
+        Insert: {
+          character_id: string
+          completed_at?: string | null
+          required?: boolean
+          task_code: string
+        }
+        Update: {
+          character_id?: string
+          completed_at?: string | null
+          required?: boolean
+          task_code?: string
+        }
+        Relationships: []
+      }
+      student_status_actions: {
+        Row: {
+          action: string
+          actor_account_id: string
+          character_id: string
+          created_at: string
+          id: string
+          note: string | null
+        }
+        Insert: {
+          actor_account_id: string
+          character_id: string
+          action?: string
+          created_at?: string
+          id?: string
+          note?: string | null
+        }
+        Update: {
+          actor_account_id?: string
+          character_id?: string
+          action?: string
+          created_at?: string
+          id?: string
+          note?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: { [_ in never]: never }
     Functions: {
+      complete_orientation_task: {
+        Args: { p_character_id: string; p_task_code: string }
+        Returns: string
+      }
       create_student_character_slot: {
         Args: { p_slot_no: number }
         Returns: Database['public']['Tables']['characters']['Row']
@@ -277,3 +362,6 @@ export type HanamiCharacter = Database['public']['Tables']['characters']['Row']
 export type StudentApplication = Database['public']['Tables']['student_applications']['Row']
 export type StudentApplicationUpdate = Database['public']['Tables']['student_applications']['Update']
 export type ApplicationReview = Database['public']['Tables']['application_reviews']['Row']
+export type CharacterOrientation = Database['public']['Tables']['character_orientations']['Row']
+export type CharacterOrientationTask = Database['public']['Tables']['character_orientation_tasks']['Row']
+export type StudentStatusAction = Database['public']['Tables']['student_status_actions']['Row']
