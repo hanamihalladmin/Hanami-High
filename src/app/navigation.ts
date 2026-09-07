@@ -69,7 +69,7 @@ export const sections: SectionDefinition[] = [
     id: 'discover', label: 'Discover', eyebrow: 'DISCOVER', title: 'Search Hanami', icon: '⌕', group: 'primary', defaultSubsection: 'students',
     subsections: [
       { id: 'students', label: 'Students', description: 'Find student characters across campus.' },
-      { id: 'faculty', label: 'Faculty', description: 'Find Hanami faculty members.' },
+      { id: 'faculty', label: 'Teachers', description: 'Find Hanami High teachers.' },
       { id: 'clubs', label: 'Clubs', description: 'Discover clubs and organizations.' },
       { id: 'posts', label: 'Posts', description: 'Search bulletins, blogs, and posts.' },
       { id: 'events', label: 'Events', description: 'Search school and campus events.' },
