@@ -113,13 +113,14 @@ export function GuestbookActivityPage({ onSearch, onNotifications, unreadCount }
   }, [load])
 
   if (!activeCharacter) return null
+  const currentCharacter = activeCharacter
 
   function identityFor(characterId: string) {
-    if (characterId === activeCharacter.id) {
-      const name = activeCharacter.display_name
-        || [activeCharacter.first_name, activeCharacter.last_name].filter(Boolean).join(' ')
+    if (characterId === currentCharacter.id) {
+      const name = currentCharacter.display_name
+        || [currentCharacter.first_name, currentCharacter.last_name].filter(Boolean).join(' ')
         || 'Your Character'
-      return identities[characterId] ?? { entity_id: characterId, title: name, subtitle: activeCharacter.school_role || 'Hanami character' }
+      return identities[characterId] ?? { entity_id: characterId, title: name, subtitle: currentCharacter.school_role || 'Hanami character' }
     }
     return identities[characterId] ?? { entity_id: characterId, title: 'Hanami Character', subtitle: 'Campus identity' }
   }
