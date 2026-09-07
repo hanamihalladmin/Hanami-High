@@ -10,6 +10,7 @@ import './styles/orientation.css'
 import './styles/shell.css'
 import './styles/profile-studio.css'
 import './styles/profile-studio-enhancements.css'
+import './styles/saved-themes.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
