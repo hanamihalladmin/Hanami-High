@@ -60,11 +60,11 @@ export const sections: SectionDefinition[] = [
   {
     id: 'profile', label: 'My Profile', eyebrow: 'PROFILE', title: 'My Profile', icon: '☺', group: 'primary', defaultSubsection: 'view-profile',
     subsections: [
-      { id: 'view-profile', label: 'View Profile', description: 'Open your public character profile.' },
-      { id: 'profile-studio', label: 'Profile Studio', description: 'Customize your profile with widgets and themes.' },
-      { id: 'blog', label: 'Blog', description: 'Write and manage profile blog posts.' },
-      { id: 'guestbook', label: 'Guestbook', description: 'Manage messages left on your profile.' },
-      { id: 'saved-themes', label: 'Saved Themes', description: 'Manage profile theme drafts and presets.' },
+      { id: 'view-profile', label: 'View My Page', description: 'Open your published custom SpaceHey-style character page.' },
+      { id: 'profile-studio', label: 'Profile Studio', description: 'Build your page with drag-and-resize widgets, backgrounds, layouts, name styles, cosmetics, and private draft preview.' },
+      { id: 'blog', label: 'Blog', description: 'Write and manage the blog entries connected to your profile.' },
+      { id: 'guestbook', label: 'Guestbook', description: 'Manage messages visitors leave on your profile.' },
+      { id: 'saved-themes', label: 'Saved Page Presets', description: 'Save and reuse complete page looks across your two characters.' },
     ],
   },
   {
