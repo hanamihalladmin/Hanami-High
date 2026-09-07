@@ -11,6 +11,8 @@ A clean rebuild of Hanami High: Discord-inspired structure, SpaceHey-inspired so
 - Capability-based permissions rather than a simple role ladder
 - Accessible, responsive Hanami application shell
 
+**Current build:** Phase 1 foundation.
+
 ## Local development
 
 ```bash
