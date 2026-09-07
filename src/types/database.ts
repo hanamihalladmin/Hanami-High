@@ -140,6 +140,28 @@ export type Database = {
         Update: Partial<Database['public']['Tables']['profile_widgets']['Insert']>
         Relationships: []
       }
+      profile_theme_presets: {
+        Row: {
+          id: string
+          account_id: string
+          source_character_id: string | null
+          name: string
+          theme: Json
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          account_id: string
+          source_character_id?: string | null
+          name: string
+          theme?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['profile_theme_presets']['Insert']>
+        Relationships: []
+      }
       published_character_profiles: {
         Row: {
           character_id: string
@@ -147,6 +169,9 @@ export type Database = {
           banner_path: string | null
           bio: string | null
           custom_status: string | null
+          display_name: string | null
+          handle: string | null
+          school_role: string | null
           pronouns: string | null
           profile_visibility: string
           guestbook_visibility: string
@@ -159,6 +184,9 @@ export type Database = {
           banner_path?: string | null
           bio?: string | null
           custom_status?: string | null
+          display_name?: string | null
+          handle?: string | null
+          school_role?: string | null
           pronouns?: string | null
           profile_visibility: string
           guestbook_visibility: string
@@ -485,6 +513,7 @@ export type HanamiAccount = Database['public']['Tables']['accounts']['Row']
 export type HanamiCharacter = Database['public']['Tables']['characters']['Row']
 export type CharacterProfile = Database['public']['Tables']['character_profiles']['Row']
 export type ProfileWidget = Database['public']['Tables']['profile_widgets']['Row']
+export type ProfileThemePreset = Database['public']['Tables']['profile_theme_presets']['Row']
 export type PublishedCharacterProfile = Database['public']['Tables']['published_character_profiles']['Row']
 export type PublishedProfileWidget = Database['public']['Tables']['published_profile_widgets']['Row']
 export type StudentApplication = Database['public']['Tables']['student_applications']['Row']
