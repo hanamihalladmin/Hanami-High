@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react'
-import { supabase } from '../lib/supabase'
 import { getSignedProfileMediaUrl } from '../lib/profileMedia'
+import { profilePageBackgroundFrom, profilePageBackgroundStyle } from '../lib/profilePageTheme'
+import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
 import type { Json, PublishedProfileWidget, SocialPost } from '../types/database'
 import type { PublishedCharacterProfileWithCosmetics } from '../types/database-customization'
@@ -38,7 +39,8 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
 
   const hydrate = useCallback(async (nextProfile: PublishedCharacterProfileWithCosmetics | null, nextWidgets: PublishedProfileWidget[]) => {
     if (!nextProfile) return
-    const paths = Array.from(new Set([nextProfile.avatar_path, nextProfile.banner_path, ...nextWidgets.map((widget) => widgetPath(widget.config))].filter((value): value is string => Boolean(value))))
+    const pageBackground = profilePageBackgroundFrom(nextProfile.theme)
+    const paths = Array.from(new Set([nextProfile.avatar_path, nextProfile.banner_path, pageBackground.imagePath, ...nextWidgets.map((widget) => widgetPath(widget.config))].filter((value): value is string => Boolean(value))))
     const pairs = await Promise.all(paths.map(async (path) => { try { const url = await getSignedProfileMediaUrl(path); return url ? [path, url] as const : null } catch { return null } }))
     setMedia(Object.fromEntries(pairs.filter((value): value is readonly [string, string] => Boolean(value))))
   }, [])
@@ -68,17 +70,29 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
   useEffect(() => { if (characterId) setNote(localStorage.getItem(noteKey(characterId)) || '') }, [characterId])
 
   const theme = useMemo(() => themeFrom(profile?.theme ?? {}), [profile?.theme])
+  const pageBackground = useMemo(() => profilePageBackgroundFrom(profile?.theme ?? {}), [profile?.theme])
   const cosmetics = useMemo(() => cosmeticsFrom(profile?.cosmetics ?? {}), [profile?.cosmetics])
   if (!activeCharacter || !characterId) return null
   const ownName = activeCharacter.display_name || [activeCharacter.first_name, activeCharacter.last_name].filter(Boolean).join(' ') || 'Your Character'
   const name = profile?.display_name || (own ? ownName : 'Hanami Profile')
   const handle = profile?.handle ? `@${profile.handle}` : '@hanami-member'
-  const style = { '--profile-bg': theme.background, '--profile-panel': theme.panel, '--profile-accent': theme.accent, '--profile-ink': theme.ink, '--display-color': theme.displayColor, '--display-color-2': theme.displayColor2 } as CSSProperties
+  const backgroundUrl = pageBackground.imagePath ? media[pageBackground.imagePath] ?? null : null
+  const style = {
+    ...profilePageBackgroundStyle(pageBackground, backgroundUrl, theme.accent),
+    '--profile-bg': theme.background,
+    '--profile-panel': theme.panel,
+    '--profile-accent': theme.accent,
+    '--profile-ink': theme.ink,
+    '--display-color': theme.displayColor,
+    '--display-color-2': theme.displayColor2,
+    '--spacehey-panel-opacity': String(pageBackground.panelOpacity),
+    '--spacehey-border-style': pageBackground.borderStyle,
+  } as CSSProperties
 
   return <main className="content-area published-profile-page">
     <ShellTopbar eyebrow={own ? 'MY PROFILE' : 'HANAMI PROFILE'} title={name} onSearch={onSearch} onNotifications={onNotifications} unreadCount={unreadCount}/>
     {error && <div className="identity-notice error">{error}</div>}
-    {loading ? <div className="studio-loading">Loading profile…</div> : !profile ? <section className="shell-module-card"><h2>{own ? 'Publish your profile first.' : 'Profile unavailable.'}</h2><p>{own ? 'Build your page in Profile Studio, then publish it.' : 'This member has not published a visible profile.'}</p></section> : <div className={`hanami-profile-shell ${theme.grid ? 'show-grid' : ''} cosmetic-frame-${safeClass(cosmetics.frame)} cosmetic-avatar-${safeClass(cosmetics.avatarDecoration)} cosmetic-effect-${safeClass(cosmetics.effect)} cosmetic-card-${safeClass(cosmetics.profileCard)} cosmetic-bg-${safeClass(cosmetics.backgroundPack)}`} style={style}>
+    {loading ? <div className="studio-loading">Loading profile…</div> : !profile ? <section className="shell-module-card"><h2>{own ? 'Publish your profile first.' : 'Profile unavailable.'}</h2><p>{own ? 'Build your page in Profile Studio, then publish it.' : 'This member has not published a visible profile.'}</p></section> : <div className={`hanami-profile-shell spacehey-profile-page ${theme.grid ? 'show-grid' : ''} cosmetic-frame-${safeClass(cosmetics.frame)} cosmetic-avatar-${safeClass(cosmetics.avatarDecoration)} cosmetic-effect-${safeClass(cosmetics.effect)} cosmetic-card-${safeClass(cosmetics.profileCard)} cosmetic-bg-${safeClass(cosmetics.backgroundPack)}`} style={style}>
       <section className="hanami-profile-hero">
         <div className="hanami-profile-banner" style={{ background: theme.accent }}>{profile.banner_path && media[profile.banner_path] && <img src={media[profile.banner_path]} alt={`${name} banner`}/>}</div>
         <div className="hanami-profile-avatar-wrap"><div className="hanami-profile-avatar">{profile.avatar_path && media[profile.avatar_path] ? <img src={media[profile.avatar_path]} alt={`${name} avatar`}/> : name.slice(0, 2).toUpperCase()}</div><span className="hanami-avatar-decoration" aria-hidden="true"/></div>
