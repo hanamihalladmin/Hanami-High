@@ -10,7 +10,7 @@ function characterName(character: HanamiCharacter) {
 function roleLabel(character: HanamiCharacter) {
   if (character.character_kind === 'faculty' && character.school_role === 'new_faculty') return 'New Teacher'
   if (character.character_kind === 'faculty' && (character.school_role === 'faculty' || character.school_role === null)) return 'Teacher'
-  if (character.school_role === 'administration') return 'Staff (future portal)'
+  if (character.school_role === 'administration') return 'Staff'
   if (!character.school_role) return 'Applicant'
   return character.school_role
     .split('_')
@@ -44,49 +44,55 @@ export function UserPanel() {
 
   return (
     <div className="user-panel">
-      <div className="avatar-placeholder">{initials}<span className="presence-dot" /></div>
-      <div className="user-copy">
-        <strong>{name}</strong>
-        <span>{activeCharacter.school_role === 'new_student' ? '🌱 ' : '🌸 '}{roleLabel(activeCharacter)}</span>
-      </div>
-
-      <details className="user-menu">
-        <summary title="Character and account menu">•••</summary>
-        <div className="user-menu-popover">
-          <span className="user-menu-label">SWITCH CHARACTER</span>
-          {characters.map((character) => (
-            <button
-              key={character.id}
-              type="button"
-              disabled={mutating || character.character_state !== 'active' || character.id === activeCharacter.id}
-              onClick={() => void selectCharacter(character.id)}
-            >
-              {character.id === activeCharacter.id ? '✓ ' : ''}{characterName(character)}
-              {' · '}{character.character_state === 'active' ? roleLabel(character) : character.character_state}
-            </button>
-          ))}
-          <button type="button" disabled={mutating} onClick={() => void clearActiveCharacter()}>
-            Character selection…
-          </button>
-
-          {(isOwner || isPlatformAdmin) && <div className="user-menu-rule" />}
-          {isOwner && (
-            <>
-              <span className="user-menu-label">OWNER</span>
-              <button type="button" onClick={enterOwnerMode}>Open Owner Console</button>
-            </>
-          )}
-          {isPlatformAdmin && (
-            <>
-              <span className="user-menu-label">ADMINISTRATOR</span>
-              <button type="button" onClick={enterAdminMode}>Open Administrator Console</button>
-            </>
-          )}
-
-          <div className="user-menu-rule" />
-          <button type="button" onClick={() => void signOut()}>Sign out</button>
+      <a className="user-panel-identity" href="#/profile/view-profile" title="View your profile">
+        <div className="avatar-placeholder">{initials}<span className="presence-dot" /></div>
+        <div className="user-copy">
+          <strong>{name}</strong>
+          <span>{roleLabel(activeCharacter)}</span>
         </div>
-      </details>
+      </a>
+
+      <div className="user-panel-controls">
+        <button type="button" title="Profile Studio" aria-label="Profile Studio" onClick={() => { window.location.hash = '#/profile/profile-studio' }}>☺</button>
+        <button type="button" title="Appearance & Accessibility" aria-label="Appearance & Accessibility" onClick={() => { window.location.hash = '#/settings/accessibility' }}>⚙</button>
+        <details className="user-menu">
+          <summary title="Character and account menu" aria-label="Character and account menu">•••</summary>
+          <div className="user-menu-popover">
+            <span className="user-menu-label">SWITCH CHARACTER</span>
+            {characters.map((character) => (
+              <button
+                key={character.id}
+                type="button"
+                disabled={mutating || character.character_state !== 'active' || character.id === activeCharacter.id}
+                onClick={() => void selectCharacter(character.id)}
+              >
+                {character.id === activeCharacter.id ? '✓ ' : ''}{characterName(character)}
+                {' · '}{character.character_state === 'active' ? roleLabel(character) : character.character_state}
+              </button>
+            ))}
+            <button type="button" disabled={mutating} onClick={() => void clearActiveCharacter()}>
+              Character selection…
+            </button>
+
+            {(isOwner || isPlatformAdmin) && <div className="user-menu-rule" />}
+            {isOwner && (
+              <>
+                <span className="user-menu-label">OWNER</span>
+                <button type="button" onClick={enterOwnerMode}>Open Owner Console</button>
+              </>
+            )}
+            {isPlatformAdmin && (
+              <>
+                <span className="user-menu-label">ADMINISTRATOR</span>
+                <button type="button" onClick={enterAdminMode}>Open Administrator Console</button>
+              </>
+            )}
+
+            <div className="user-menu-rule" />
+            <button type="button" onClick={() => void signOut()}>Sign out</button>
+          </div>
+        </details>
+      </div>
     </div>
   )
 }
