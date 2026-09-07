@@ -1,5 +1,5 @@
 import { useIdentity } from '../state/IdentityContext'
-import type { HanamiNotification } from '../types/database'
+import type { HanamiNotification, Json } from '../types/database'
 import type { ShellRoute } from '../types/navigation'
 import { normalizeRoute } from '../app/navigation'
 
@@ -21,6 +21,20 @@ function relativeTime(value: string) {
   if (hours < 24) return `${hours}h`
   const days = Math.floor(hours / 24)
   return `${days}d`
+}
+
+function metadataObject(value: Json) {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? value as Record<string, Json | undefined>
+    : {}
+}
+
+function targetIdFromNotification(notification: HanamiNotification) {
+  const metadata = metadataObject(notification.metadata)
+  if (notification.kind === 'post_comment' && typeof metadata.post_id === 'string') {
+    return metadata.post_id
+  }
+  return undefined
 }
 
 type Props = {
@@ -50,7 +64,9 @@ export function NotificationCenter({
   async function openNotification(notification: HanamiNotification) {
     if (!notification.read_at) await onMarkRead(notification.id)
     if (notification.section) {
-      onNavigate(normalizeRoute(notification.section, notification.subsection ?? undefined))
+      const baseRoute = normalizeRoute(notification.section, notification.subsection ?? undefined)
+      const targetId = targetIdFromNotification(notification)
+      onNavigate(targetId ? { ...baseRoute, targetId } : baseRoute)
       onClose()
     }
   }
