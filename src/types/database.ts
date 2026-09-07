@@ -106,6 +106,28 @@ export type Database = {
         Update: Partial<Database['public']['Tables']['character_profiles']['Insert']>
         Relationships: []
       }
+      friendships: {
+        Row: {
+          id: string
+          requester_character_id: string
+          addressee_character_id: string
+          status: string
+          created_at: string
+          responded_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          requester_character_id: string
+          addressee_character_id: string
+          status?: string
+          created_at?: string
+          responded_at?: string | null
+          updated_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['friendships']['Insert']>
+        Relationships: []
+      }
       profile_widgets: {
         Row: {
           id: string
@@ -482,6 +504,18 @@ export type Database = {
         Args: { p_character_id: string }
         Returns: string
       }
+      remove_friendship: {
+        Args: { p_friendship_id: string }
+        Returns: boolean
+      }
+      request_friendship: {
+        Args: { p_target_character_id: string }
+        Returns: string
+      }
+      respond_friendship: {
+        Args: { p_friendship_id: string; p_accept: boolean }
+        Returns: string
+      }
       search_hanami: {
         Args: { p_query: string; p_limit?: number }
         Returns: {
@@ -512,6 +546,7 @@ export type Database = {
 export type HanamiAccount = Database['public']['Tables']['accounts']['Row']
 export type HanamiCharacter = Database['public']['Tables']['characters']['Row']
 export type CharacterProfile = Database['public']['Tables']['character_profiles']['Row']
+export type Friendship = Database['public']['Tables']['friendships']['Row']
 export type ProfileWidget = Database['public']['Tables']['profile_widgets']['Row']
 export type ProfileThemePreset = Database['public']['Tables']['profile_theme_presets']['Row']
 export type PublishedCharacterProfile = Database['public']['Tables']['published_character_profiles']['Row']
