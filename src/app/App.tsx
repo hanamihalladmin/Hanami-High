@@ -26,10 +26,14 @@ import { MessagesPage } from '../components/MessagesPage'
 import { AcademicsPage } from '../components/AcademicsPage'
 import { CampusPage } from '../components/CampusPage'
 import { DiscoverPage } from '../components/DiscoverPage'
+import { PetalsPage } from '../components/PetalsPage'
+import { BoutiquePage } from '../components/BoutiquePage'
+import { AchievementsPage } from '../components/AchievementsPage'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
 import { usePresenceHeartbeat } from '../hooks/usePresenceHeartbeat'
+import { useDailyPetalClaim } from '../hooks/useDailyPetalClaim'
 import type { ShellRoute, ShellSectionId } from '../types/navigation'
 
 function LoadingScreen() {
@@ -91,6 +95,7 @@ export function App() {
   const { loading, session, account, activeCharacter, ownerMode, isOwner, error } = useIdentity()
   const notificationInbox = useNotificationInbox()
   usePresenceHeartbeat(route)
+  useDailyPetalClaim()
 
   useEffect(() => {
     const handleHashChange = () => setRoute(routeFromHash())
@@ -175,6 +180,24 @@ export function App() {
     if (route.section === 'discover' && route.subsection === 'clubs') return <DiscoverPage mode="clubs" targetId={route.targetId} {...shared} />
     if (route.section === 'discover' && route.subsection === 'posts') return <DiscoverPage mode="posts" targetId={route.targetId} {...shared} />
     if (route.section === 'discover' && route.subsection === 'events') return <DiscoverPage mode="events" targetId={route.targetId} {...shared} />
+
+    if (route.section === 'petals' && route.subsection === 'balance') return <PetalsPage mode="balance" {...shared} />
+    if (route.section === 'petals' && route.subsection === 'earning-history') return <PetalsPage mode="earning-history" {...shared} />
+    if (route.section === 'petals' && route.subsection === 'rewards') return <PetalsPage mode="rewards" {...shared} />
+    if (route.section === 'petals' && route.subsection === 'ways-to-earn') return <PetalsPage mode="ways-to-earn" {...shared} />
+
+    if (route.section === 'boutique' && route.subsection === 'featured') return <BoutiquePage mode="featured" {...shared} />
+    if (route.section === 'boutique' && route.subsection === 'new') return <BoutiquePage mode="new" {...shared} />
+    if (route.section === 'boutique' && route.subsection === 'seasonal') return <BoutiquePage mode="seasonal" {...shared} />
+    if (route.section === 'boutique' && route.subsection === 'frames') return <BoutiquePage mode="frames" {...shared} />
+    if (route.section === 'boutique' && route.subsection === 'effects') return <BoutiquePage mode="effects" {...shared} />
+    if (route.section === 'boutique' && route.subsection === 'nameplates') return <BoutiquePage mode="nameplates" {...shared} />
+    if (route.section === 'boutique' && route.subsection === 'hanami-plus-passes') return <BoutiquePage mode="hanami-plus-passes" {...shared} />
+    if (route.section === 'boutique' && route.subsection === 'my-inventory') return <BoutiquePage mode="my-inventory" {...shared} />
+
+    if (route.section === 'achievements' && route.subsection === 'my-achievements') return <AchievementsPage mode="my-achievements" {...shared} />
+    if (route.section === 'achievements' && route.subsection === 'collections') return <AchievementsPage mode="collections" {...shared} />
+    if (route.section === 'achievements' && route.subsection === 'school-history') return <AchievementsPage mode="school-history" {...shared} />
 
     return <ShellPage route={route} {...shared} />
   }
