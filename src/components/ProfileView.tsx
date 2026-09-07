@@ -57,6 +57,9 @@ function widgetStoragePath(value: Json) {
 }
 
 function roleLabel(role: string | null) {
+  if (role === 'new_faculty') return 'New Teacher'
+  if (role === 'faculty') return 'Teacher'
+  if (role === 'administration') return 'Staff (future portal)'
   if (!role) return 'Hanami Student'
   return role.split('_').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ')
 }
@@ -220,24 +223,25 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
                 <article
                   className={`published-widget widget-${widget.widget_type}`}
                   key={widget.id}
-                  style={{ gridColumn: `${widget.x} / span ${widget.width}`, gridRow: `${widget.y} / span ${widget.height}`, zIndex: widget.z_index }}
+                  style={{
+                    gridColumn: `span ${Math.min(Math.max(widget.w, 1), 12)}`,
+                    minHeight: `${Math.max(widget.h, 1) * 48}px`,
+                  }}
                 >
-                  {widget.title && <header>{widget.title}</header>}
-                  <div>
-                    {widget.widget_type === 'image' && imagePath && mediaUrls[imagePath] && (
-                      <img className="published-widget-image" src={mediaUrls[imagePath]} alt={widget.title || 'Profile image'} />
-                    )}
-                    {widgetContent(widget.config).split('\n').map((line, index) => <p key={`${widget.id}-${index}`}>{line || ' '}</p>)}
+                  <header><strong>{widget.title || widget.widget_type.replaceAll('_', ' ')}</strong></header>
+                  <div className="published-widget-body">
+                    {widget.widget_type === 'image' && imagePath && mediaUrls[imagePath]
+                      ? <img className="published-widget-image" src={mediaUrls[imagePath]} alt={widget.title || 'Profile image'} />
+                      : widget.widget_type === 'divider'
+                        ? <div className="published-divider" />
+                        : <p>{widgetContent(widget.config) || 'This widget has no published content.'}</p>}
                   </div>
                 </article>
               )
             })}
           </div>
 
-          <GuestbookPanel
-            targetCharacterId={characterId}
-            guestbookVisibility={profile.guestbook_visibility}
-          />
+          <GuestbookPanel profileCharacterId={characterId} isOwnProfile={isOwnProfile} />
         </div>
       )}
     </main>
