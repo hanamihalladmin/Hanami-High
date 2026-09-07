@@ -1,3 +1,4 @@
+import { OrientationPanel } from './OrientationPanel'
 import { useIdentity } from '../state/IdentityContext'
 
 function roleLabel(role: string | null) {
@@ -15,8 +16,6 @@ export function HomePreview() {
   const firstName = activeCharacter.first_name
     || activeCharacter.display_name?.split(/\s+/)[0]
     || 'Student'
-  const isNewStudent = activeCharacter.school_role === 'new_student'
-  const orientationComplete = Boolean(activeCharacter.orientation_completed_at)
 
   return (
     <main className="content-area">
@@ -35,23 +34,7 @@ export function HomePreview() {
         <div><span>STATUS</span><strong>{roleLabel(activeCharacter.school_role)}</strong></div>
       </div>
 
-      {isNewStudent && (
-        <section className="orientation-card">
-          <div>
-            <span className="tag">🌱 NEW STUDENT</span>
-            <h2>Welcome to Hanami High</h2>
-            <p>
-              {orientationComplete
-                ? 'Your orientation is complete. Your New Student status remains until Student Affairs promotes you.'
-                : 'Your New Student role stays in place while you settle in. Orientation does not automatically promote you to Student.'}
-            </p>
-          </div>
-          <div className="orientation-progress">
-            <strong>{orientationComplete ? '6 / 6' : '0 / 6'}</strong>
-            <span>{orientationComplete ? 'Orientation complete' : 'Orientation available'}</span>
-          </div>
-        </section>
-      )}
+      <OrientationPanel />
 
       <div className="dashboard-grid">
         <section className="panel schedule-panel">
