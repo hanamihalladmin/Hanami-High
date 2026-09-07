@@ -20,7 +20,7 @@ export function SectionSidebar({ active, subsection, profileTitle, onSelect, onS
           <strong>{active === 'profile' ? title : 'Hanami High'}</strong>
           <small>{active === 'profile' ? 'Profile space' : `${section.label} · 2006`}</small>
         </div>
-        <button type="button" aria-label="Section menu" title="Section menu">⌄</button>
+        <span className="section-header-chevron" aria-hidden="true">⌄</span>
       </header>
 
       <button className="sidebar-search" type="button" onClick={onSearch}>
@@ -31,7 +31,7 @@ export function SectionSidebar({ active, subsection, profileTitle, onSelect, onS
       <div className="sidebar-channel-category">
         <span>⌄</span>
         <strong>{section.eyebrow}</strong>
-        <button type="button" aria-label={`Add ${section.label} shortcut`} title="Hanami navigation is managed by the school">＋</button>
+        <span className="sidebar-channel-plus" aria-hidden="true">＋</span>
       </div>
 
       <nav className="section-links" aria-label={`${title} navigation`}>
