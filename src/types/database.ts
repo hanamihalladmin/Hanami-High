@@ -128,6 +128,28 @@ export type Database = {
         Update: Partial<Database['public']['Tables']['friendships']['Insert']>
         Relationships: []
       }
+      guestbook_entries: {
+        Row: {
+          id: string
+          profile_character_id: string
+          author_character_id: string
+          body: string
+          status: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          profile_character_id: string
+          author_character_id: string
+          body: string
+          status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['guestbook_entries']['Insert']>
+        Relationships: []
+      }
       top_friends: {
         Row: {
           character_id: string
@@ -637,6 +659,7 @@ export type HanamiAccount = Database['public']['Tables']['accounts']['Row']
 export type HanamiCharacter = Database['public']['Tables']['characters']['Row']
 export type CharacterProfile = Database['public']['Tables']['character_profiles']['Row']
 export type Friendship = Database['public']['Tables']['friendships']['Row']
+export type GuestbookEntry = Database['public']['Tables']['guestbook_entries']['Row']
 export type TopFriend = Database['public']['Tables']['top_friends']['Row']
 export type ProfileWidget = Database['public']['Tables']['profile_widgets']['Row']
 export type ProfileThemePreset = Database['public']['Tables']['profile_theme_presets']['Row']
