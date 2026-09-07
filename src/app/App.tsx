@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { MainRail } from '../components/MainRail'
 import { SectionSidebar } from '../components/SectionSidebar'
 import { ContextSidebar } from '../components/ContextSidebar'
@@ -7,7 +7,14 @@ import { UserPanel } from '../components/UserPanel'
 import { LoginScreen } from '../components/LoginScreen'
 import { CharacterHub } from '../components/CharacterHub'
 import { OwnerAccessPreview } from '../components/OwnerAccessPreview'
+import { GlobalSearch } from '../components/GlobalSearch'
+import { NotificationCenter } from '../components/NotificationCenter'
+import { MobileSectionNav } from '../components/MobileSectionNav'
+import { ShellPage } from '../components/ShellPage'
+import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
+import { useNotificationInbox } from '../hooks/useNotificationInbox'
+import type { ShellRoute, ShellSectionId } from '../types/navigation'
 
 function LoadingScreen() {
   return (
@@ -59,9 +66,59 @@ function IdentityErrorScreen() {
   )
 }
 
+function displayName(character: NonNullable<ReturnType<typeof useIdentity>['activeCharacter']>) {
+  return character.display_name
+    || [character.first_name, character.last_name].filter(Boolean).join(' ')
+    || `Character ${character.slot_no}`
+}
+
 export function App() {
-  const [active, setActive] = useState('home')
+  const [route, setRoute] = useState<ShellRoute>(() => routeFromHash())
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [notificationsOpen, setNotificationsOpen] = useState(false)
   const { loading, session, account, activeCharacter, ownerMode, isOwner, error } = useIdentity()
+  const notificationInbox = useNotificationInbox()
+
+  useEffect(() => {
+    const handleHashChange = () => setRoute(routeFromHash())
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  useEffect(() => {
+    const handleKeyboard = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault()
+        setSearchOpen(true)
+        setNotificationsOpen(false)
+      }
+      if (event.key === 'Escape') {
+        setSearchOpen(false)
+        setNotificationsOpen(false)
+      }
+    }
+    window.addEventListener('keydown', handleKeyboard)
+    return () => window.removeEventListener('keydown', handleKeyboard)
+  }, [])
+
+  const profileTitle = useMemo(
+    () => activeCharacter ? displayName(activeCharacter) : undefined,
+    [activeCharacter],
+  )
+
+  function navigate(nextRoute: ShellRoute) {
+    const nextHash = routeHash(nextRoute)
+    setRoute(nextRoute)
+    if (window.location.hash !== nextHash) window.location.hash = nextHash
+  }
+
+  function selectSection(section: ShellSectionId) {
+    navigate(defaultRoute(section))
+  }
+
+  function selectSubsection(subsection: string) {
+    navigate({ section: route.section, subsection })
+  }
 
   if (loading) return <LoadingScreen />
   if (!session) return <LoginScreen />
@@ -72,14 +129,70 @@ export function App() {
   if (!activeCharacter) return <CharacterHub />
 
   return (
-    <div className="app-shell">
-      <MainRail active={active} onSelect={setActive} />
-      <div className="sidebar-column">
-        <SectionSidebar active={active} />
-        <UserPanel />
+    <>
+      <div className="app-shell">
+        <MainRail active={route.section} onSelect={selectSection} />
+        <div className="sidebar-column">
+          <SectionSidebar
+            active={route.section}
+            subsection={route.subsection}
+            profileTitle={profileTitle}
+            onSelect={selectSubsection}
+            onSearch={() => {
+              setSearchOpen(true)
+              setNotificationsOpen(false)
+            }}
+          />
+          <UserPanel />
+        </div>
+
+        <MobileSectionNav section={route.section} subsection={route.subsection} onSelect={selectSubsection} />
+
+        {route.section === 'home' && route.subsection === 'overview' ? (
+          <HomePreview
+            onSearch={() => {
+              setSearchOpen(true)
+              setNotificationsOpen(false)
+            }}
+            onNotifications={() => {
+              setNotificationsOpen(true)
+              setSearchOpen(false)
+            }}
+            unreadCount={notificationInbox.unreadCount}
+          />
+        ) : (
+          <ShellPage
+            route={route}
+            onSearch={() => {
+              setSearchOpen(true)
+              setNotificationsOpen(false)
+            }}
+            onNotifications={() => {
+              setNotificationsOpen(true)
+              setSearchOpen(false)
+            }}
+            unreadCount={notificationInbox.unreadCount}
+          />
+        )}
+
+        <ContextSidebar route={route} onSelect={selectSubsection} />
       </div>
-      <HomePreview />
-      <ContextSidebar />
-    </div>
+
+      <GlobalSearch
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        onNavigate={navigate}
+      />
+      <NotificationCenter
+        open={notificationsOpen}
+        notifications={notificationInbox.notifications}
+        loading={notificationInbox.loading}
+        error={notificationInbox.error}
+        onClose={() => setNotificationsOpen(false)}
+        onMarkRead={notificationInbox.markRead}
+        onMarkAllRead={notificationInbox.markAllRead}
+        onNavigate={navigate}
+      />
+    </>
   )
 }
