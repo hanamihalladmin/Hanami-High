@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import { getSignedProfileMediaUrl } from '../lib/profileMedia'
+import { profilePageLayoutFrom } from '../lib/profilePageLayout'
 import { profilePageBackgroundFrom, profilePageBackgroundStyle } from '../lib/profilePageTheme'
 import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
@@ -22,6 +23,32 @@ function widgetPath(value: Json) { const path = obj(value).storagePath; return t
 function roleLabel(role: string | null) { if (role === 'new_faculty') return 'New Teacher'; if (role === 'faculty') return 'Teacher'; if (role === 'administration') return 'Staff'; if (role === 'new_student') return 'New Student'; if (role === 'student') return 'Student'; return role ? role.split('_').map((part) => part[0]?.toUpperCase() + part.slice(1)).join(' ') : 'Hanami Member' }
 function safeClass(value?: string) { return (value || 'none').replace(/[^a-z0-9-]/gi, '-').toLowerCase() }
 function noteKey(id: string) { return `hanami-profile-note:${id}` }
+function lines(value: string) { return value.split(/\r?\n|\s*\|\s*/).map((item) => item.trim()).filter(Boolean) }
+
+function renderWidgetBody(widget: PublishedProfileWidget, media: Record<string, string>): ReactNode {
+  const content = widgetContent(widget.config)
+  const path = widgetPath(widget.config)
+  const items = lines(content)
+
+  if (widget.widget_type === 'image') return <>
+    {path && media[path] ? <img className="published-widget-image" src={media[path]} alt={widget.title || 'Profile image'}/> : <div className="profile-widget-missing-image">Image unavailable</div>}
+    {content && <p className="profile-widget-caption">{content}</p>}
+  </>
+
+  if (widget.widget_type === 'blinkies') return <div className="profile-widget-blinkies">{items.map((item, index) => <span key={`${item}-${index}`}>{item}</span>)}</div>
+  if (widget.widget_type === 'marquee') return <div className="profile-widget-marquee"><span>{content || '✦ welcome to my page ✦'}</span></div>
+  if (widget.widget_type === 'mood') return <div className="profile-widget-mood"><span aria-hidden="true">☺</span><div>{items.map((item, index) => <p key={`${item}-${index}`}>{item}</p>)}</div></div>
+  if (widget.widget_type === 'music') return <div className="profile-widget-music"><span className="profile-widget-disc" aria-hidden="true">♫</span><div>{items.map((item, index) => index === 0 ? <strong key={`${item}-${index}`}>{item}</strong> : <span key={`${item}-${index}`}>{item}</span>)}<small>decorative player · no autoplay</small></div></div>
+  if (widget.widget_type === 'favorites') return <ul className="profile-widget-favorites">{items.map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ul>
+  if (widget.widget_type === 'contact') return <div className="profile-widget-contact">{items.map((item, index) => <span key={`${item}-${index}`}>{item}</span>)}</div>
+  if (widget.widget_type === 'quote') return <blockquote className="profile-widget-quote">{content || 'Add a favorite quote.'}</blockquote>
+  if (widget.widget_type === 'divider') return <div className="profile-widget-divider" aria-label={content || 'Profile divider'}><span>{content || '✿ ✦ ✿ ✦ ✿'}</span></div>
+  if (widget.widget_type === 'journal') return <div className="profile-widget-journal">{items.map((item, index) => index === 0 ? <time key={`${item}-${index}`}>{item}</time> : <p key={`${item}-${index}`}>{item}</p>)}</div>
+  if (widget.widget_type === 'links') return <div className="profile-widget-links">{items.map((item, index) => <span key={`${item}-${index}`}>↗ {item}</span>)}</div>
+  if (widget.widget_type === 'sticker') return <div className="profile-widget-sticker">{content || '✿'}</div>
+
+  return <p className="profile-widget-text">{content || 'Profile widget'}</p>
+}
 
 export function ProfileView({ targetCharacterId, onSearch, onNotifications, unreadCount }: Props) {
   const { activeCharacter } = useIdentity()
@@ -71,6 +98,7 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
 
   const theme = useMemo(() => themeFrom(profile?.theme ?? {}), [profile?.theme])
   const pageBackground = useMemo(() => profilePageBackgroundFrom(profile?.theme ?? {}), [profile?.theme])
+  const layout = useMemo(() => profilePageLayoutFrom(profile?.theme ?? {}), [profile?.theme])
   const cosmetics = useMemo(() => cosmeticsFrom(profile?.cosmetics ?? {}), [profile?.cosmetics])
   if (!activeCharacter || !characterId) return null
   const ownName = activeCharacter.display_name || [activeCharacter.first_name, activeCharacter.last_name].filter(Boolean).join(' ') || 'Your Character'
@@ -87,31 +115,36 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
     '--display-color-2': theme.displayColor2,
     '--spacehey-panel-opacity': String(pageBackground.panelOpacity),
     '--spacehey-border-style': pageBackground.borderStyle,
+    '--profile-page-width': `${layout.pageWidth}px`,
+    '--profile-content-gap': `${layout.contentGap}px`,
+    '--profile-panel-border-width': `${layout.borderWidth}px`,
   } as CSSProperties
+
+  const sidebar = <aside className="hanami-profile-about">
+    {layout.showAboutCard && profile?.bio && <section><span className="eyebrow">ABOUT ME</span><p>{profile.bio}</p></section>}
+    {layout.showSchoolIdentity && <section><span className="eyebrow">SCHOOL IDENTITY</span><dl><div><dt>Role</dt><dd>{roleLabel(profile?.school_role ?? null)}</dd></div><div><dt>Member Since</dt><dd>{memberSince ? new Date(memberSince).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : profile ? new Date(profile.published_at).toLocaleDateString() : '—'}</dd></div><div><dt>Network</dt><dd>Hanami High</dd></div></dl></section>}
+    <section><span className="eyebrow">PRIVATE NOTE</span><textarea value={note} placeholder="Add a note only you can see…" onChange={(event) => setNote(event.target.value)} onBlur={() => localStorage.setItem(noteKey(characterId), note)}/></section>
+  </aside>
 
   return <main className="content-area published-profile-page">
     <ShellTopbar eyebrow={own ? 'MY PROFILE' : 'HANAMI PROFILE'} title={name} onSearch={onSearch} onNotifications={onNotifications} unreadCount={unreadCount}/>
     {error && <div className="identity-notice error">{error}</div>}
-    {loading ? <div className="studio-loading">Loading profile…</div> : !profile ? <section className="shell-module-card"><h2>{own ? 'Publish your profile first.' : 'Profile unavailable.'}</h2><p>{own ? 'Build your page in Profile Studio, then publish it.' : 'This member has not published a visible profile.'}</p></section> : <div className={`hanami-profile-shell spacehey-profile-page ${theme.grid ? 'show-grid' : ''} cosmetic-frame-${safeClass(cosmetics.frame)} cosmetic-avatar-${safeClass(cosmetics.avatarDecoration)} cosmetic-effect-${safeClass(cosmetics.effect)} cosmetic-card-${safeClass(cosmetics.profileCard)} cosmetic-bg-${safeClass(cosmetics.backgroundPack)}`} style={style}>
+    {loading ? <div className="studio-loading">Loading profile…</div> : !profile ? <section className="shell-module-card"><h2>{own ? 'Publish your profile first.' : 'Profile unavailable.'}</h2><p>{own ? 'Build your page in Profile Studio, then publish it.' : 'This member has not published a visible profile.'}</p></section> : <div className={`hanami-profile-shell spacehey-profile-page layout-${layout.preset} sidebar-${layout.sidebarSide} hero-${layout.heroStyle} density-${layout.panelDensity} titles-${layout.widgetTitleStyle} avatar-${layout.avatarShape} tabs-${layout.tabStyle} ${theme.grid ? 'show-grid' : ''} cosmetic-frame-${safeClass(cosmetics.frame)} cosmetic-avatar-${safeClass(cosmetics.avatarDecoration)} cosmetic-effect-${safeClass(cosmetics.effect)} cosmetic-card-${safeClass(cosmetics.profileCard)} cosmetic-bg-${safeClass(cosmetics.backgroundPack)}`} style={style}>
       <section className="hanami-profile-hero">
         <div className="hanami-profile-banner" style={{ background: theme.accent }}>{profile.banner_path && media[profile.banner_path] && <img src={media[profile.banner_path]} alt={`${name} banner`}/>}</div>
         <div className="hanami-profile-avatar-wrap"><div className="hanami-profile-avatar">{profile.avatar_path && media[profile.avatar_path] ? <img src={media[profile.avatar_path]} alt={`${name} avatar`}/> : name.slice(0, 2).toUpperCase()}</div><span className="hanami-avatar-decoration" aria-hidden="true"/></div>
-        <div className="hanami-profile-heading"><div><span className="eyebrow">HANAMI PROFILE</span><h1 className={`profile-display-name profile-font-${theme.displayFont} profile-effect-${theme.displayEffect}`}>{name}</h1><p>{handle}{profile.pronouns ? ` · ${profile.pronouns}` : ''}</p>{profile.custom_status && <blockquote>{profile.custom_status}</blockquote>}</div><div className="hanami-profile-actions">{own ? <><a className="primary-action" href="#/profile/profile-studio">Edit Profile</a><a className="secondary-action" href="#/profile/display-name-style">Name Style</a></> : <><a className="primary-action" href="#/messages/friends">Message</a><a className="secondary-action" href="#profile-guestbook">Guestbook</a></>}</div></div>
+        <div className="hanami-profile-heading"><div><span className="eyebrow">HANAMI PROFILE</span><h1 className={`profile-display-name profile-font-${theme.displayFont} profile-effect-${theme.displayEffect}`}>{name}</h1><p>{handle}{profile.pronouns ? ` · ${profile.pronouns}` : ''}</p>{profile.custom_status && <blockquote>{profile.custom_status}</blockquote>}</div><div className="hanami-profile-actions">{own ? <><a className="primary-action" href="#/profile/profile-studio">Edit Profile</a><a className="secondary-action" href="#/profile/display-name-style">Name Style</a></> : <><a className="primary-action" href="#/messages/friends">Message</a><button className="secondary-action" type="button" onClick={() => setTab('guestbook')}>Guestbook</button></>}</div></div>
       </section>
 
       <div className="hanami-profile-layout">
-        <aside className="hanami-profile-about">
-          {profile.bio && <section><span className="eyebrow">ABOUT ME</span><p>{profile.bio}</p></section>}
-          <section><span className="eyebrow">SCHOOL IDENTITY</span><dl><div><dt>Role</dt><dd>{roleLabel(profile.school_role)}</dd></div><div><dt>Member Since</dt><dd>{memberSince ? new Date(memberSince).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : new Date(profile.published_at).toLocaleDateString()}</dd></div><div><dt>Network</dt><dd>Hanami High</dd></div></dl></section>
-          <section><span className="eyebrow">PRIVATE NOTE</span><textarea value={note} placeholder="Add a note only you can see…" onChange={(event) => setNote(event.target.value)} onBlur={() => localStorage.setItem(noteKey(characterId), note)}/></section>
-        </aside>
-
+        {layout.sidebarSide === 'left' && sidebar}
         <section className="hanami-profile-main">
           <nav className="hanami-profile-tabs"><button className={tab === 'board' ? 'active' : ''} onClick={() => setTab('board')}>Profile Board</button><button className={tab === 'activity' ? 'active' : ''} onClick={() => setTab('activity')}>Activity</button><button className={tab === 'guestbook' ? 'active' : ''} onClick={() => setTab('guestbook')}>Guestbook</button></nav>
-          {tab === 'board' && <div className="hanami-profile-board">{widgets.length === 0 ? <div className="hanami-profile-empty">{own ? 'Your board is empty. Add widgets in Profile Studio.' : 'This member has not added profile widgets yet.'}</div> : <div className="published-widget-canvas">{widgets.map((widget) => { const path = widgetPath(widget.config); return <article className={`published-widget widget-${widget.widget_type}`} key={widget.id} style={{ gridColumn: `span ${Math.min(Math.max(widget.width, 1), 12)}`, minHeight: `${Math.max(widget.height, 1) * 48}px` }}><header><strong>{widget.title || widget.widget_type.replaceAll('_', ' ')}</strong></header><div className="published-widget-body">{widget.widget_type === 'image' && path && media[path] ? <img className="published-widget-image" src={media[path]} alt={widget.title || 'Profile image'}/> : <p>{widgetContent(widget.config) || 'Profile widget'}</p>}</div></article> })}</div>}</div>}
+          {tab === 'board' && <div className="hanami-profile-board">{widgets.length === 0 ? <div className="hanami-profile-empty">{own ? 'Your board is empty. Add widgets in Profile Studio.' : 'This member has not added profile widgets yet.'}</div> : <div className="published-widget-canvas">{widgets.map((widget) => <article className={`published-widget widget-${safeClass(widget.widget_type)}`} key={widget.id} style={{ gridColumn: `span ${Math.min(Math.max(widget.width, 1), 12)}`, minHeight: `${Math.max(widget.height, 1) * 48}px` }}><header><strong>{widget.title || widget.widget_type.replaceAll('_', ' ')}</strong></header><div className="published-widget-body">{renderWidgetBody(widget, media)}</div></article>)}</div>}</div>}
           {tab === 'activity' && <div className="hanami-profile-activity">{posts.length === 0 ? <div className="hanami-profile-empty">No public activity yet.</div> : posts.map((post) => <article key={post.id}><span>{post.post_type}</span><div><strong>{post.title || name}</strong><p>{post.body}</p><small>{new Date(post.published_at || post.created_at).toLocaleString()}</small></div></article>)}</div>}
           {tab === 'guestbook' && <div id="profile-guestbook" className="hanami-profile-guestbook"><GuestbookPanel targetCharacterId={characterId} guestbookVisibility={profile.guestbook_visibility} management={own}/></div>}
         </section>
+        {layout.sidebarSide === 'right' && sidebar}
       </div>
     </div>}
   </main>
