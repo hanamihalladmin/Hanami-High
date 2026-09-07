@@ -1,6 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 import type { HanamiPlatformDatabase } from '../types/database-platform'
 
+export type LoginIntent = 'member' | 'owner' | 'administrator'
+
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined
 const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined
 
@@ -28,9 +30,16 @@ function browserRedirectUrl() {
   return url.toString()
 }
 
-export async function signInWithDiscord() {
+export async function signInWithDiscord(intent: LoginIntent = 'member') {
   if (!supabase) throw new Error('Supabase environment variables are not configured.')
-  const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'discord', options: { redirectTo: browserRedirectUrl() } })
-  if (error) throw error
+  sessionStorage.setItem('hanami-login-intent', intent)
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'discord',
+    options: { redirectTo: browserRedirectUrl() },
+  })
+  if (error) {
+    sessionStorage.removeItem('hanami-login-intent')
+    throw error
+  }
   return data
 }
