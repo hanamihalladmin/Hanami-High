@@ -8,6 +8,8 @@ type TaskMeta = {
   description: string
   available: boolean
   action?: string
+  modulePath?: string
+  moduleAction?: string
 }
 
 const taskMeta: Record<string, TaskMeta> = {
@@ -35,8 +37,10 @@ const taskMeta: Record<string, TaskMeta> = {
   },
   profile_customization: {
     title: 'Personalize your profile',
-    description: 'Make at least one change in Profile Studio once the customization module is available.',
+    description: 'Make your profile your own in Profile Studio, then publish it to complete this step.',
     available: false,
+    modulePath: '#/profile/profile-studio',
+    moduleAction: 'Open Profile Studio →',
   },
   boutique_preview: {
     title: 'Preview the Boutique',
@@ -160,6 +164,10 @@ export function OrientationPanel() {
               </div>
               {done ? (
                 <span className="orientation-task-state">Complete</span>
+              ) : meta.modulePath ? (
+                <button type="button" onClick={() => { window.location.hash = meta.modulePath! }}>
+                  {meta.moduleAction || 'Open module →'}
+                </button>
               ) : unavailable ? (
                 <span className="orientation-task-state unavailable">Coming with its module</span>
               ) : (
