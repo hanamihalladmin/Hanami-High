@@ -8,6 +8,9 @@ function characterName(character: HanamiCharacter) {
 }
 
 function roleLabel(character: HanamiCharacter) {
+  if (character.character_kind === 'faculty' && character.school_role === 'new_faculty') return 'New Teacher'
+  if (character.character_kind === 'faculty' && (character.school_role === 'faculty' || character.school_role === null)) return 'Teacher'
+  if (character.school_role === 'administration') return 'Staff (future portal)'
   if (!character.school_role) return 'Applicant'
   return character.school_role
     .split('_')
