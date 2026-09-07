@@ -33,24 +33,6 @@
 .rewards-form textarea,.boutique-admin-form textarea { min-height:78px; resize:vertical; }
 .reward-inline { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .roleplay-session-row>div:last-child { display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
-.boutique-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
-.boutique-card { display:grid; grid-template-rows:150px 1fr auto; overflow:hidden; }
-.boutique-preview { display:grid; place-items:center; border-bottom:1px solid var(--line,#c9c6bd); background:linear-gradient(135deg,rgba(111,138,121,.08),rgba(23,34,59,.06)); }
-.boutique-preview span { display:grid; place-items:center; width:76px; height:76px; border:2px solid currentColor; font-size:30px; }
-.preview-sakura { background-image:radial-gradient(circle at 25% 25%,rgba(194,136,157,.28) 0 4px,transparent 5px),radial-gradient(circle at 70% 55%,rgba(194,136,157,.22) 0 4px,transparent 5px); }
-.preview-navy { box-shadow:inset 0 0 0 8px rgba(23,34,59,.1); }
-.preview-gold { box-shadow:inset 0 0 0 8px rgba(181,146,66,.12); }
-.preview-petals { background-image:radial-gradient(ellipse at 20% 30%,rgba(194,136,157,.28) 0 5px,transparent 6px),radial-gradient(ellipse at 65% 70%,rgba(194,136,157,.23) 0 5px,transparent 6px); }
-.preview-stars { background-image:radial-gradient(circle at 20% 25%,rgba(181,146,66,.35) 0 2px,transparent 3px),radial-gradient(circle at 72% 45%,rgba(181,146,66,.3) 0 2px,transparent 3px),radial-gradient(circle at 48% 76%,rgba(181,146,66,.25) 0 2px,transparent 3px); }
-.boutique-card-body { padding:14px; }
-.boutique-card h2 { margin:5px 0; font-size:18px; }
-.boutique-card p { color:var(--muted,#667085); min-height:54px; }
-.boutique-meta { display:flex; flex-wrap:wrap; gap:5px; font-size:10px; text-transform:capitalize; }
-.boutique-meta span,.boutique-meta strong { border:1px solid var(--line,#d3d0c7); padding:4px 6px; }
-.boutique-card>footer { display:flex; align-items:center; gap:6px; padding:12px 14px; border-top:1px solid var(--line,#d9d5cc); }
-.boutique-card>footer>strong { margin-right:auto; font-size:15px; }
-.rarity-rare { border-top:3px solid #8a6f3d; }
-.rarity-legendary { border-top:3px double #6c4b82; }
 .achievement-stat-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:16px; }
 .achievement-stat-grid article { padding:16px; display:grid; gap:4px; }
 .achievement-stat-grid article>span { font-size:10px; letter-spacing:.12em; font-weight:800; }
@@ -72,6 +54,52 @@
 .timeline-mark { z-index:1; display:grid; place-items:center; width:32px; height:32px; background:var(--paper,#fffdf8); border:1px solid var(--line,#bbb8ae); }
 .achievement-timeline article>div:last-child { display:grid; gap:3px; }
 .achievement-timeline span,.achievement-timeline small { color:var(--muted,#667085); }
+
+/* Visual collectible storefront */
+.boutique-storefront { --shop-radius:18px; }
+.boutique-storebar { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:18px; padding:14px 16px; border:1px solid var(--line); background:var(--paper); box-shadow:var(--panel-shadow); }
+.boutique-storebar p { margin:4px 0 0; color:var(--muted); }
+.boutique-wallet-chip { display:grid; justify-items:end; gap:2px; min-width:135px; }
+.boutique-wallet-chip span,.boutique-wallet-chip small { color:var(--muted); font-size:9px; letter-spacing:.08em; }
+.boutique-wallet-chip strong { font-size:20px; color:var(--navy-900); }
+.boutique-feature-hero { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(280px,.8fr); min-height:390px; margin-bottom:22px; border:1px solid var(--line-dark); border-radius:var(--shop-radius); overflow:hidden; background:var(--paper); box-shadow:0 12px 30px rgba(17,25,44,.12); }
+.boutique-feature-art { min-height:390px; background:linear-gradient(135deg,var(--sage-100),var(--pink-100)); overflow:hidden; }
+.boutique-feature-copy { display:flex; flex-direction:column; justify-content:center; gap:10px; padding:28px; border-left:1px solid var(--line); }
+.boutique-feature-copy h1 { margin:0; font-family:var(--font-display); font-size:34px; font-weight:normal; color:var(--navy-900); }
+.boutique-feature-copy p { margin:0; color:var(--muted); line-height:1.55; }
+.boutique-feature-tags,.boutique-orb-meta { display:flex; flex-wrap:wrap; gap:5px; }
+.boutique-feature-tags span,.boutique-orb-meta span { display:inline-flex; padding:4px 7px; border:1px solid var(--line); background:var(--cream); font-size:9px; text-transform:uppercase; letter-spacing:.07em; }
+.boutique-feature-price { display:flex; align-items:center; gap:10px; margin-top:4px; }
+.boutique-feature-price strong { font-size:24px; color:var(--navy-900); }
+.boutique-feature-price span { color:var(--muted); }
+.boutique-feature-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+.boutique-feature-actions button,.boutique-buy-button { border:1px solid var(--navy-900)!important; background:var(--navy-900)!important; color:#fff!important; padding:9px 12px!important; font-weight:700; cursor:pointer; }
+.boutique-feature-actions button:last-child { background:var(--paper)!important; color:var(--navy-900)!important; }
+.boutique-feature-actions button:disabled,.boutique-buy-button:disabled { opacity:.45; cursor:not-allowed; }
+.boutique-shelf { margin-bottom:20px; }
+.boutique-shelf>header { display:flex; justify-content:space-between; align-items:end; gap:12px; margin:0 0 10px; padding:0 2px; }
+.boutique-shelf h2 { margin:3px 0 0; font-size:22px; }
+.boutique-orb-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.boutique-orb-card { min-width:0; overflow:hidden; border:1px solid var(--line-dark); border-radius:var(--shop-radius); background:var(--paper); box-shadow:0 5px 16px rgba(17,25,44,.08); cursor:pointer; transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease; }
+.boutique-orb-card:hover { transform:translateY(-3px); box-shadow:0 10px 24px rgba(17,25,44,.13); border-color:var(--pink-600); }
+.boutique-orb-card.previewing { box-shadow:0 0 0 3px color-mix(in srgb,var(--pink-500) 34%,transparent),0 10px 24px rgba(17,25,44,.12); }
+.boutique-orb-art { position:relative; height:210px; overflow:hidden; border-bottom:1px solid var(--line); background:var(--cream); }
+.boutique-art { width:100%; height:100%; display:block; object-fit:cover; }
+.boutique-art.large { min-height:390px; }
+.boutique-new-flag,.boutique-owned-flag { position:absolute; top:10px; padding:4px 7px; border:1px solid rgba(255,255,255,.7); background:rgba(17,25,44,.82); color:#fff; font-size:9px; letter-spacing:.08em; font-weight:800; }
+.boutique-new-flag { left:10px; }
+.boutique-owned-flag { right:10px; background:rgba(79,122,93,.9); }
+.boutique-orb-copy { display:grid; gap:6px; padding:13px 14px 10px; }
+.boutique-orb-copy h3 { margin:0; font-size:17px; }
+.boutique-orb-copy p { margin:0; min-height:48px; color:var(--muted); line-height:1.45; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.boutique-orb-card>footer { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:11px 14px 13px; }
+.boutique-orb-card>footer>strong { font-size:15px; }
+.boutique-orb-card>footer .boutique-buy-button { min-width:104px; padding:7px 9px!important; font-size:10px; }
+.boutique-owned-badge { display:inline-flex; align-items:center; justify-content:center; padding:6px 8px; border:1px solid var(--success); background:color-mix(in srgb,var(--success) 12%,var(--paper)); color:var(--success); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; }
+.boutique-feature-hero.rarity-rare,.boutique-orb-card.rarity-rare { border-color:#9a773b; }
+.boutique-feature-hero.rarity-legendary,.boutique-orb-card.rarity-legendary { border-color:#735286; box-shadow:0 8px 24px rgba(93,62,120,.18); }
+.boutique-feature-hero.rarity-uncommon,.boutique-orb-card.rarity-uncommon { border-color:#5f8068; }
 .rewards-page button:not(.topbar-button),.boutique-page button:not(.topbar-button) { border-radius:0; }
-@media(max-width:1100px){.boutique-grid{grid-template-columns:repeat(2,1fr)}.earn-grid{grid-template-columns:repeat(2,1fr)}.rewards-admin-grid{grid-template-columns:1fr}}
-@media(max-width:720px){.rewards-intro,.boutique-intro{flex-direction:column;align-items:flex-start}.boutique-intro>div:last-child{justify-items:start}.petal-wallet-hero{grid-template-columns:1fr}.petal-wallet-hero>div:first-child{border-right:0;border-bottom:1px solid var(--line,#c9c6bd)}.earn-grid,.boutique-grid,.achievement-grid,.achievement-stat-grid{grid-template-columns:1fr}.reward-inline{grid-template-columns:1fr}.ledger-row,.roleplay-session-row{align-items:flex-start;flex-direction:column}.ledger-row>div:last-child{text-align:left}.roleplay-session-row>div:last-child{justify-content:flex-start}}
+
+@media(max-width:1150px){.boutique-orb-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.boutique-feature-hero{grid-template-columns:1.15fr .85fr}.earn-grid{grid-template-columns:repeat(2,1fr)}.rewards-admin-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.rewards-intro,.boutique-intro,.boutique-storebar{flex-direction:column;align-items:flex-start}.boutique-wallet-chip{justify-items:start}.petal-wallet-hero{grid-template-columns:1fr}.petal-wallet-hero>div:first-child{border-right:0;border-bottom:1px solid var(--line,#c9c6bd)}.earn-grid,.achievement-grid,.achievement-stat-grid,.boutique-orb-grid{grid-template-columns:1fr}.reward-inline{grid-template-columns:1fr}.ledger-row,.roleplay-session-row{align-items:flex-start;flex-direction:column}.ledger-row>div:last-child{text-align:left}.roleplay-session-row>div:last-child{justify-content:flex-start}.boutique-feature-hero{grid-template-columns:1fr}.boutique-feature-copy{border-left:0;border-top:1px solid var(--line);padding:20px}.boutique-feature-art,.boutique-art.large{min-height:260px}.boutique-feature-copy h1{font-size:28px}.boutique-orb-art{height:230px}}
