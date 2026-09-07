@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react'
 import {
   profileLayoutPresets,
   profilePageLayoutFrom,
@@ -56,7 +56,7 @@ export function ProfileLayoutPage() {
   const previewStyle = useMemo(() => ({
     '--layout-preview-gap': `${layout.contentGap}px`,
     '--layout-preview-border': `${layout.borderWidth}px`,
-  }) as React.CSSProperties, [layout])
+  }) as CSSProperties, [layout])
 
   function patch<K extends keyof ProfilePageLayout>(key: K, value: ProfilePageLayout[K]) {
     setLayout((current) => ({ ...current, [key]: value }))
@@ -89,6 +89,7 @@ export function ProfileLayoutPage() {
     }
     setTheme(nextTheme)
     setNotice('Page layout saved to your private draft. Publish your profile when you want the public page to change.')
+    window.dispatchEvent(new CustomEvent('hanami:profile-theme-changed', { detail: { characterId: activeCharacter.id } }))
   }
 
   if (!activeCharacter) return null
