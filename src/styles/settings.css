@@ -27,6 +27,21 @@
 .connection-card span { color:var(--muted,#667085); }
 .settings-empty { padding:28px 18px; text-align:center; color:var(--muted,#667085); border:1px solid var(--line,#c9c6bd); background:var(--paper,#fffdf8); }
 .settings-page button:not(.topbar-button) { border-radius:0; }
+.safety-report-form { display:grid; gap:8px; padding:14px 16px; border-bottom:1px solid var(--line,#e2dfd7); }
+.safety-report-form input,.safety-report-form textarea { width:100%; box-sizing:border-box; border:1px solid var(--line,#bbb8ae); border-radius:0; background:#fff; color:inherit; padding:9px 10px; font:inherit; }
+.safety-report-form textarea { min-height:100px; resize:vertical; }
+.safety-report-form button { justify-self:start; }
+.safety-report-history { display:grid; padding:0 16px 14px; }
+.safety-report-history>strong { padding:12px 0 8px; }
+.safety-report-history article { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:9px 0; border-top:1px solid var(--line,#e2dfd7); }
+.safety-report-history article>div { display:grid; gap:3px; }
+.safety-report-history article>div:last-child { justify-items:end; text-align:right; }
+.safety-report-history span,.safety-report-history small { color:var(--muted,#667085); }
+.report-status { display:inline-flex; width:max-content; border:1px solid var(--line,#bbb8ae); padding:3px 6px; font-size:9px; text-transform:uppercase; letter-spacing:.08em; }
+.report-status.open { background:#fff3d7; border-color:#a98326; color:#72550e; }
+.report-status.reviewing { background:#e8eef8; border-color:#54709a; color:#334f77; }
+.report-status.resolved { background:#e6f3e8; border-color:#5e815f; color:#315b34; }
+.report-status.dismissed { background:#eee9df; color:#555; }
 
 :root { --hanami-font-scale:1; }
 html { font-size:calc(16px * var(--hanami-font-scale)); }
@@ -38,4 +53,4 @@ html.hanami-high-contrast { --line:#5b6069; --muted:#434b57; }
 html.hanami-high-contrast .app-shell,html.hanami-high-contrast .content-area { color:#111827; }
 html.hanami-high-contrast button,html.hanami-high-contrast input,html.hanami-high-contrast select,html.hanami-high-contrast textarea { border-color:#555b65!important; }
 
-@media(max-width:720px){.settings-intro{flex-direction:column;align-items:flex-start}.settings-actions{grid-template-columns:1fr}.settings-actions>div:first-child{border-right:0;border-bottom:1px solid var(--line,#d9d5cc)}.settings-form-list>label{grid-template-columns:1fr}.settings-form-list input[type="checkbox"]{justify-self:start}}
+@media(max-width:720px){.settings-intro{flex-direction:column;align-items:flex-start}.settings-actions{grid-template-columns:1fr}.settings-actions>div:first-child{border-right:0;border-bottom:1px solid var(--line,#d9d5cc)}.settings-form-list>label{grid-template-columns:1fr}.settings-form-list input[type="checkbox"]{justify-self:start}.safety-report-history article{flex-direction:column}.safety-report-history article>div:last-child{justify-items:start;text-align:left}}
