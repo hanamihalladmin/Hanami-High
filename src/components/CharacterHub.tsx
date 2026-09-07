@@ -142,9 +142,11 @@ export function CharacterHub() {
               const application = character
                 ? applications.find((candidate) => candidate.character_id === character.id) ?? null
                 : null
+              const applicationState = Boolean(character && ['draft', 'changes_requested', 'submitted', 'denied'].includes(character.character_state))
               const actionable = character
-                ? ['draft', 'changes_requested', 'submitted', 'denied', 'active'].includes(character.character_state)
+                ? applicationState || character.character_state === 'active'
                 : false
+              const missingRequiredApplication = applicationState && !application
 
               return (
                 <article className={`character-slot ${character ? 'occupied' : 'empty'}`} key={slotNo}>
@@ -160,7 +162,7 @@ export function CharacterHub() {
                       <button
                         className={character.character_state === 'active' ? 'primary-action' : 'secondary-action'}
                         type="button"
-                        disabled={mutating || !actionable || !application}
+                        disabled={mutating || !actionable || missingRequiredApplication}
                         onClick={() => handleCharacterAction(character, application)}
                       >
                         {actionLabel(character, application)}
