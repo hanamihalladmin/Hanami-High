@@ -16,7 +16,7 @@ export type SchoolAnnouncement = {
   pinned: boolean
   school_date: string | null
   expires_school_date: string | null
-  created_by_character_id: string
+  created_by_character_id: string | null
   created_at: string
   updated_at: string
 }
