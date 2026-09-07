@@ -22,6 +22,7 @@ export function useInterfacePreferences() {
     root.classList.toggle('hanami-compact', data.compact_mode)
     root.classList.toggle('hanami-high-contrast', data.high_contrast)
     root.style.setProperty('--hanami-font-scale', String(data.font_scale / 100))
+    root.dataset.siteTheme = data.site_theme || 'hanami'
   }, [account])
 
   useEffect(() => {
