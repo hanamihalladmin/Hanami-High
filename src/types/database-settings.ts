@@ -19,6 +19,7 @@ export type AccountPreferences = {
   dm_policy: string
   friend_request_policy: string
   show_online_status: boolean
+  site_theme: string
   created_at: string
   updated_at: string
 }
