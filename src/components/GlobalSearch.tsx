@@ -61,7 +61,11 @@ export function GlobalSearch({ open, onClose, onNavigate }: Props) {
   if (!open) return null
 
   function choose(result: HanamiSearchResult) {
-    onNavigate(normalizeRoute(result.section, result.subsection ?? undefined))
+    if (result.document_type === 'character' && result.entity_id) {
+      onNavigate({ section: 'profile', subsection: 'view-profile', targetId: result.entity_id })
+    } else {
+      onNavigate(normalizeRoute(result.section, result.subsection ?? undefined))
+    }
     setQuery('')
     setResults([])
     onClose()
