@@ -36,7 +36,7 @@ import './styles/boutique-animated-collections.css'
 import './styles/settings.css'
 import './styles/owner-operations.css'
 import './styles/access-modes.css'
-import './styles/early-web-global.css'
+import './styles/early-web-site.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
