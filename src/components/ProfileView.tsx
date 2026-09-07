@@ -6,6 +6,7 @@ import type { Json, PublishedCharacterProfile, PublishedProfileWidget } from '..
 import { ShellTopbar } from './ShellTopbar'
 
 type Props = {
+  targetCharacterId?: string
   onSearch: () => void
   onNotifications: () => void
   unreadCount: number
@@ -54,8 +55,15 @@ function widgetStoragePath(value: Json) {
   return typeof path === 'string' ? path : null
 }
 
-export function ProfileView({ onSearch, onNotifications, unreadCount }: Props) {
+function roleLabel(role: string | null) {
+  if (!role) return 'Hanami Student'
+  return role.split('_').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ')
+}
+
+export function ProfileView({ targetCharacterId, onSearch, onNotifications, unreadCount }: Props) {
   const { activeCharacter } = useIdentity()
+  const characterId = targetCharacterId || activeCharacter?.id
+  const isOwnProfile = Boolean(activeCharacter && characterId === activeCharacter.id)
   const [profile, setProfile] = useState<PublishedCharacterProfile | null>(null)
   const [widgets, setWidgets] = useState<PublishedProfileWidget[]>([])
   const [mediaUrls, setMediaUrls] = useState<Record<string, string>>({})
@@ -86,39 +94,65 @@ export function ProfileView({ onSearch, onNotifications, unreadCount }: Props) {
 
   const load = useCallback(async () => {
     const client = supabase
-    if (!client || !activeCharacter) return
+    if (!client || !characterId) return
     setLoading(true)
     setError(null)
-    const [profileResult, widgetResult] = await Promise.all([
-      client.from('published_character_profiles').select('*').eq('character_id', activeCharacter.id).maybeSingle(),
-      client.from('published_profile_widgets').select('*').eq('character_id', activeCharacter.id).order('y').order('x'),
-    ])
-    setLoading(false)
-    if (profileResult.error || widgetResult.error) {
-      setError(profileResult.error?.message || widgetResult.error?.message || 'Published profile could not be loaded.')
+    setProfile(null)
+    setWidgets([])
+    setMediaUrls({})
+
+    const profileResult = await client
+      .from('published_character_profiles')
+      .select('*')
+      .eq('character_id', characterId)
+      .maybeSingle()
+
+    if (profileResult.error) {
+      setLoading(false)
+      setError(profileResult.error.message)
       return
     }
+
+    if (!profileResult.data) {
+      setLoading(false)
+      return
+    }
+
+    const widgetResult = await client
+      .from('published_profile_widgets')
+      .select('*')
+      .eq('character_id', characterId)
+      .order('y')
+      .order('x')
+
+    setLoading(false)
+    if (widgetResult.error) {
+      setError(widgetResult.error.message)
+      return
+    }
+
     const nextWidgets = widgetResult.data ?? []
     setProfile(profileResult.data)
     setWidgets(nextWidgets)
     void loadMedia(profileResult.data, nextWidgets)
-  }, [activeCharacter, loadMedia])
+  }, [characterId, loadMedia])
 
   useEffect(() => {
     void load()
   }, [load])
 
   const theme = useMemo(() => themeFromJson(profile?.theme ?? {}), [profile?.theme])
-  const characterName = activeCharacter?.display_name
+  const ownCharacterName = activeCharacter?.display_name
     || [activeCharacter?.first_name, activeCharacter?.last_name].filter(Boolean).join(' ')
     || 'Your Character'
+  const characterName = profile?.display_name || (isOwnProfile ? ownCharacterName : 'Hanami Profile')
 
-  if (!activeCharacter) return null
+  if (!activeCharacter || !characterId) return null
 
   return (
     <main className="content-area published-profile-page">
       <ShellTopbar
-        eyebrow="MY PROFILE"
+        eyebrow={isOwnProfile ? 'MY PROFILE' : 'HANAMI PROFILE'}
         title={characterName}
         onSearch={onSearch}
         onNotifications={onNotifications}
@@ -131,9 +165,13 @@ export function ProfileView({ onSearch, onNotifications, unreadCount }: Props) {
         <div className="studio-loading">Loading published profile…</div>
       ) : !profile ? (
         <section className="shell-module-card unpublished-profile-card">
-          <span className="eyebrow">NOT PUBLISHED</span>
-          <h2>Your public profile does not have a published snapshot yet.</h2>
-          <p>Build your layout in Profile Studio and publish it when you are ready. Autosaved draft changes and private media stay hidden until then.</p>
+          <span className="eyebrow">{isOwnProfile ? 'NOT PUBLISHED' : 'PROFILE UNAVAILABLE'}</span>
+          <h2>{isOwnProfile ? 'Your public profile does not have a published snapshot yet.' : 'This profile is not available to your account.'}</h2>
+          <p>
+            {isOwnProfile
+              ? 'Build your layout in Profile Studio and publish it when you are ready. Autosaved draft changes and private media stay hidden until then.'
+              : 'The character may not have published a profile, or their profile visibility may not include you. Hanami does not expose private draft or character data as a fallback.'}
+          </p>
         </section>
       ) : (
         <div
@@ -158,9 +196,12 @@ export function ProfileView({ onSearch, onNotifications, unreadCount }: Props) {
                 : characterName.slice(0, 2).toUpperCase()}
             </div>
             <div>
-              <span>{profile.custom_status || 'Hanami High student'}</span>
+              <span>{profile.custom_status || roleLabel(profile.school_role)}</span>
               <h1>{characterName}</h1>
-              <p>{profile.pronouns || 'Pronouns not listed'}</p>
+              <p>
+                {profile.handle ? `@${profile.handle}` : roleLabel(profile.school_role)}
+                {profile.pronouns ? ` · ${profile.pronouns}` : ''}
+              </p>
             </div>
             <div className="published-profile-meta">
               <strong>{profile.profile_visibility === 'hanami' ? 'Hanami Network' : profile.profile_visibility}</strong>
