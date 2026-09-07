@@ -17,8 +17,8 @@ export function ShellTopbar({ eyebrow, title, onSearch, onNotifications, unreadC
         </div>
       </div>
       <div className="page-topbar-actions">
-        <button className="page-header-icon" type="button" title="Pinned Hanami information" aria-label="Pinned Hanami information">⌖</button>
-        <button className="page-header-icon" type="button" title="Members and activity" aria-label="Members and activity">♟</button>
+        <span className="page-header-icon" aria-hidden="true" title="Hanami channel tools">⌖</span>
+        <span className="page-header-icon" aria-hidden="true" title="Member activity is shown in the right sidebar">♟</span>
         <button className="global-search" type="button" onClick={onSearch}>
           <span>Search</span>
           <kbd>⌘K</kbd>
