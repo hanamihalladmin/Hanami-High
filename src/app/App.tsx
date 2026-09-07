@@ -14,6 +14,7 @@ import { ShellPage } from '../components/ShellPage'
 import { ProfileStudio } from '../components/ProfileStudio'
 import { ProfileView } from '../components/ProfileView'
 import { SavedThemes } from '../components/SavedThemes'
+import { FriendsPage } from '../components/FriendsPage'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
@@ -151,6 +152,9 @@ export function App() {
     }
     if (route.section === 'profile' && route.subsection === 'saved-themes') {
       return <SavedThemes {...shared} />
+    }
+    if (route.section === 'social' && route.subsection === 'friends') {
+      return <FriendsPage {...shared} />
     }
     return <ShellPage route={route} {...shared} />
   }
