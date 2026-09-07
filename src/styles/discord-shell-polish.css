@@ -24,3 +24,47 @@
   background: transparent;
   color: #b5bac1;
 }
+
+/* Class and homeroom pages already provide their own channels/chat/members.
+   Collapse the outer section/member columns so the room is one Discord hierarchy. */
+.app-shell:has(> .academic-room-page) {
+  grid-template-columns: 72px minmax(0, 1fr);
+}
+
+.app-shell:has(> .academic-room-page) > .sidebar-column,
+.app-shell:has(> .academic-room-page) > .mobile-section-nav,
+.app-shell:has(> .academic-room-page) > .context-sidebar {
+  display: none !important;
+}
+
+.app-shell:has(> .academic-room-page) > .academic-room-page {
+  grid-column: 2;
+  min-width: 0;
+  min-height: calc(100vh - 34px);
+  height: calc(100vh - 34px);
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.app-shell:has(> .academic-room-page) .academic-room-shell {
+  min-height: calc(100vh - 34px);
+  height: calc(100vh - 34px);
+}
+
+@media (max-width: 760px) {
+  .app-shell:has(> .academic-room-page) {
+    display: block;
+    padding-bottom: 58px;
+  }
+
+  .app-shell:has(> .academic-room-page) > .academic-room-page {
+    height: auto;
+    min-height: calc(100vh - 92px);
+    overflow: visible;
+  }
+
+  .app-shell:has(> .academic-room-page) .academic-room-shell {
+    height: auto;
+    min-height: calc(100vh - 92px);
+  }
+}
