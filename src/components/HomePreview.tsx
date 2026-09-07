@@ -167,12 +167,12 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
 
   const scheduleStates = useMemo(() => {
     const nextIndex = schedule.findIndex(({ meeting }) => clockMinutes(meeting.starts_at) > nowMinutes)
-    return schedule.map(({ meeting }) => {
+    return schedule.map(({ meeting }, index) => {
       const start = clockMinutes(meeting.starts_at)
       const end = clockMinutes(meeting.ends_at)
       if (nowMinutes >= start && nowMinutes < end) return 'Now'
       if (nowMinutes >= end) return 'Complete'
-      return schedule.indexOf(schedule.find((row) => row.meeting.id === meeting.id)!) === nextIndex ? 'Next' : 'Later'
+      return index === nextIndex ? 'Next' : 'Later'
     })
   }, [nowMinutes, schedule])
 
