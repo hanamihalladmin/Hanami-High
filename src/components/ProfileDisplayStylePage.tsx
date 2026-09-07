@@ -85,6 +85,7 @@ export function ProfileDisplayStylePage({ onSearch, onNotifications, unreadCount
       return
     }
     setNotice('Display name style saved to your profile draft. Publish your profile to make it public.')
+    window.dispatchEvent(new CustomEvent('hanami:profile-theme-changed', { detail: { characterId: activeCharacter.id } }))
   }
 
   function surprise() {
