@@ -1,68 +1,90 @@
+import { useEffect, useMemo, useState } from 'react'
 import { sectionById } from '../app/navigation'
+import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
+import type { CharacterPresence } from '../types/database-home'
+import type { SearchDocument } from '../types/database'
 import type { ShellRoute } from '../types/navigation'
 
-type Props = {
-  route: ShellRoute
-  onSelect: (subsection: string) => void
-}
+type Props = { route: ShellRoute; onSelect: (subsection: string) => void }
+
+type Member = CharacterPresence & { identity?: SearchDocument }
 
 function characterName(character: NonNullable<ReturnType<typeof useIdentity>['activeCharacter']>) {
-  return character.display_name
-    || [character.first_name, character.last_name].filter(Boolean).join(' ')
-    || `Character ${character.slot_no}`
+  return character.display_name || [character.first_name, character.last_name].filter(Boolean).join(' ') || `Character ${character.slot_no}`
 }
 
 function roleLabel(character: NonNullable<ReturnType<typeof useIdentity>['activeCharacter']>) {
   if (character.character_kind === 'faculty' && character.school_role === 'new_faculty') return 'New Teacher'
   if (character.character_kind === 'faculty' && (character.school_role === 'faculty' || character.school_role === null)) return 'Teacher'
-  if (character.school_role === 'administration') return 'Staff (future portal)'
+  if (character.school_role === 'administration') return 'Staff'
   if (!character.school_role) return character.character_kind === 'student' ? 'Student' : 'Applicant'
   return character.school_role.split('_').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ')
 }
 
 export function ContextSidebar({ route, onSelect }: Props) {
   const { activeCharacter } = useIdentity()
+  const [members, setMembers] = useState<Member[]>([])
   const section = sectionById[route.section]
   const current = section.subsections.find((item) => item.id === route.subsection) ?? section.subsections[0]
   const nearby = section.subsections.filter((item) => item.id !== current.id).slice(0, 4)
 
-  return (
-    <aside className="context-sidebar">
-      <section>
-        <h3>YOU ARE HERE</h3>
-        <article className="context-current-card">
-          <span>{section.label}</span>
-          <strong>{current.label}</strong>
-          <small>{current.description}</small>
-        </article>
-      </section>
+  useEffect(() => {
+    const client = supabase
+    if (!client) return
+    let cancelled = false
+    async function loadMembers() {
+      const cutoff = new Date(Date.now() - 15 * 60_000).toISOString()
+      const presenceResult = await client.from('character_presence').select('*').gte('last_seen_at', cutoff).order('last_seen_at', { ascending: false }).limit(18)
+      if (presenceResult.error || cancelled) return
+      const rows = presenceResult.data ?? []
+      const ids = rows.map((row) => row.character_id)
+      if (!ids.length) { setMembers([]); return }
+      const identityResult = await client.from('search_documents').select('*').eq('document_type', 'character').in('entity_id', ids)
+      const byId = new Map((identityResult.data ?? []).filter((item) => item.entity_id).map((item) => [item.entity_id as string, item]))
+      if (!cancelled) setMembers(rows.map((row) => ({ ...row, identity: byId.get(row.character_id) })))
+    }
+    void loadMembers()
+    const timer = window.setInterval(() => void loadMembers(), 45_000)
+    return () => { cancelled = true; window.clearInterval(timer) }
+  }, [])
 
-      {nearby.length > 0 && (
-        <section>
-          <h3>IN THIS SECTION</h3>
-          <div className="context-link-list">
-            {nearby.map((item) => (
-              <button type="button" key={item.id} onClick={() => onSelect(item.id)}>
-                <strong>{item.label}</strong><span>→</span>
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
+  const visibleMembers = useMemo(() => {
+    if (!activeCharacter) return members
+    const own: Member = {
+      character_id: activeCharacter.id,
+      account_id: activeCharacter.account_id,
+      status: 'online',
+      current_section: route.section,
+      current_subsection: route.subsection,
+      last_seen_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      identity: {
+        id: activeCharacter.id,
+        source_key: `character:${activeCharacter.id}`,
+        document_type: 'character',
+        entity_id: activeCharacter.id,
+        owner_account_id: activeCharacter.account_id,
+        owner_character_id: activeCharacter.id,
+        title: characterName(activeCharacter),
+        subtitle: roleLabel(activeCharacter),
+        body: '', section: 'discover', subsection: 'students', visibility: 'campus', search_vector: '', created_at: '', updated_at: '',
+      },
+    }
+    return [own, ...members.filter((member) => member.character_id !== activeCharacter.id)]
+  }, [activeCharacter, members, route.section, route.subsection])
 
-      {activeCharacter && (
-        <section>
-          <h3>CURRENT IDENTITY</h3>
-          <div className="context-identity-card">
-            <div className="mini-avatar">{characterName(activeCharacter).slice(0, 2).toUpperCase()}</div>
-            <div>
-              <strong>{characterName(activeCharacter)}</strong>
-              <small>{roleLabel(activeCharacter)} · Slot {activeCharacter.slot_no}</small>
-            </div>
-          </div>
-        </section>
-      )}
-    </aside>
-  )
+  return <aside className="context-sidebar discord-member-sidebar">
+    <section className="discord-activity-section">
+      <div className="discord-member-heading"><strong>ACTIVITY — {nearby.length}</strong><button type="button" aria-label="Activity options">⌄</button></div>
+      {nearby.map((item) => <button className="discord-activity-tile" type="button" key={item.id} onClick={() => onSelect(item.id)}><div className="discord-activity-thumb">{item.label.slice(0,1)}</div><div><strong>{item.label}</strong><small>{item.description}</small></div></button>)}
+    </section>
+
+    <section>
+      <div className="discord-member-heading"><strong>ONLINE — {visibleMembers.length}</strong></div>
+      <div className="discord-member-list">
+        {visibleMembers.map((member) => <a className="discord-member-row" href={`#/profile/view-profile/${encodeURIComponent(member.character_id)}`} key={member.character_id}><div className="discord-member-avatar">{(member.identity?.title || 'H').slice(0,2).toUpperCase()}<span className={`discord-member-presence ${member.status}`}/></div><div><strong>{member.identity?.title || 'Hanami Member'}</strong><small>{member.identity?.subtitle || member.current_subsection || 'Hanami High'}</small></div></a>)}
+      </div>
+    </section>
+  </aside>
 }
