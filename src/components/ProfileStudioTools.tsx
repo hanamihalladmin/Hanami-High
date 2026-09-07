@@ -6,8 +6,9 @@ import type { CharacterCosmeticLoadout } from '../types/database-customization'
 import { BoutiqueArtwork } from './BoutiqueArtwork'
 import { ProfileBackgroundPage } from './ProfileBackgroundPage'
 import { ProfileDisplayStylePage } from './ProfileDisplayStylePage'
+import { ProfileLayoutPage } from './ProfileLayoutPage'
 
-type ToolTab = 'style' | 'background' | 'cosmetics'
+type ToolTab = 'style' | 'background' | 'layout' | 'cosmetics'
 type LoadoutField = 'avatar_decoration_item_id' | 'frame_item_id' | 'effect_item_id' | 'nameplate_item_id' | 'profile_card_item_id' | 'background_pack_item_id'
 
 const fieldByType: Record<string, LoadoutField | undefined> = {
@@ -154,6 +155,7 @@ export function ProfileStudioTools() {
     {!open && <div className="profile-studio-tools-launcher">
       <button type="button" onClick={() => { setTab('style'); setOpen(true) }}>Aa Name Style</button>
       <button type="button" onClick={() => { setTab('background'); setOpen(true) }}>▧ Page Background</button>
+      <button type="button" onClick={() => { setTab('layout'); setOpen(true) }}>▦ Page Layout</button>
       <button type="button" onClick={() => { setTab('cosmetics'); setOpen(true) }}>✦ Cosmetics</button>
     </div>}
 
@@ -164,6 +166,7 @@ export function ProfileStudioTools() {
           <nav>
             <button type="button" className={tab === 'style' ? 'active' : ''} onClick={() => setTab('style')}>Display Name</button>
             <button type="button" className={tab === 'background' ? 'active' : ''} onClick={() => setTab('background')}>Page Background</button>
+            <button type="button" className={tab === 'layout' ? 'active' : ''} onClick={() => setTab('layout')}>Page Layout</button>
             <button type="button" className={tab === 'cosmetics' ? 'active' : ''} onClick={() => setTab('cosmetics')}>Cosmetics</button>
           </nav>
           <button className="profile-studio-tools-close" type="button" onClick={close}>×</button>
@@ -172,6 +175,7 @@ export function ProfileStudioTools() {
         <div className="profile-studio-tools-body">
           {tab === 'style' && <ProfileDisplayStylePage onSearch={() => {}} onNotifications={() => {}} unreadCount={0}/>} 
           {tab === 'background' && <ProfileBackgroundPage />}
+          {tab === 'layout' && <ProfileLayoutPage />}
           {tab === 'cosmetics' && <section className="profile-cosmetics-panel">
             <div className="profile-cosmetics-intro"><div><span className="eyebrow">YOUR COLLECTION</span><h2>Equip profile cosmetics</h2><p>Cosmetics are owned by your Hanami account but equipped separately for each character. Animated items respect reduced-motion preferences.</p></div><a className="secondary-action" href="#/boutique/featured" onClick={() => setOpen(false)}>Open Boutique</a></div>
             {error && <div className="identity-notice error">{error}</div>}
