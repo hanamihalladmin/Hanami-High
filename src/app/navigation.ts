@@ -121,14 +121,15 @@ export const sections: SectionDefinition[] = [
 export const sectionById = Object.fromEntries(sections.map((section) => [section.id, section])) as Record<ShellSectionId, SectionDefinition>
 
 export function routeHash(route: ShellRoute) {
-  return `#/${route.section}/${route.subsection}`
+  const target = route.targetId ? `/${encodeURIComponent(route.targetId)}` : ''
+  return `#/${route.section}/${route.subsection}${target}`
 }
 
 export function defaultRoute(section: ShellSectionId): ShellRoute {
   return { section, subsection: sectionById[section].defaultSubsection }
 }
 
-export function normalizeRoute(sectionInput?: string, subsectionInput?: string): ShellRoute {
+export function normalizeRoute(sectionInput?: string, subsectionInput?: string, targetInput?: string): ShellRoute {
   const section = sections.some((item) => item.id === sectionInput)
     ? sectionInput as ShellSectionId
     : 'home'
@@ -136,10 +137,11 @@ export function normalizeRoute(sectionInput?: string, subsectionInput?: string):
   const subsection = definition.subsections.some((item) => item.id === subsectionInput)
     ? subsectionInput as string
     : definition.defaultSubsection
-  return { section, subsection }
+  const targetId = targetInput ? decodeURIComponent(targetInput) : undefined
+  return targetId ? { section, subsection, targetId } : { section, subsection }
 }
 
 export function routeFromHash(hash = window.location.hash): ShellRoute {
-  const [section, subsection] = hash.replace(/^#\/?/, '').split('/')
-  return normalizeRoute(section, subsection)
+  const [section, subsection, target] = hash.replace(/^#\/?/, '').split('/')
+  return normalizeRoute(section, subsection, target)
 }
