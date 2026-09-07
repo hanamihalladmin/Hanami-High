@@ -25,6 +25,72 @@
   color: #b5bac1;
 }
 
+.user-panel .presence-dot.status-online,
+.presence-control-dot.status-online,
+.presence-option-dot.status-online { background: #23a55a; }
+.user-panel .presence-dot.status-idle,
+.presence-control-dot.status-idle,
+.presence-option-dot.status-idle { background: #f0b232; }
+.user-panel .presence-dot.status-dnd,
+.presence-control-dot.status-dnd,
+.presence-option-dot.status-dnd { background: #f23f43; }
+.user-panel .presence-dot.status-invisible,
+.presence-control-dot.status-invisible,
+.presence-option-dot.status-invisible { background: #80848e; }
+
+.presence-menu { position: relative; }
+.presence-menu > summary {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  cursor: pointer;
+  list-style: none;
+}
+.presence-menu > summary::-webkit-details-marker { display: none; }
+.presence-menu > summary:hover { background: #35373c; }
+.presence-control-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #232428;
+}
+.presence-menu-popover {
+  position: absolute;
+  z-index: 90;
+  left: 0;
+  bottom: 42px;
+  width: 270px;
+  padding: 8px;
+  border: 1px solid #111214;
+  border-radius: 8px;
+  background: #111214;
+  box-shadow: 0 14px 34px rgba(0,0,0,.45);
+}
+.presence-menu-popover > .user-menu-label { display: block; padding: 4px 8px 6px; color: #949ba4; font-size: 9px; font-weight: 800; letter-spacing: .04em; }
+.presence-menu-popover > button {
+  width: 100%;
+  min-height: 44px;
+  display: grid;
+  grid-template-columns: 18px minmax(0,1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #dbdee1;
+  text-align: left;
+}
+.presence-menu-popover > button:hover,
+.presence-menu-popover > button.selected { background: #35373c; }
+.presence-menu-popover > button > span:nth-child(2) { display: grid; gap: 1px; }
+.presence-menu-popover strong { color: #f2f3f5; font-size: 11px; }
+.presence-menu-popover small { color: #949ba4; font-size: 9px; font-weight: 400; }
+.presence-menu-popover b { color: #b5bac1; font-size: 11px; }
+.presence-option-dot { width: 12px; height: 12px; border-radius: 50%; }
+
 /* Class and homeroom pages already provide their own channels/chat/members.
    Collapse the outer section/member columns so the room is one Discord hierarchy. */
 .app-shell:has(> .academic-room-page) {
@@ -52,6 +118,8 @@
 }
 
 @media (max-width: 760px) {
+  .presence-menu-popover { left: auto; right: 0; bottom: 48px; width: min(270px, calc(100vw - 24px)); }
+
   .app-shell:has(> .academic-room-page) {
     display: block;
     padding-bottom: 58px;
