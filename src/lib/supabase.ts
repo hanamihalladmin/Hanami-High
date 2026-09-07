@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import type { HanamiCompleteDatabase } from '../types/database-settings'
+import type { HanamiOwnerDatabase } from '../types/database-owner'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined
 const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined
@@ -7,7 +7,7 @@ const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as 
 export const hasSupabaseConfig = Boolean(supabaseUrl && supabasePublishableKey)
 
 export const supabase = hasSupabaseConfig
-  ? createClient<HanamiCompleteDatabase>(supabaseUrl!, supabasePublishableKey!, {
+  ? createClient<HanamiOwnerDatabase>(supabaseUrl!, supabasePublishableKey!, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
@@ -29,17 +29,8 @@ function browserRedirectUrl() {
 }
 
 export async function signInWithDiscord() {
-  if (!supabase) {
-    throw new Error('Supabase environment variables are not configured.')
-  }
-
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'discord',
-    options: {
-      redirectTo: browserRedirectUrl(),
-    },
-  })
-
+  if (!supabase) throw new Error('Supabase environment variables are not configured.')
+  const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'discord', options: { redirectTo: browserRedirectUrl() } })
   if (error) throw error
   return data
 }
