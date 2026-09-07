@@ -45,7 +45,7 @@ The application shell includes:
 
 ## Database and security
 
-Supabase migrations in `supabase/migrations/` are the source-controlled database history. Current v2 history runs through migration `0040`.
+Supabase migrations in `supabase/migrations/` are the source-controlled database history. Current v2 history runs through migration `0041`.
 
 Important security rules include:
 
@@ -54,6 +54,7 @@ Important security rules include:
 - Privileged reward/Owner implementations live in the non-exposed `private` schema with `SECURITY INVOKER` public wrappers where appropriate.
 - Safety reports are readable by their reporter and authorized moderation roles only.
 - Presence visibility is enforced by database policy, not only hidden by frontend UI.
+- Teacher authority is revalidated at access time; removing Teacher status clears Teacher-only class/advisor assignments and immediately revokes stale academic, advisor, and roleplay management authority.
 
 ## Local development
 
