@@ -15,7 +15,7 @@ type Props = {
 
 const modeMeta: Record<Mode, { title: string; description: string; type: string }> = {
   students: { title: 'Students', description: 'Find active student characters across Hanami High.', type: 'character' },
-  faculty: { title: 'Faculty', description: 'Find faculty and administration characters.', type: 'character' },
+  faculty: { title: 'Teachers', description: 'Find Hanami High teachers and classroom instructors.', type: 'character' },
   clubs: { title: 'Clubs', description: 'Discover clubs, organizations, and Student Council groups.', type: 'campus_group' },
   posts: { title: 'Posts', description: 'Search visible statuses, bulletins, and blog posts.', type: 'social_post' },
   events: { title: 'Events', description: 'Find published school and campus events.', type: 'campus_event' },
