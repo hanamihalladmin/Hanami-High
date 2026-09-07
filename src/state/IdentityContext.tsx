@@ -8,6 +8,7 @@ import {
   type PropsWithChildren,
 } from 'react'
 import type { Session } from '@supabase/supabase-js'
+import { deleteCharacterProfileMedia } from '../lib/profileMedia'
 import { hasSupabaseConfig, signInWithDiscord, supabase, type LoginIntent } from '../lib/supabase'
 import type { HanamiAccount, HanamiCharacter, StudentApplication } from '../types/database'
 
@@ -52,6 +53,7 @@ type IdentityContextValue = {
   refreshIdentity: () => Promise<void>
   createStudentSlot: (slotNo: 1 | 2) => Promise<void>
   selectCharacter: (characterId: string) => Promise<void>
+  deleteCharacter: (characterId: string, confirmation: string) => Promise<void>
   clearActiveCharacter: () => Promise<void>
   enterOwnerMode: () => void
   exitOwnerMode: () => void
@@ -280,6 +282,33 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     })
   }, [clearSpecialMode, runMutation])
 
+  const deleteCharacter = useCallback(async (characterId: string, confirmation: string) => {
+    const client = supabase
+    if (!client || !account) {
+      setError('Supabase is not configured.')
+      return
+    }
+    setMutating(true)
+    setError(null)
+    try {
+      const { error: rpcError } = await client.rpc('delete_my_character', {
+        p_character_id: characterId,
+        p_confirmation: confirmation,
+      })
+      if (rpcError) throw rpcError
+      try {
+        await deleteCharacterProfileMedia(account.id, characterId)
+      } catch (mediaError) {
+        console.warn('Deleted character profile media cleanup was incomplete.', mediaError)
+      }
+      await refreshIdentity()
+    } catch (nextError) {
+      setError(messageFromError(nextError))
+    } finally {
+      setMutating(false)
+    }
+  }, [account, refreshIdentity])
+
   const clearActiveCharacter = useCallback(async () => {
     const client = supabase
     if (!client || !account) return
@@ -348,6 +377,7 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     refreshIdentity,
     createStudentSlot,
     selectCharacter,
+    deleteCharacter,
     clearActiveCharacter,
     enterOwnerMode,
     exitOwnerMode,
@@ -362,6 +392,7 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     characters,
     clearActiveCharacter,
     createStudentSlot,
+    deleteCharacter,
     effectiveCapabilities,
     enterAdminMode,
     enterOwnerMode,
