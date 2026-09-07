@@ -19,7 +19,7 @@ export type CampusGroup = {
   meeting_weekday: number | null
   meeting_time: string | null
   advisor_character_id: string | null
-  created_by_character_id: string
+  created_by_character_id: string | null
   created_at: string
   updated_at: string
 }
@@ -45,7 +45,7 @@ export type CampusEvent = {
   location: string | null
   status: string
   capacity: number | null
-  created_by_character_id: string
+  created_by_character_id: string | null
   created_at: string
   updated_at: string
 }
@@ -69,7 +69,7 @@ export type CampusOpportunity = {
   application_deadline: string | null
   application_instructions: string | null
   state: string
-  created_by_character_id: string
+  created_by_character_id: string | null
   created_at: string
   updated_at: string
 }
