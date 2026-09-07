@@ -1,0 +1,29 @@
+:root {
+  --navy-950: #11192c;
+  --navy-900: #17223b;
+  --navy-800: #223250;
+  --navy-700: #314667;
+  --sage-700: #667866;
+  --sage-500: #93a58e;
+  --sage-200: #d9e2d5;
+  --sage-100: #edf2ea;
+  --pink-600: #b94f72;
+  --pink-500: #d56f91;
+  --pink-300: #efadc0;
+  --pink-100: #fae8ed;
+  --paper: #fffdf8;
+  --cream: #f5f0e7;
+  --ink: #222733;
+  --muted: #6e7480;
+  --line: #c8c5bd;
+  --line-dark: #9b9b94;
+  --success: #4f7a5d;
+  --warning: #a0783c;
+
+  --rail-width: 72px;
+  --sidebar-width: 238px;
+  --context-width: 264px;
+  --panel-shadow: 2px 2px 0 rgba(23, 34, 59, 0.12);
+  --font-ui: Verdana, Geneva, Tahoma, sans-serif;
+  --font-display: Georgia, 'Times New Roman', serif;
+}
