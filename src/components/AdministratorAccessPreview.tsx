@@ -1,6 +1,6 @@
 import { useState } from 'react'
+import { AdministratorOperationsPanel } from './AdministratorOperationsPanel'
 import { ApplicationReviewPanel } from './ApplicationReviewPanel'
-import { OwnerOperationsPanel } from './OwnerOperationsPanel'
 import { SchoolAdministrationPanel } from './SchoolAdministrationPanel'
 import { useIdentity } from '../state/IdentityContext'
 
@@ -34,7 +34,7 @@ export function AdministratorAccessPreview() {
 
           {workspace === 'applications' && <ApplicationReviewPanel />}
           {workspace === 'school' && <SchoolAdministrationPanel />}
-          {workspace === 'operations' && <OwnerOperationsPanel />}
+          {workspace === 'operations' && <AdministratorOperationsPanel />}
 
           <div className="identity-actions owner-exit-actions">
             <button className="primary-action" type="button" onClick={exitAdminMode}>Return to Characters</button>
