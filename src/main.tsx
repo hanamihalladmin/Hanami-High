@@ -9,6 +9,7 @@ import './styles/enrollment.css'
 import './styles/orientation.css'
 import './styles/shell.css'
 import './styles/profile-studio.css'
+import './styles/profile-studio-enhancements.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
