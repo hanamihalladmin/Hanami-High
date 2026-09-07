@@ -37,6 +37,7 @@ import './styles/rewards.css'
 import './styles/boutique-animated-collections.css'
 import './styles/settings.css'
 import './styles/owner-operations.css'
+import './styles/school-administration.css'
 import './styles/access-modes.css'
 import './styles/early-web-site.css'
 
