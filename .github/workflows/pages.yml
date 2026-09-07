@@ -1,6 +1,8 @@
 name: Deploy v2 to GitHub Pages
 
 on:
+  push:
+    branches: [v2-rebuild]
   workflow_dispatch:
 
 permissions:
