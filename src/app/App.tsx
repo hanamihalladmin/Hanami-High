@@ -12,7 +12,6 @@ import { OwnerAccessPreview } from '../components/OwnerAccessPreview'
 import { GlobalSearch } from '../components/GlobalSearch'
 import { NotificationCenter } from '../components/NotificationCenter'
 import { MobileSectionNav } from '../components/MobileSectionNav'
-import { ShellPage } from '../components/ShellPage'
 import { ProfileStudio } from '../components/ProfileStudio'
 import { ProfileView } from '../components/ProfileView'
 import { ProfileBlogPage } from '../components/ProfileBlogPage'
@@ -29,59 +28,27 @@ import { DiscoverPage } from '../components/DiscoverPage'
 import { PetalsPage } from '../components/PetalsPage'
 import { BoutiquePage } from '../components/BoutiquePage'
 import { AchievementsPage } from '../components/AchievementsPage'
+import { SettingsPage } from '../components/SettingsPage'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
 import { usePresenceHeartbeat } from '../hooks/usePresenceHeartbeat'
 import { useDailyPetalClaim } from '../hooks/useDailyPetalClaim'
+import { useInterfacePreferences } from '../hooks/useInterfacePreferences'
 import type { ShellRoute, ShellSectionId } from '../types/navigation'
 
 function LoadingScreen() {
-  return (
-    <main className="identity-loading">
-      <div className="identity-loading-box">
-        <strong>Opening Hanami High…</strong>
-        <span>Checking your account and character session.</span>
-      </div>
-    </main>
-  )
+  return <main className="identity-loading"><div className="identity-loading-box"><strong>Opening Hanami High…</strong><span>Checking your account and character session.</span></div></main>
 }
 
 function AccountStateScreen() {
   const { account, signOut } = useIdentity()
-  return (
-    <main className="identity-screen">
-      <section className="identity-window login-window">
-        <header className="identity-titlebar"><span>HANAMI ACCOUNT</span><span>ACCESS NOTICE</span></header>
-        <div className="identity-body login-body">
-          <span className="eyebrow">ACCOUNT STATUS</span>
-          <h1>Campus access is unavailable.</h1>
-          <p>Your Hanami account is currently marked as <strong>{account?.account_state}</strong>.</p>
-          <button className="secondary-action" type="button" onClick={() => void signOut()}>Sign out</button>
-        </div>
-      </section>
-    </main>
-  )
+  return <main className="identity-screen"><section className="identity-window login-window"><header className="identity-titlebar"><span>HANAMI ACCOUNT</span><span>ACCESS NOTICE</span></header><div className="identity-body login-body"><span className="eyebrow">ACCOUNT STATUS</span><h1>Campus access is unavailable.</h1><p>Your Hanami account is currently marked as <strong>{account?.account_state}</strong>.</p><button className="secondary-action" type="button" onClick={() => void signOut()}>Sign out</button></div></section></main>
 }
 
 function IdentityErrorScreen() {
   const { error, signOut, refreshIdentity } = useIdentity()
-  return (
-    <main className="identity-screen">
-      <section className="identity-window login-window">
-        <header className="identity-titlebar"><span>HANAMI HIGH NETWORK</span><span>ACCOUNT ERROR</span></header>
-        <div className="identity-body login-body">
-          <span className="eyebrow">WE COULDN'T OPEN YOUR ACCOUNT</span>
-          <h1>Hanami needs another try.</h1>
-          <div className="identity-notice error">{error || 'Unknown identity error.'}</div>
-          <div className="identity-actions">
-            <button className="primary-action" type="button" onClick={() => void refreshIdentity()}>Try again</button>
-            <button className="secondary-action" type="button" onClick={() => void signOut()}>Sign out</button>
-          </div>
-        </div>
-      </section>
-    </main>
-  )
+  return <main className="identity-screen"><section className="identity-window login-window"><header className="identity-titlebar"><span>HANAMI HIGH NETWORK</span><span>ACCOUNT ERROR</span></header><div className="identity-body login-body"><span className="eyebrow">WE COULDN'T OPEN YOUR ACCOUNT</span><h1>Hanami needs another try.</h1><div className="identity-notice error">{error || 'Unknown identity error.'}</div><div className="identity-actions"><button className="primary-action" type="button" onClick={() => void refreshIdentity()}>Try again</button><button className="secondary-action" type="button" onClick={() => void signOut()}>Sign out</button></div></div></section></main>
 }
 
 function displayName(character: NonNullable<ReturnType<typeof useIdentity>['activeCharacter']>) {
@@ -96,6 +63,7 @@ export function App() {
   const notificationInbox = useNotificationInbox()
   usePresenceHeartbeat(route)
   useDailyPetalClaim()
+  useInterfacePreferences()
 
   useEffect(() => {
     const handleHashChange = () => setRoute(routeFromHash())
@@ -199,7 +167,14 @@ export function App() {
     if (route.section === 'achievements' && route.subsection === 'collections') return <AchievementsPage mode="collections" {...shared} />
     if (route.section === 'achievements' && route.subsection === 'school-history') return <AchievementsPage mode="school-history" {...shared} />
 
-    return <ShellPage route={route} {...shared} />
+    if (route.section === 'settings' && route.subsection === 'account') return <SettingsPage mode="account" {...shared} />
+    if (route.section === 'settings' && route.subsection === 'character') return <SettingsPage mode="character" {...shared} />
+    if (route.section === 'settings' && route.subsection === 'privacy-safety') return <SettingsPage mode="privacy-safety" {...shared} />
+    if (route.section === 'settings' && route.subsection === 'notifications') return <SettingsPage mode="notifications" {...shared} />
+    if (route.section === 'settings' && route.subsection === 'accessibility') return <SettingsPage mode="accessibility" {...shared} />
+    if (route.section === 'settings' && route.subsection === 'connections') return <SettingsPage mode="connections" {...shared} />
+
+    return <HomePreview {...shared} />
   }
 
   if (loading) return <LoadingScreen />
@@ -210,20 +185,5 @@ export function App() {
   if (ownerMode && isOwner) return <OwnerAccessPreview />
   if (!activeCharacter) return <CharacterHub />
 
-  return (
-    <>
-      <div className="app-shell">
-        <MainRail active={route.section} onSelect={selectSection} />
-        <div className="sidebar-column">
-          <SectionSidebar active={route.section} subsection={route.subsection} profileTitle={profileTitle} onSelect={selectSubsection} onSearch={openSearch} />
-          <UserPanel />
-        </div>
-        <MobileSectionNav section={route.section} subsection={route.subsection} onSelect={selectSubsection} />
-        {renderPage()}
-        <ContextSidebar route={route} onSelect={selectSubsection} />
-      </div>
-      <GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} onNavigate={navigate} />
-      <NotificationCenter open={notificationsOpen} notifications={notificationInbox.notifications} loading={notificationInbox.loading} error={notificationInbox.error} onClose={() => setNotificationsOpen(false)} onMarkRead={notificationInbox.markRead} onMarkAllRead={notificationInbox.markAllRead} onNavigate={navigate} />
-    </>
-  )
+  return <><div className="app-shell"><MainRail active={route.section} onSelect={selectSection} /><div className="sidebar-column"><SectionSidebar active={route.section} subsection={route.subsection} profileTitle={profileTitle} onSelect={selectSubsection} onSearch={openSearch} /><UserPanel /></div><MobileSectionNav section={route.section} subsection={route.subsection} onSelect={selectSubsection} />{renderPage()}<ContextSidebar route={route} onSelect={selectSubsection} /></div><GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} onNavigate={navigate} /><NotificationCenter open={notificationsOpen} notifications={notificationInbox.notifications} loading={notificationInbox.loading} error={notificationInbox.error} onClose={() => setNotificationsOpen(false)} onMarkRead={notificationInbox.markRead} onMarkAllRead={notificationInbox.markAllRead} onNavigate={navigate} /></>
 }
