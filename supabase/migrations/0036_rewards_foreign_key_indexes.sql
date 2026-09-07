@@ -1,0 +1,3 @@
+create index character_achievements_achievement_idx on public.character_achievements(achievement_id);
+create index hanami_plus_entitlements_source_item_idx on public.hanami_plus_entitlements(source_item_id) where source_item_id is not null;
+create index petal_ledger_created_by_character_idx on public.petal_ledger(created_by_character_id) where created_by_character_id is not null;
