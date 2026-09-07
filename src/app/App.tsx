@@ -23,6 +23,8 @@ import { SocialPostsPage } from '../components/SocialPostsPage'
 import { GuestbookActivityPage } from '../components/GuestbookActivityPage'
 import { MessagesPage } from '../components/MessagesPage'
 import { AcademicsPage } from '../components/AcademicsPage'
+import { AcademicDirectoryPage } from '../components/AcademicDirectoryPage'
+import { AcademicRoomPage } from '../components/AcademicRoomPage'
 import { CampusPage } from '../components/CampusPage'
 import { DiscoverPage } from '../components/DiscoverPage'
 import { PetalsPage } from '../components/PetalsPage'
@@ -109,7 +111,8 @@ export function App() {
     if (route.section === 'home' && route.subsection === 'school-calendar') return <HomeUtilitiesPage mode="school-calendar" targetId={route.targetId} {...shared} />
     if (route.section === 'home' && route.subsection === 'whos-online') return <HomeUtilitiesPage mode="whos-online" targetId={route.targetId} {...shared} />
     if (route.section === 'home' && route.subsection === 'my-schedule') return <AcademicsPage mode="my-schedule" targetId={route.targetId} {...shared} />
-    if (route.section === 'home' && route.subsection === 'my-classes') return <AcademicsPage mode="classes" targetId={route.targetId} {...shared} />
+    if (route.section === 'home' && route.subsection === 'my-homeroom') return <AcademicDirectoryPage focus="homeroom" {...shared} />
+    if (route.section === 'home' && route.subsection === 'my-classes') return <AcademicDirectoryPage focus="classes" {...shared} />
     if (route.section === 'home' && route.subsection === 'my-clubs') return <MyClubsPage {...shared} />
 
     if (route.section === 'profile' && route.subsection === 'profile-studio') return <ProfileStudio {...shared} />
@@ -132,7 +135,10 @@ export function App() {
 
     if (route.section === 'academics' && route.subsection === 'overview') return <AcademicsPage mode="overview" targetId={route.targetId} {...shared} />
     if (route.section === 'academics' && route.subsection === 'my-schedule') return <AcademicsPage mode="my-schedule" targetId={route.targetId} {...shared} />
-    if (route.section === 'academics' && route.subsection === 'classes') return <AcademicsPage mode="classes" targetId={route.targetId} {...shared} />
+    if (route.section === 'academics' && route.subsection === 'homeroom' && route.targetId) return <AcademicRoomPage roomType="homeroom" roomId={route.targetId} />
+    if (route.section === 'academics' && route.subsection === 'homeroom') return <AcademicDirectoryPage focus="homeroom" {...shared} />
+    if (route.section === 'academics' && route.subsection === 'classes' && route.targetId) return <AcademicRoomPage roomType="class" roomId={route.targetId} />
+    if (route.section === 'academics' && route.subsection === 'classes') return <AcademicDirectoryPage focus="classes" {...shared} />
     if (route.section === 'academics' && route.subsection === 'assignments') return <AcademicsPage mode="assignments" targetId={route.targetId} {...shared} />
     if (route.section === 'academics' && route.subsection === 'grades') return <AcademicsPage mode="grades" targetId={route.targetId} {...shared} />
     if (route.section === 'academics' && route.subsection === 'attendance') return <AcademicsPage mode="attendance" targetId={route.targetId} {...shared} />
