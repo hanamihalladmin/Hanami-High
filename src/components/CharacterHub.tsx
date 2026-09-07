@@ -58,7 +58,9 @@ export function CharacterHub() {
     createStudentSlot,
     selectCharacter,
     isOwner,
+    isPlatformAdmin,
     enterOwnerMode,
+    enterAdminMode,
     mutating,
     error,
     signOut,
@@ -187,14 +189,17 @@ export function CharacterHub() {
             })}
           </div>
 
-          {isOwner && (
+          {(isOwner || isPlatformAdmin) && (
             <section className="owner-entry-card">
               <div>
                 <span className="eyebrow">ACCOUNT-LEVEL ACCESS</span>
-                <h2>Owner Console</h2>
-                <p>Owner access never requires an OC or an active character.</p>
+                <h2>{isOwner && isPlatformAdmin ? 'Owner & Administrator Consoles' : isOwner ? 'Owner Console' : 'Administrator Console'}</h2>
+                <p>Elevated platform access never requires an OC or an active character. Member mode remains separate from these consoles.</p>
               </div>
-              <button type="button" onClick={enterOwnerMode}>Enter Owner Console →</button>
+              <div className="identity-actions">
+                {isOwner && <button type="button" onClick={enterOwnerMode}>Enter Owner Console →</button>}
+                {isPlatformAdmin && <button type="button" onClick={enterAdminMode}>Enter Administrator Console →</button>}
+              </div>
             </section>
           )}
         </div>
