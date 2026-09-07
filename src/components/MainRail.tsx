@@ -20,24 +20,30 @@ export function MainRail({ active, onSelect }: Props) {
       title={item.label}
       type="button"
     >
+      <span className="rail-pill" aria-hidden="true" />
       <span className="rail-icon" aria-hidden="true">{item.icon}</span>
-      <span className="rail-label">{item.label}</span>
+      <span className="rail-tooltip" role="presentation">{item.label}</span>
     </button>
   )
 
   return (
-    <nav className="main-rail" aria-label="Primary">
-      <button className="rail-brand" onClick={() => onSelect('home')} aria-label="Hanami High home" type="button">
+    <nav className="main-rail" aria-label="Hanami server navigation">
+      <button
+        className={`rail-brand ${active === 'home' ? 'is-active' : ''}`}
+        onClick={() => onSelect('home')}
+        aria-label="Hanami High home"
+        title="Hanami High"
+        type="button"
+      >
         <span className="rail-brand-mark">花</span>
-        <small>HANAMI</small>
+        <span className="rail-tooltip" role="presentation">Hanami High</span>
       </button>
-      <div className="rail-mini-label">network links</div>
-      <div className="rail-stack">{primaryItems.map(renderItem)}</div>
-      <div className="rail-rule"><span>❀</span></div>
+      <div className="rail-rule" aria-hidden="true" />
+      <div className="rail-stack">{primaryItems.filter((item) => item.id !== 'home').map(renderItem)}</div>
+      <div className="rail-rule" aria-hidden="true" />
       <div className="rail-stack">{rewardItems.map(renderItem)}</div>
       <div className="rail-spacer" />
       {renderItem(settingsItem)}
-      <div className="rail-footer-stamp">since 2006<br/>✿ online ✿</div>
     </nav>
   )
 }
