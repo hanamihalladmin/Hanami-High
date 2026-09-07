@@ -66,3 +66,30 @@ export async function deleteProfileMedia(path: string | null) {
   const { error } = await client.storage.from(PROFILE_MEDIA_BUCKET).remove([path])
   if (error) throw error
 }
+
+export async function deleteCharacterProfileMedia(accountId: string, characterId: string) {
+  const client = supabase
+  if (!client) return
+  const root = `${accountId}/${characterId}`
+  const bucket = client.storage.from(PROFILE_MEDIA_BUCKET)
+  const { data: rootEntries, error: rootError } = await bucket.list(root, { limit: 100 })
+  if (rootError) throw rootError
+
+  const paths: string[] = []
+  for (const entry of rootEntries ?? []) {
+    if (entry.id) {
+      paths.push(`${root}/${entry.name}`)
+      continue
+    }
+    const folder = `${root}/${entry.name}`
+    const { data: files, error: folderError } = await bucket.list(folder, { limit: 100 })
+    if (folderError) throw folderError
+    for (const file of files ?? []) {
+      if (file.id) paths.push(`${folder}/${file.name}`)
+    }
+  }
+
+  if (paths.length === 0) return
+  const { error: removeError } = await bucket.remove(paths)
+  if (removeError) throw removeError
+}
