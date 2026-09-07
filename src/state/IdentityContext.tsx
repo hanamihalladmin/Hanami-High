@@ -15,6 +15,22 @@ const ACCESS_MODE_KEY = 'hanami-access-mode'
 const LOGIN_INTENT_KEY = 'hanami-login-intent'
 const ACCESS_ERROR_KEY = 'hanami-access-error'
 
+const PLATFORM_MANAGEMENT_CAPABILITIES = new Set([
+  'characters.review',
+  'students.promote',
+  'accounts.manage',
+  'permissions.manage',
+  'moderation.review_reports',
+  'moderation.take_action',
+  'economy.manage',
+  'boutique.manage',
+  'hanamiplus.manage',
+  'school.configure',
+  'system.configure',
+  'portals.view_as',
+  'audit.view',
+])
+
 type IdentityContextValue = {
   configured: boolean
   loading: boolean
@@ -211,6 +227,13 @@ export function IdentityProvider({ children }: PropsWithChildren) {
   const isOwner = roles.includes('owner')
   const isPlatformAdmin = roles.includes('platform_admin')
 
+  const effectiveCapabilities = useMemo(
+    () => ownerMode || adminMode
+      ? capabilities
+      : capabilities.filter((code) => !PLATFORM_MANAGEMENT_CAPABILITIES.has(code)),
+    [adminMode, capabilities, ownerMode],
+  )
+
   useEffect(() => {
     if (!isOwner && ownerMode) clearSpecialMode()
   }, [clearSpecialMode, isOwner, ownerMode])
@@ -315,7 +338,7 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     applications,
     activeCharacter,
     roles,
-    capabilities,
+    capabilities: effectiveCapabilities,
     isOwner,
     isPlatformAdmin,
     ownerMode,
@@ -336,10 +359,10 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     adminMode,
     applications,
     authLoading,
-    capabilities,
     characters,
     clearActiveCharacter,
     createStudentSlot,
+    effectiveCapabilities,
     enterAdminMode,
     enterOwnerMode,
     error,
