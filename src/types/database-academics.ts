@@ -69,7 +69,7 @@ export type AcademicAssignment = {
   due_time: string | null
   points_possible: number
   late_policy: string | null
-  created_by_character_id: string
+  created_by_character_id: string | null
   created_at: string
   updated_at: string
 }
