@@ -1,0 +1,68 @@
+.campus-page { min-width: 0; }
+.campus-intro,.campus-panel,.campus-group-card,.campus-stat-grid article { border:1px solid var(--line,#c9c6bd); background:var(--paper,#fffdf8); box-shadow:2px 2px 0 rgba(23,34,59,.08); }
+.campus-intro { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:16px 18px; margin-bottom:16px; }
+.campus-intro p { margin:4px 0 0; color:var(--muted,#667085); }
+.campus-intro > strong { font-size:12px; }
+.campus-stat-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:16px; }
+.campus-stat-grid article { padding:16px; display:grid; gap:5px; }
+.campus-stat-grid span { font-size:10px; letter-spacing:.13em; font-weight:800; }
+.campus-stat-grid strong { font-size:26px; line-height:1; }
+.campus-stat-grid small { color:var(--muted,#667085); }
+.campus-panel { margin-bottom:16px; }
+.campus-panel > header { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 16px; border-bottom:1px solid var(--line,#d7d3ca); }
+.campus-panel h2 { margin:3px 0 0; font-size:18px; }
+.campus-empty { padding:28px 18px; text-align:center; color:var(--muted,#667085); }
+.campus-empty.loading { border:1px solid var(--line,#c9c6bd); background:var(--paper,#fffdf8); }
+.campus-card-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-bottom:16px; }
+.campus-group-card { padding:17px; }
+.campus-group-card.targeted,.campus-event-row.targeted,.opportunity-card.targeted { box-shadow:0 0 0 3px rgba(111,138,121,.28),2px 2px 0 rgba(23,34,59,.08); }
+.campus-group-card h2 { margin:5px 0 7px; font-size:20px; }
+.campus-group-card > p { min-height:42px; color:var(--muted,#667085); white-space:pre-wrap; }
+.campus-group-card dl { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin:13px 0; }
+.campus-group-card dl div { border:1px solid var(--line,#dedbd3); padding:8px; }
+.campus-group-card dt { font-size:9px; letter-spacing:.1em; text-transform:uppercase; }
+.campus-group-card dd { margin:3px 0 0; font-weight:800; font-size:12px; }
+.campus-member-strip { display:flex; flex-wrap:wrap; gap:5px; margin:10px 0; }
+.campus-member-strip span { padding:4px 6px; border:1px solid var(--line,#dedbd3); font-size:10px; }
+.campus-group-card > footer { display:flex; align-items:center; justify-content:flex-end; gap:8px; padding-top:12px; border-top:1px solid var(--line,#e0ddd5); }
+.campus-group-card > footer span { margin-right:auto; font-size:11px; text-transform:capitalize; }
+.campus-pending { margin-top:12px; border-top:1px solid var(--line,#dedbd3); padding-top:10px; display:grid; gap:7px; }
+.campus-pending > div { display:flex; align-items:center; gap:6px; }
+.campus-pending > div span { margin-right:auto; font-size:11px; }
+.campus-admin-form { display:grid; gap:9px; padding:16px; }
+.campus-admin-form input,.campus-admin-form select,.campus-admin-form textarea,.opportunity-apply textarea,.opportunity-review select { width:100%; box-sizing:border-box; border:1px solid var(--line,#bbb8ae); border-radius:0; background:#fff; color:inherit; padding:9px 10px; font:inherit; }
+.campus-admin-form textarea,.opportunity-apply textarea { min-height:86px; resize:vertical; }
+.campus-inline { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+.campus-event-list { display:grid; }
+.campus-event-row { display:grid; grid-template-columns:72px minmax(0,1fr) auto; gap:14px; align-items:center; padding:15px 16px; border-bottom:1px solid var(--line,#dedbd3); }
+.campus-event-row:last-child { border-bottom:0; }
+.campus-event-date { display:grid; place-items:center; min-height:58px; border:1px solid var(--line,#c9c6bd); }
+.campus-event-date strong { font-size:17px; }
+.campus-event-date span { font-size:9px; letter-spacing:.1em; }
+.campus-event-row h3 { margin:3px 0; }
+.campus-event-row p { margin:5px 0; color:var(--muted,#667085); }
+.campus-event-row small { color:var(--muted,#667085); }
+.campus-event-actions { display:grid; gap:5px; justify-items:end; }
+.campus-event-actions span { font-size:10px; text-transform:capitalize; }
+.opportunity-card { padding:16px; border-bottom:1px solid var(--line,#dedbd3); }
+.opportunity-card:last-child { border-bottom:0; }
+.opportunity-card > header { display:flex; justify-content:space-between; gap:14px; }
+.opportunity-card > header > div { display:grid; gap:3px; }
+.opportunity-card > header > div:last-child { text-align:right; }
+.opportunity-card h3 { margin:3px 0; font-size:18px; }
+.opportunity-card > p { color:var(--muted,#667085); white-space:pre-wrap; }
+.campus-instructions { display:flex; gap:8px; margin:9px 0; padding:8px 10px; border-left:3px solid var(--sage,#6f8a79); background:rgba(111,138,121,.08); font-size:11px; }
+.opportunity-apply { display:grid; gap:8px; margin-top:12px; }
+.opportunity-apply > div { display:flex; align-items:center; justify-content:flex-end; gap:7px; }
+.opportunity-apply > div span { margin-right:auto; font-size:11px; color:var(--muted,#667085); }
+.opportunity-review { display:grid; gap:7px; margin-top:14px; border-top:1px solid var(--line,#dedbd3); padding-top:12px; }
+.opportunity-review > div { display:grid; grid-template-columns:140px minmax(0,1fr) 130px; align-items:center; gap:8px; }
+.opportunity-review small { color:var(--muted,#667085); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.campus-summary-row { display:flex; justify-content:space-between; align-items:center; gap:14px; padding:13px 16px; border-bottom:1px solid var(--line,#dedbd3); }
+.campus-summary-row:last-child { border-bottom:0; }
+.campus-summary-row > div { display:grid; gap:3px; }
+.campus-summary-row > div:last-child { text-align:right; }
+.campus-summary-row span,.campus-summary-row small { color:var(--muted,#667085); }
+.campus-page button:not(.topbar-button) { border-radius:0; }
+@media (max-width:1050px){.campus-stat-grid{grid-template-columns:1fr 1fr}.campus-card-grid{grid-template-columns:1fr}.campus-inline{grid-template-columns:1fr 1fr}.campus-event-row{grid-template-columns:64px 1fr}.campus-event-actions{grid-column:2;display:flex;justify-content:flex-end;align-items:center}.opportunity-review>div{grid-template-columns:120px 1fr}.opportunity-review select{grid-column:1/-1}}
+@media (max-width:720px){.campus-intro{flex-direction:column;align-items:flex-start}.campus-stat-grid{grid-template-columns:1fr 1fr}.campus-inline{grid-template-columns:1fr}.campus-group-card dl{grid-template-columns:1fr}.campus-event-row{grid-template-columns:1fr}.campus-event-date{width:70px}.campus-event-actions{grid-column:1;justify-content:flex-start}.opportunity-card>header{flex-direction:column}.opportunity-card>header>div:last-child{text-align:left}.opportunity-apply>div{align-items:flex-start;flex-wrap:wrap}.opportunity-apply>div span{width:100%}.opportunity-review>div{grid-template-columns:1fr}}
