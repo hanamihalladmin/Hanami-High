@@ -4,7 +4,7 @@ Hanami High v2 is a clean rebuild of the Hanami High roleplay network: Discord-i
 
 ## Release status
 
-**v2-rebuild is the release candidate branch.** It no longer inherits the old v1 component/CSS architecture. The `main` branch remains the v1 archive/reference until v2 is intentionally promoted.
+**v2-rebuild is the completed v2 release-candidate branch.** It no longer inherits the old v1 component/CSS architecture. The `main` branch remains the v1 archive/reference until v2 is intentionally promoted.
 
 Current role model:
 
@@ -81,7 +81,9 @@ npm run build
 
 ## GitHub Pages
 
-The repository includes a Pages deployment workflow for the v2 build. Vite uses a relative asset base so the build works as a project site under the current repository path as well as under a future account/custom domain.
+The repository includes a **manual** Pages deployment workflow for the completed v2 build. Vite uses a relative asset base so the build works as a project site under the current repository path as well as under a future account/custom domain.
+
+Before the first deployment, a repository administrator must enable Pages once in **Settings → Pages → Build and deployment → Source → GitHub Actions**. GitHub does not allow the normal workflow `GITHUB_TOKEN` to perform that initial repository-administration step. After Pages is enabled, run **Deploy v2 to GitHub Pages** from the Actions tab.
 
 For the current repository owner/name, the normal GitHub Pages project-site form is:
 
@@ -91,7 +93,7 @@ The originally desired `https://hanamihigh.github.io/` would require the GitHub 
 
 ## Branch strategy
 
-- `v2-rebuild` — completed v2 release candidate and Pages deployment source
+- `v2-rebuild` — completed v2 release candidate
 - `main` — v1 archive/reference until an explicit promotion/merge decision
 
 Do not rewrite already-applied migrations to change history. Add corrective migrations instead.
