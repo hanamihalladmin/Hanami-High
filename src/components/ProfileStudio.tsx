@@ -346,14 +346,25 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
     setError(null)
     try {
       const uploaded = await uploadProfileImage(account.id, activeCharacter.id, kind, file)
-      const column = kind === 'avatar' ? 'avatar_path' : 'banner_path'
-      const { error: updateError } = await client
-        .from('character_profiles')
-        .update({ [column]: uploaded.path, updated_at: new Date().toISOString() })
-        .eq('character_id', activeCharacter.id)
-      if (updateError) throw updateError
-      setProfile((current) => current ? { ...current, [column]: uploaded.path } : current)
-      if (uploaded.url) setMediaUrls((current) => ({ ...current, [uploaded.path]: uploaded.url }))
+      const updatedAt = new Date().toISOString()
+
+      if (kind === 'avatar') {
+        const { error: updateError } = await client
+          .from('character_profiles')
+          .update({ avatar_path: uploaded.path, updated_at: updatedAt })
+          .eq('character_id', activeCharacter.id)
+        if (updateError) throw updateError
+        setProfile((current) => current ? { ...current, avatar_path: uploaded.path } : current)
+      } else {
+        const { error: updateError } = await client
+          .from('character_profiles')
+          .update({ banner_path: uploaded.path, updated_at: updatedAt })
+          .eq('character_id', activeCharacter.id)
+        if (updateError) throw updateError
+        setProfile((current) => current ? { ...current, banner_path: uploaded.path } : current)
+      }
+
+      setMediaUrls((current) => ({ ...current, [uploaded.path]: uploaded.url }))
       setSaveLabel(`${kind === 'avatar' ? 'Avatar' : 'Banner'} uploaded`)
     } catch (nextError) {
       setError(messageFromError(nextError))
@@ -376,7 +387,7 @@ export function ProfileStudio({ onSearch, onNotifications, unreadCount }: Props)
         .eq('id', widget.id)
       if (updateError) throw updateError
       patchWidget(widget.id, { config: nextConfig }, false)
-      if (uploaded.url) setMediaUrls((current) => ({ ...current, [uploaded.path]: uploaded.url }))
+      setMediaUrls((current) => ({ ...current, [uploaded.path]: uploaded.url }))
       setSaveLabel('Image uploaded')
     } catch (nextError) {
       setError(messageFromError(nextError))
