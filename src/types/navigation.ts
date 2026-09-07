@@ -38,4 +38,5 @@ export type SectionDefinition = {
 export type ShellRoute = {
   section: ShellSectionId
   subsection: string
+  targetId?: string
 }
