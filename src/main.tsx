@@ -8,6 +8,7 @@ import './styles/identity.css'
 import './styles/enrollment.css'
 import './styles/orientation.css'
 import './styles/shell.css'
+import './styles/profile-studio.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
