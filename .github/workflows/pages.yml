@@ -1,9 +1,6 @@
 name: Deploy v2 to GitHub Pages
 
 on:
-  push:
-    branches:
-      - v2-rebuild
   workflow_dispatch:
 
 permissions:
@@ -31,7 +28,7 @@ jobs:
           VITE_SUPABASE_URL: https://puwpqjbvtwbmrbvdgjio.supabase.co
           VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_YcUCWaJRABCLMtV2bkxFVw__SW1O_-M
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
