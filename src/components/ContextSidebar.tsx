@@ -7,8 +7,8 @@ import type { SearchDocument } from '../types/database'
 import type { ShellRoute } from '../types/navigation'
 
 type Props = { route: ShellRoute; onSelect: (subsection: string) => void }
-
-type Member = CharacterPresence & { identity?: SearchDocument }
+type MemberIdentity = Pick<SearchDocument, 'entity_id' | 'title' | 'subtitle'>
+type Member = CharacterPresence & { identity?: MemberIdentity }
 
 function characterName(character: NonNullable<ReturnType<typeof useIdentity>['activeCharacter']>) {
   return character.display_name || [character.first_name, character.last_name].filter(Boolean).join(' ') || `Character ${character.slot_no}`
@@ -40,7 +40,7 @@ export function ContextSidebar({ route, onSelect }: Props) {
       const rows = presenceResult.data ?? []
       const ids = rows.map((row) => row.character_id)
       if (!ids.length) { setMembers([]); return }
-      const identityResult = await client.from('search_documents').select('*').eq('document_type', 'character').in('entity_id', ids)
+      const identityResult = await client.from('search_documents').select('entity_id,title,subtitle').eq('document_type', 'character').in('entity_id', ids)
       const byId = new Map((identityResult.data ?? []).filter((item) => item.entity_id).map((item) => [item.entity_id as string, item]))
       if (!cancelled) setMembers(rows.map((row) => ({ ...row, identity: byId.get(row.character_id) })))
     }
@@ -59,17 +59,7 @@ export function ContextSidebar({ route, onSelect }: Props) {
       current_subsection: route.subsection,
       last_seen_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-      identity: {
-        id: activeCharacter.id,
-        source_key: `character:${activeCharacter.id}`,
-        document_type: 'character',
-        entity_id: activeCharacter.id,
-        owner_account_id: activeCharacter.account_id,
-        owner_character_id: activeCharacter.id,
-        title: characterName(activeCharacter),
-        subtitle: roleLabel(activeCharacter),
-        body: '', section: 'discover', subsection: 'students', visibility: 'campus', search_vector: '', created_at: '', updated_at: '',
-      },
+      identity: { entity_id: activeCharacter.id, title: characterName(activeCharacter), subtitle: roleLabel(activeCharacter) },
     }
     return [own, ...members.filter((member) => member.character_id !== activeCharacter.id)]
   }, [activeCharacter, members, route.section, route.subsection])
