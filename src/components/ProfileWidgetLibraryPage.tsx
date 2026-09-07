@@ -85,6 +85,7 @@ export function ProfileWidgetLibraryPage() {
     }
     setExisting((current) => [...current, result.data])
     setNotice(`${template.title} added to the bottom of your draft canvas. Close this drawer to move, resize, and edit it.`)
+    window.dispatchEvent(new CustomEvent('hanami:profile-widgets-changed', { detail: { characterId: activeCharacter.id } }))
   }
 
   if (!activeCharacter) return null
