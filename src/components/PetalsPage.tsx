@@ -12,13 +12,13 @@ type Props = { mode: Mode; onSearch: () => void; onNotifications: () => void; un
 const meta: Record<Mode, { title: string; description: string }> = {
   balance: { title: 'Balance', description: 'Your account-wide Petals wallet.' },
   'earning-history': { title: 'Earning History', description: 'Every Petal earned and spent is recorded here.' },
-  rewards: { title: 'Rewards', description: 'Roleplay rewards and faculty Petal tools.' },
+  rewards: { title: 'Rewards', description: 'Roleplay rewards and teacher Petal tools.' },
   'ways-to-earn': { title: 'Ways to Earn', description: 'School, social, roleplay, and daily activities that award Petals.' },
 }
 
 const sourceLabels: Record<string, string> = {
   assignment: 'Assignment', daily_login: 'Daily login', roleplay_session: 'Roleplay', likes_received: 'Reaction received',
-  teacher_grant: 'Faculty grant', game: 'Petal Garden', purchase: 'Boutique purchase', achievement: 'Achievement', admin_adjustment: 'Adjustment',
+  teacher_grant: 'Teacher grant', game: 'Petal Garden', purchase: 'Boutique purchase', achievement: 'Achievement', admin_adjustment: 'Adjustment',
 }
 
 export function PetalsPage({ mode, onSearch, onNotifications, unreadCount }: Props) {
@@ -35,7 +35,11 @@ export function PetalsPage({ mode, onSearch, onNotifications, unreadCount }: Pro
   const [grant, setGrant] = useState({ characterId: '', amount: '10', note: '' })
   const [sessionDraft, setSessionDraft] = useState({ title: '', description: '', date: hanamiRoleplayDate(), reward: '10' })
 
-  const isFaculty = Boolean(activeCharacter && (activeCharacter.character_kind === 'faculty' || activeCharacter.school_role === 'faculty' || activeCharacter.school_role === 'administration'))
+  const isTeacher = Boolean(
+    activeCharacter
+      && activeCharacter.character_kind === 'faculty'
+      && (activeCharacter.school_role === null || activeCharacter.school_role === 'new_faculty' || activeCharacter.school_role === 'faculty'),
+  )
   const canManageEconomy = capabilities.includes('economy.manage')
 
   const load = useCallback(async () => {
@@ -54,12 +58,12 @@ export function PetalsPage({ mode, onSearch, onNotifications, unreadCount }: Pro
     setLedger(ledgerResult.data ?? [])
     setSessions(sessionResult.data ?? [])
     setParticipants(participantResult.data ?? [])
-    if (isFaculty || canManageEconomy) {
+    if (isTeacher || canManageEconomy) {
       const studentResult = await client.from('search_documents').select('*').eq('document_type', 'character').eq('subsection', 'students').order('title').limit(250)
       if (!studentResult.error) setStudents(studentResult.data ?? [])
     }
     setLoading(false)
-  }, [account, activeCharacter, canManageEconomy, isFaculty])
+  }, [account, activeCharacter, canManageEconomy, isTeacher])
 
   useEffect(() => { void load() }, [load])
 
@@ -156,12 +160,12 @@ export function PetalsPage({ mode, onSearch, onNotifications, unreadCount }: Pro
   }
 
   function renderWays() {
-    return <><div className="earn-grid"><article><strong>Daily Login</strong><span>+5 Petals</span><p>Automatically awarded once per Tokyo calendar day when you enter Hanami with an active character.</p><b>{dailyClaimed ? 'Claimed today' : 'Claims automatically'}</b></article><article><strong>Graded Assignment</strong><span>+10 Petals</span><p>Earned the first time an assignment receives a grade.</p></article><article><strong>Reaction Received</strong><span>+1 Petal</span><p>Earn one Petal when another character reacts to one of your published posts. Each person/post combination awards once.</p></article><article><strong>Roleplay Session</strong><span>Staff-set reward</span><p>Join an open tracked session. Rewards post when the host closes the session.</p></article><article><strong>Achievements</strong><span>5–20+ Petals</span><p>Milestones award one-time Petal bonuses.</p></article><article className="petal-garden-card"><strong>Petal Garden</strong><span>+3 Petals daily</span><p>Tend the tiny campus garden once per Tokyo day.</p><button className="primary-action" disabled={working === 'garden' || gardenPlayed} onClick={() => void playGarden()}>{gardenPlayed ? 'Garden tended today' : working === 'garden' ? 'Tending…' : 'Tend the garden'}</button></article></div></>
+    return <><div className="earn-grid"><article><strong>Daily Login</strong><span>+5 Petals</span><p>Automatically awarded once per Tokyo calendar day when you enter Hanami with an active character.</p><b>{dailyClaimed ? 'Claimed today' : 'Claims automatically'}</b></article><article><strong>Graded Assignment</strong><span>+10 Petals</span><p>Earned the first time an assignment receives a grade.</p></article><article><strong>Reaction Received</strong><span>+1 Petal</span><p>Earn one Petal when another character reacts to one of your published posts. Each person/post combination awards once.</p></article><article><strong>Roleplay Session</strong><span>Teacher-set reward</span><p>Join an open tracked session. Rewards post when the host closes the session.</p></article><article><strong>Achievements</strong><span>5–20+ Petals</span><p>Milestones award one-time Petal bonuses.</p></article><article className="petal-garden-card"><strong>Petal Garden</strong><span>+3 Petals daily</span><p>Tend the tiny campus garden once per Tokyo day.</p><button className="primary-action" disabled={working === 'garden' || gardenPlayed} onClick={() => void playGarden()}>{gardenPlayed ? 'Garden tended today' : working === 'garden' ? 'Tending…' : 'Tend the garden'}</button></article></div></>
   }
 
   function renderRewards() {
     return <>
-      {(isFaculty || canManageEconomy) && <div className="rewards-admin-grid"><section className="rewards-panel"><header><div><span className="eyebrow">FACULTY GRANT</span><h2>Award Petals</h2></div></header><form className="rewards-form" onSubmit={(event) => { event.preventDefault(); void grantPetals() }}><select required value={grant.characterId} onChange={(event) => setGrant({ ...grant, characterId: event.target.value })}><option value="">Choose student</option>{students.map((student) => <option key={student.entity_id || student.id} value={student.entity_id || ''}>{student.title}</option>)}</select><input required type="number" min="1" max="100" value={grant.amount} onChange={(event) => setGrant({ ...grant, amount: event.target.value })}/><input placeholder="Reason / note" value={grant.note} onChange={(event) => setGrant({ ...grant, note: event.target.value })}/><button className="primary-action" disabled={working === 'grant'}>Grant Petals</button></form></section><section className="rewards-panel"><header><div><span className="eyebrow">ROLEPLAY HOST</span><h2>Open reward session</h2></div></header><form className="rewards-form" onSubmit={(event) => { event.preventDefault(); void createSession() }}><input required placeholder="Session title" value={sessionDraft.title} onChange={(event) => setSessionDraft({ ...sessionDraft, title: event.target.value })}/><textarea placeholder="Description" value={sessionDraft.description} onChange={(event) => setSessionDraft({ ...sessionDraft, description: event.target.value })}/><div className="reward-inline"><input required type="date" min="2006-01-01" max="2006-12-31" value={sessionDraft.date} onChange={(event) => setSessionDraft({ ...sessionDraft, date: event.target.value })}/><input required type="number" min="1" max="100" value={sessionDraft.reward} onChange={(event) => setSessionDraft({ ...sessionDraft, reward: event.target.value })}/></div><button className="primary-action" disabled={working === 'session:create'}>Open session</button></form></section></div>}
+      {(isTeacher || canManageEconomy) && <div className="rewards-admin-grid"><section className="rewards-panel"><header><div><span className="eyebrow">TEACHER GRANT</span><h2>Award Petals</h2></div></header><form className="rewards-form" onSubmit={(event) => { event.preventDefault(); void grantPetals() }}><select required value={grant.characterId} onChange={(event) => setGrant({ ...grant, characterId: event.target.value })}><option value="">Choose student</option>{students.map((student) => <option key={student.entity_id || student.id} value={student.entity_id || ''}>{student.title}</option>)}</select><input required type="number" min="1" max="100" value={grant.amount} onChange={(event) => setGrant({ ...grant, amount: event.target.value })}/><input placeholder="Reason / note" value={grant.note} onChange={(event) => setGrant({ ...grant, note: event.target.value })}/><button className="primary-action" disabled={working === 'grant'}>Grant Petals</button></form></section><section className="rewards-panel"><header><div><span className="eyebrow">ROLEPLAY HOST</span><h2>Open reward session</h2></div></header><form className="rewards-form" onSubmit={(event) => { event.preventDefault(); void createSession() }}><input required placeholder="Session title" value={sessionDraft.title} onChange={(event) => setSessionDraft({ ...sessionDraft, title: event.target.value })}/><textarea placeholder="Description" value={sessionDraft.description} onChange={(event) => setSessionDraft({ ...sessionDraft, description: event.target.value })}/><div className="reward-inline"><input required type="date" min="2006-01-01" max="2006-12-31" value={sessionDraft.date} onChange={(event) => setSessionDraft({ ...sessionDraft, date: event.target.value })}/><input required type="number" min="1" max="100" value={sessionDraft.reward} onChange={(event) => setSessionDraft({ ...sessionDraft, reward: event.target.value })}/></div><button className="primary-action" disabled={working === 'session:create'}>Open session</button></form></section></div>}
       <section className="rewards-panel"><header><div><span className="eyebrow">ROLEPLAY REWARDS</span><h2>Tracked sessions</h2></div><strong>{sessions.length}</strong></header>{sessions.length === 0 ? <div className="rewards-empty">No tracked roleplay sessions yet.</div> : sessions.map((session) => { const joined = participants.some((item) => item.session_id === session.id && item.character_id === activeCharacter?.id); const canClose = session.created_by_character_id === activeCharacter?.id || canManageEconomy; return <article className="roleplay-session-row" key={session.id}><div><strong>{session.title}</strong><span>{formatHanamiSchoolDate(session.school_date)} · {session.petal_reward} Petals · {session.status}</span>{session.description && <small>{session.description}</small>}</div><div><span>{participants.filter((item) => item.session_id === session.id).length} joined</span>{session.status === 'open' && !joined && <button onClick={() => void joinSession(session)}>Join</button>}{session.status === 'open' && joined && <button onClick={() => void leaveSession(session)}>Leave</button>}{session.status === 'open' && canClose && <button className="primary-action" onClick={() => void closeSession(session)}>Close & award</button>}</div></article> })}</section>
     </>
   }
