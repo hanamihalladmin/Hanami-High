@@ -146,7 +146,7 @@ export function App() {
       return <ProfileStudio {...shared} />
     }
     if (route.section === 'profile' && route.subsection === 'view-profile') {
-      return <ProfileView {...shared} />
+      return <ProfileView targetCharacterId={route.targetId} {...shared} />
     }
     return <ShellPage route={route} {...shared} />
   }
