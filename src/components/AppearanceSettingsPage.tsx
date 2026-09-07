@@ -8,7 +8,7 @@ import { ShellTopbar } from './ShellTopbar'
 type Props = { onSearch: () => void; onNotifications: () => void; unreadCount: number }
 
 const themes = [
-  { id: 'hanami', name: 'Hanami', note: 'Navy, sage, warm white, and cherry blossom pink.', swatches: ['#17223b', '#93a58e', '#fffdf8', '#d56f91'] },
+  { id: 'hanami', name: 'Hanami', note: 'Glossy white surfaces, sage-green text, sakura pink accents, and floral details.', swatches: ['#4f6f5b', '#8eaa94', '#fffefd', '#e27f9f'] },
   { id: 'sakura', name: 'Sakura', note: 'A warmer pink-forward school network theme.', swatches: ['#452238', '#ae9088', '#fffafb', '#df7298'] },
   { id: 'sage', name: 'Sage', note: 'A quiet green theme inspired by notebooks and gardens.', swatches: ['#233a33', '#78947d', '#fbfcf7', '#bd7e8f'] },
   { id: 'navy', name: 'Navy', note: 'A cooler, more traditional school-network palette.', swatches: ['#13203d', '#8398a8', '#fbfcff', '#aa78a0'] },
