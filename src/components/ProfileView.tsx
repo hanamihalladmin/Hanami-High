@@ -224,8 +224,8 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
                   className={`published-widget widget-${widget.widget_type}`}
                   key={widget.id}
                   style={{
-                    gridColumn: `span ${Math.min(Math.max(widget.w, 1), 12)}`,
-                    minHeight: `${Math.max(widget.h, 1) * 48}px`,
+                    gridColumn: `span ${Math.min(Math.max(widget.width, 1), 12)}`,
+                    minHeight: `${Math.max(widget.height, 1) * 48}px`,
                   }}
                 >
                   <header><strong>{widget.title || widget.widget_type.replaceAll('_', ' ')}</strong></header>
@@ -241,7 +241,11 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
             })}
           </div>
 
-          <GuestbookPanel profileCharacterId={characterId} isOwnProfile={isOwnProfile} />
+          <GuestbookPanel
+            targetCharacterId={characterId}
+            guestbookVisibility={profile.guestbook_visibility}
+            management={isOwnProfile}
+          />
         </div>
       )}
     </main>
