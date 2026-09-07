@@ -155,21 +155,21 @@ export function ProfileStudioTools() {
 
   return <>
     {!open && <div className="profile-studio-tools-launcher">
-      <button type="button" onClick={() => { setTab('style'); setOpen(true) }}>Aa Name Style</button>
-      <button type="button" onClick={() => { setTab('background'); setOpen(true) }}>▧ Page Background</button>
-      <button type="button" onClick={() => { setTab('layout'); setOpen(true) }}>▦ Page Layout</button>
-      <button type="button" onClick={() => { setTab('widgets'); setOpen(true) }}>▤ Widget Library</button>
+      <button type="button" onClick={() => { setTab('style'); setOpen(true) }}>Aa Display Name</button>
+      <button type="button" onClick={() => { setTab('background'); setOpen(true) }}>▧ Profile Background</button>
+      <button type="button" onClick={() => { setTab('layout'); setOpen(true) }}>▦ Layout</button>
+      <button type="button" onClick={() => { setTab('widgets'); setOpen(true) }}>▤ Widgets</button>
       <button type="button" onClick={() => { setTab('cosmetics'); setOpen(true) }}>✦ Cosmetics</button>
     </div>}
 
-    {open && <div className="profile-studio-tools-backdrop" role="dialog" aria-modal="true" aria-label="Profile style and cosmetics">
+    {open && <div className="profile-studio-tools-backdrop" role="dialog" aria-modal="true" aria-label="Profile customization">
       <section className="profile-studio-tools-modal">
         <header className="profile-studio-tools-header">
-          <div><span className="eyebrow">PROFILE STUDIO</span><strong>SpaceHey Page Studio</strong></div>
+          <div><span className="eyebrow">PROFILE STUDIO</span><strong>Customize Profile</strong></div>
           <nav>
             <button type="button" className={tab === 'style' ? 'active' : ''} onClick={() => setTab('style')}>Display Name</button>
-            <button type="button" className={tab === 'background' ? 'active' : ''} onClick={() => setTab('background')}>Page Background</button>
-            <button type="button" className={tab === 'layout' ? 'active' : ''} onClick={() => setTab('layout')}>Page Layout</button>
+            <button type="button" className={tab === 'background' ? 'active' : ''} onClick={() => setTab('background')}>Background</button>
+            <button type="button" className={tab === 'layout' ? 'active' : ''} onClick={() => setTab('layout')}>Layout</button>
             <button type="button" className={tab === 'widgets' ? 'active' : ''} onClick={() => setTab('widgets')}>Widgets</button>
             <button type="button" className={tab === 'cosmetics' ? 'active' : ''} onClick={() => setTab('cosmetics')}>Cosmetics</button>
           </nav>
