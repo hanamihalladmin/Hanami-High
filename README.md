@@ -1,6 +1,6 @@
 # Hanami High v2
 
-Hanami High v2 is a clean rebuild of the Hanami High roleplay network: Discord-style portal navigation and profiles, a school/academic layer, customizable character identities, campus communities, Petals, a visual Hanami Boutique, achievements, moderation, and account-level Owner operations.
+Hanami High v2 is a clean rebuild of the Hanami High roleplay network: a school/social network with expressive character profiles, Discord-like communication rooms where they are useful, academics, campus communities, Petals, a visual collectible Boutique, achievements, moderation, and account-level Owner operations.
 
 ## Release status
 
@@ -19,46 +19,86 @@ Current role model:
 - React 19 + TypeScript + Vite
 - Supabase Auth / Postgres / RLS / Realtime
 - Discord OAuth as the primary account authentication identity
+- Regular Hanami school/social-network shell for Home, Social, Profile, Campus, Boutique, Petals, Settings, and other non-chat surfaces
+- **Discord-like room UI is intentionally scoped to Messages, Homerooms, and individual Class rooms**
 - Account-wide Petals, Boutique inventory, Wishlist, Hanami+, settings, and platform roles
-- Character-specific Discord-style profiles, cosmetic loadouts, friends, messages, social posts, classes, grades, attendance, clubs, and achievements
+- Character-specific profiles, cosmetic loadouts, friends, messages, social posts, classes, grades, attendance, clubs, and achievements
 - Capability-based permissions instead of a simple role hierarchy
 - Owner-only audited RPCs for cross-account operations and read-only View Portal snapshots
 - Tokyo-based roleplay school calendar in the fictional 2006 school year
-- Responsive Discord-style Hanami application shell with personal color themes and accessibility preferences
+- Personal color themes and accessibility preferences
 
 ## Major v2 surfaces
 
-The application shell includes:
+The application includes:
 
-- Hanami Home — dashboard, announcements, calendar, online presence, schedule, classes, clubs
-- Messages — friends, message requests, DMs, groups
+- Hanami Home — dashboard, announcements, calendar, online presence, schedule, homeroom, classes, clubs
+- Messages — Discord-like friends, message requests, DMs, and group conversations
 - Social — feed, friends, Top Friends, bulletins, blogs, guestbook activity
-- Academics — overview, timetable, classes, assignments, grades, attendance, Teacher tools
+- Academics — overview, timetable, Homeroom, classes, assignments, grades, attendance, Teacher tools
+- Class rooms — Discord-like `#general`, Teacher-only `#announcements`, `#questions`, schoolwork links, classmates, and Teachers
+- Homeroom rooms — Discord-like `#general`, Teacher-only `#announcements`, `#lounge`, schedule/classes links, classmates, and Teachers
 - Campus — events, clubs, organizations, opportunities, Student Council
-- My Profile — Discord-style published identity card, Profile Studio, display-name styling, Board, Activity, Wishlist, blog, guestbook, saved themes
+- My Profile — Hanami profile page, Canva-like Profile Studio, display-name typography/effects, widgets, activity, guestbook, saved themes, and cosmetic equipment
 - Discover — students, Teachers, clubs, posts, events
 - Petals — balance, ledger, rewards, ways to earn
-- Boutique — image-first collectible storefront with avatar decorations, frames, effects, nameplates, profile cards, background packs, stickers, Hanami+ passes, Wishlist, and inventory
+- Boutique — image-first collectible storefront with avatar decorations, animated frames, animated profile effects, profile cards, backgrounds, stickers, Hanami+ passes, Wishlist, and inventory
 - Achievements — milestones, collections, character history
 - Settings — account, character, privacy/safety, notifications, appearance/accessibility, connections
 - Owner Console — admissions, New Student promotion, accounts, characters, View Portal, permissions, economy, Hanami+, moderation, system configuration, audit history
 
-## Discord-style identity and presence
+## Profiles and customization
 
-Profiles use a consistent Discord-style identity hierarchy: banner, overlapping circular avatar and presence, display name, handle/pronouns, badges, custom status, actions, bio, roles, member-since information, connections, notes, and Board / Activity / Guestbook tabs.
+Profiles are Hanami-owned social spaces rather than Discord clones. The public profile keeps Hanami's school/social-network visual language while supporting:
 
-Profile Studio includes safe display-name font/effect/color controls, visual cosmetic slots, live preview, widgets, Activity, Wishlist, and account-owned cosmetic equipment. Cosmetic ownership is account-wide while equipment is character-specific. Published profiles snapshot the equipped cosmetic slugs so public rendering never trusts arbitrary CSS or JavaScript.
+- avatar + banner
+- handle, pronouns, status, bio, school identity, and private notes
+- movable/resizable profile widgets
+- display-name fonts and effects
+- Solid / Gradient / Neon / Toon / Pop / Gummy / Prism / Glow treatments
+- primary + secondary display-name colors
+- account-owned, character-equipped profile cosmetics
+- animated avatar frames/decorations and animated profile effects
+- reduced-motion handling for animated cosmetics
 
-Presence supports Online, Idle, Do Not Disturb, and Invisible. Invisible characters are omitted from other members' online rail.
+Profile Studio now exposes **Name Style** and **Cosmetics** tools. Cosmetic ownership is account-wide while equipment is character-specific. Published profiles snapshot the equipped cosmetic slugs so public rendering never trusts arbitrary CSS or JavaScript.
+
+## Boutique collections
+
+The Boutique uses original Hanami collectible concepts rather than copied Discord artwork. Current animated collections include items such as:
+
+- Crystal Bloom Frame
+- Aurora Wing Frame
+- Gilded Moon Frame
+- Pixel Arcade Frame
+- Cherry Ribbon Frame
+- Sakura Drift Halo
+- Moonlit Koi Orbit
+- Cloud Puff Friend
+- Starlight Sprites
+- Rosegarden Orbit
+- Petal Shower
+- Starlight Trail
+- Firefly Drift
+- Bubble Pop
+- Aurora Mist
+- Tea House Card
+- Midnight Card
+- Night Garden
+
+The shop uses visual previews, featured drops, rarity, collections, Petal prices, Wishlist state, ownership state, inventory, and live cosmetic equipment. Animation is disabled when the user's reduced-motion preference requests it.
 
 ## Database and security
 
-Supabase migrations in `supabase/migrations/` are the source-controlled database history. Current v2 history runs through migration `0043`.
+Supabase migrations in `supabase/migrations/` are the source-controlled database history. Current v2 history runs through migration `0045_boutique_animated_collections`.
 
 Important security rules include:
 
 - RLS on member-facing data.
 - Student member mode does not expose account-level Owner/Admin school-management capabilities.
+- Students cannot create official classes, grades, attendance records, or school announcements through student mode.
+- Academic room membership is derived from active class enrollment / authorized Teacher management.
+- Students can post ordinary class/homeroom conversation, but **`#announcements` is database-enforced Teacher/authorized-management posting only**.
 - Owner cross-account operations use narrowly scoped, capability-checked RPCs rather than weakening normal table policies.
 - Privileged reward/Owner implementations live in the non-exposed `private` schema with `SECURITY INVOKER` public wrappers where appropriate.
 - Safety reports are readable by their reporter and authorized moderation roles only.
