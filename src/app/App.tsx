@@ -16,6 +16,7 @@ import { ProfileView } from '../components/ProfileView'
 import { SavedThemes } from '../components/SavedThemes'
 import { FriendsPage } from '../components/FriendsPage'
 import { TopFriendsPage } from '../components/TopFriendsPage'
+import { SocialPostsPage } from '../components/SocialPostsPage'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
@@ -159,6 +160,15 @@ export function App() {
     }
     if (route.section === 'social' && route.subsection === 'top-friends') {
       return <TopFriendsPage {...shared} />
+    }
+    if (route.section === 'social' && route.subsection === 'feed') {
+      return <SocialPostsPage mode="feed" targetPostId={route.targetId} {...shared} />
+    }
+    if (route.section === 'social' && route.subsection === 'bulletins') {
+      return <SocialPostsPage mode="bulletins" targetPostId={route.targetId} {...shared} />
+    }
+    if (route.section === 'social' && route.subsection === 'blogs') {
+      return <SocialPostsPage mode="blogs" targetPostId={route.targetId} {...shared} />
     }
     return <ShellPage route={route} {...shared} />
   }
