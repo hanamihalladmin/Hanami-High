@@ -19,6 +19,7 @@ import { FriendsPage } from '../components/FriendsPage'
 import { TopFriendsPage } from '../components/TopFriendsPage'
 import { SocialPostsPage } from '../components/SocialPostsPage'
 import { GuestbookActivityPage } from '../components/GuestbookActivityPage'
+import { MessagesPage } from '../components/MessagesPage'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
@@ -177,6 +178,18 @@ export function App() {
     }
     if (route.section === 'social' && route.subsection === 'guestbook-activity') {
       return <GuestbookActivityPage {...shared} />
+    }
+    if (route.section === 'messages' && route.subsection === 'friends') {
+      return <MessagesPage mode="friends" targetConversationId={route.targetId} {...shared} />
+    }
+    if (route.section === 'messages' && route.subsection === 'message-requests') {
+      return <MessagesPage mode="message-requests" targetConversationId={route.targetId} {...shared} />
+    }
+    if (route.section === 'messages' && route.subsection === 'direct-messages') {
+      return <MessagesPage mode="direct-messages" targetConversationId={route.targetId} {...shared} />
+    }
+    if (route.section === 'messages' && route.subsection === 'groups') {
+      return <MessagesPage mode="groups" targetConversationId={route.targetId} {...shared} />
     }
     return <ShellPage route={route} {...shared} />
   }
