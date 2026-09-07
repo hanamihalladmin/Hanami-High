@@ -8,8 +8,12 @@ import {
   type PropsWithChildren,
 } from 'react'
 import type { Session } from '@supabase/supabase-js'
-import { hasSupabaseConfig, signInWithDiscord, supabase } from '../lib/supabase'
+import { hasSupabaseConfig, signInWithDiscord, supabase, type LoginIntent } from '../lib/supabase'
 import type { HanamiAccount, HanamiCharacter, StudentApplication } from '../types/database'
+
+const ACCESS_MODE_KEY = 'hanami-access-mode'
+const LOGIN_INTENT_KEY = 'hanami-login-intent'
+const ACCESS_ERROR_KEY = 'hanami-access-error'
 
 type IdentityContextValue = {
   configured: boolean
@@ -24,8 +28,10 @@ type IdentityContextValue = {
   roles: string[]
   capabilities: string[]
   isOwner: boolean
+  isPlatformAdmin: boolean
   ownerMode: boolean
-  signIn: () => Promise<void>
+  adminMode: boolean
+  signIn: (intent?: LoginIntent) => Promise<void>
   signOut: () => Promise<void>
   refreshIdentity: () => Promise<void>
   createStudentSlot: (slotNo: 1 | 2) => Promise<void>
@@ -33,6 +39,8 @@ type IdentityContextValue = {
   clearActiveCharacter: () => Promise<void>
   enterOwnerMode: () => void
   exitOwnerMode: () => void
+  enterAdminMode: () => void
+  exitAdminMode: () => void
 }
 
 const IdentityContext = createContext<IdentityContextValue | null>(null)
@@ -43,6 +51,12 @@ function messageFromError(error: unknown) {
     return String((error as { message: unknown }).message)
   }
   return 'Something went wrong while loading your Hanami account.'
+}
+
+function storedAccessMode() {
+  if (typeof window === 'undefined') return null
+  const mode = sessionStorage.getItem(ACCESS_MODE_KEY)
+  return mode === 'owner' || mode === 'administrator' ? mode : null
 }
 
 export function IdentityProvider({ children }: PropsWithChildren) {
@@ -56,7 +70,14 @@ export function IdentityProvider({ children }: PropsWithChildren) {
   const [identityLoading, setIdentityLoading] = useState(false)
   const [mutating, setMutating] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [ownerMode, setOwnerMode] = useState(false)
+  const [ownerMode, setOwnerMode] = useState(() => storedAccessMode() === 'owner')
+  const [adminMode, setAdminMode] = useState(() => storedAccessMode() === 'administrator')
+
+  const clearSpecialMode = useCallback(() => {
+    setOwnerMode(false)
+    setAdminMode(false)
+    sessionStorage.removeItem(ACCESS_MODE_KEY)
+  }, [])
 
   const clearIdentity = useCallback(() => {
     setAccount(null)
@@ -65,6 +86,8 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     setRoles([])
     setCapabilities([])
     setOwnerMode(false)
+    setAdminMode(false)
+    sessionStorage.removeItem(ACCESS_MODE_KEY)
     setError(null)
   }, [])
 
@@ -101,17 +124,51 @@ export function IdentityProvider({ children }: PropsWithChildren) {
       if (roleResult.error) throw roleResult.error
       if (capabilityResult.error) throw capabilityResult.error
 
+      const nextRoles = (roleResult.data ?? []).map((row) => row.code)
+      const nextCapabilities = (capabilityResult.data ?? []).map((row) => row.code)
+
       setAccount(accountResult.data)
       setCharacters(characterResult.data ?? [])
       setApplications(applicationResult.data ?? [])
-      setRoles((roleResult.data ?? []).map((row) => row.code))
-      setCapabilities((capabilityResult.data ?? []).map((row) => row.code))
+      setRoles(nextRoles)
+      setCapabilities(nextCapabilities)
+
+      const requestedIntent = sessionStorage.getItem(LOGIN_INTENT_KEY) as LoginIntent | null
+      if (requestedIntent) sessionStorage.removeItem(LOGIN_INTENT_KEY)
+
+      if (requestedIntent === 'owner') {
+        if (!nextRoles.includes('owner')) {
+          sessionStorage.setItem(ACCESS_ERROR_KEY, 'This Discord account is not authorized for Owner access.')
+          clearSpecialMode()
+          await client.auth.signOut()
+          return
+        }
+        sessionStorage.setItem(ACCESS_MODE_KEY, 'owner')
+        setOwnerMode(true)
+        setAdminMode(false)
+      } else if (requestedIntent === 'administrator') {
+        if (!nextRoles.includes('platform_admin')) {
+          sessionStorage.setItem(ACCESS_ERROR_KEY, 'This Discord account is not authorized for Administrator access.')
+          clearSpecialMode()
+          await client.auth.signOut()
+          return
+        }
+        sessionStorage.setItem(ACCESS_MODE_KEY, 'administrator')
+        setAdminMode(true)
+        setOwnerMode(false)
+      } else if (requestedIntent === 'member') {
+        clearSpecialMode()
+      } else {
+        const currentMode = storedAccessMode()
+        if (currentMode === 'owner' && !nextRoles.includes('owner')) clearSpecialMode()
+        if (currentMode === 'administrator' && !nextRoles.includes('platform_admin')) clearSpecialMode()
+      }
     } catch (nextError) {
       setError(messageFromError(nextError))
     } finally {
       setIdentityLoading(false)
     }
-  }, [clearIdentity])
+  }, [clearIdentity, clearSpecialMode])
 
   useEffect(() => {
     const client = supabase
@@ -152,10 +209,15 @@ export function IdentityProvider({ children }: PropsWithChildren) {
   )
 
   const isOwner = roles.includes('owner')
+  const isPlatformAdmin = roles.includes('platform_admin')
 
   useEffect(() => {
-    if (!isOwner && ownerMode) setOwnerMode(false)
-  }, [isOwner, ownerMode])
+    if (!isOwner && ownerMode) clearSpecialMode()
+  }, [clearSpecialMode, isOwner, ownerMode])
+
+  useEffect(() => {
+    if (!isPlatformAdmin && adminMode) clearSpecialMode()
+  }, [adminMode, clearSpecialMode, isPlatformAdmin])
 
   const runMutation = useCallback(async (action: () => Promise<void>) => {
     setMutating(true)
@@ -191,9 +253,9 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     await runMutation(async () => {
       const { error: rpcError } = await client.rpc('set_active_character', { p_character_id: characterId })
       if (rpcError) throw rpcError
-      setOwnerMode(false)
+      clearSpecialMode()
     })
-  }, [runMutation])
+  }, [clearSpecialMode, runMutation])
 
   const clearActiveCharacter = useCallback(async () => {
     const client = supabase
@@ -207,18 +269,40 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     })
   }, [account, runMutation])
 
-  const signIn = useCallback(async () => {
+  const signIn = useCallback(async (intent: LoginIntent = 'member') => {
     setError(null)
-    await signInWithDiscord()
-  }, [])
+    sessionStorage.removeItem(ACCESS_ERROR_KEY)
+    clearSpecialMode()
+    await signInWithDiscord(intent)
+  }, [clearSpecialMode])
 
   const signOut = useCallback(async () => {
     const client = supabase
     if (!client) return
     setError(null)
+    sessionStorage.removeItem(LOGIN_INTENT_KEY)
+    sessionStorage.removeItem(ACCESS_MODE_KEY)
     const { error: signOutError } = await client.auth.signOut()
     if (signOutError) setError(signOutError.message)
   }, [])
+
+  const enterOwnerMode = useCallback(() => {
+    if (!isOwner) return
+    sessionStorage.setItem(ACCESS_MODE_KEY, 'owner')
+    setOwnerMode(true)
+    setAdminMode(false)
+  }, [isOwner])
+
+  const exitOwnerMode = useCallback(() => clearSpecialMode(), [clearSpecialMode])
+
+  const enterAdminMode = useCallback(() => {
+    if (!isPlatformAdmin) return
+    sessionStorage.setItem(ACCESS_MODE_KEY, 'administrator')
+    setAdminMode(true)
+    setOwnerMode(false)
+  }, [isPlatformAdmin])
+
+  const exitAdminMode = useCallback(() => clearSpecialMode(), [clearSpecialMode])
 
   const value = useMemo<IdentityContextValue>(() => ({
     configured: hasSupabaseConfig,
@@ -233,29 +317,37 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     roles,
     capabilities,
     isOwner,
+    isPlatformAdmin,
     ownerMode,
+    adminMode,
     signIn,
     signOut,
     refreshIdentity,
     createStudentSlot,
     selectCharacter,
     clearActiveCharacter,
-    enterOwnerMode: () => {
-      if (isOwner) setOwnerMode(true)
-    },
-    exitOwnerMode: () => setOwnerMode(false),
+    enterOwnerMode,
+    exitOwnerMode,
+    enterAdminMode,
+    exitAdminMode,
   }), [
     account,
     activeCharacter,
+    adminMode,
     applications,
     authLoading,
     capabilities,
     characters,
     clearActiveCharacter,
     createStudentSlot,
+    enterAdminMode,
+    enterOwnerMode,
     error,
+    exitAdminMode,
+    exitOwnerMode,
     identityLoading,
     isOwner,
+    isPlatformAdmin,
     mutating,
     ownerMode,
     refreshIdentity,
