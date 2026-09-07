@@ -153,7 +153,7 @@ export function MemberProfilePopover({ characterId, onClose }: Props) {
             {profile?.bio && <div className="member-popover-about"><strong>ABOUT ME</strong><p>{profile.bio}</p></div>}
 
             <div className="member-popover-actions">
-              <a className="member-popover-primary" href={`#/profile/view-profile/${encodeURIComponent(characterId)}`} onClick={onClose}>View Full Profile</a>
+              <a data-member-full-profile="true" className="member-popover-primary" href={`#/profile/view-profile/${encodeURIComponent(characterId)}`} onClick={onClose}>View Full Profile</a>
               <button type="button" onClick={onClose}>Close</button>
             </div>
           </>}
