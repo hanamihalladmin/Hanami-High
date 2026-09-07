@@ -75,9 +75,10 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
 
   useEffect(() => {
     const client = supabase
-    const currentAccount = account
-    const currentCharacter = activeCharacter
-    if (!client || !currentAccount || !currentCharacter) return
+    if (!client || !account || !activeCharacter) return
+    const db = client
+    const accountId = account.id
+    const characterId = activeCharacter.id
     let cancelled = false
 
     async function loadHome() {
@@ -85,11 +86,11 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
       setDataError(null)
 
       const [enrollmentResult, staffResult, announcementResult, walletResult, plusResult] = await Promise.all([
-        client.from('academic_enrollments').select('section_id').eq('student_character_id', currentCharacter.id).eq('status', 'active'),
-        client.from('academic_section_staff').select('section_id').eq('character_id', currentCharacter.id),
-        client.from('school_announcements').select('*').eq('state', 'published').order('pinned', { ascending: false }).order('created_at', { ascending: false }).limit(12),
-        client.from('petal_wallets').select('*').eq('account_id', currentAccount.id).maybeSingle(),
-        client.from('hanami_plus_entitlements').select('*').eq('account_id', currentAccount.id).maybeSingle(),
+        db.from('academic_enrollments').select('section_id').eq('student_character_id', characterId).eq('status', 'active'),
+        db.from('academic_section_staff').select('section_id').eq('character_id', characterId),
+        db.from('school_announcements').select('*').eq('state', 'published').order('pinned', { ascending: false }).order('created_at', { ascending: false }).limit(12),
+        db.from('petal_wallets').select('*').eq('account_id', accountId).maybeSingle(),
+        db.from('hanami_plus_entitlements').select('*').eq('account_id', accountId).maybeSingle(),
       ])
 
       const firstError = enrollmentResult.error || staffResult.error || announcementResult.error || walletResult.error || plusResult.error
@@ -110,8 +111,8 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
       let nextSchedule: HomeScheduleRow[] = []
       if (weekday && sectionIds.length > 0) {
         const [sectionResult, meetingResult] = await Promise.all([
-          client.from('academic_sections').select('*').in('id', sectionIds),
-          client.from('academic_meetings').select('*').in('section_id', sectionIds).eq('weekday', weekday).order('period_no'),
+          db.from('academic_sections').select('*').in('id', sectionIds),
+          db.from('academic_meetings').select('*').in('section_id', sectionIds).eq('weekday', weekday).order('period_no'),
         ])
         const scheduleError = sectionResult.error || meetingResult.error
         if (scheduleError) {
@@ -125,7 +126,7 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
         const sections = sectionResult.data ?? []
         const courseIds = Array.from(new Set(sections.map((section) => section.course_id)))
         const courseResult = courseIds.length
-          ? await client.from('academic_courses').select('*').in('id', courseIds)
+          ? await db.from('academic_courses').select('*').in('id', courseIds)
           : { data: [] as AcademicCourse[], error: null }
         if (courseResult.error) {
           if (!cancelled) {
