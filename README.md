@@ -1,6 +1,6 @@
 # Hanami High v2
 
-Hanami High v2 is a clean rebuild of the Hanami High roleplay network: Discord-inspired navigation and messaging, SpaceHey-inspired social identity, a school/academic layer, customizable character profiles, campus communities, Petals, the Hanami Boutique, achievements, moderation, and account-level Owner operations.
+Hanami High v2 is a clean rebuild of the Hanami High roleplay network: Discord-style portal navigation and profiles, a school/academic layer, customizable character identities, campus communities, Petals, a visual Hanami Boutique, achievements, moderation, and account-level Owner operations.
 
 ## Release status
 
@@ -19,12 +19,12 @@ Current role model:
 - React 19 + TypeScript + Vite
 - Supabase Auth / Postgres / RLS / Realtime
 - Discord OAuth as the primary account authentication identity
-- Account-wide Petals, Boutique inventory, Hanami+, settings, and platform roles
-- Character-specific profiles, friends, messages, social posts, classes, grades, attendance, clubs, and achievements
+- Account-wide Petals, Boutique inventory, Wishlist, Hanami+, settings, and platform roles
+- Character-specific Discord-style profiles, cosmetic loadouts, friends, messages, social posts, classes, grades, attendance, clubs, and achievements
 - Capability-based permissions instead of a simple role hierarchy
 - Owner-only audited RPCs for cross-account operations and read-only View Portal snapshots
 - Tokyo-based roleplay school calendar in the fictional 2006 school year
-- Responsive Hanami application shell with reduced-motion, density, contrast, and text-size preferences
+- Responsive Discord-style Hanami application shell with personal color themes and accessibility preferences
 
 ## Major v2 surfaces
 
@@ -35,25 +35,35 @@ The application shell includes:
 - Social — feed, friends, Top Friends, bulletins, blogs, guestbook activity
 - Academics — overview, timetable, classes, assignments, grades, attendance, Teacher tools
 - Campus — events, clubs, organizations, opportunities, Student Council
-- My Profile — published profile, Profile Studio, blog, guestbook, saved themes
+- My Profile — Discord-style published identity card, Profile Studio, display-name styling, Board, Activity, Wishlist, blog, guestbook, saved themes
 - Discover — students, Teachers, clubs, posts, events
 - Petals — balance, ledger, rewards, ways to earn
-- Boutique — featured/new/seasonal cosmetics, frames, effects, nameplates, Hanami+ passes, inventory
+- Boutique — image-first collectible storefront with avatar decorations, frames, effects, nameplates, profile cards, background packs, stickers, Hanami+ passes, Wishlist, and inventory
 - Achievements — milestones, collections, character history
-- Settings — account, character, privacy/safety, notifications, accessibility, connections
+- Settings — account, character, privacy/safety, notifications, appearance/accessibility, connections
 - Owner Console — admissions, New Student promotion, accounts, characters, View Portal, permissions, economy, Hanami+, moderation, system configuration, audit history
+
+## Discord-style identity and presence
+
+Profiles use a consistent Discord-style identity hierarchy: banner, overlapping circular avatar and presence, display name, handle/pronouns, badges, custom status, actions, bio, roles, member-since information, connections, notes, and Board / Activity / Guestbook tabs.
+
+Profile Studio includes safe display-name font/effect/color controls, visual cosmetic slots, live preview, widgets, Activity, Wishlist, and account-owned cosmetic equipment. Cosmetic ownership is account-wide while equipment is character-specific. Published profiles snapshot the equipped cosmetic slugs so public rendering never trusts arbitrary CSS or JavaScript.
+
+Presence supports Online, Idle, Do Not Disturb, and Invisible. Invisible characters are omitted from other members' online rail.
 
 ## Database and security
 
-Supabase migrations in `supabase/migrations/` are the source-controlled database history. Current v2 history runs through migration `0041`.
+Supabase migrations in `supabase/migrations/` are the source-controlled database history. Current v2 history runs through migration `0043`.
 
 Important security rules include:
 
 - RLS on member-facing data.
+- Student member mode does not expose account-level Owner/Admin school-management capabilities.
 - Owner cross-account operations use narrowly scoped, capability-checked RPCs rather than weakening normal table policies.
 - Privileged reward/Owner implementations live in the non-exposed `private` schema with `SECURITY INVOKER` public wrappers where appropriate.
 - Safety reports are readable by their reporter and authorized moderation roles only.
 - Presence visibility is enforced by database policy, not only hidden by frontend UI.
+- Boutique Wishlist rows are account-private; cosmetic loadouts validate ownership and item type in the database.
 - Teacher authority is revalidated at access time; removing Teacher status clears Teacher-only class/advisor assignments and immediately revokes stale academic, advisor, and roleplay management authority.
 
 ## Local development
@@ -82,11 +92,9 @@ npm run build
 
 ## GitHub Pages
 
-The repository includes a **manual** Pages deployment workflow for the completed v2 build. Vite uses a relative asset base so the build works as a project site under the current repository path as well as under a future account/custom domain.
+GitHub Pages is configured to deploy the `v2-rebuild` branch through GitHub Actions. The workflow builds with the frontend-safe Supabase URL/publishable key and automatically publishes the newest v2 push after the repository's `github-pages` environment allows `v2-rebuild`.
 
-Before the first deployment, a repository administrator must enable Pages once in **Settings → Pages → Build and deployment → Source → GitHub Actions**. GitHub does not allow the normal workflow `GITHUB_TOKEN` to perform that initial repository-administration step. After Pages is enabled, run **Deploy v2 to GitHub Pages** from the Actions tab.
-
-For the current repository owner/name, the normal GitHub Pages project-site form is:
+Current project-site URL:
 
 `https://hanamihalladmin.github.io/Hanami-High/`
 
@@ -94,7 +102,7 @@ The originally desired `https://hanamihigh.github.io/` would require the GitHub 
 
 ## Branch strategy
 
-- `v2-rebuild` — completed v2 release candidate
+- `v2-rebuild` — completed v2 release candidate and Pages source
 - `main` — v1 archive/reference until an explicit promotion/merge decision
 
 Do not rewrite already-applied migrations to change history. Add corrective migrations instead.
