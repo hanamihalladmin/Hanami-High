@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase'
 import { getSignedProfileMediaUrl } from '../lib/profileMedia'
 import { useIdentity } from '../state/IdentityContext'
 import type { Json, PublishedCharacterProfile, PublishedProfileWidget } from '../types/database'
+import { GuestbookPanel } from './GuestbookPanel'
 import { ShellTopbar } from './ShellTopbar'
 
 type Props = {
@@ -232,6 +233,11 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
               )
             })}
           </div>
+
+          <GuestbookPanel
+            targetCharacterId={characterId}
+            guestbookVisibility={profile.guestbook_visibility}
+          />
         </div>
       )}
     </main>
