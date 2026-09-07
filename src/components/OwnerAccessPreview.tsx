@@ -1,4 +1,5 @@
 import { ApplicationReviewPanel } from './ApplicationReviewPanel'
+import { NewStudentManagementPanel } from './NewStudentManagementPanel'
 import { useIdentity } from '../state/IdentityContext'
 
 export function OwnerAccessPreview() {
@@ -36,12 +37,13 @@ export function OwnerAccessPreview() {
           </div>
 
           <ApplicationReviewPanel />
+          <NewStudentManagementPanel />
 
           <section className="owner-console-placeholder">
             <span className="eyebrow">OWNER FOUNDATION</span>
             <h1>More Owner modules will plug into this account mode.</h1>
             <p>
-              Admissions is now functional here. Portal preview, New Student promotion, moderation, economy,
+              Admissions and New Student promotion are now functional here. Portal preview, moderation, economy,
               school configuration, and the rest of the Owner Console will be added in their implementation phases
               without ever attaching Owner authority to an OC.
             </p>
