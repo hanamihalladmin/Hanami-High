@@ -15,8 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install --ignore-scripts --no-audit --no-fund; fi
+          cache: npm
+      - run: npm ci
       - run: npm run typecheck
       - run: npm run build
