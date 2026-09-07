@@ -1,0 +1,167 @@
+:root:not([data-site-theme]), :root[data-site-theme='hanami'] {
+  --hanami-gloss: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(252,255,252,.98) 52%, rgba(239,247,240,.98) 100%);
+  --hanami-pink-gloss: linear-gradient(180deg, #fff8fb 0%, #fdebf2 52%, #f7d8e4 100%);
+  --hanami-sage-gloss: linear-gradient(180deg, #f9fdf9 0%, #eaf4eb 55%, #dceade 100%);
+  --hanami-floral-shadow: 0 8px 24px rgba(92,121,99,.08), inset 0 1px 0 #fff;
+}
+
+:root:not([data-site-theme]) body,
+:root[data-site-theme='hanami'] body {
+  background:
+    radial-gradient(circle at 14px 14px, rgba(226,127,159,.12) 0 1.6px, transparent 1.8px),
+    linear-gradient(rgba(92,121,99,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(92,121,99,.025) 1px, transparent 1px),
+    #fbfdfb;
+  background-size: 30px 30px, 24px 24px, 24px 24px, auto;
+  color: var(--ink);
+}
+
+:root:not([data-site-theme]) .app-shell,
+:root[data-site-theme='hanami'] .app-shell {
+  background:
+    linear-gradient(rgba(88,114,95,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88,114,95,.025) 1px, transparent 1px),
+    #fffefd;
+  background-size: 24px 24px;
+}
+
+:root:not([data-site-theme]) .main-rail,
+:root[data-site-theme='hanami'] .main-rail {
+  background: var(--hanami-gloss);
+  border-right: 1px solid #cbd9cd;
+  box-shadow: inset -1px 0 0 rgba(255,255,255,.9);
+}
+
+:root:not([data-site-theme]) .rail-brand,
+:root:not([data-site-theme]) .rail-button,
+:root[data-site-theme='hanami'] .rail-brand,
+:root[data-site-theme='hanami'] .rail-button {
+  background: linear-gradient(180deg, #fff 0%, #f4f9f4 100%);
+  color: var(--sage-700);
+  border: 1px solid #bed0c1;
+  box-shadow: inset 0 1px 0 #fff, 0 2px 6px rgba(88,114,95,.08);
+}
+
+:root:not([data-site-theme]) .rail-brand,
+:root[data-site-theme='hanami'] .rail-brand {
+  color: var(--pink-600);
+  background: var(--hanami-pink-gloss);
+  border-color: #efb8ca;
+}
+
+:root:not([data-site-theme]) .rail-button:hover,
+:root:not([data-site-theme]) .rail-button.is-active,
+:root[data-site-theme='hanami'] .rail-button:hover,
+:root[data-site-theme='hanami'] .rail-button.is-active {
+  background: var(--hanami-sage-gloss);
+  color: var(--sage-700);
+  border-color: var(--pink-300);
+}
+
+:root:not([data-site-theme]) .rail-button.is-active::before,
+:root[data-site-theme='hanami'] .rail-button.is-active::before { background: var(--pink-500); }
+
+:root:not([data-site-theme]) .rail-rule,
+:root[data-site-theme='hanami'] .rail-rule { background: #d6e2d8; }
+
+:root:not([data-site-theme]) .rail-badge,
+:root[data-site-theme='hanami'] .rail-badge { border-color: #fff; }
+
+:root:not([data-site-theme]) .sidebar-column,
+:root[data-site-theme='hanami'] .sidebar-column {
+  background: linear-gradient(180deg, #fbfefb 0%, #f1f7f2 100%);
+  border-right-color: #c7d6ca;
+}
+
+:root:not([data-site-theme]) .section-header,
+:root[data-site-theme='hanami'] .section-header {
+  background: linear-gradient(180deg, #ffffff 0%, #f1f8f2 100%);
+  color: var(--sage-700);
+  border-bottom: 3px double var(--pink-300);
+  position: relative;
+}
+
+:root:not([data-site-theme]) .section-header::after,
+:root[data-site-theme='hanami'] .section-header::after {
+  content: '✿  ❀  ✿';
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  color: var(--pink-300);
+  font-size: 9px;
+  letter-spacing: .12em;
+}
+
+:root:not([data-site-theme]) .section-header .eyebrow,
+:root[data-site-theme='hanami'] .section-header .eyebrow { color: var(--pink-600); }
+
+:root:not([data-site-theme]) .section-links button.selected,
+:root[data-site-theme='hanami'] .section-links button.selected {
+  background: #fff;
+  color: var(--sage-700);
+  border-color: #b8cabd;
+  box-shadow: inset 3px 0 0 var(--pink-300), 0 3px 8px rgba(88,114,95,.07);
+}
+
+:root:not([data-site-theme]) .user-panel,
+:root[data-site-theme='hanami'] .user-panel {
+  background: linear-gradient(180deg, #f8fcf8 0%, #e9f2ea 100%);
+  border-top-color: #c2d1c4;
+}
+
+:root:not([data-site-theme]) .context-sidebar,
+:root[data-site-theme='hanami'] .context-sidebar {
+  background: linear-gradient(180deg, #fffefe 0%, #f5faf5 100%);
+  border-left-color: #cbd9cd;
+}
+
+:root:not([data-site-theme]) .page-topbar,
+:root[data-site-theme='hanami'] .page-topbar { border-bottom: 3px double #cad9cc; }
+
+:root:not([data-site-theme]) .page-topbar h1,
+:root:not([data-site-theme]) .panel h2,
+:root:not([data-site-theme]) .orientation-card h2,
+:root[data-site-theme='hanami'] .page-topbar h1,
+:root[data-site-theme='hanami'] .panel h2,
+:root[data-site-theme='hanami'] .orientation-card h2 {
+  color: var(--sage-700);
+  text-shadow: 0 1px 0 #fff;
+}
+
+:root:not([data-site-theme]) .global-search,
+:root:not([data-site-theme]) .notification-button,
+:root[data-site-theme='hanami'] .global-search,
+:root[data-site-theme='hanami'] .notification-button {
+  background: var(--hanami-gloss);
+  border-color: #b8c9bb;
+  box-shadow: var(--hanami-floral-shadow);
+}
+
+:root:not([data-site-theme]) .panel,
+:root[data-site-theme='hanami'] .panel {
+  background: var(--hanami-gloss);
+  border-color: #becfc1;
+  box-shadow: var(--hanami-floral-shadow);
+}
+
+:root:not([data-site-theme]) .panel > header,
+:root[data-site-theme='hanami'] .panel > header { background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(241,248,242,.74)); }
+
+:root:not([data-site-theme]) .orientation-card,
+:root[data-site-theme='hanami'] .orientation-card {
+  background: linear-gradient(110deg, rgba(255,255,255,.98), rgba(246,251,246,.98) 55%, rgba(253,235,242,.9));
+  border-color: var(--pink-300);
+  box-shadow: var(--hanami-floral-shadow);
+}
+
+:root:not([data-site-theme]) .orientation-card::before,
+:root[data-site-theme='hanami'] .orientation-card::before {
+  content: '✿';
+  color: var(--pink-500);
+  font-size: 23px;
+  margin-right: 4px;
+}
+
+/* Messages and academic rooms deliberately keep their own Discord-room styling. */
+.messages-page,
+.academic-room-page { color: #dbdee1; }
