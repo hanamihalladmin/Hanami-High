@@ -1,10 +1,29 @@
+import { useIdentity } from '../state/IdentityContext'
+
+function roleLabel(role: string | null) {
+  if (!role) return 'Student'
+  return role
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
+}
+
 export function HomePreview() {
+  const { activeCharacter } = useIdentity()
+  if (!activeCharacter) return null
+
+  const firstName = activeCharacter.first_name
+    || activeCharacter.display_name?.split(/\s+/)[0]
+    || 'Student'
+  const isNewStudent = activeCharacter.school_role === 'new_student'
+  const orientationComplete = Boolean(activeCharacter.orientation_completed_at)
+
   return (
     <main className="content-area">
       <div className="page-topbar">
         <div>
           <span className="eyebrow">HANAMI HOME</span>
-          <h1>Good afternoon, Hana.</h1>
+          <h1>Good afternoon, {firstName}.</h1>
         </div>
         <div className="global-search">⌕ <span>Search Hanami High</span><kbd>⌘ K</kbd></div>
         <button className="notification-button" aria-label="Notifications">♢<span>3</span></button>
@@ -13,17 +32,26 @@ export function HomePreview() {
       <div className="date-strip">
         <div><span>TUESDAY</span><strong>April 18, 2006</strong></div>
         <div><span>SCHOOL STATUS</span><strong><i className="status-dot online" /> In session</strong></div>
-        <div><span>TOKYO</span><strong>13:42 JST</strong></div>
+        <div><span>STATUS</span><strong>{roleLabel(activeCharacter.school_role)}</strong></div>
       </div>
 
-      <section className="orientation-card">
-        <div>
-          <span className="tag">🌱 NEW STUDENT</span>
-          <h2>Welcome to Hanami High</h2>
-          <p>Your orientation is complete. Your New Student status remains until Student Affairs promotes you.</p>
-        </div>
-        <div className="orientation-progress"><strong>6 / 6</strong><span>Orientation complete</span></div>
-      </section>
+      {isNewStudent && (
+        <section className="orientation-card">
+          <div>
+            <span className="tag">🌱 NEW STUDENT</span>
+            <h2>Welcome to Hanami High</h2>
+            <p>
+              {orientationComplete
+                ? 'Your orientation is complete. Your New Student status remains until Student Affairs promotes you.'
+                : 'Your New Student role stays in place while you settle in. Orientation does not automatically promote you to Student.'}
+            </p>
+          </div>
+          <div className="orientation-progress">
+            <strong>{orientationComplete ? '6 / 6' : '0 / 6'}</strong>
+            <span>{orientationComplete ? 'Orientation complete' : 'Orientation available'}</span>
+          </div>
+        </section>
+      )}
 
       <div className="dashboard-grid">
         <section className="panel schedule-panel">
