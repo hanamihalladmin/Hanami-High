@@ -13,6 +13,7 @@ import { MobileSectionNav } from '../components/MobileSectionNav'
 import { ShellPage } from '../components/ShellPage'
 import { ProfileStudio } from '../components/ProfileStudio'
 import { ProfileView } from '../components/ProfileView'
+import { SavedThemes } from '../components/SavedThemes'
 import { defaultRoute, routeFromHash, routeHash } from './navigation'
 import { useIdentity } from '../state/IdentityContext'
 import { useNotificationInbox } from '../hooks/useNotificationInbox'
@@ -147,6 +148,9 @@ export function App() {
     }
     if (route.section === 'profile' && route.subsection === 'view-profile') {
       return <ProfileView targetCharacterId={route.targetId} {...shared} />
+    }
+    if (route.section === 'profile' && route.subsection === 'saved-themes') {
+      return <SavedThemes {...shared} />
     }
     return <ShellPage route={route} {...shared} />
   }
