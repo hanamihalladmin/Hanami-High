@@ -31,6 +31,19 @@
 .orientation-task-list article button:disabled { opacity: .5; cursor: not-allowed; }
 .orientation-task-state { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--sage-700); }
 .orientation-task-state.unavailable { color: var(--muted); font-weight: normal; text-transform: none; letter-spacing: 0; }
+.orientation-home-compact { margin-bottom: 10px; }
+.orientation-home-compact > header { padding: 10px 12px; gap: 12px; }
+.orientation-home-compact h2 { font-size: 18px; margin: 3px 0; }
+.orientation-home-compact header p { font-size: 9px; line-height: 1.4; }
+.orientation-home-compact .orientation-progress-live { min-width: 96px; padding: 7px 9px; }
+.orientation-home-compact .orientation-progress-live strong { font-size: 18px; }
+.orientation-home-compact .orientation-task-list article { min-height: 48px; padding: 7px 10px; gap: 8px; grid-template-columns: 26px minmax(0,1fr) auto; }
+.orientation-home-compact .orientation-check { width: 22px; height: 22px; }
+.orientation-home-compact .orientation-task-list article strong { font-size: 9px; }
+.orientation-home-compact .orientation-task-list article p { font-size: 8px; line-height: 1.35; }
+.orientation-home-compact .orientation-task-list article button { padding: 5px 7px; font-size: 8px; }
+.orientation-compact-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:7px 10px; border-top:1px dotted var(--sage-500); background:#fff; color:var(--muted); font-size:8px; }
+.orientation-compact-footer button { border:1px solid var(--pink-300); background:#fff7fa; color:var(--pink-600); padding:5px 8px; cursor:pointer; font-size:8px; font-weight:700; }
 .new-student-console { border: 1px solid var(--line-dark); background: white; margin: 18px 0; }
 .new-student-console > header { padding: 12px 14px; background: #eef3e9; border-bottom: 1px solid var(--line-dark); display: flex; align-items: center; justify-content: space-between; }
 .new-student-console h2 { margin: 3px 0 0; font-family: var(--font-display); font-weight: normal; color: var(--navy-900); }
@@ -54,6 +67,7 @@
   .orientation-task-list article { grid-template-columns: 30px 1fr; }
   .orientation-task-list article > button,
   .orientation-task-list article > .orientation-task-state { grid-column: 2; justify-self: start; }
+  .orientation-compact-footer { align-items:flex-start; flex-direction:column; }
   .new-student-layout { grid-template-columns: 1fr; }
   .new-student-list { border-right: 0; border-bottom: 1px solid var(--line-dark); }
 }
