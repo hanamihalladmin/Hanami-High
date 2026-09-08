@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import type { HanamiLockscreenDatabase } from '../types/database-lockscreen'
+import type { HanamiCustomizationAssetsDatabase } from '../types/database-customization-assets'
 
 export type LoginIntent = 'member' | 'owner' | 'administrator'
 
@@ -9,7 +9,7 @@ const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as 
 export const hasSupabaseConfig = Boolean(supabaseUrl && supabasePublishableKey)
 
 export const supabase = hasSupabaseConfig
-  ? createClient<HanamiLockscreenDatabase>(supabaseUrl!, supabasePublishableKey!, {
+  ? createClient<HanamiCustomizationAssetsDatabase>(supabaseUrl!, supabasePublishableKey!, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
