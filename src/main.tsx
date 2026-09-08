@@ -50,6 +50,7 @@ import './styles/discord-shell-polish.css'
 import './styles/home-discord-channel.css'
 import './styles/discord-profile-experience.css'
 import './styles/discord-profile-studio-current.css'
+import './styles/discord-profile-interactions.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
