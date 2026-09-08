@@ -1,10 +1,12 @@
+import type { ReactNode } from 'react'
+
 type Props={token:string|null;name:string;type:string;large?:boolean}
 
 const bg={pink:'#f8e4eb',paper:'#fffdf8',navy:'#17223b',sage:'#dfe7d5',gold:'#d4a64c',night:'#11192c',rose:'#d56f91',sky:'#dcecff',mint:'#bde8d0'}
 const star='M0-15 4-5 15-5 6 2 9 13 0 7-9 13-6 2-15-5-4-5z'
 function petals(){return <g fill="#efadc0"><ellipse cx="67" cy="58" rx="12" ry="6" transform="rotate(-24 67 58)"/><ellipse cx="98" cy="42" rx="11" ry="5" transform="rotate(26 98 42)"/><ellipse cx="220" cy="65" rx="12" ry="6" transform="rotate(18 220 65)"/><ellipse cx="252" cy="43" rx="10" ry="5" transform="rotate(-35 252 43)"/></g>}
 function avatar(cx=160,cy=112){return <g><circle cx={cx} cy={cy-28} r="28" fill="#f4cfb3"/><path d={`M${cx-48} ${cy+48}q8-52 48-52t48 52`} fill="#526b86"/><path d={`M${cx-28} ${cy-36}q28-34 56 0v18q-28-17-56 0z`} fill="#46352f"/></g>}
-function frame(stroke:string,extra?:React.ReactNode){return <><rect width="320" height="220" fill="#eef0ee"/><rect x="47" y="28" width="226" height="164" rx="28" fill={bg.paper} stroke={stroke} strokeWidth="14"/><circle cx="160" cy="110" r="43" fill="#e8edf2"/>{extra}</>}
+function frame(stroke:string,extra?:ReactNode){return <><rect width="320" height="220" fill="#eef0ee"/><rect x="47" y="28" width="226" height="164" rx="28" fill={bg.paper} stroke={stroke} strokeWidth="14"/><circle cx="160" cy="110" r="43" fill="#e8edf2"/>{extra}</>}
 function effectBase(fill=bg.night){return <><rect width="320" height="220" fill={fill}/><circle cx="160" cy="112" r="49" fill="#f2d0bc" opacity=".9"/><path d="M104 190q10-54 56-54t56 54" fill="#536c87"/></>}
 function pass(days:string){return <><rect width="320" height="220" fill="#f2e8f8"/><g transform="rotate(-5 160 110)"><rect x="48" y="52" width="224" height="116" rx="15" fill={bg.paper} stroke="#735286" strokeWidth="6"/><path d="M94 52v116" stroke="#bda5cb" strokeWidth="3" strokeDasharray="8 7"/><circle cx="72" cy="110" r="15" fill="#735286"/><text x="116" y="98" fontSize="19" fontWeight="800" fill={bg.navy}>HANAMI+</text><text x="116" y="128" fontSize="33" fontWeight="900" fill="#735286">{days}</text><text x="185" y="128" fontSize="13" fontWeight="700" fill="#735286">DAYS</text></g></>}
 function product(name:string,type:string){const n=name.toLowerCase()
