@@ -1,0 +1,302 @@
+/* Final route-level proportion pass for the V2 shell.
+ * The global shell defines the frame; this file normalizes the bodies that live inside it.
+ */
+
+:root{
+  --page-max:1180px;
+  --page-gap:20px;
+  --page-gap-lg:24px;
+  --page-card-pad:18px;
+  --page-card-pad-lg:22px;
+}
+
+.content-area{
+  min-width:0;
+  width:100%;
+  overflow-x:hidden;
+}
+.content-area>.page-topbar,
+.content-area>.shell-topbar,
+.content-area>.settings-intro,
+.content-area>.campus-intro,
+.content-area>.rewards-intro,
+.content-area>.boutique-intro,
+.content-area>.orientation-card,
+.content-area>.date-strip,
+.content-area>.shell-breadcrumbs,
+.content-area>.identity-notice,
+.content-area>.rewards-empty{
+  width:100%;
+  max-width:var(--page-max);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* Shared vertical rhythm. */
+.content-area>.page-topbar,
+.content-area>.shell-topbar{margin-bottom:var(--page-gap)}
+.content-area>.settings-intro,
+.content-area>.campus-intro,
+.content-area>.rewards-intro,
+.content-area>.boutique-intro,
+.content-area>.orientation-card{margin-bottom:var(--page-gap)}
+.content-area section+section,
+.content-area .panel+.panel{margin-top:var(--page-gap)}
+
+/* Normalize common module dimensions. */
+.panel,
+.shell-module-card,
+.settings-panel,
+.campus-panel,
+.rewards-panel,
+.campus-group-card,
+.boutique-card,
+.achievement-card,
+.social-composer,
+.social-stream{
+  min-width:0;
+}
+.panel>header,
+.settings-panel>header,
+.campus-panel>header,
+.rewards-panel>header,
+.social-composer>header,
+.social-stream>header{
+  min-height:58px;
+  padding:12px 16px;
+  gap:12px;
+}
+.panel>header>div,
+.settings-panel>header>div,
+.campus-panel>header>div,
+.rewards-panel>header>div,
+.social-composer>header>div,
+.social-stream>header>div{min-width:0}
+
+/* Home / dashboard modules. */
+.dashboard-grid,
+.home-dashboard-grid{
+  width:100%;
+  max-width:var(--page-max);
+  margin-left:auto;
+  margin-right:auto;
+  grid-template-columns:minmax(0,1.55fr) minmax(280px,.75fr);
+  gap:var(--page-gap);
+  align-items:start;
+}
+.home-web-grid{width:100%;max-width:var(--page-max);margin-left:auto;margin-right:auto}
+
+/* Social feed: readable central column while still filling the canvas cleanly. */
+.social-composer,
+.social-stream{
+  width:min(100%,900px);
+  margin-left:auto;
+  margin-right:auto;
+}
+.social-composer{margin-top:0;margin-bottom:var(--page-gap)}
+.social-post-card>header{padding:14px 16px 10px;gap:12px}
+.social-post-content{padding:7px 16px 16px 70px}
+.social-post-card>footer{padding:9px 16px 9px 70px}
+.social-post-content p{font-size:13px;line-height:1.7}
+
+/* Messages keep the Discord room treatment, but use the available canvas correctly. */
+.messages-page{overflow:hidden}
+.messages-page .messages-intro,
+.messages-page .message-friends-panel,
+.messages-page .message-request-starter,
+.messages-page .message-group-builder,
+.messages-page .incoming-request-strip,
+.messages-page .messages-workspace{width:100%;max-width:none}
+.messages-page .messages-workspace{
+  grid-template-columns:minmax(250px,300px) minmax(0,1fr);
+  min-height:calc(100vh - 180px);
+}
+.messages-page .conversation-list-panel{min-width:0}
+.messages-page .message-thread-panel{min-width:0}
+.messages-page .message-thread-scroll{padding:20px 20px 24px}
+.messages-page .message-reply-box{padding:12px 18px 16px}
+
+/* Academics and campus directories: wider data surface, consistent grids. */
+.academics-page,
+.campus-page,
+.discover-page,
+.rewards-page,
+.settings-page,
+.hanami-plus-page,
+.owner-operations-page,
+.school-administration-page{
+  --section-content-max:var(--page-max);
+}
+.academics-page>section,
+.campus-page>section,
+.discover-page>section,
+.rewards-page>section,
+.settings-page>.settings-stack,
+.hanami-plus-page>section,
+.owner-operations-page>section,
+.school-administration-page>section{
+  width:100%;
+  max-width:var(--section-content-max);
+  margin-left:auto;
+  margin-right:auto;
+}
+.campus-stat-grid,
+.achievement-stat-grid,
+.earn-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+}
+.campus-group-grid,
+.discover-grid,
+.academic-directory-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  align-items:stretch;
+}
+.campus-group-card,
+.achievement-card,
+.earn-grid article{height:100%}
+
+/* Settings / studios: two-column editor layouts should not collapse early. */
+.settings-stack,
+.interface-studio-layout,
+.social-identity-layout,
+.motion-studio-layout,
+.scene-studio-layout,
+.profile-studio-layout,
+.theme-builder-v2 .settings-stack{
+  width:100%;
+  max-width:var(--page-max);
+  margin-left:auto;
+  margin-right:auto;
+}
+.settings-panel{overflow:hidden}
+.settings-form-list>label{min-height:66px;padding:14px 16px;gap:18px}
+.settings-form-list>label>div{min-width:0;display:flex;flex-direction:column;gap:5px}
+.settings-form-list strong{line-height:1.25}
+.settings-form-list span{line-height:1.45}
+
+/* Hanami+ creative surfaces. */
+.creator-marketplace-page,
+.creator-portfolio-page,
+.creator-following-page,
+.theme-remix-lab,
+.widget-kit-library,
+.interface-customization-studio,
+.social-identity-studio,
+.animation-preset-studio,
+.profile-scene-studio{
+  min-width:0;
+}
+.creator-marketplace-page>section,
+.creator-portfolio-page>section,
+.creator-following-page>section,
+.theme-remix-lab>section,
+.widget-kit-library>section,
+.interface-customization-studio>section,
+.social-identity-studio>section,
+.animation-preset-studio>section,
+.profile-scene-studio>section{
+  max-width:var(--page-max);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* Boutique: full storefront width, aligned shelves, stronger card density on wide screens. */
+.boutique-storefront .boutique-orbs-nav,
+.boutique-storefront .boutique-storebar,
+.boutique-storefront .boutique-catalog-search,
+.boutique-storefront .boutique-feature-hero,
+.boutique-storefront .boutique-shelf,
+.boutique-storefront .boutique-inventory-summary{
+  width:100%;
+  max-width:var(--page-max);
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+.boutique-storefront .boutique-orbs-nav{grid-template-columns:auto minmax(0,1fr) auto auto;gap:14px}
+.boutique-storefront .boutique-orbs-nav nav{min-width:0;display:flex;gap:7px;flex-wrap:wrap}
+.boutique-storefront .boutique-storebar{align-items:stretch}
+.boutique-storefront .boutique-wallet-chip{align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.boutique-feature-hero{grid-template-columns:minmax(0,1.35fr) minmax(340px,.65fr);min-height:430px}
+.boutique-feature-art{min-height:430px}
+.boutique-orb-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px!important}
+.boutique-orb-card{min-height:390px}
+.boutique-orb-copy{min-height:155px}
+.boutique-orb-copy h3{line-height:1.2}
+.boutique-orb-copy p{line-height:1.5}
+
+/* Profile and personal-space tools should use the same canvas width. */
+.profile-studio-page>section,
+.profile-view-page>section,
+.profile-scenes-page>section,
+.personal-spaces-page>section,
+.saved-themes-page>section,
+.guestbook-page>section{
+  width:100%;
+  max-width:var(--page-max);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* Prevent label collisions in old compact blocks. */
+.content-area h1,
+.content-area h2,
+.content-area h3,
+.content-area strong,
+.content-area small,
+.content-area span,
+.content-area p,
+.content-area a,
+.content-area button{overflow-wrap:anywhere}
+.page-title-block,
+.page-channel-title,
+.context-current-card,
+.context-identity-card,
+.context-member-row,
+.user-copy{min-width:0}
+.page-title-block h1,
+.page-channel-title strong,
+.context-member-row strong,
+.user-copy strong{line-height:1.25}
+.page-title-block small,
+.page-channel-title small,
+.context-member-row small,
+.user-copy span{line-height:1.4}
+
+/* Wide monitor tuning. */
+@media(min-width:1500px){
+  :root{--page-max:1240px;--page-gap:22px}
+  .boutique-orb-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .campus-group-grid,.discover-grid,.academic-directory-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+/* Standard desktop / small laptop. */
+@media(max-width:1260px){
+  :root{--page-max:100%;--page-gap:18px}
+  .boutique-orb-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .campus-stat-grid,.achievement-stat-grid,.earn-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .campus-group-grid,.discover-grid,.academic-directory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(max-width:980px){
+  .dashboard-grid,.home-dashboard-grid{grid-template-columns:1fr}
+  .messages-page .messages-workspace{grid-template-columns:230px minmax(0,1fr)}
+  .boutique-feature-hero{grid-template-columns:1fr;min-height:0}
+  .boutique-feature-art{min-height:320px}
+  .boutique-orb-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(max-width:760px){
+  :root{--page-gap:14px;--page-card-pad:14px}
+  .content-area>.page-topbar,.content-area>.shell-topbar{margin-bottom:14px}
+  .messages-page .messages-workspace{grid-template-columns:1fr}
+  .messages-page .conversation-list-panel{max-height:230px}
+  .social-composer,.social-stream{width:100%}
+  .social-post-content,.social-post-card>footer{padding-left:14px;padding-right:14px}
+  .campus-stat-grid,.achievement-stat-grid,.earn-grid,
+  .campus-group-grid,.discover-grid,.academic-directory-grid,
+  .boutique-orb-grid{grid-template-columns:1fr}
+  .boutique-storefront .boutique-orbs-nav{grid-template-columns:1fr auto}
+  .boutique-storefront .boutique-orbs-nav nav{grid-column:1/-1}
+}
