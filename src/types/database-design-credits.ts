@@ -17,6 +17,7 @@ export type ProfileDesignCredit={
   source_id:string
   source_title:string
   source_creator:string
+  source_creator_account_id:string
   version_label:string
   attribution_text:string
   item_count:number
