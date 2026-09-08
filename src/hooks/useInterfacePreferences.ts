@@ -3,7 +3,9 @@ import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
 
 const PREFERENCE_EVENT = 'hanami:preferences-changed'
-const customVars = ['--hanami-custom-ink','--hanami-custom-soft','--hanami-custom-paper','--hanami-custom-accent'] as const
+const customVars = [
+  '--hanami-custom-ink','--hanami-custom-soft','--hanami-custom-paper','--hanami-custom-surface','--hanami-custom-border','--hanami-custom-accent','--hanami-custom-text','--hanami-custom-text-secondary','--hanami-custom-link',
+] as const
 
 export function notifyInterfacePreferencesChanged() {
   window.dispatchEvent(new Event(PREFERENCE_EVENT))
@@ -26,10 +28,18 @@ export function useInterfacePreferences() {
     root.dataset.siteTheme = data.custom_theme_enabled ? 'custom' : (data.site_theme || 'hanami')
 
     if (data.custom_theme_enabled && data.custom_theme_ink && data.custom_theme_soft && data.custom_theme_paper && data.custom_theme_accent) {
-      root.style.setProperty(customVars[0], data.custom_theme_ink)
-      root.style.setProperty(customVars[1], data.custom_theme_soft)
-      root.style.setProperty(customVars[2], data.custom_theme_paper)
-      root.style.setProperty(customVars[3], data.custom_theme_accent)
+      const values = [
+        data.custom_theme_ink,
+        data.custom_theme_soft,
+        data.custom_theme_paper,
+        data.custom_theme_surface || data.custom_theme_paper,
+        data.custom_theme_border || data.custom_theme_soft,
+        data.custom_theme_accent,
+        data.custom_theme_text || data.custom_theme_ink,
+        data.custom_theme_text_secondary || data.custom_theme_soft,
+        data.custom_theme_link || data.custom_theme_accent,
+      ]
+      customVars.forEach((name,index)=>root.style.setProperty(name,values[index]))
     } else {
       customVars.forEach((name) => root.style.removeProperty(name))
     }
