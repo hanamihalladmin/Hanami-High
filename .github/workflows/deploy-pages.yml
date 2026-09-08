@@ -1,5 +1,5 @@
-name: Deploy Hanami High
-# Deployment refresh: visual bugfix pass; legacy spec tests remain audit-only while rewritten
+name: Verify Legacy Main
+# Main is retained for legacy verification only. Live Hanami Pages deployment is owned by v2-rebuild.
 
 on:
   push:
@@ -12,12 +12,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
 
 jobs:
   verify:
@@ -32,8 +26,6 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
       - name: Install dependencies
         run: npm ci
       - name: Audit production dependencies
@@ -94,19 +86,3 @@ jobs:
             out/yearbook/index.html; do
             test -f "$route"
           done
-      - uses: actions/upload-pages-artifact@v3
-        if: github.event_name != 'pull_request'
-        with:
-          path: out
-
-  deploy:
-    if: github.event_name != 'pull_request'
-    needs: verify
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
