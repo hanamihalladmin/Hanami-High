@@ -166,12 +166,13 @@ export function MemberProfilePopover({ characterId, onClose }: Props) {
         addressee_character_id: id,
         status: 'pending',
         created_at: friendship?.created_at ?? new Date().toISOString(),
+        responded_at: null,
         updated_at: new Date().toISOString(),
       })
     } else if (friendship.status === 'pending' && friendship.addressee_character_id === activeCharacter.id) {
       const result = await client.rpc('respond_friendship', { p_friendship_id: friendship.id, p_accept: true })
       actionError = result.error
-      if (!actionError) setFriendship({ ...friendship, status: 'accepted', updated_at: new Date().toISOString() })
+      if (!actionError) setFriendship({ ...friendship, status: 'accepted', responded_at: new Date().toISOString(), updated_at: new Date().toISOString() })
     } else if (friendship.status === 'pending' && friendship.requester_character_id === activeCharacter.id) {
       const result = await client.rpc('remove_friendship', { p_friendship_id: friendship.id })
       actionError = result.error
