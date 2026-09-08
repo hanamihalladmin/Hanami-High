@@ -14,6 +14,8 @@ import { NotificationCenter } from '../components/NotificationCenter'
 import { MobileSectionNav } from '../components/MobileSectionNav'
 import { ProfileStudio } from '../components/ProfileStudio'
 import { ProfileView } from '../components/ProfileView'
+import { ProfileScenesPage } from '../components/ProfileScenesPage'
+import { ProfileSceneStudio } from '../components/ProfileSceneStudio'
 import { ProfileBlogPage } from '../components/ProfileBlogPage'
 import { SavedThemes } from '../components/SavedThemes'
 import { GuestbookPage } from '../components/GuestbookPage'
@@ -122,6 +124,7 @@ export function App() {
 
     if (route.section === 'profile' && route.subsection === 'profile-studio') return <ProfileStudio {...shared} />
     if (route.section === 'profile' && route.subsection === 'view-profile') return <ProfileView targetCharacterId={route.targetId} {...shared} />
+    if (route.section === 'profile' && route.subsection === 'scenes') return <ProfileScenesPage targetId={route.targetId} {...shared} />
     if (route.section === 'profile' && route.subsection === 'personal-spaces') return <PersonalSpacesPage targetSpace={route.targetId} {...shared} />
     if (route.section === 'profile' && route.subsection === 'blog') return <ProfileBlogPage targetPostId={route.targetId} {...shared} />
     if (route.section === 'profile' && route.subsection === 'saved-themes') return <SavedThemes {...shared} />
@@ -183,6 +186,7 @@ export function App() {
     if (route.section === 'hanami-plus' && route.subsection === 'overview') return <HanamiPlusHub mode="overview" {...shared} />
     if (route.section === 'hanami-plus' && route.subsection === 'interface-studio') return <InterfaceCustomizationStudio {...shared} />
     if (route.section === 'hanami-plus' && route.subsection === 'social-identity-studio') return <SocialIdentityStudio {...shared} />
+    if (route.section === 'hanami-plus' && route.subsection === 'scene-studio') return <ProfileSceneStudio {...shared} />
     if (route.section === 'hanami-plus' && route.subsection === 'marketplace') return <CreatorMarketplacePage mode="browse" {...shared} />
     if (route.section === 'hanami-plus' && route.subsection === 'creator-studio') return <CreatorMarketplacePage mode="studio" {...shared} />
     if (route.section === 'hanami-plus' && route.subsection === 'creator-contests') return <CreatorMarketplacePage mode="contests" {...shared} />
