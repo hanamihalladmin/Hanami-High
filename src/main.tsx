@@ -14,6 +14,7 @@ import { AnimationPresetLayer } from './components/AnimationPresetLayer'
 import { UserTagDesignerPortal } from './components/UserTagDesignerPortal'
 import { PremiumFontLayer } from './components/PremiumFontLayer'
 import { PremiumFontStudioPortal } from './components/PremiumFontStudioPortal'
+import { DecorationAssetLibraryPortal } from './components/DecorationAssetLibraryPortal'
 import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
 import './styles/global.css'
@@ -87,6 +88,7 @@ import './styles/user-tag-designer.css'
 import './styles/mini-profile-reference.css'
 import './styles/messages-stacked-chat.css'
 import './styles/premium-font-studio.css'
+import './styles/decoration-asset-library.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -105,6 +107,7 @@ createRoot(document.getElementById('root')!).render(
       <ProfileDraftPreviewLauncher />
       <UserTagDesignerPortal />
       <PremiumFontStudioPortal />
+      <DecorationAssetLibraryPortal />
     </IdentityProvider>
   </StrictMode>,
 )
