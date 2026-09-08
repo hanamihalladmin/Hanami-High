@@ -19,14 +19,11 @@ export const supabase = hasSupabaseConfig
   : null
 
 function browserRedirectUrl() {
-  const url = new URL(window.location.href)
+  // Always return OAuth to the V2 application's document root instead of the
+  // current hash/SPA view. document.baseURI keeps GitHub Pages subpaths intact.
+  const url = new URL('./', document.baseURI)
   url.hash = ''
   url.search = ''
-
-  if (!url.pathname.endsWith('/')) {
-    url.pathname = url.pathname.slice(0, url.pathname.lastIndexOf('/') + 1)
-  }
-
   return url.toString()
 }
 
