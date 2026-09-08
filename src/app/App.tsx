@@ -188,6 +188,13 @@ export function App() {
     return <HomePreview {...shared} />
   }
 
+  function overlays() {
+    return <>
+      <GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} onNavigate={navigate} />
+      <NotificationCenter open={notificationsOpen} notifications={notificationInbox.notifications} loading={notificationInbox.loading} error={notificationInbox.error} onClose={() => setNotificationsOpen(false)} onMarkRead={notificationInbox.markRead} onMarkAllRead={notificationInbox.markAllRead} onNavigate={navigate} />
+    </>
+  }
+
   if (loading) return <LoadingScreen />
   if (!session) return <LoginScreen />
   if (error && !account) return <IdentityErrorScreen />
@@ -196,5 +203,45 @@ export function App() {
   if (ownerMode && isOwner) return <OwnerAccessPreview />
   if (!activeCharacter) return <CharacterHub />
 
-  return <><div className="app-shell"><MainRail active={route.section} onSelect={selectSection} /><div className="sidebar-column"><SectionSidebar active={route.section} subsection={route.subsection} profileTitle={profileTitle} onSelect={selectSubsection} onSearch={openSearch} /><UserPanel /></div><MobileSectionNav section={route.section} subsection={route.subsection} onSelect={selectSubsection} />{renderPage()}<ContextSidebar route={route} onSelect={selectSubsection} /></div><GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} onNavigate={navigate} /><NotificationCenter open={notificationsOpen} notifications={notificationInbox.notifications} loading={notificationInbox.loading} error={notificationInbox.error} onClose={() => setNotificationsOpen(false)} onMarkRead={notificationInbox.markRead} onMarkAllRead={notificationInbox.markAllRead} onNavigate={navigate} /></>
+  const academicRoomMode = route.section === 'academics'
+    && Boolean(route.targetId)
+    && (route.subsection === 'homeroom' || route.subsection === 'classes')
+
+  if (academicRoomMode) {
+    return <>
+      <div className="app-shell communication-app-shell academic-communication-shell">
+        <MainRail active={route.section} onSelect={selectSection} />
+        {renderPage()}
+      </div>
+      {overlays()}
+    </>
+  }
+
+  if (route.section === 'messages') {
+    return <>
+      <div className="app-shell communication-app-shell messages-communication-shell">
+        <MainRail active={route.section} onSelect={selectSection} />
+        <div className="sidebar-column">
+          <SectionSidebar active={route.section} subsection={route.subsection} profileTitle={profileTitle} onSelect={selectSubsection} onSearch={openSearch} />
+          <UserPanel />
+        </div>
+        {renderPage()}
+      </div>
+      {overlays()}
+    </>
+  }
+
+  return <>
+    <div className="app-shell">
+      <MainRail active={route.section} onSelect={selectSection} />
+      <div className="sidebar-column">
+        <SectionSidebar active={route.section} subsection={route.subsection} profileTitle={profileTitle} onSelect={selectSubsection} onSearch={openSearch} />
+        <UserPanel />
+      </div>
+      <MobileSectionNav section={route.section} subsection={route.subsection} onSelect={selectSubsection} />
+      {renderPage()}
+      <ContextSidebar route={route} onSelect={selectSubsection} />
+    </div>
+    {overlays()}
+  </>
 }
