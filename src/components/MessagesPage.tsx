@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react'
 import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
 import type {
@@ -9,6 +9,7 @@ import type {
   HanamiSearchResult,
   SearchDocument,
 } from '../types/database'
+import type { CharacterCustomTag } from '../types/database-customization-assets'
 import { ShellTopbar } from './ShellTopbar'
 
 type Mode = 'friends' | 'message-requests' | 'direct-messages' | 'groups'
@@ -22,6 +23,7 @@ type Props = {
 }
 
 type IdentitySummary = Pick<SearchDocument, 'entity_id' | 'title' | 'subtitle'>
+type MessageGroup = { senderId: string; messages: ConversationMessage[] }
 
 const modeMeta: Record<Mode, { eyebrow: string; title: string; description: string }> = {
   friends: {
@@ -87,6 +89,30 @@ function messageTime(value: string) {
   })
 }
 
+function roleLabel(value: string | null | undefined) {
+  if (!value) return 'Hanami Member'
+  if (value === 'new_student') return 'New Student'
+  if (value === 'student') return 'Student'
+  if (value === 'new_faculty') return 'New Teacher'
+  if (value === 'faculty') return 'Teacher'
+  if (value === 'administration') return 'Staff'
+  return value.replaceAll('_', ' ')
+}
+
+function compactTagStyle(tag: CharacterCustomTag): CSSProperties {
+  const background = tag.fill_mode === 'transparent'
+    ? 'transparent'
+    : tag.fill_mode === 'gradient'
+      ? `linear-gradient(135deg,${tag.background_color},${tag.background_color_2})`
+      : tag.background_color
+  return {
+    background,
+    color: tag.text_color,
+    borderColor: tag.outline_enabled ? tag.border_color : 'transparent',
+    boxShadow: tag.glow_enabled ? `0 0 9px ${tag.glow_color || tag.border_color}` : undefined,
+  }
+}
+
 export function MessagesPage({ mode, targetConversationId, onSearch, onNotifications, unreadCount }: Props) {
   const { activeCharacter } = useIdentity()
   const meta = modeMeta[mode]
@@ -94,6 +120,7 @@ export function MessagesPage({ mode, targetConversationId, onSearch, onNotificat
   const [members, setMembers] = useState<ConversationMember[]>([])
   const [relationships, setRelationships] = useState<Friendship[]>([])
   const [identities, setIdentities] = useState<Record<string, IdentitySummary>>({})
+  const [customTags, setCustomTags] = useState<Record<string, CharacterCustomTag>>({})
   const [selectedId, setSelectedId] = useState<string | null>(targetConversationId ?? null)
   const [messages, setMessages] = useState<ConversationMessage[]>([])
   const [messageBody, setMessageBody] = useState('')
@@ -179,27 +206,37 @@ export function MessagesPage({ mode, targetConversationId, onSearch, onNotificat
 
     if (identityIds.length === 0) {
       setIdentities({})
+      setCustomTags({})
       setLoading(false)
       return
     }
 
-    const { data: identityData, error: identityError } = await client
-      .from('search_documents')
-      .select('entity_id,title,subtitle')
-      .eq('document_type', 'character')
-      .in('entity_id', identityIds)
+    const [identityResult, tagResult] = await Promise.all([
+      client
+        .from('search_documents')
+        .select('entity_id,title,subtitle')
+        .eq('document_type', 'character')
+        .in('entity_id', identityIds),
+      client
+        .from('character_custom_tags')
+        .select('*')
+        .in('character_id', identityIds)
+        .eq('visible', true)
+        .eq('is_active', true),
+    ])
 
     setLoading(false)
-    if (identityError) {
-      setError(identityError.message)
+    if (identityResult.error) {
+      setError(identityResult.error.message)
       return
     }
 
     setIdentities(Object.fromEntries(
-      (identityData ?? [])
+      (identityResult.data ?? [])
         .filter((item) => item.entity_id)
         .map((item) => [item.entity_id as string, item]),
     ))
+    setCustomTags(tagResult.error ? {} : Object.fromEntries((tagResult.data ?? []).map((tag) => [tag.character_id, tag])))
   }, [activeCharacter])
 
   useEffect(() => {
@@ -325,6 +362,16 @@ export function MessagesPage({ mode, targetConversationId, onSearch, onNotificat
     () => threads.find((thread) => thread.id === selectedId) ?? null,
     [selectedId, threads],
   )
+
+  const messageGroups = useMemo(() => {
+    const groups: MessageGroup[] = []
+    for (const message of messages) {
+      const last = groups[groups.length - 1]
+      if (last && last.senderId === message.sender_character_id) last.messages.push(message)
+      else groups.push({ senderId: message.sender_character_id, messages: [message] })
+    }
+    return groups
+  }, [messages])
 
   function identityFor(characterId: string) {
     if (characterId === activeCharacter?.id) {
@@ -669,18 +716,26 @@ export function MessagesPage({ mode, targetConversationId, onSearch, onNotificat
                   )}
                 </header>
 
-                <div className="message-thread-scroll">
+                <div className="message-thread-scroll stacked-chat-stream">
                   {threadLoading ? <div className="friends-empty">Loading messages…</div> : messages.length === 0 ? (
                     <div className="friends-empty">No messages in this conversation yet.</div>
-                  ) : messages.map((message) => {
-                    const own = message.sender_character_id === activeCharacter.id
-                    const sender = identityFor(message.sender_character_id)
+                  ) : messageGroups.map((group) => {
+                    const sender = identityFor(group.senderId)
+                    const tag = customTags[group.senderId]
                     return (
-                      <article className={`message-bubble-row ${own ? 'own' : ''}`} key={message.id}>
-                        {!own && <button className="friend-avatar" type="button" onClick={() => { window.location.hash = profileHash(message.sender_character_id) }}>{sender.title.slice(0, 2).toUpperCase()}</button>}
-                        <div className="message-bubble">
-                          <header><strong>{own ? 'You' : sender.title}</strong><time>{messageTime(message.created_at)}</time></header>
-                          <p>{message.body}</p>
+                      <article className="message-stack-group" key={group.messages[0]?.id || group.senderId}>
+                        <button className="message-stack-avatar" type="button" onClick={() => { window.location.hash = profileHash(group.senderId) }}>{sender.title.slice(0, 2).toUpperCase()}</button>
+                        <div className="message-stack-content">
+                          <header className="message-stack-sender">
+                            <strong>{sender.title}</strong>
+                            <span className="message-role-label">{roleLabel(sender.subtitle)}</span>
+                            {tag && <span className={`message-custom-tag shape-${tag.shape}`} style={compactTagStyle(tag)}>{tag.label}</span>}
+                          </header>
+                          <div className="message-stack-list">
+                            {group.messages.map((message) => <div className="message-stack-line" key={message.id}>
+                              <p>{message.body}</p><time>{messageTime(message.created_at)}</time>
+                            </div>)}
+                          </div>
                         </div>
                       </article>
                     )
