@@ -29,6 +29,7 @@ import { CampusPage } from '../components/CampusPage'
 import { DiscoverPage } from '../components/DiscoverPage'
 import { PetalsPage } from '../components/PetalsPage'
 import { BoutiquePage } from '../components/BoutiquePage'
+import { HanamiPlusHub } from '../components/HanamiPlusHub'
 import { AchievementsPage } from '../components/AchievementsPage'
 import { SettingsPage } from '../components/SettingsPage'
 import { AppearanceSettingsPage } from '../components/AppearanceSettingsPage'
@@ -173,6 +174,14 @@ export function App() {
     if (route.section === 'boutique' && route.subsection === 'stickers') return <BoutiquePage mode="stickers" {...shared} />
     if (route.section === 'boutique' && route.subsection === 'hanami-plus-passes') return <BoutiquePage mode="hanami-plus-passes" {...shared} />
     if (route.section === 'boutique' && route.subsection === 'my-inventory') return <BoutiquePage mode="my-inventory" {...shared} />
+
+    if (route.section === 'hanami-plus' && route.subsection === 'overview') return <HanamiPlusHub mode="overview" {...shared} />
+    if (route.section === 'hanami-plus' && route.subsection === 'calendar') return <HanamiPlusHub mode="calendar" {...shared} />
+    if (route.section === 'hanami-plus' && route.subsection === 'inbox') return <HanamiPlusHub mode="inbox" {...shared} />
+    if (route.section === 'hanami-plus' && route.subsection === 'reward-history') return <HanamiPlusHub mode="reward-history" {...shared} />
+    if (route.section === 'hanami-plus' && route.subsection === 'gift-history') return <HanamiPlusHub mode="gift-history" {...shared} />
+    if (route.section === 'hanami-plus' && route.subsection === 'loyalty-shop') return <HanamiPlusHub mode="loyalty-shop" {...shared} />
+    if (route.section === 'hanami-plus' && route.subsection === 'labs') return <HanamiPlusHub mode="labs" {...shared} />
 
     if (route.section === 'achievements' && route.subsection === 'my-achievements') return <AchievementsPage mode="my-achievements" {...shared} />
     if (route.section === 'achievements' && route.subsection === 'collections') return <AchievementsPage mode="collections" {...shared} />

@@ -8,6 +8,7 @@ export type ShellSectionId =
   | 'discover'
   | 'petals'
   | 'boutique'
+  | 'hanami-plus'
   | 'achievements'
   | 'settings'
 
