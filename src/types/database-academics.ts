@@ -57,6 +57,20 @@ export type AcademicMeeting = {
   meeting_kind: string
 }
 
+export type SchoolScheduleBlock = {
+  id: string
+  block_type: string
+  title: string
+  weekday: number
+  starts_at: string
+  ends_at: string
+  homeroom_label: string | null
+  notes: string | null
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+
 export type AcademicAssignment = {
   id: string
   section_id: string
@@ -132,6 +146,11 @@ type AcademicTables = {
     AcademicMeeting,
     Pick<AcademicMeeting, 'section_id' | 'weekday' | 'period_no' | 'starts_at' | 'ends_at'> & Partial<Omit<AcademicMeeting, 'section_id' | 'weekday' | 'period_no' | 'starts_at' | 'ends_at'>>,
     Partial<AcademicMeeting>
+  >
+  school_schedule_blocks: RowTable<
+    SchoolScheduleBlock,
+    Pick<SchoolScheduleBlock, 'block_type' | 'title' | 'weekday' | 'starts_at' | 'ends_at'> & Partial<Omit<SchoolScheduleBlock, 'block_type' | 'title' | 'weekday' | 'starts_at' | 'ends_at'>>,
+    Partial<SchoolScheduleBlock>
   >
   academic_assignments: RowTable<
     AcademicAssignment,
