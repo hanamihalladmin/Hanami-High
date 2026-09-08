@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import type { HanamiAnimationPresetsDatabase } from '../types/database-animation-presets'
+import type { HanamiThemeRemixingDatabase } from '../types/database-theme-remixing'
 
 export type LoginIntent = 'member' | 'owner' | 'administrator'
 
@@ -9,7 +9,7 @@ const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as 
 export const hasSupabaseConfig = Boolean(supabaseUrl && supabasePublishableKey)
 
 export const supabase = hasSupabaseConfig
-  ? createClient<HanamiAnimationPresetsDatabase>(supabaseUrl!, supabasePublishableKey!, {
+  ? createClient<HanamiThemeRemixingDatabase>(supabaseUrl!, supabasePublishableKey!, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
