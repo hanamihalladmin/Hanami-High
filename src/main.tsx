@@ -4,6 +4,7 @@ import { RootApp } from './app/RootApp'
 import { MemberProfileNavigationBridge } from './components/MemberProfileNavigationBridge'
 import { ProfileDraftPreviewLauncher } from './components/ProfileDraftPreviewLauncher'
 import { ProfileStudioTools } from './components/ProfileStudioTools'
+import { ProfileInteractiveLayer } from './components/ProfileInteractiveLayer'
 import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
 import './styles/global.css'
@@ -28,6 +29,7 @@ import './styles/profile-public-blog.css'
 import './styles/spacehey-profile-contact.css'
 import './styles/saved-themes.css'
 import './styles/personal-spaces.css'
+import './styles/profile-interactive-layer.css'
 import './styles/friends.css'
 import './styles/top-friends.css'
 import './styles/social-posts.css'
@@ -62,6 +64,7 @@ createRoot(document.getElementById('root')!).render(
       <RootApp />
       <MemberProfileNavigationBridge />
       <ProfileStudioTools />
+      <ProfileInteractiveLayer />
       <ProfileDraftPreviewLauncher />
     </IdentityProvider>
   </StrictMode>,
