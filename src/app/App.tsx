@@ -17,6 +17,7 @@ import { ProfileView } from '../components/ProfileView'
 import { ProfileBlogPage } from '../components/ProfileBlogPage'
 import { SavedThemes } from '../components/SavedThemes'
 import { GuestbookPage } from '../components/GuestbookPage'
+import { PersonalSpacesPage } from '../components/PersonalSpacesPage'
 import { FriendsPage } from '../components/FriendsPage'
 import { TopFriendsPage } from '../components/TopFriendsPage'
 import { SocialPostsPage } from '../components/SocialPostsPage'
@@ -118,6 +119,7 @@ export function App() {
 
     if (route.section === 'profile' && route.subsection === 'profile-studio') return <ProfileStudio {...shared} />
     if (route.section === 'profile' && route.subsection === 'view-profile') return <ProfileView targetCharacterId={route.targetId} {...shared} />
+    if (route.section === 'profile' && route.subsection === 'personal-spaces') return <PersonalSpacesPage targetSpace={route.targetId} {...shared} />
     if (route.section === 'profile' && route.subsection === 'blog') return <ProfileBlogPage targetPostId={route.targetId} {...shared} />
     if (route.section === 'profile' && route.subsection === 'saved-themes') return <SavedThemes {...shared} />
     if (route.section === 'profile' && route.subsection === 'guestbook') return <GuestbookPage targetEntryId={route.targetId} {...shared} />
