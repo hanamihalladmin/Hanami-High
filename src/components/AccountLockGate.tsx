@@ -12,7 +12,7 @@ function tokyoClock(date:Date){
 }
 
 export function AccountLockGate({children}:PropsWithChildren){
-  const {account,session,signOut}=useIdentity()
+  const {account,session,signOut,isOwner,ownerMode}=useIdentity()
   const [status,setStatus]=useState<MyLockscreenStatus|null>(null)
   const [wallpaperUrl,setWallpaperUrl]=useState<string|null>(null)
   const [loading,setLoading]=useState(true)
@@ -21,6 +21,7 @@ export function AccountLockGate({children}:PropsWithChildren){
   const [error,setError]=useState<string|null>(null)
   const [now,setNow]=useState(()=>new Date())
 
+  const ownerPortalBypass=Boolean(isOwner&&ownerMode)
   const locallyUnlocked=Boolean(account&&session&&isLockscreenUnlocked(account.id,session.access_token))
 
   useEffect(()=>{const timer=window.setInterval(()=>setNow(new Date()),30000);return()=>window.clearInterval(timer)},[])
@@ -28,6 +29,10 @@ export function AccountLockGate({children}:PropsWithChildren){
     let active=true
     async function load(){
       const client=supabase
+      if(ownerPortalBypass){
+        if(active){setStatus(null);setWallpaperUrl(null);setError(null);setLoading(false)}
+        return
+      }
       if(!client||!account){if(active){setStatus(null);setLoading(false)};return}
       setLoading(true);setError(null)
       const {data,error:statusError}=await client.rpc('my_lockscreen_status')
@@ -39,7 +44,7 @@ export function AccountLockGate({children}:PropsWithChildren){
       setLoading(false)
     }
     void load();return()=>{active=false}
-  },[account])
+  },[account,ownerPortalBypass])
 
   const clock=useMemo(()=>tokyoClock(now),[now])
 
@@ -53,6 +58,7 @@ export function AccountLockGate({children}:PropsWithChildren){
     markLockscreenUnlocked(account.id,session.access_token);setPin('')
   }
 
+  if(ownerPortalBypass)return <>{children}</>
   if(loading)return <main className="account-lockscreen account-lockscreen-loading"><div><strong>Opening your Hanami lock screen…</strong><span>Checking this account’s device-style privacy settings.</span></div></main>
   if(error&&!status)return <main className="account-lockscreen account-lockscreen-loading"><div><strong>Lock screen unavailable</strong><span>{error}</span><button type="button" onClick={()=>void signOut()}>Sign out</button></div></main>
   if(!status?.lock_enabled||locallyUnlocked)return <>{children}</>
