@@ -1,0 +1,56 @@
+/* Desktop Hanami is one connected website document. The rails should grow with
+ * the page instead of behaving like independent 100vh scroll panes. */
+@media (min-width:861px){
+  .app-shell{align-items:stretch!important;min-height:100vh!important}
+  .app-shell .main-rail{
+    position:relative!important;
+    top:auto!important;
+    bottom:auto!important;
+    height:auto!important;
+    min-height:100%!important;
+    align-self:stretch!important;
+    overflow:visible!important;
+  }
+  .app-shell .sidebar-column{
+    position:relative!important;
+    top:auto!important;
+    bottom:auto!important;
+    height:auto!important;
+    min-height:100%!important;
+    align-self:stretch!important;
+    overflow:visible!important;
+  }
+  .app-shell .section-sidebar{
+    min-height:0!important;
+    overflow:visible!important;
+  }
+  .app-shell .context-sidebar{
+    position:relative!important;
+    top:auto!important;
+    height:auto!important;
+    min-height:100%!important;
+    align-self:stretch!important;
+    overflow:visible!important;
+  }
+  .app-shell .content-area{overflow:visible!important;align-self:stretch!important}
+  .app-shell .user-panel{align-self:end}
+
+  /* Messages and classroom communication keep their specialized visual grammar,
+   * but they participate in the same browser scroll instead of creating a
+   * separate fixed-height application viewport. */
+  .communication-app-shell,
+  .messages-communication-shell,
+  .academic-communication-shell{
+    min-height:100vh!important;
+    height:auto!important;
+    overflow:visible!important;
+  }
+  .communication-app-shell .main-rail,
+  .communication-app-shell .sidebar-column,
+  .communication-app-shell .section-sidebar,
+  .communication-app-shell .content-area{
+    max-height:none!important;
+    height:auto!important;
+    overflow:visible!important;
+  }
+}
