@@ -121,6 +121,8 @@ type CustomizationFunctions = {
   my_customization_asset_access: { Args: { p_asset_type?: string | null }; Returns: CustomizationAssetAccessRow[] }
   ensure_my_customization_foundation: { Args: { p_character_id: string }; Returns: boolean }
   set_my_character_custom_tag_active: { Args: { p_tag_id: string }; Returns: boolean }
+  add_my_customization_asset_to_profile: { Args: { p_asset_id: string }; Returns: string }
+  add_my_customization_asset_to_space: { Args: { p_asset_id: string; p_space_kind: string }; Returns: string }
 }
 
 export type HanamiCustomizationAssetsDatabase = Omit<HanamiLockscreenDatabase, 'public'> & {
