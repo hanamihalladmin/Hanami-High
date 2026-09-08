@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import type { HanamiDashboardMessagingDatabase } from '../types/database-dashboard-messaging'
+import type { HanamiSocialIdentityDatabase } from '../types/database-social-identity'
 
 export type LoginIntent = 'member' | 'owner' | 'administrator'
 
@@ -9,7 +9,7 @@ const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as 
 export const hasSupabaseConfig = Boolean(supabaseUrl && supabasePublishableKey)
 
 export const supabase = hasSupabaseConfig
-  ? createClient<HanamiDashboardMessagingDatabase>(supabaseUrl!, supabasePublishableKey!, {
+  ? createClient<HanamiSocialIdentityDatabase>(supabaseUrl!, supabasePublishableKey!, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
@@ -19,8 +19,6 @@ export const supabase = hasSupabaseConfig
   : null
 
 function browserRedirectUrl() {
-  // Always return OAuth to the V2 application's document root instead of the
-  // current hash/SPA view. document.baseURI keeps GitHub Pages subpaths intact.
   const url = new URL('./', document.baseURI)
   url.hash = ''
   url.search = ''
@@ -30,10 +28,7 @@ function browserRedirectUrl() {
 export async function signInWithDiscord(intent: LoginIntent = 'member') {
   if (!supabase) throw new Error('Supabase environment variables are not configured.')
   sessionStorage.setItem('hanami-login-intent', intent)
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'discord',
-    options: { redirectTo: browserRedirectUrl() },
-  })
+  const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'discord', options: { redirectTo: browserRedirectUrl() } })
   if (error) {
     sessionStorage.removeItem('hanami-login-intent')
     throw error

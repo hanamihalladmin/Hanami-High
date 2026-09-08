@@ -33,6 +33,7 @@ import { BoutiquePage } from '../components/BoutiquePage'
 import { HanamiPlusHub } from '../components/HanamiPlusHub'
 import { CreatorMarketplacePage } from '../components/CreatorMarketplacePage'
 import { InterfaceCustomizationStudio } from '../components/InterfaceCustomizationStudio'
+import { SocialIdentityStudio } from '../components/SocialIdentityStudio'
 import { AchievementsPage } from '../components/AchievementsPage'
 import { SettingsPage } from '../components/SettingsPage'
 import { AppearanceSettingsPage } from '../components/AppearanceSettingsPage'
@@ -181,6 +182,7 @@ export function App() {
 
     if (route.section === 'hanami-plus' && route.subsection === 'overview') return <HanamiPlusHub mode="overview" {...shared} />
     if (route.section === 'hanami-plus' && route.subsection === 'interface-studio') return <InterfaceCustomizationStudio {...shared} />
+    if (route.section === 'hanami-plus' && route.subsection === 'social-identity-studio') return <SocialIdentityStudio {...shared} />
     if (route.section === 'hanami-plus' && route.subsection === 'marketplace') return <CreatorMarketplacePage mode="browse" {...shared} />
     if (route.section === 'hanami-plus' && route.subsection === 'creator-studio') return <CreatorMarketplacePage mode="studio" {...shared} />
     if (route.section === 'hanami-plus' && route.subsection === 'creator-contests') return <CreatorMarketplacePage mode="contests" {...shared} />
