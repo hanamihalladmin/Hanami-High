@@ -17,21 +17,25 @@ export function SectionSidebar({ active, subsection, profileTitle, onSelect, onS
     <aside className="section-sidebar">
       <header className="section-header">
         <div>
+          <span className="eyebrow">{section.eyebrow}</span>
           <strong>{active === 'profile' ? title : 'Hanami High'}</strong>
-          <small>{active === 'profile' ? 'Profile space' : `${section.label} · 2006`}</small>
+          <small>{active === 'profile' ? 'personal page space' : `${section.label} · school network · 2006`}</small>
         </div>
         <span className="section-header-chevron" aria-hidden="true">⌄</span>
       </header>
 
+      <div className="section-decoration-strip" aria-hidden="true">✿ · ❀ · ✿ · ❀ · ✿</div>
+
       <button className="sidebar-search" type="button" onClick={onSearch}>
-        <span>Find or start a search</span>
+        <span>Find something…</span>
         <kbd>⌘K</kbd>
       </button>
 
-      <div className="sidebar-channel-category">
+      <div className="sidebar-nav-label">{section.label} links</div>
+      <div className="sidebar-channel-category" aria-hidden="true">
         <span>⌄</span>
         <strong>{section.eyebrow}</strong>
-        <span className="sidebar-channel-plus" aria-hidden="true">＋</span>
+        <span className="sidebar-channel-plus">＋</span>
       </div>
 
       <nav className="section-links" aria-label={`${title} navigation`}>
@@ -43,17 +47,24 @@ export function SectionSidebar({ active, subsection, profileTitle, onSelect, onS
             onClick={() => onSelect(link.id)}
             title={link.description}
           >
+            <span className="section-link-flower" aria-hidden="true">✿</span>
             <span className="section-channel-hash" aria-hidden="true">#</span>
             <span>{link.label}</span>
           </button>
         ))}
       </nav>
 
-      <div className="sidebar-channel-category secondary">
+      <div className="sidebar-mini-banner">❀ flowers bloom at hanami ❀</div>
+      <div className="sidebar-note">
+        <span className="status-dot online" />
+        <div><strong>Campus network online</strong><small>Hanami High · 2006</small></div>
+      </div>
+
+      <div className="sidebar-channel-category secondary" aria-hidden="true">
         <span>⌄</span>
         <strong>HANAMI NETWORK</strong>
       </div>
-      <div className="sidebar-network-channel">
+      <div className="sidebar-network-channel" aria-hidden="true">
         <span className="status-dot online" />
         <div><strong>Campus online</strong><small>Hanami High School · 2006</small></div>
       </div>
