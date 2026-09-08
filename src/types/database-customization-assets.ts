@@ -71,6 +71,22 @@ export type CharacterCustomTag = {
   updated_at: string
 }
 
+export type AccountCustomFont = {
+  id: string
+  account_id: string
+  name: string
+  storage_path: string
+  original_filename: string
+  font_format: 'woff2' | 'woff' | 'ttf' | 'otf'
+  file_size: number
+  source_label: string
+  source_url: string | null
+  rights_confirmed_at: string
+  font_family: string
+  created_at: string
+  updated_at: string
+}
+
 export type CharacterFontPreferences = {
   character_id: string
   account_id: string
@@ -79,6 +95,11 @@ export type CharacterFontPreferences = {
   profile_heading_font_asset_id: string | null
   profile_body_font_asset_id: string | null
   blog_font_asset_id: string | null
+  display_name_custom_font_id: string | null
+  tag_custom_font_id: string | null
+  profile_heading_custom_font_id: string | null
+  profile_body_custom_font_id: string | null
+  blog_custom_font_id: string | null
   updated_at: string
   created_at: string
 }
@@ -89,6 +110,9 @@ export type AccountFontPreferences = {
   ui_body_font_asset_id: string | null
   ui_heading_font_asset_id: string | null
   ui_display_font_asset_id: string | null
+  ui_body_custom_font_id: string | null
+  ui_heading_custom_font_id: string | null
+  ui_display_custom_font_id: string | null
   updated_at: string
   created_at: string
 }
@@ -113,6 +137,11 @@ type CustomizationTables = {
   account_customization_asset_grants: RowTable<AccountCustomizationAssetGrant>
   account_customization_asset_favorites: RowTable<AccountCustomizationAssetFavorite>
   character_custom_tags: RowTable<CharacterCustomTag>
+  account_custom_fonts: RowTable<
+    AccountCustomFont,
+    Pick<AccountCustomFont, 'account_id' | 'name' | 'storage_path' | 'original_filename' | 'font_format' | 'file_size' | 'rights_confirmed_at'> & Partial<Pick<AccountCustomFont, 'source_label' | 'source_url'>>,
+    Partial<Pick<AccountCustomFont, 'name' | 'source_label' | 'source_url'>>
+  >
   character_font_preferences: RowTable<CharacterFontPreferences>
   account_font_preferences: RowTable<AccountFontPreferences>
 }
