@@ -3,6 +3,7 @@ import { getSignedProfileMediaUrl } from '../lib/profileMedia'
 import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
 import type { Friendship, Json } from '../types/database'
+import type { CharacterCustomTag } from '../types/database-customization-assets'
 
 type Props = {
   characterId: string | null
@@ -64,12 +65,29 @@ function safeClass(value: string) {
   return value.replace(/[^a-z0-9-]/gi, '-').toLowerCase()
 }
 
+function tagStyle(tag: CharacterCustomTag | null): CSSProperties | undefined {
+  if (!tag) return undefined
+  const background = tag.fill_mode === 'transparent'
+    ? 'transparent'
+    : tag.fill_mode === 'gradient'
+      ? `linear-gradient(135deg,${tag.background_color},${tag.background_color_2})`
+      : tag.background_color
+  return {
+    background,
+    color: tag.text_color,
+    borderColor: tag.outline_enabled ? tag.border_color : 'transparent',
+    boxShadow: tag.glow_enabled ? `0 0 12px ${tag.glow_color || tag.border_color}` : undefined,
+    textShadow: tag.text_shadow ? '0 1px 1px rgba(0,0,0,.28)' : undefined,
+  }
+}
+
 export function MemberProfilePopover({ characterId, onClose }: Props) {
   const { activeCharacter } = useIdentity()
   const closeRef = useRef<HTMLButtonElement>(null)
   const [profile, setProfile] = useState<MiniProfile | null>(null)
   const [identity, setIdentity] = useState<SearchIdentity | null>(null)
   const [presence, setPresence] = useState<Presence | null>(null)
+  const [activeTag, setActiveTag] = useState<CharacterCustomTag | null>(null)
   const [friendship, setFriendship] = useState<Friendship | null>(null)
   const [friendWorking, setFriendWorking] = useState(false)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
@@ -91,7 +109,7 @@ export function MemberProfilePopover({ characterId, onClose }: Props) {
     const id = characterId
     const selfId = activeCharacter?.id
     if (!client || !id) {
-      setProfile(null); setIdentity(null); setPresence(null); setFriendship(null); setAvatarUrl(null); setBannerUrl(null); setMemberSince(null); setError(null)
+      setProfile(null); setIdentity(null); setPresence(null); setActiveTag(null); setFriendship(null); setAvatarUrl(null); setBannerUrl(null); setMemberSince(null); setError(null)
       return
     }
 
@@ -110,10 +128,11 @@ export function MemberProfilePopover({ characterId, onClose }: Props) {
       client.from('search_documents').select('title,subtitle').eq('document_type', 'character').eq('entity_id', id).maybeSingle(),
       client.from('character_presence').select('status,last_seen_at').eq('character_id', id).maybeSingle(),
       client.from('characters').select('created_at').eq('id', id).maybeSingle(),
+      client.from('character_custom_tags').select('*').eq('character_id', id).eq('visible', true).eq('is_active', true).maybeSingle(),
       friendshipQuery,
-    ]).then(async ([profileResult, identityResult, presenceResult, characterResult, friendshipResult]) => {
+    ]).then(async ([profileResult, identityResult, presenceResult, characterResult, tagResult, friendshipResult]) => {
       if (cancelled) return
-      const first = profileResult.error || identityResult.error || presenceResult.error || characterResult.error || friendshipResult.error
+      const first = profileResult.error || identityResult.error || presenceResult.error || characterResult.error || tagResult.error || friendshipResult.error
       if (first) {
         setError(first.message)
         setLoading(false)
@@ -123,6 +142,7 @@ export function MemberProfilePopover({ characterId, onClose }: Props) {
       setProfile(nextProfile)
       setIdentity((identityResult.data as SearchIdentity | null) ?? null)
       setPresence((presenceResult.data as Presence | null) ?? null)
+      setActiveTag((tagResult.data as CharacterCustomTag | null) ?? null)
       setMemberSince(characterResult.data?.created_at ?? null)
       setFriendship((friendshipResult.data ?? []).find((row) => selfId && (
         (row.requester_character_id === selfId && row.addressee_character_id === id)
@@ -205,7 +225,7 @@ export function MemberProfilePopover({ characterId, onClose }: Props) {
 
   return (
     <div className="member-popover-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
-      <section className="member-profile-popover discord-member-popover" role="dialog" aria-modal="true" aria-label={`${name} mini profile`} style={style}>
+      <section className="member-profile-popover discord-member-popover reference-mini-profile" role="dialog" aria-modal="true" aria-label={`${name} mini profile`} style={style}>
         <header className="member-popover-cover" style={{ background: accent }}>
           {bannerUrl && <img src={bannerUrl} alt="" aria-hidden="true"/>}
           <button ref={closeRef} className="member-popover-close" type="button" onClick={onClose} aria-label="Close member profile">×</button>
@@ -216,28 +236,43 @@ export function MemberProfilePopover({ characterId, onClose }: Props) {
           <span className={`member-popover-status-dot presence-${statusClass}`} title={status} />
         </div>
 
-        <div className="member-popover-quick-actions">
-          {!isSelf && <a href="#/messages/friends" onClick={onClose}>Message</a>}
-          {!isSelf && <button className={acceptedFriend ? 'accepted' : ''} type="button" disabled={friendWorking || acceptedFriend} onClick={() => void friendAction()}>{friendLabel}</button>}
-          <a data-member-full-profile="true" href={`#/profile/view-profile/${encodeURIComponent(characterId)}`} onClick={onClose}>{isSelf ? 'View My Profile' : 'View Profile'}</a>
-        </div>
+        {profile?.custom_status && <div className="member-status-callout"><span aria-hidden="true">✦</span><strong>{profile.custom_status}</strong></div>}
 
         <div className="member-popover-body">
           {error && <div className="member-popover-error">{error}</div>}
           {loading ? <div className="member-popover-loading">Loading member…</div> : <>
-            <div className="member-popover-identity">
+            <div className="member-popover-identity reference-mini-identity">
               <h2 className={`profile-display-name profile-font-${displayFont} profile-effect-${displayEffect}`}>{name}</h2>
-              <p>{handle || role}{profile?.pronouns ? ` · ${profile.pronouns}` : ''}</p>
-              <div className="member-popover-badges"><span><i style={{ background: accent }}/>{role}</span><b title="Hanami High member">花</b></div>
+              <p>{[handle, profile?.pronouns, role].filter(Boolean).join(' · ')}</p>
+              <div className="reference-mini-tag-row">
+                <span className="official-school-role">{role}</span>
+                {activeTag && <span className={`active-custom-tag shape-${activeTag.shape} motion-${activeTag.motion_style}`} style={tagStyle(activeTag)}>{activeTag.left_accent_asset_id ? '✦ ' : ''}{activeTag.label}{activeTag.right_accent_asset_id ? ' ✦' : ''}</span>}
+              </div>
+              <div className="reference-mini-chip-strip" aria-label="Profile facts">
+                <span title={status}>●</span>
+                {profile?.pronouns && <span title={profile.pronouns}>♡</span>}
+                <span title={role}>✦</span>
+                <span title="Hanami High">花</span>
+              </div>
             </div>
 
-            {profile?.custom_status && <div className="member-popover-custom-status">{profile.custom_status}</div>}
+            <div className="member-popover-quick-actions reference-mini-actions">
+              {isSelf ? <>
+                <a href="#/profile/profile-studio" onClick={onClose}>✎ Edit Profile</a>
+                <a href="#/hanami-plus/social-identity-studio/tags" onClick={onClose}>✦ Tag Designer</a>
+                <a data-member-full-profile="true" href={`#/profile/view-profile/${encodeURIComponent(characterId)}`} onClick={onClose}>View Page</a>
+              </> : <>
+                <a href="#/messages/friends" onClick={onClose}>Message</a>
+                <button className={acceptedFriend ? 'accepted' : ''} type="button" disabled={friendWorking || acceptedFriend} onClick={() => void friendAction()}>{friendLabel}</button>
+                <a data-member-full-profile="true" href={`#/profile/view-profile/${encodeURIComponent(characterId)}`} onClick={onClose}>View Profile</a>
+              </>}
+            </div>
 
-            <div className="member-popover-info-card">
-              {profile?.bio && <section><strong>ABOUT ME</strong><p>{profile.bio}</p></section>}
-              <section><strong>MEMBER SINCE</strong><p>{memberSince ? new Date(memberSince).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}</p></section>
-              <section><strong>STATUS</strong><p>{status}</p></section>
-              <section><strong>CONNECTIONS</strong><div className="member-popover-connection"><span>花</span><div><b>Hanami High</b><small>Campus Network</small></div></div></section>
+            <div className="member-popover-info-card reference-mini-cards">
+              <section><strong>ABOUT ME</strong><p>{profile?.bio || 'This member has not added an About Me yet.'}</p></section>
+              <section><strong>CUSTOM STATUS</strong><p>{profile?.custom_status || 'No custom status right now.'}</p></section>
+              <section className="reference-mini-two-column"><div><strong>MEMBER SINCE</strong><p>{memberSince ? new Date(memberSince).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}</p></div><div><strong>PRESENCE</strong><p>{status}</p></div></section>
+              <section><strong>CONNECTION</strong><div className="member-popover-connection"><span>花</span><div><b>Hanami High</b><small>Campus Network</small></div></div></section>
             </div>
           </>}
         </div>
