@@ -36,6 +36,7 @@ import { HanamiPlusHub } from '../components/HanamiPlusHub'
 import { CreatorMarketplacePage } from '../components/CreatorMarketplacePage'
 import { InterfaceCustomizationStudio } from '../components/InterfaceCustomizationStudio'
 import { SocialIdentityStudio } from '../components/SocialIdentityStudio'
+import { AnimationPresetStudio } from '../components/AnimationPresetStudio'
 import { AchievementsPage } from '../components/AchievementsPage'
 import { SettingsPage } from '../components/SettingsPage'
 import { AppearanceSettingsPage } from '../components/AppearanceSettingsPage'
@@ -47,225 +48,38 @@ import { useDailyPetalClaim } from '../hooks/useDailyPetalClaim'
 import { useInterfacePreferences } from '../hooks/useInterfacePreferences'
 import type { ShellRoute, ShellSectionId } from '../types/navigation'
 
-function LoadingScreen() {
-  return <main className="identity-loading"><div className="identity-loading-box"><strong>Opening Hanami High…</strong><span>Checking your account and character session.</span></div></main>
-}
+function LoadingScreen() { return <main className="identity-loading"><div className="identity-loading-box"><strong>Opening Hanami High…</strong><span>Checking your account and character session.</span></div></main> }
+function AccountStateScreen() { const {account,signOut}=useIdentity();return <main className="identity-screen"><section className="identity-window login-window"><header className="identity-titlebar"><span>HANAMI ACCOUNT</span><span>ACCESS NOTICE</span></header><div className="identity-body login-body"><span className="eyebrow">ACCOUNT STATUS</span><h1>Campus access is unavailable.</h1><p>Your Hanami account is currently marked as <strong>{account?.account_state}</strong>.</p><button className="secondary-action" type="button" onClick={()=>void signOut()}>Sign out</button></div></section></main> }
+function IdentityErrorScreen() { const {error,signOut,refreshIdentity}=useIdentity();return <main className="identity-screen"><section className="identity-window login-window"><header className="identity-titlebar"><span>HANAMI HIGH NETWORK</span><span>ACCOUNT ERROR</span></header><div className="identity-body login-body"><span className="eyebrow">WE COULDN'T OPEN YOUR ACCOUNT</span><h1>Hanami needs another try.</h1><div className="identity-notice error">{error||'Unknown identity error.'}</div><div className="identity-actions"><button className="primary-action" type="button" onClick={()=>void refreshIdentity()}>Try again</button><button className="secondary-action" type="button" onClick={()=>void signOut()}>Sign out</button></div></div></section></main> }
+function displayName(character:NonNullable<ReturnType<typeof useIdentity>['activeCharacter']>){return character.display_name||[character.first_name,character.last_name].filter(Boolean).join(' ')||`Character ${character.slot_no}`}
 
-function AccountStateScreen() {
-  const { account, signOut } = useIdentity()
-  return <main className="identity-screen"><section className="identity-window login-window"><header className="identity-titlebar"><span>HANAMI ACCOUNT</span><span>ACCESS NOTICE</span></header><div className="identity-body login-body"><span className="eyebrow">ACCOUNT STATUS</span><h1>Campus access is unavailable.</h1><p>Your Hanami account is currently marked as <strong>{account?.account_state}</strong>.</p><button className="secondary-action" type="button" onClick={() => void signOut()}>Sign out</button></div></section></main>
-}
-
-function IdentityErrorScreen() {
-  const { error, signOut, refreshIdentity } = useIdentity()
-  return <main className="identity-screen"><section className="identity-window login-window"><header className="identity-titlebar"><span>HANAMI HIGH NETWORK</span><span>ACCOUNT ERROR</span></header><div className="identity-body login-body"><span className="eyebrow">WE COULDN'T OPEN YOUR ACCOUNT</span><h1>Hanami needs another try.</h1><div className="identity-notice error">{error || 'Unknown identity error.'}</div><div className="identity-actions"><button className="primary-action" type="button" onClick={() => void refreshIdentity()}>Try again</button><button className="secondary-action" type="button" onClick={() => void signOut()}>Sign out</button></div></div></section></main>
-}
-
-function displayName(character: NonNullable<ReturnType<typeof useIdentity>['activeCharacter']>) {
-  return character.display_name || [character.first_name, character.last_name].filter(Boolean).join(' ') || `Character ${character.slot_no}`
-}
-
-export function App() {
-  const [route, setRoute] = useState<ShellRoute>(() => routeFromHash())
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [notificationsOpen, setNotificationsOpen] = useState(false)
-  const { loading, session, account, activeCharacter, ownerMode, isOwner, error } = useIdentity()
-  const notificationInbox = useNotificationInbox()
-  usePresenceHeartbeat(route)
-  useDailyPetalClaim()
-  useInterfacePreferences()
-
-  useEffect(() => {
-    const handleHashChange = () => setRoute(routeFromHash())
-    window.addEventListener('hashchange', handleHashChange)
-    return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [])
-
-  useEffect(() => {
-    const handleKeyboard = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-        event.preventDefault()
-        setSearchOpen(true)
-        setNotificationsOpen(false)
-      }
-      if (event.key === 'Escape') {
-        setSearchOpen(false)
-        setNotificationsOpen(false)
-      }
-    }
-    window.addEventListener('keydown', handleKeyboard)
-    return () => window.removeEventListener('keydown', handleKeyboard)
-  }, [])
-
-  const profileTitle = useMemo(() => activeCharacter ? displayName(activeCharacter) : undefined, [activeCharacter])
-
-  function navigate(nextRoute: ShellRoute) {
-    const nextHash = routeHash(nextRoute)
-    setRoute(nextRoute)
-    if (window.location.hash !== nextHash) window.location.hash = nextHash
-  }
-
-  function selectSection(section: ShellSectionId) { navigate(defaultRoute(section)) }
-  function selectSubsection(subsection: string) { navigate({ section: route.section, subsection }) }
-  function openSearch() { setSearchOpen(true); setNotificationsOpen(false) }
-  function openNotifications() { setNotificationsOpen(true); setSearchOpen(false) }
-
-  function renderPage() {
-    const shared = { onSearch: openSearch, onNotifications: openNotifications, unreadCount: notificationInbox.unreadCount }
-
-    if (route.section === 'home' && route.subsection === 'overview') return <HomePreview {...shared} />
-    if (route.section === 'home' && route.subsection === 'announcements') return <HomeUtilitiesPage mode="announcements" targetId={route.targetId} {...shared} />
-    if (route.section === 'home' && route.subsection === 'school-calendar') return <HomeUtilitiesPage mode="school-calendar" targetId={route.targetId} {...shared} />
-    if (route.section === 'home' && route.subsection === 'whos-online') return <HomeUtilitiesPage mode="whos-online" targetId={route.targetId} {...shared} />
-    if (route.section === 'home' && route.subsection === 'my-schedule') return <AcademicsPage mode="my-schedule" targetId={route.targetId} {...shared} />
-    if (route.section === 'home' && route.subsection === 'my-homeroom') return <AcademicDirectoryPage focus="homeroom" {...shared} />
-    if (route.section === 'home' && route.subsection === 'my-classes') return <AcademicDirectoryPage focus="classes" {...shared} />
-    if (route.section === 'home' && route.subsection === 'my-clubs') return <MyClubsPage {...shared} />
-
-    if (route.section === 'profile' && route.subsection === 'profile-studio') return <ProfileStudio {...shared} />
-    if (route.section === 'profile' && route.subsection === 'view-profile') return <ProfileView targetCharacterId={route.targetId} {...shared} />
-    if (route.section === 'profile' && route.subsection === 'scenes') return <ProfileScenesPage targetId={route.targetId} {...shared} />
-    if (route.section === 'profile' && route.subsection === 'personal-spaces') return <PersonalSpacesPage targetSpace={route.targetId} {...shared} />
-    if (route.section === 'profile' && route.subsection === 'blog') return <ProfileBlogPage targetPostId={route.targetId} {...shared} />
-    if (route.section === 'profile' && route.subsection === 'saved-themes') return <SavedThemes {...shared} />
-    if (route.section === 'profile' && route.subsection === 'guestbook') return <GuestbookPage targetEntryId={route.targetId} {...shared} />
-
-    if (route.section === 'social' && route.subsection === 'friends') return <FriendsPage {...shared} />
-    if (route.section === 'social' && route.subsection === 'top-friends') return <TopFriendsPage {...shared} />
-    if (route.section === 'social' && route.subsection === 'feed') return <SocialPostsPage mode="feed" targetPostId={route.targetId} {...shared} />
-    if (route.section === 'social' && route.subsection === 'bulletins') return <SocialPostsPage mode="bulletins" targetPostId={route.targetId} {...shared} />
-    if (route.section === 'social' && route.subsection === 'blogs') return <SocialPostsPage mode="blogs" targetPostId={route.targetId} {...shared} />
-    if (route.section === 'social' && route.subsection === 'guestbook-activity') return <GuestbookActivityPage {...shared} />
-
-    if (route.section === 'messages' && route.subsection === 'friends') return <MessagesPage mode="friends" targetConversationId={route.targetId} {...shared} />
-    if (route.section === 'messages' && route.subsection === 'message-requests') return <MessagesPage mode="message-requests" targetConversationId={route.targetId} {...shared} />
-    if (route.section === 'messages' && route.subsection === 'direct-messages') return <MessagesPage mode="direct-messages" targetConversationId={route.targetId} {...shared} />
-    if (route.section === 'messages' && route.subsection === 'groups') return <MessagesPage mode="groups" targetConversationId={route.targetId} {...shared} />
-
-    if (route.section === 'academics' && route.subsection === 'overview') return <AcademicsPage mode="overview" targetId={route.targetId} {...shared} />
-    if (route.section === 'academics' && route.subsection === 'my-schedule') return <AcademicsPage mode="my-schedule" targetId={route.targetId} {...shared} />
-    if (route.section === 'academics' && route.subsection === 'homeroom' && route.targetId) return <AcademicRoomPage roomType="homeroom" roomId={route.targetId} />
-    if (route.section === 'academics' && route.subsection === 'homeroom') return <AcademicDirectoryPage focus="homeroom" {...shared} />
-    if (route.section === 'academics' && route.subsection === 'classes' && route.targetId) return <AcademicRoomPage roomType="class" roomId={route.targetId} />
-    if (route.section === 'academics' && route.subsection === 'classes') return <AcademicDirectoryPage focus="classes" {...shared} />
-    if (route.section === 'academics' && route.subsection === 'assignments') return <AcademicsPage mode="assignments" targetId={route.targetId} {...shared} />
-    if (route.section === 'academics' && route.subsection === 'grades') return <AcademicsPage mode="grades" targetId={route.targetId} {...shared} />
-    if (route.section === 'academics' && route.subsection === 'attendance') return <AcademicsPage mode="attendance" targetId={route.targetId} {...shared} />
-
-    if (route.section === 'campus' && route.subsection === 'campus-overview') return <CampusPage mode="campus-overview" targetId={route.targetId} {...shared} />
-    if (route.section === 'campus' && route.subsection === 'events') return <CampusPage mode="events" targetId={route.targetId} {...shared} />
-    if (route.section === 'campus' && route.subsection === 'clubs') return <CampusPage mode="clubs" targetId={route.targetId} {...shared} />
-    if (route.section === 'campus' && route.subsection === 'organizations') return <CampusPage mode="organizations" targetId={route.targetId} {...shared} />
-    if (route.section === 'campus' && route.subsection === 'opportunities') return <CampusPage mode="opportunities" targetId={route.targetId} {...shared} />
-    if (route.section === 'campus' && route.subsection === 'student-council') return <CampusPage mode="student-council" targetId={route.targetId} {...shared} />
-
-    if (route.section === 'discover' && route.subsection === 'students') return <DiscoverPage mode="students" targetId={route.targetId} {...shared} />
-    if (route.section === 'discover' && route.subsection === 'faculty') return <DiscoverPage mode="faculty" targetId={route.targetId} {...shared} />
-    if (route.section === 'discover' && route.subsection === 'clubs') return <DiscoverPage mode="clubs" targetId={route.targetId} {...shared} />
-    if (route.section === 'discover' && route.subsection === 'posts') return <DiscoverPage mode="posts" targetId={route.targetId} {...shared} />
-    if (route.section === 'discover' && route.subsection === 'events') return <DiscoverPage mode="events" targetId={route.targetId} {...shared} />
-
-    if (route.section === 'petals' && route.subsection === 'balance') return <PetalsPage mode="balance" {...shared} />
-    if (route.section === 'petals' && route.subsection === 'earning-history') return <PetalsPage mode="earning-history" {...shared} />
-    if (route.section === 'petals' && route.subsection === 'rewards') return <PetalsPage mode="rewards" {...shared} />
-    if (route.section === 'petals' && route.subsection === 'ways-to-earn') return <PetalsPage mode="ways-to-earn" {...shared} />
-
-    if (route.section === 'boutique' && route.subsection === 'featured') return <BoutiquePage mode="featured" {...shared} />
-    if (route.section === 'boutique' && route.subsection === 'new') return <BoutiquePage mode="new" {...shared} />
-    if (route.section === 'boutique' && route.subsection === 'seasonal') return <BoutiquePage mode="seasonal" {...shared} />
-    if (route.section === 'boutique' && route.subsection === 'avatar-decorations') return <BoutiquePage mode="avatar-decorations" {...shared} />
-    if (route.section === 'boutique' && route.subsection === 'frames') return <BoutiquePage mode="frames" {...shared} />
-    if (route.section === 'boutique' && route.subsection === 'effects') return <BoutiquePage mode="effects" {...shared} />
-    if (route.section === 'boutique' && route.subsection === 'nameplates') return <BoutiquePage mode="nameplates" {...shared} />
-    if (route.section === 'boutique' && route.subsection === 'profile-cards') return <BoutiquePage mode="profile-cards" {...shared} />
-    if (route.section === 'boutique' && route.subsection === 'background-packs') return <BoutiquePage mode="background-packs" {...shared} />
-    if (route.section === 'boutique' && route.subsection === 'stickers') return <BoutiquePage mode="stickers" {...shared} />
-    if (route.section === 'boutique' && route.subsection === 'hanami-plus-passes') return <BoutiquePage mode="hanami-plus-passes" {...shared} />
-    if (route.section === 'boutique' && route.subsection === 'my-inventory') return <BoutiquePage mode="my-inventory" {...shared} />
-
-    if (route.section === 'hanami-plus' && route.subsection === 'overview') return <HanamiPlusHub mode="overview" {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'interface-studio') return <InterfaceCustomizationStudio {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'social-identity-studio') return <SocialIdentityStudio {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'scene-studio') return <ProfileSceneStudio {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'marketplace') return <CreatorMarketplacePage mode="browse" {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'creator-studio') return <CreatorMarketplacePage mode="studio" {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'creator-contests') return <CreatorMarketplacePage mode="contests" {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'collections') return <CreatorMarketplacePage mode="collections" {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'calendar') return <HanamiPlusHub mode="calendar" {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'inbox') return <HanamiPlusHub mode="inbox" {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'reward-history') return <HanamiPlusHub mode="reward-history" {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'gift-history') return <HanamiPlusHub mode="gift-history" {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'loyalty-shop') return <HanamiPlusHub mode="loyalty-shop" {...shared} />
-    if (route.section === 'hanami-plus' && route.subsection === 'labs') return <HanamiPlusHub mode="labs" {...shared} />
-
-    if (route.section === 'achievements' && route.subsection === 'my-achievements') return <AchievementsPage mode="my-achievements" {...shared} />
-    if (route.section === 'achievements' && route.subsection === 'collections') return <AchievementsPage mode="collections" {...shared} />
-    if (route.section === 'achievements' && route.subsection === 'school-history') return <AchievementsPage mode="school-history" {...shared} />
-
-    if (route.section === 'settings' && route.subsection === 'account') return <SettingsPage mode="account" {...shared} />
-    if (route.section === 'settings' && route.subsection === 'character') return <SettingsPage mode="character" {...shared} />
-    if (route.section === 'settings' && route.subsection === 'privacy-safety') return <SettingsPage mode="privacy-safety" {...shared} />
-    if (route.section === 'settings' && route.subsection === 'notifications') return <SettingsPage mode="notifications" {...shared} />
-    if (route.section === 'settings' && route.subsection === 'accessibility') return <AppearanceSettingsPage {...shared} />
-    if (route.section === 'settings' && route.subsection === 'connections') return <SettingsPage mode="connections" {...shared} />
-
-    return <HomePreview {...shared} />
-  }
-
-  function overlays() {
-    return <>
-      <GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} onNavigate={navigate} />
-      <NotificationCenter open={notificationsOpen} notifications={notificationInbox.notifications} loading={notificationInbox.loading} error={notificationInbox.error} onClose={() => setNotificationsOpen(false)} onMarkRead={notificationInbox.markRead} onMarkAllRead={notificationInbox.markAllRead} onNavigate={navigate} />
-    </>
-  }
-
-  if (loading) return <LoadingScreen />
-  if (!session) return <LoginScreen />
-  if (error && !account) return <IdentityErrorScreen />
-  if (!account) return <LoadingScreen />
-  if (account.account_state === 'suspended' || account.account_state === 'archived') return <AccountStateScreen />
-  if (ownerMode && isOwner) return <OwnerAccessPreview />
-  if (!activeCharacter) return <CharacterHub />
-
-  const academicRoomMode = route.section === 'academics'
-    && Boolean(route.targetId)
-    && (route.subsection === 'homeroom' || route.subsection === 'classes')
-
-  if (academicRoomMode) {
-    return <>
-      <div className="app-shell communication-app-shell academic-communication-shell">
-        <MainRail active={route.section} onSelect={selectSection} />
-        {renderPage()}
-      </div>
-      {overlays()}
-    </>
-  }
-
-  if (route.section === 'messages') {
-    return <>
-      <div className="app-shell communication-app-shell messages-communication-shell">
-        <MainRail active={route.section} onSelect={selectSection} />
-        <div className="sidebar-column">
-          <SectionSidebar active={route.section} subsection={route.subsection} profileTitle={profileTitle} onSelect={selectSubsection} onSearch={openSearch} />
-          <UserPanel />
-        </div>
-        {renderPage()}
-      </div>
-      {overlays()}
-    </>
-  }
-
-  return <>
-    <div className="app-shell">
-      <MainRail active={route.section} onSelect={selectSection} />
-      <div className="sidebar-column">
-        <SectionSidebar active={route.section} subsection={route.subsection} profileTitle={profileTitle} onSelect={selectSubsection} onSearch={openSearch} />
-        <UserPanel />
-      </div>
-      <MobileSectionNav section={route.section} subsection={route.subsection} onSelect={selectSubsection} />
-      {renderPage()}
-      <ContextSidebar route={route} onSelect={selectSubsection} />
-    </div>
-    {overlays()}
-  </>
+export function App(){
+ const [route,setRoute]=useState<ShellRoute>(()=>routeFromHash());const [searchOpen,setSearchOpen]=useState(false);const [notificationsOpen,setNotificationsOpen]=useState(false)
+ const {loading,session,account,activeCharacter,ownerMode,isOwner,error}=useIdentity();const notificationInbox=useNotificationInbox();usePresenceHeartbeat(route);useDailyPetalClaim();useInterfacePreferences()
+ useEffect(()=>{const handleHashChange=()=>setRoute(routeFromHash());window.addEventListener('hashchange',handleHashChange);return()=>window.removeEventListener('hashchange',handleHashChange)},[])
+ useEffect(()=>{const handleKeyboard=(event:KeyboardEvent)=>{if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'){event.preventDefault();setSearchOpen(true);setNotificationsOpen(false)}if(event.key==='Escape'){setSearchOpen(false);setNotificationsOpen(false)}};window.addEventListener('keydown',handleKeyboard);return()=>window.removeEventListener('keydown',handleKeyboard)},[])
+ const profileTitle=useMemo(()=>activeCharacter?displayName(activeCharacter):undefined,[activeCharacter])
+ function navigate(nextRoute:ShellRoute){const nextHash=routeHash(nextRoute);setRoute(nextRoute);if(window.location.hash!==nextHash)window.location.hash=nextHash}
+ function selectSection(section:ShellSectionId){navigate(defaultRoute(section))}function selectSubsection(subsection:string){navigate({section:route.section,subsection})}function openSearch(){setSearchOpen(true);setNotificationsOpen(false)}function openNotifications(){setNotificationsOpen(true);setSearchOpen(false)}
+ function renderPage(){const shared={onSearch:openSearch,onNotifications:openNotifications,unreadCount:notificationInbox.unreadCount}
+  if(route.section==='home'&&route.subsection==='overview')return <HomePreview {...shared}/>;if(route.section==='home'&&route.subsection==='announcements')return <HomeUtilitiesPage mode="announcements" targetId={route.targetId} {...shared}/>;if(route.section==='home'&&route.subsection==='school-calendar')return <HomeUtilitiesPage mode="school-calendar" targetId={route.targetId} {...shared}/>;if(route.section==='home'&&route.subsection==='whos-online')return <HomeUtilitiesPage mode="whos-online" targetId={route.targetId} {...shared}/>;if(route.section==='home'&&route.subsection==='my-schedule')return <AcademicsPage mode="my-schedule" targetId={route.targetId} {...shared}/>;if(route.section==='home'&&route.subsection==='my-homeroom')return <AcademicDirectoryPage focus="homeroom" {...shared}/>;if(route.section==='home'&&route.subsection==='my-classes')return <AcademicDirectoryPage focus="classes" {...shared}/>;if(route.section==='home'&&route.subsection==='my-clubs')return <MyClubsPage {...shared}/>
+  if(route.section==='profile'&&route.subsection==='profile-studio')return <ProfileStudio {...shared}/>;if(route.section==='profile'&&route.subsection==='view-profile')return <ProfileView targetCharacterId={route.targetId} {...shared}/>;if(route.section==='profile'&&route.subsection==='scenes')return <ProfileScenesPage targetId={route.targetId} {...shared}/>;if(route.section==='profile'&&route.subsection==='personal-spaces')return <PersonalSpacesPage targetSpace={route.targetId} {...shared}/>;if(route.section==='profile'&&route.subsection==='blog')return <ProfileBlogPage targetPostId={route.targetId} {...shared}/>;if(route.section==='profile'&&route.subsection==='saved-themes')return <SavedThemes {...shared}/>;if(route.section==='profile'&&route.subsection==='guestbook')return <GuestbookPage targetEntryId={route.targetId} {...shared}/>
+  if(route.section==='social'&&route.subsection==='friends')return <FriendsPage {...shared}/>;if(route.section==='social'&&route.subsection==='top-friends')return <TopFriendsPage {...shared}/>;if(route.section==='social'&&route.subsection==='feed')return <SocialPostsPage mode="feed" targetPostId={route.targetId} {...shared}/>;if(route.section==='social'&&route.subsection==='bulletins')return <SocialPostsPage mode="bulletins" targetPostId={route.targetId} {...shared}/>;if(route.section==='social'&&route.subsection==='blogs')return <SocialPostsPage mode="blogs" targetPostId={route.targetId} {...shared}/>;if(route.section==='social'&&route.subsection==='guestbook-activity')return <GuestbookActivityPage {...shared}/>
+  if(route.section==='messages'&&route.subsection==='friends')return <MessagesPage mode="friends" targetConversationId={route.targetId} {...shared}/>;if(route.section==='messages'&&route.subsection==='message-requests')return <MessagesPage mode="message-requests" targetConversationId={route.targetId} {...shared}/>;if(route.section==='messages'&&route.subsection==='direct-messages')return <MessagesPage mode="direct-messages" targetConversationId={route.targetId} {...shared}/>;if(route.section==='messages'&&route.subsection==='groups')return <MessagesPage mode="groups" targetConversationId={route.targetId} {...shared}/>
+  if(route.section==='academics'&&route.subsection==='overview')return <AcademicsPage mode="overview" targetId={route.targetId} {...shared}/>;if(route.section==='academics'&&route.subsection==='my-schedule')return <AcademicsPage mode="my-schedule" targetId={route.targetId} {...shared}/>;if(route.section==='academics'&&route.subsection==='homeroom'&&route.targetId)return <AcademicRoomPage roomType="homeroom" roomId={route.targetId}/>;if(route.section==='academics'&&route.subsection==='homeroom')return <AcademicDirectoryPage focus="homeroom" {...shared}/>;if(route.section==='academics'&&route.subsection==='classes'&&route.targetId)return <AcademicRoomPage roomType="class" roomId={route.targetId}/>;if(route.section==='academics'&&route.subsection==='classes')return <AcademicDirectoryPage focus="classes" {...shared}/>;if(route.section==='academics'&&route.subsection==='assignments')return <AcademicsPage mode="assignments" targetId={route.targetId} {...shared}/>;if(route.section==='academics'&&route.subsection==='grades')return <AcademicsPage mode="grades" targetId={route.targetId} {...shared}/>;if(route.section==='academics'&&route.subsection==='attendance')return <AcademicsPage mode="attendance" targetId={route.targetId} {...shared}/>
+  if(route.section==='campus'&&route.subsection==='campus-overview')return <CampusPage mode="campus-overview" targetId={route.targetId} {...shared}/>;if(route.section==='campus'&&route.subsection==='events')return <CampusPage mode="events" targetId={route.targetId} {...shared}/>;if(route.section==='campus'&&route.subsection==='clubs')return <CampusPage mode="clubs" targetId={route.targetId} {...shared}/>;if(route.section==='campus'&&route.subsection==='organizations')return <CampusPage mode="organizations" targetId={route.targetId} {...shared}/>;if(route.section==='campus'&&route.subsection==='opportunities')return <CampusPage mode="opportunities" targetId={route.targetId} {...shared}/>;if(route.section==='campus'&&route.subsection==='student-council')return <CampusPage mode="student-council" targetId={route.targetId} {...shared}/>
+  if(route.section==='discover'&&route.subsection==='students')return <DiscoverPage mode="students" targetId={route.targetId} {...shared}/>;if(route.section==='discover'&&route.subsection==='faculty')return <DiscoverPage mode="faculty" targetId={route.targetId} {...shared}/>;if(route.section==='discover'&&route.subsection==='clubs')return <DiscoverPage mode="clubs" targetId={route.targetId} {...shared}/>;if(route.section==='discover'&&route.subsection==='posts')return <DiscoverPage mode="posts" targetId={route.targetId} {...shared}/>;if(route.section==='discover'&&route.subsection==='events')return <DiscoverPage mode="events" targetId={route.targetId} {...shared}/>
+  if(route.section==='petals'&&route.subsection==='balance')return <PetalsPage mode="balance" {...shared}/>;if(route.section==='petals'&&route.subsection==='earning-history')return <PetalsPage mode="earning-history" {...shared}/>;if(route.section==='petals'&&route.subsection==='rewards')return <PetalsPage mode="rewards" {...shared}/>;if(route.section==='petals'&&route.subsection==='ways-to-earn')return <PetalsPage mode="ways-to-earn" {...shared}/>
+  if(route.section==='boutique'&&route.subsection==='featured')return <BoutiquePage mode="featured" {...shared}/>;if(route.section==='boutique'&&route.subsection==='new')return <BoutiquePage mode="new" {...shared}/>;if(route.section==='boutique'&&route.subsection==='seasonal')return <BoutiquePage mode="seasonal" {...shared}/>;if(route.section==='boutique'&&route.subsection==='avatar-decorations')return <BoutiquePage mode="avatar-decorations" {...shared}/>;if(route.section==='boutique'&&route.subsection==='frames')return <BoutiquePage mode="frames" {...shared}/>;if(route.section==='boutique'&&route.subsection==='effects')return <BoutiquePage mode="effects" {...shared}/>;if(route.section==='boutique'&&route.subsection==='nameplates')return <BoutiquePage mode="nameplates" {...shared}/>;if(route.section==='boutique'&&route.subsection==='profile-cards')return <BoutiquePage mode="profile-cards" {...shared}/>;if(route.section==='boutique'&&route.subsection==='background-packs')return <BoutiquePage mode="background-packs" {...shared}/>;if(route.section==='boutique'&&route.subsection==='stickers')return <BoutiquePage mode="stickers" {...shared}/>;if(route.section==='boutique'&&route.subsection==='hanami-plus-passes')return <BoutiquePage mode="hanami-plus-passes" {...shared}/>;if(route.section==='boutique'&&route.subsection==='my-inventory')return <BoutiquePage mode="my-inventory" {...shared}/>
+  if(route.section==='hanami-plus'&&route.subsection==='overview')return <HanamiPlusHub mode="overview" {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='interface-studio')return <InterfaceCustomizationStudio {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='social-identity-studio')return <SocialIdentityStudio {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='scene-studio')return <ProfileSceneStudio {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='motion-studio')return <AnimationPresetStudio {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='marketplace')return <CreatorMarketplacePage mode="browse" {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='creator-studio')return <CreatorMarketplacePage mode="studio" {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='creator-contests')return <CreatorMarketplacePage mode="contests" {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='collections')return <CreatorMarketplacePage mode="collections" {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='calendar')return <HanamiPlusHub mode="calendar" {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='inbox')return <HanamiPlusHub mode="inbox" {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='reward-history')return <HanamiPlusHub mode="reward-history" {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='gift-history')return <HanamiPlusHub mode="gift-history" {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='loyalty-shop')return <HanamiPlusHub mode="loyalty-shop" {...shared}/>;if(route.section==='hanami-plus'&&route.subsection==='labs')return <HanamiPlusHub mode="labs" {...shared}/>
+  if(route.section==='achievements'&&route.subsection==='my-achievements')return <AchievementsPage mode="my-achievements" {...shared}/>;if(route.section==='achievements'&&route.subsection==='collections')return <AchievementsPage mode="collections" {...shared}/>;if(route.section==='achievements'&&route.subsection==='school-history')return <AchievementsPage mode="school-history" {...shared}/>
+  if(route.section==='settings'&&route.subsection==='account')return <SettingsPage mode="account" {...shared}/>;if(route.section==='settings'&&route.subsection==='character')return <SettingsPage mode="character" {...shared}/>;if(route.section==='settings'&&route.subsection==='privacy-safety')return <SettingsPage mode="privacy-safety" {...shared}/>;if(route.section==='settings'&&route.subsection==='notifications')return <SettingsPage mode="notifications" {...shared}/>;if(route.section==='settings'&&route.subsection==='accessibility')return <AppearanceSettingsPage {...shared}/>;if(route.section==='settings'&&route.subsection==='connections')return <SettingsPage mode="connections" {...shared}/>
+  return <HomePreview {...shared}/>
+ }
+ function overlays(){return <><GlobalSearch open={searchOpen} onClose={()=>setSearchOpen(false)} onNavigate={navigate}/><NotificationCenter open={notificationsOpen} notifications={notificationInbox.notifications} loading={notificationInbox.loading} error={notificationInbox.error} onClose={()=>setNotificationsOpen(false)} onMarkRead={notificationInbox.markRead} onMarkAllRead={notificationInbox.markAllRead} onNavigate={navigate}/></>}
+ if(loading)return <LoadingScreen/>;if(!session)return <LoginScreen/>;if(error&&!account)return <IdentityErrorScreen/>;if(!account)return <LoadingScreen/>;if(account.account_state==='suspended'||account.account_state==='archived')return <AccountStateScreen/>;if(ownerMode&&isOwner)return <OwnerAccessPreview/>;if(!activeCharacter)return <CharacterHub/>
+ const academicRoomMode=route.section==='academics'&&Boolean(route.targetId)&&(route.subsection==='homeroom'||route.subsection==='classes')
+ if(academicRoomMode)return <><div className="app-shell communication-app-shell academic-communication-shell"><MainRail active={route.section} onSelect={selectSection}/>{renderPage()}</div>{overlays()}</>
+ if(route.section==='messages')return <><div className="app-shell communication-app-shell messages-communication-shell"><MainRail active={route.section} onSelect={selectSection}/><div className="sidebar-column"><SectionSidebar active={route.section} subsection={route.subsection} profileTitle={profileTitle} onSelect={selectSubsection} onSearch={openSearch}/><UserPanel/></div>{renderPage()}</div>{overlays()}</>
+ return <><div className="app-shell"><MainRail active={route.section} onSelect={selectSection}/><div className="sidebar-column"><SectionSidebar active={route.section} subsection={route.subsection} profileTitle={profileTitle} onSelect={selectSubsection} onSearch={openSearch}/><UserPanel/></div><MobileSectionNav section={route.section} subsection={route.subsection} onSelect={selectSubsection}/>{renderPage()}<ContextSidebar route={route} onSelect={selectSubsection}/></div>{overlays()}</>
 }
