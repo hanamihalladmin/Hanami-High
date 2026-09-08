@@ -5,6 +5,7 @@ import { MemberProfileNavigationBridge } from './components/MemberProfileNavigat
 import { ProfileDraftPreviewLauncher } from './components/ProfileDraftPreviewLauncher'
 import { ProfileStudioTools } from './components/ProfileStudioTools'
 import { ProfileInteractiveLayer } from './components/ProfileInteractiveLayer'
+import { InterfaceCustomizationLayer } from './components/InterfaceCustomizationLayer'
 import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
 import './styles/global.css'
@@ -47,6 +48,7 @@ import './styles/boutique-animated-collections.css'
 import './styles/boutique-ownership.css'
 import './styles/hanami-plus-hub.css'
 import './styles/creator-marketplace.css'
+import './styles/interface-customization.css'
 import './styles/settings.css'
 import './styles/owner-operations.css'
 import './styles/school-administration.css'
@@ -66,6 +68,7 @@ createRoot(document.getElementById('root')!).render(
       <MemberProfileNavigationBridge />
       <ProfileStudioTools />
       <ProfileInteractiveLayer />
+      <InterfaceCustomizationLayer />
       <ProfileDraftPreviewLauncher />
     </IdentityProvider>
   </StrictMode>,

@@ -108,6 +108,7 @@ export const sections: SectionDefinition[] = [
     id: 'hanami-plus', label: 'Hanami+', eyebrow: 'HANAMI+', title: 'Creative Membership', icon: '✦', group: 'rewards', defaultSubsection: 'overview',
     subsections: [
       { id: 'overview', label: 'Hanami+ Home', description: 'Your active benefits, creative level, monthly claim, drops, and Plus status.' },
+      { id: 'interface-studio', label: 'Interface Studio', description: 'Customize your dashboard, message appearance, inbox organization, and notification profiles.' },
       { id: 'marketplace', label: 'Theme Marketplace', description: 'Browse community profile themes, ratings, creators, and favorites.' },
       { id: 'creator-studio', label: 'Creator Studio', description: 'Publish versioned themes from your current Profile Studio design.' },
       { id: 'creator-contests', label: 'Creative Contests', description: 'Enter Hanami design contests using your published themes.' },
