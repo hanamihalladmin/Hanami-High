@@ -62,6 +62,7 @@ export const sections: SectionDefinition[] = [
     subsections: [
       { id: 'view-profile', label: 'View My Page', description: 'Open your published custom SpaceHey-style character page.' },
       { id: 'profile-studio', label: 'Profile Studio', description: 'Build your page with drag-and-resize widgets, backgrounds, layouts, name styles, cosmetics, and private draft preview.' },
+      { id: 'personal-spaces', label: 'Personal Spaces', description: 'Customize this character’s Hanami+ locker, desk, phone, and 2000s desktop.' },
       { id: 'blog', label: 'Blog', description: 'Write and manage the blog entries connected to your profile.' },
       { id: 'guestbook', label: 'Guestbook', description: 'Manage messages visitors leave on your profile.' },
       { id: 'saved-themes', label: 'Saved Page Presets', description: 'Save and reuse complete page looks across your two characters.' },
