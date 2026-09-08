@@ -50,6 +50,10 @@ function actionLabel(character: HanamiCharacter, application: StudentApplication
   }
 }
 
+function cleanHandle(value: string) {
+  return value.trim().replace(/^@+/, '').toLowerCase()
+}
+
 export function CharacterHub() {
   const {
     account,
@@ -70,6 +74,7 @@ export function CharacterHub() {
   const [letterCharacterId, setLetterCharacterId] = useState<string | null>(null)
   const [deleteCharacterId, setDeleteCharacterId] = useState<string | null>(null)
   const [deleteConfirmation, setDeleteConfirmation] = useState('')
+  const [slotHandles, setSlotHandles] = useState<Record<1 | 2, string>>({ 1: '', 2: '' })
 
   const applicationCharacter = characters.find((character) => character.id === applicationCharacterId) ?? null
   const selectedApplication = applications.find((application) => application.character_id === applicationCharacterId) ?? null
@@ -135,6 +140,12 @@ export function CharacterHub() {
     setDeleteConfirmation('')
   }
 
+  async function createSlot(slotNo: 1 | 2) {
+    const handle = cleanHandle(slotHandles[slotNo])
+    if (!/^[a-z0-9_]{3,24}$/.test(handle)) return
+    await createStudentSlot(slotNo, handle)
+  }
+
   return (
     <main className="identity-screen character-screen">
       <section className="identity-window character-window">
@@ -169,6 +180,8 @@ export function CharacterHub() {
                 ? applicationState || character.character_state === 'active'
                 : false
               const missingRequiredApplication = applicationState && !application
+              const draftHandle = cleanHandle(slotHandles[slotNo])
+              const handleValid = /^[a-z0-9_]{3,24}$/.test(draftHandle)
 
               return (
                 <article className={`character-slot ${character ? 'occupied' : 'empty'}`} key={slotNo}>
@@ -178,7 +191,7 @@ export function CharacterHub() {
                       <div className="slot-avatar">{characterName(character).slice(0, 2).toUpperCase()}</div>
                       <div className="slot-copy">
                         <h2>{characterName(character)}</h2>
-                        <span>{roleLabel(character)}</span>
+                        <span>{character.handle ? `@${character.handle}` : roleLabel(character)}</span>
                         <small>{statusCopy(character, application)}</small>
                       </div>
                       <div className="character-slot-actions">
@@ -208,11 +221,29 @@ export function CharacterHub() {
                         <span>Student character</span>
                         <small>Each member may have no more than two characters.</small>
                       </div>
+                      <label className="character-handle-field">
+                        <span>Choose your @handle</span>
+                        <div className="character-handle-input">
+                          <b>@</b>
+                          <input
+                            type="text"
+                            value={slotHandles[slotNo]}
+                            maxLength={24}
+                            autoCapitalize="none"
+                            autoCorrect="off"
+                            spellCheck={false}
+                            placeholder="hanami_student"
+                            disabled={mutating}
+                            onChange={(event) => setSlotHandles((current) => ({ ...current, [slotNo]: event.target.value }))}
+                          />
+                        </div>
+                        <small>3–24 characters · letters, numbers, underscores · saved in lowercase · unique across Hanami.</small>
+                      </label>
                       <button
                         className="primary-action"
                         type="button"
-                        disabled={mutating}
-                        onClick={() => void createStudentSlot(slotNo)}
+                        disabled={mutating || !handleValid}
+                        onClick={() => void createSlot(slotNo)}
                       >
                         Create Student Character
                       </button>
@@ -225,7 +256,7 @@ export function CharacterHub() {
 
           <div className="character-deletion-note">
             <strong>Character deletion is permanent.</strong>
-            <span>Deleting a character removes that character's profile, social history, submissions, memberships, and personal school records. Account-wide Petals, Hanami+, Boutique inventory, and account preferences are not deleted.</span>
+            <span>Deleting a character removes that character&apos;s profile, social history, submissions, memberships, and personal school records. Account-wide Petals, Hanami+, Boutique inventory, and account preferences are not deleted.</span>
           </div>
 
           {(isOwner || isPlatformAdmin) && (
@@ -257,7 +288,7 @@ export function CharacterHub() {
             <div className="character-delete-warning">
               <strong>This cannot be undone.</strong>
               <p>The character in Slot {deleteTarget.slot_no}, their profile, posts, messages, friendships, class enrollments, submissions, achievements, club memberships, and other character-specific records will be permanently deleted.</p>
-              <p>Shared Hanami school records created by the character may remain as unattributed institutional history so other students' grades, events, and school records are not destroyed.</p>
+              <p>Shared Hanami school records created by the character may remain as unattributed institutional history so other students&apos; grades, events, and school records are not destroyed.</p>
             </div>
             <label className="character-delete-confirmation">
               <span>Type <b>DELETE</b> to confirm</span>
