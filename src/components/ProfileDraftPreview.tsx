@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import { getSignedProfileMediaUrl } from '../lib/profileMedia'
+import { profilePageLayoutFrom } from '../lib/profilePageLayout'
 import { profilePageBackgroundFrom, profilePageBackgroundStyle } from '../lib/profilePageTheme'
 import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
@@ -11,7 +12,7 @@ type Props = { onClose: () => void }
 type Theme = { background: string; panel: string; accent: string; ink: string; grid: boolean; displayFont: string; displayEffect: string; displayColor: string; displayColor2: string }
 type Cosmetics = { avatarDecoration?: string; frame?: string; effect?: string; nameplate?: string; profileCard?: string; backgroundPack?: string }
 
-const fallback: Theme = { background: '#313338', panel: '#1e1f22', accent: '#d86f8b', ink: '#f2f3f5', grid: false, displayFont: 'classic', displayEffect: 'solid', displayColor: '#d86f8b', displayColor2: '#f6b7cb' }
+const fallback: Theme = { background: '#f4f0e8', panel: '#fffdf8', accent: '#d86f8b', ink: '#17223b', grid: false, displayFont: 'classic', displayEffect: 'solid', displayColor: '#d86f8b', displayColor2: '#f6b7cb' }
 function obj(value: Json) { return value && !Array.isArray(value) && typeof value === 'object' ? value as Record<string, Json | undefined> : {} }
 function themeFrom(value: Json): Theme { const s = obj(value); return { background: typeof s.background === 'string' ? s.background : fallback.background, panel: typeof s.panel === 'string' ? s.panel : fallback.panel, accent: typeof s.accent === 'string' ? s.accent : fallback.accent, ink: typeof s.ink === 'string' ? s.ink : fallback.ink, grid: typeof s.grid === 'boolean' ? s.grid : false, displayFont: typeof s.displayFont === 'string' ? s.displayFont : 'classic', displayEffect: typeof s.displayEffect === 'string' ? s.displayEffect : 'solid', displayColor: typeof s.displayColor === 'string' ? s.displayColor : '#d86f8b', displayColor2: typeof s.displayColor2 === 'string' ? s.displayColor2 : '#f6b7cb' } }
 function widgetContent(value: Json) { const content = obj(value).content; return typeof content === 'string' ? content : '' }
@@ -82,7 +83,6 @@ export function ProfileDraftPreview({ onClose }: Props) {
     setWidgets(nextWidgets)
     setLoadout(loadoutResult.data)
     setItems(itemResult.data ?? [])
-
     const pageBackground = profilePageBackgroundFrom(nextProfile.theme_draft)
     const paths = Array.from(new Set([nextProfile.avatar_path, nextProfile.banner_path, pageBackground.imagePath, ...nextWidgets.map((widget) => widgetPath(widget.config))].filter((value): value is string => Boolean(value))))
     const pairs = await Promise.all(paths.map(async (path) => { try { const url = await getSignedProfileMediaUrl(path); return url ? [path, url] as const : null } catch { return null } }))
@@ -94,6 +94,7 @@ export function ProfileDraftPreview({ onClose }: Props) {
   useEffect(() => { const handler = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose() }; window.addEventListener('keydown', handler); return () => window.removeEventListener('keydown', handler) }, [onClose])
 
   const theme = useMemo(() => themeFrom(profile?.theme_draft ?? {}), [profile?.theme_draft])
+  const layout = useMemo(() => profilePageLayoutFrom(profile?.theme_draft ?? {}), [profile?.theme_draft])
   const pageBackground = useMemo(() => profilePageBackgroundFrom(profile?.theme_draft ?? {}), [profile?.theme_draft])
   const cosmetics = useMemo(() => cosmeticsFrom(loadout, items), [items, loadout])
   if (!activeCharacter) return null
@@ -109,29 +110,41 @@ export function ProfileDraftPreview({ onClose }: Props) {
     '--profile-ink': theme.ink,
     '--display-color': theme.displayColor,
     '--display-color-2': theme.displayColor2,
+    '--spacehey-panel-opacity': String(pageBackground.panelOpacity),
+    '--spacehey-border-style': pageBackground.borderStyle,
+    '--profile-page-width': `${layout.pageWidth}px`,
+    '--profile-content-gap': `${layout.contentGap}px`,
+    '--profile-panel-border-width': `${layout.borderWidth}px`,
   } as CSSProperties
 
+  const sidebar = <aside className="hanami-profile-about">
+    <section className="spacehey-contact-box preview-contact"><span className="eyebrow">CONTACTING {name.toUpperCase()}</span><div className="spacehey-contact-actions"><button type="button" disabled>✉ Send Message</button><button type="button" disabled>Add to Friends</button><button type="button" disabled>✎ Sign Guestbook</button><button type="button" disabled>☞ View Blog</button></div></section>
+    {layout.showAboutCard && profile?.bio && <section><span className="eyebrow">ABOUT ME</span><p>{profile.bio}</p></section>}
+    {layout.showSchoolIdentity && <section><span className="eyebrow">HANAMI DETAILS</span><dl><div><dt>Role</dt><dd>{roleLabel(activeCharacter.school_role)}</dd></div><div><dt>Network</dt><dd>Hanami High</dd></div></dl></section>}
+    <section><span className="eyebrow">PREVIEW NOTE</span><p>This is your private draft. Visitor-only interactions are shown as placeholders.</p></section>
+  </aside>
+
   return <div className="profile-draft-preview-backdrop" role="dialog" aria-modal="true" aria-label="Private profile draft preview">
-    <div className="profile-draft-preview-window discord-draft-preview-window">
+    <div className="profile-draft-preview-window spacehey-draft-preview-window">
       <header className="profile-draft-preview-toolbar">
-        <div><span className="eyebrow">PRIVATE DRAFT PREVIEW</span><strong>{name}</strong><small>This is how your Discord-style profile card will look after publishing.</small></div>
+        <div><span className="eyebrow">PRIVATE DRAFT PREVIEW</span><strong>{name}</strong><small>This is how your full personal page will look after publishing.</small></div>
         <div><button type="button" onClick={() => void load()}>Refresh Draft</button><button className="primary-action" type="button" onClick={onClose}>Back to Studio</button></div>
       </header>
       {error && <div className="identity-notice error">{error}</div>}
-      {loading || !profile ? <div className="studio-loading">Rendering your private profile draft…</div> : <div className="profile-draft-preview-scroll discord-draft-preview-scroll">
-        <div className={`discord-profile-experience-shell draft ${theme.grid ? 'show-grid' : ''} cosmetic-frame-${safeClass(cosmetics.frame)} cosmetic-avatar-${safeClass(cosmetics.avatarDecoration)} cosmetic-effect-${safeClass(cosmetics.effect)} cosmetic-card-${safeClass(cosmetics.profileCard)} cosmetic-bg-${safeClass(cosmetics.backgroundPack)}`} style={style}>
-          <div className="discord-profile-experience-grid">
-            <section className="discord-profile-card">
-              <div className="discord-profile-card-banner" style={{ background: theme.accent }}>{profile.banner_path && media[profile.banner_path] && <img src={media[profile.banner_path]} alt={`${name} banner`}/>}</div>
-              <div className="discord-profile-card-avatar-wrap"><div className="discord-profile-card-avatar">{profile.avatar_path && media[profile.avatar_path] ? <img src={media[profile.avatar_path]} alt={`${name} avatar`}/> : name.slice(0, 2).toUpperCase()}</div><span className="discord-profile-card-status status-online"/><span className="hanami-avatar-decoration" aria-hidden="true"/></div>
-              <div className="discord-profile-card-actions"><button className="discord-profile-button primary" type="button" disabled>Edit Profile</button><button className="discord-profile-icon-button" type="button" disabled>Aa</button></div>
-              <div className="discord-profile-card-body">
-                <div className="discord-profile-card-nameblock"><h1 className={`profile-display-name profile-font-${theme.displayFont} profile-effect-${theme.displayEffect}`}>{name}</h1><p>{handle}{profile.pronouns ? ` · ${profile.pronouns}` : ''}</p><div className="discord-profile-badges"><span className="discord-profile-role-badge"><i style={{ background: theme.accent }}/>{roleLabel(activeCharacter.school_role)}</span><span className="discord-profile-network-badge">花</span></div>{profile.custom_status && <div className="discord-profile-status-copy">{profile.custom_status}</div>}</div>
-                <nav className="discord-profile-tabs"><button type="button">User Info</button><button className="active" type="button">Board</button><button type="button" disabled>Activity</button><button type="button" disabled>Blog</button><button type="button" disabled>Guestbook</button></nav>
-                <div className="discord-profile-tab-content"><div className="discord-profile-board">{widgets.length === 0 ? <div className="hanami-profile-empty">Your draft board is empty.</div> : <div className="published-widget-canvas">{widgets.map((widget) => <article className={`published-widget widget-${safeClass(widget.widget_type)}`} key={widget.id} style={{ gridColumn: `span ${Math.min(Math.max(widget.width, 1), 12)}`, minHeight: `${Math.max(widget.height, 1) * 48}px` }}><header><strong>{widget.title || widget.widget_type.replaceAll('_', ' ')}</strong></header><div className="published-widget-body">{renderWidgetBody(widget, media)}</div></article>)}</div>}</div></div>
-              </div>
+      {loading || !profile ? <div className="studio-loading">Rendering your private profile draft…</div> : <div className="profile-draft-preview-scroll">
+        <div className={`hanami-profile-shell spacehey-profile-page layout-${layout.preset} sidebar-${layout.sidebarSide} hero-${layout.heroStyle} density-${layout.panelDensity} titles-${layout.widgetTitleStyle} avatar-${layout.avatarShape} tabs-${layout.tabStyle} ${theme.grid ? 'show-grid' : ''} cosmetic-frame-${safeClass(cosmetics.frame)} cosmetic-avatar-${safeClass(cosmetics.avatarDecoration)} cosmetic-effect-${safeClass(cosmetics.effect)} cosmetic-card-${safeClass(cosmetics.profileCard)} cosmetic-bg-${safeClass(cosmetics.backgroundPack)}`} style={style}>
+          <section className="hanami-profile-hero">
+            <div className="hanami-profile-banner" style={{ background: theme.accent }}>{profile.banner_path && media[profile.banner_path] && <img src={media[profile.banner_path]} alt={`${name} banner`}/>}</div>
+            <div className="hanami-profile-avatar-wrap"><div className="hanami-profile-avatar">{profile.avatar_path && media[profile.avatar_path] ? <img src={media[profile.avatar_path]} alt={`${name} avatar`}/> : name.slice(0, 2).toUpperCase()}</div><span className="hanami-avatar-decoration" aria-hidden="true"/></div>
+            <div className="hanami-profile-heading"><div><span className="eyebrow">WELCOME TO MY PAGE</span><h1 className={`profile-display-name profile-font-${theme.displayFont} profile-effect-${theme.displayEffect}`}>{name}</h1><p>{handle}{profile.pronouns ? ` · ${profile.pronouns}` : ''}</p>{profile.custom_status && <blockquote>mood: {profile.custom_status}</blockquote>}</div><div className="hanami-profile-actions"><button className="primary-action" type="button" disabled>Edit My Page</button><button className="secondary-action" type="button" disabled>Name Style</button></div></div>
+          </section>
+          <div className="hanami-profile-layout">
+            {layout.sidebarSide === 'left' && sidebar}
+            <section className="hanami-profile-main">
+              <nav className="hanami-profile-tabs"><button className="active" type="button">Profile</button><button type="button" disabled>Bulletins</button><button type="button" disabled>Blog</button><button type="button" disabled>Comments</button></nav>
+              <div className="hanami-profile-board">{widgets.length === 0 ? <div className="hanami-profile-empty">Your draft page is empty.</div> : <div className="published-widget-canvas">{widgets.map((widget) => <article className={`published-widget widget-${safeClass(widget.widget_type)}`} key={widget.id} style={{ gridColumn: `span ${Math.min(Math.max(widget.width, 1), 12)}`, minHeight: `${Math.max(widget.height, 1) * 48}px` }}><header><strong>{widget.title || widget.widget_type.replaceAll('_', ' ')}</strong></header><div className="published-widget-body">{renderWidgetBody(widget, media)}</div></article>)}</div>}</div>
             </section>
-            <aside className="discord-profile-side-panel"><div className="discord-profile-side-art" style={{ background: `linear-gradient(145deg, ${theme.accent}, #1e1f22)` }}><span>花</span></div><div className="discord-profile-side-copy"><span>DRAFT ACTIVITY</span><h2>Hanami High</h2><p>{profile.custom_status || `${roleLabel(activeCharacter.school_role)} on the Hanami campus network.`}</p><div className="discord-profile-side-progress"><span style={{ width: '38%', background: theme.accent }}/></div><small>Private preview</small></div></aside>
+            {layout.sidebarSide === 'right' && sidebar}
           </div>
         </div>
       </div>}
