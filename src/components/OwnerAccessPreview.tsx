@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { ApplicationReviewPanel } from './ApplicationReviewPanel'
 import { NewStudentManagementPanel } from './NewStudentManagementPanel'
 import { OwnerOperationsPanel } from './OwnerOperationsPanel'
+import { OwnerLockscreenPanel } from './OwnerLockscreenPanel'
 import { SchoolAdministrationPanel } from './SchoolAdministrationPanel'
 import { useIdentity } from '../state/IdentityContext'
 
-type OwnerWorkspace = 'admissions' | 'new-students' | 'school' | 'operations'
+type OwnerWorkspace = 'admissions' | 'new-students' | 'school' | 'lockscreens' | 'operations'
 
 export function OwnerAccessPreview() {
   const { account, characters, capabilities, exitOwnerMode, signOut } = useIdentity()
@@ -34,12 +35,14 @@ export function OwnerAccessPreview() {
             <button className={workspace === 'admissions' ? 'active' : ''} onClick={() => setWorkspace('admissions')}>Admissions</button>
             <button className={workspace === 'new-students' ? 'active' : ''} onClick={() => setWorkspace('new-students')}>New Students</button>
             <button className={workspace === 'school' ? 'active' : ''} onClick={() => setWorkspace('school')}>School Office</button>
+            <button className={workspace === 'lockscreens' ? 'active' : ''} onClick={() => setWorkspace('lockscreens')}>Lock Screens</button>
             <button className={workspace === 'operations' ? 'active' : ''} onClick={() => setWorkspace('operations')}>Platform Operations</button>
           </nav>
 
           {workspace === 'admissions' && <ApplicationReviewPanel />}
           {workspace === 'new-students' && <NewStudentManagementPanel />}
           {workspace === 'school' && <SchoolAdministrationPanel />}
+          {workspace === 'lockscreens' && <OwnerLockscreenPanel />}
           {workspace === 'operations' && <OwnerOperationsPanel />}
 
           <div className="identity-actions owner-exit-actions">

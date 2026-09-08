@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RootApp } from './app/RootApp'
+import { AccountSigninRecorder } from './components/AccountSigninRecorder'
 import { MemberProfileNavigationBridge } from './components/MemberProfileNavigationBridge'
 import { ProfileDraftPreviewLauncher } from './components/ProfileDraftPreviewLauncher'
 import { ProfileStudioTools } from './components/ProfileStudioTools'
@@ -63,6 +64,7 @@ import './styles/installed-component-management.css'
 import './styles/interface-customization.css'
 import './styles/social-identity-studio.css'
 import './styles/settings.css'
+import './styles/account-lockscreen.css'
 import './styles/owner-operations.css'
 import './styles/school-administration.css'
 import './styles/access-modes.css'
@@ -77,6 +79,7 @@ import './styles/home-proportions-wide.css'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <IdentityProvider>
+      <AccountSigninRecorder />
       <RootApp />
       <MemberProfileNavigationBridge />
       <ProfileStudioTools />
