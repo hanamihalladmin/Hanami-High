@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import type { HanamiDesignCreditsDatabase } from '../types/database-design-credits'
+import type { HanamiCreatorPortfoliosDatabase } from '../types/database-creator-portfolios'
 
 export type LoginIntent = 'member' | 'owner' | 'administrator'
 
@@ -9,7 +9,7 @@ const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as 
 export const hasSupabaseConfig = Boolean(supabaseUrl && supabasePublishableKey)
 
 export const supabase = hasSupabaseConfig
-  ? createClient<HanamiDesignCreditsDatabase>(supabaseUrl!, supabasePublishableKey!, {
+  ? createClient<HanamiCreatorPortfoliosDatabase>(supabaseUrl!, supabasePublishableKey!, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
