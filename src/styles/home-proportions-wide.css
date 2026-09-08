@@ -1,0 +1,149 @@
+/* V2 homepage proportion pass: widen the framed site, reduce nested-column compression,
+   and keep the early-web look without turning the home dashboard into a long narrow stack. */
+
+@media (min-width: 1180px) {
+  :root {
+    --rail-width: 78px;
+    --sidebar-width: 206px;
+    --context-width: 208px;
+  }
+
+  .app-shell {
+    width: min(97vw, 1680px);
+  }
+
+  .content-area {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .hanami-home-page .page-topbar {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 390px) auto;
+  }
+
+  /* The homepage should feel like one broad personal site, not three websites nested together. */
+  .home-web-grid {
+    grid-template-columns: 156px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .home-web-left {
+    gap: 8px;
+  }
+
+  .home-web-center {
+    gap: 9px;
+  }
+
+  /* Move the small right-side web widgets into a compact shelf underneath the main home content. */
+  .home-web-right {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .home-web-right > * {
+    min-width: 0;
+  }
+
+  /* Give dashboard content enough width that orientation/schedule copy does not become a tall text column. */
+  .home-dashboard-grid {
+    grid-template-columns: minmax(0, 1.55fr) minmax(300px, .95fr);
+    gap: 10px;
+  }
+
+  .hanami-home-page .orientation-card {
+    padding: 13px 15px;
+    gap: 14px;
+  }
+
+  .hanami-home-page .orientation-card h2 {
+    font-size: 20px;
+    margin: 3px 0 3px;
+  }
+
+  .hanami-home-page .orientation-card p {
+    line-height: 1.4;
+    font-size: 9px;
+  }
+
+  .hanami-home-page .orientation-progress {
+    min-width: 96px;
+  }
+
+  /* Slightly smaller decorative modules keep the homepage within a much shorter first scroll. */
+  .home-floral-banner {
+    margin: 12px 0 10px;
+    padding: 14px 18px;
+    grid-template-columns: minmax(0, 1fr) 138px;
+  }
+
+  .home-floral-banner-copy h2 {
+    font-size: 23px;
+  }
+
+  .home-floral-stamp {
+    min-height: 76px;
+  }
+
+  .home-id-avatar {
+    width: 66px;
+    height: 66px;
+    margin-top: 9px;
+  }
+
+  .home-id-card > strong {
+    font-size: 15px;
+  }
+
+  .home-counter-card dl,
+  .home-mini-note,
+  .home-calendar-card,
+  .home-navigation-card,
+  .home-link-card {
+    font-size: 95%;
+  }
+
+  .home-live-panel > header,
+  .home-dashboard-grid .panel > header {
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+
+  .home-live-schedule-row,
+  .home-dashboard-grid .schedule-row {
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+
+  .home-sticker-strip {
+    padding: 5px;
+  }
+
+  .home-sticker-strip a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+
+@media (min-width: 1500px) {
+  .app-shell {
+    width: min(98vw, 1760px);
+  }
+
+  .home-web-grid {
+    grid-template-columns: 164px minmax(0, 1fr);
+  }
+
+  .home-dashboard-grid {
+    grid-template-columns: minmax(0, 1.65fr) minmax(330px, .9fr);
+  }
+}
+
+@media (min-width: 1180px) and (max-width: 1320px) {
+  .home-web-right {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
