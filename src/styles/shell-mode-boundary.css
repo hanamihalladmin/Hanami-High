@@ -1,0 +1,30 @@
+/* Shared shell components contain both early-web and Discord affordances. Keep each set in its intended route mode. */
+.app-shell:not(.communication-app-shell) .rail-tooltip,
+.app-shell:not(.communication-app-shell) .rail-pill,
+.app-shell:not(.communication-app-shell) .section-header-chevron,
+.app-shell:not(.communication-app-shell) .sidebar-channel-category,
+.app-shell:not(.communication-app-shell) .sidebar-network-channel,
+.app-shell:not(.communication-app-shell) .section-channel-hash{display:none!important}
+
+.app-shell:not(.communication-app-shell) .main-rail{min-width:0;overflow-x:hidden}
+.app-shell:not(.communication-app-shell) .rail-label{display:block;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:6.5px;font-weight:800;line-height:1.15;text-transform:lowercase}
+.app-shell:not(.communication-app-shell) .rail-footer-stamp{display:block}
+.app-shell:not(.communication-app-shell) .section-link-flower{display:inline;color:var(--pink-500)}
+.app-shell:not(.communication-app-shell) .section-header>div{display:grid;gap:2px;justify-items:center;width:100%}
+.app-shell:not(.communication-app-shell) .section-links button{grid-template-columns:14px minmax(0,1fr)!important}
+.app-shell:not(.communication-app-shell) .sidebar-note{display:flex}
+
+.communication-app-shell .rail-label,
+.communication-app-shell .rail-footer-stamp,
+.communication-app-shell .rail-brand small,
+.communication-app-shell .section-decoration-strip,
+.communication-app-shell .sidebar-nav-label,
+.communication-app-shell .section-link-flower,
+.communication-app-shell .sidebar-mini-banner,
+.communication-app-shell .sidebar-note{display:none!important}
+.communication-app-shell .section-channel-hash{display:inline!important}
+.communication-app-shell .section-links button{grid-template-columns:24px minmax(0,1fr)!important}
+
+@media(max-width:760px){
+  .app-shell:not(.communication-app-shell) .rail-label,.app-shell:not(.communication-app-shell) .rail-footer-stamp,.app-shell:not(.communication-app-shell) .rail-brand small{display:none}
+}
