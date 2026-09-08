@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import type { HanamiInteractiveProfileDatabase } from '../types/database-profile-interactivity'
+import type { HanamiCreatorMarketplaceDatabase } from '../types/database-creator-marketplace'
 
 export type LoginIntent = 'member' | 'owner' | 'administrator'
 
@@ -9,7 +9,7 @@ const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as 
 export const hasSupabaseConfig = Boolean(supabaseUrl && supabasePublishableKey)
 
 export const supabase = hasSupabaseConfig
-  ? createClient<HanamiInteractiveProfileDatabase>(supabaseUrl!, supabasePublishableKey!, {
+  ? createClient<HanamiCreatorMarketplaceDatabase>(supabaseUrl!, supabasePublishableKey!, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
