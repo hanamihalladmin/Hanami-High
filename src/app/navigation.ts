@@ -61,6 +61,7 @@ export const sections: SectionDefinition[] = [
     id: 'profile', label: 'My Profile', eyebrow: 'PROFILE', title: 'My Profile', icon: '☺', group: 'primary', defaultSubsection: 'view-profile',
     subsections: [
       { id: 'view-profile', label: 'View My Page', description: 'Open your published custom SpaceHey-style character page.' },
+      { id: 'scenes', label: 'Living Profile Scenes', description: 'Visit this character’s published alternate rooms and profile scenes.' },
       { id: 'profile-studio', label: 'Profile Studio', description: 'Build your page with drag-and-resize widgets, backgrounds, layouts, name styles, cosmetics, and private draft preview.' },
       { id: 'personal-spaces', label: 'Personal Spaces', description: 'Customize this character’s Hanami+ locker, desk, phone, and 2000s desktop.' },
       { id: 'blog', label: 'Blog', description: 'Write and manage the blog entries connected to your profile.' },
@@ -110,6 +111,7 @@ export const sections: SectionDefinition[] = [
       { id: 'overview', label: 'Hanami+ Home', description: 'Your active benefits, creative level, monthly claim, drops, and Plus status.' },
       { id: 'interface-studio', label: 'Interface Studio', description: 'Customize your dashboard, message appearance, inbox organization, and notification profiles.' },
       { id: 'social-identity-studio', label: 'Social Identity Studio', description: 'Style display names, profile badges, friend groups, posts, reactions, stickers, and guestbooks.' },
+      { id: 'scene-studio', label: 'Scene Studio', description: 'Build and publish alternate living-profile rooms for this character.' },
       { id: 'marketplace', label: 'Theme Marketplace', description: 'Browse community profile themes, ratings, creators, and favorites.' },
       { id: 'creator-studio', label: 'Creator Studio', description: 'Publish versioned themes from your current Profile Studio design.' },
       { id: 'creator-contests', label: 'Creative Contests', description: 'Enter Hanami design contests using your published themes.' },
