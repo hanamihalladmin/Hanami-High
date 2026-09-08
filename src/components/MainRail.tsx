@@ -22,12 +22,13 @@ export function MainRail({ active, onSelect }: Props) {
     >
       <span className="rail-pill" aria-hidden="true" />
       <span className="rail-icon" aria-hidden="true">{item.icon}</span>
+      <span className="rail-label">{item.label}</span>
       <span className="rail-tooltip" role="presentation">{item.label}</span>
     </button>
   )
 
   return (
-    <nav className="main-rail" aria-label="Hanami server navigation">
+    <nav className="main-rail" aria-label="Hanami network navigation">
       <button
         className={`rail-brand ${active === 'home' ? 'is-active' : ''}`}
         onClick={() => onSelect('home')}
@@ -36,14 +37,16 @@ export function MainRail({ active, onSelect }: Props) {
         type="button"
       >
         <span className="rail-brand-mark">花</span>
+        <small>hanami</small>
         <span className="rail-tooltip" role="presentation">Hanami High</span>
       </button>
-      <div className="rail-rule" aria-hidden="true" />
+      <div className="rail-rule" aria-hidden="true">✿</div>
       <div className="rail-stack">{primaryItems.filter((item) => item.id !== 'home').map(renderItem)}</div>
-      <div className="rail-rule" aria-hidden="true" />
+      <div className="rail-rule" aria-hidden="true">❀</div>
       <div className="rail-stack">{rewardItems.map(renderItem)}</div>
       <div className="rail-spacer" />
       {renderItem(settingsItem)}
+      <div className="rail-footer-stamp" aria-hidden="true">school<br/>network<br/>2006</div>
     </nav>
   )
 }
