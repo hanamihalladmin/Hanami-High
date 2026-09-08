@@ -51,7 +51,7 @@ type IdentityContextValue = {
   signIn: (intent?: LoginIntent) => Promise<void>
   signOut: () => Promise<void>
   refreshIdentity: () => Promise<void>
-  createStudentSlot: (slotNo: 1 | 2) => Promise<void>
+  createStudentSlot: (slotNo: 1 | 2, handle: string) => Promise<void>
   selectCharacter: (characterId: string) => Promise<void>
   deleteCharacter: (characterId: string, confirmation: string) => Promise<void>
   clearActiveCharacter: () => Promise<void>
@@ -257,14 +257,19 @@ export function IdentityProvider({ children }: PropsWithChildren) {
     }
   }, [refreshIdentity])
 
-  const createStudentSlot = useCallback(async (slotNo: 1 | 2) => {
+  const createStudentSlot = useCallback(async (slotNo: 1 | 2, handle: string) => {
     const client = supabase
     if (!client) {
       setError('Supabase is not configured.')
       return
     }
+    const cleanedHandle = handle.trim().toLowerCase()
+    if (!/^[a-z0-9_]{3,24}$/.test(cleanedHandle)) {
+      setError('Handles must be 3-24 characters using lowercase letters, numbers, and underscores only.')
+      return
+    }
     await runMutation(async () => {
-      const { error: rpcError } = await client.rpc('create_student_character_slot', { p_slot_no: slotNo })
+      const { error: rpcError } = await client.rpc('create_student_character_slot', { p_slot_no: slotNo, p_handle: cleanedHandle })
       if (rpcError) throw rpcError
     })
   }, [runMutation])
