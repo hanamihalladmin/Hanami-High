@@ -26,6 +26,11 @@ export type CharacterCosmeticLoadout = {
   updated_at: string
 }
 
+type BaseCharacterTable = HanamiPlatformDatabase['public']['Tables']['characters']
+export type HanamiCharacterWithHandleCooldown = BaseCharacterTable['Row'] & {
+  handle_changed_at: string | null
+}
+
 type BasePublished = HanamiPlatformDatabase['public']['Tables']['published_character_profiles']['Row']
 type BasePublishedInsert = HanamiPlatformDatabase['public']['Tables']['published_character_profiles']['Insert']
 type BasePublishedUpdate = HanamiPlatformDatabase['public']['Tables']['published_character_profiles']['Update']
@@ -33,6 +38,12 @@ type BasePublishedUpdate = HanamiPlatformDatabase['public']['Tables']['published
 export type PublishedCharacterProfileWithCosmetics = BasePublished & { cosmetics: Json }
 
 type CustomizationTables = {
+  characters: {
+    Row: HanamiCharacterWithHandleCooldown
+    Insert: BaseCharacterTable['Insert'] & { handle_changed_at?: string | null }
+    Update: BaseCharacterTable['Update'] & { handle_changed_at?: string | null }
+    Relationships: []
+  }
   boutique_wishlist: RowTable<
     BoutiqueWishlistRow,
     Pick<BoutiqueWishlistRow, 'account_id' | 'item_id'> & Partial<Pick<BoutiqueWishlistRow, 'created_at'>>,
@@ -51,9 +62,22 @@ type CustomizationTables = {
   }
 }
 
+type HandleFunctions = {
+  create_student_character_slot: {
+    Args: { p_slot_no: number; p_handle: string }
+    Returns: HanamiCharacterWithHandleCooldown
+  }
+  change_character_handle: {
+    Args: { p_character_id: string; p_handle: string }
+    Returns: HanamiCharacterWithHandleCooldown
+  }
+}
+
+type BaseFunctions = HanamiPlatformDatabase['public']['Functions']
+
 export type HanamiCustomizationDatabase = Omit<HanamiPlatformDatabase, 'public'> & {
-  public: Omit<HanamiPlatformDatabase['public'], 'Tables'> & {
-    Tables: Omit<HanamiPlatformDatabase['public']['Tables'], 'published_character_profiles'> & CustomizationTables
-    Functions: HanamiPlatformDatabase['public']['Functions']
+  public: Omit<HanamiPlatformDatabase['public'], 'Tables' | 'Functions'> & {
+    Tables: Omit<HanamiPlatformDatabase['public']['Tables'], 'characters' | 'published_character_profiles'> & CustomizationTables
+    Functions: Omit<BaseFunctions, 'create_student_character_slot'> & HandleFunctions
   }
 }
