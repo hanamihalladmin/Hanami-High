@@ -1,19 +1,14 @@
 import { type FormEvent, type PropsWithChildren, useEffect, useMemo, useState } from 'react'
+import { isLockscreenUnlocked, markLockscreenUnlocked } from '../lib/lockscreenSession'
 import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
 import type { MyLockscreenStatus } from '../types/database-lockscreen'
-
-const UNLOCK_PREFIX='hanami-lock-unlocked:'
 
 function tokyoClock(date:Date){
   return {
     time:new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',hour:'numeric',minute:'2-digit'}).format(date),
     date:new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',weekday:'long',month:'long',day:'numeric'}).format(date),
   }
-}
-
-export function clearHanamiLockscreenSession(){
-  for(let index=sessionStorage.length-1;index>=0;index--){const key=sessionStorage.key(index);if(key?.startsWith(UNLOCK_PREFIX))sessionStorage.removeItem(key)}
 }
 
 export function AccountLockGate({children}:PropsWithChildren){
@@ -26,8 +21,7 @@ export function AccountLockGate({children}:PropsWithChildren){
   const [error,setError]=useState<string|null>(null)
   const [now,setNow]=useState(()=>new Date())
 
-  const unlockKey=account?`${UNLOCK_PREFIX}${account.id}`:''
-  const locallyUnlocked=Boolean(unlockKey&&sessionStorage.getItem(unlockKey)==='1')
+  const locallyUnlocked=Boolean(account&&isLockscreenUnlocked(account.id))
 
   useEffect(()=>{const timer=window.setInterval(()=>setNow(new Date()),30000);return()=>window.clearInterval(timer)},[])
   useEffect(()=>{
@@ -56,7 +50,7 @@ export function AccountLockGate({children}:PropsWithChildren){
     setWorking(false)
     if(verifyError){setPin('');setError(verifyError.message);return}
     if(!data){setPin('');setError('That PIN was not accepted. Please try again.');return}
-    sessionStorage.setItem(`${UNLOCK_PREFIX}${account.id}`,'1');setPin('')
+    markLockscreenUnlocked(account.id);setPin('')
   }
 
   if(loading)return <main className="account-lockscreen account-lockscreen-loading"><div><strong>Opening your Hanami lock screen…</strong><span>Checking this account’s device-style privacy settings.</span></div></main>
