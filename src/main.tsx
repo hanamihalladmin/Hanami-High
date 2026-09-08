@@ -89,6 +89,7 @@ import './styles/messages-stacked-chat.css'
 import './styles/premium-font-studio.css'
 import './styles/decoration-asset-library.css'
 import './styles/messages-hanami-unified.css'
+import './styles/messages-shell-reset.css'
 import './styles/profile-reference-modern.css'
 
 createRoot(document.getElementById('root')!).render(
