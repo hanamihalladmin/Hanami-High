@@ -52,6 +52,7 @@ import './styles/messages-discord.css'
 import './styles/academic-rooms.css'
 import './styles/communication-shell.css'
 import './styles/v2-reference-polish.css'
+import './styles/home-proportions-wide.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
