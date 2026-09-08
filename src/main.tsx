@@ -11,6 +11,7 @@ import { SocialIdentityLayer } from './components/SocialIdentityLayer'
 import { ProfileScenePortal } from './components/ProfileScenePortal'
 import { ProfileDesignCredits } from './components/ProfileDesignCredits'
 import { AnimationPresetLayer } from './components/AnimationPresetLayer'
+import { UserTagDesignerPortal } from './components/UserTagDesignerPortal'
 import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
 import './styles/global.css'
@@ -80,6 +81,9 @@ import './styles/v2-layout-system.css'
 import './styles/boutique-v3.css'
 import './styles/theme-builder-v2.css'
 import './styles/v2-page-proportions.css'
+import './styles/user-tag-designer.css'
+import './styles/mini-profile-reference.css'
+import './styles/messages-stacked-chat.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -95,6 +99,7 @@ createRoot(document.getElementById('root')!).render(
       <ProfileDesignCredits />
       <AnimationPresetLayer />
       <ProfileDraftPreviewLauncher />
+      <UserTagDesignerPortal />
     </IdentityProvider>
   </StrictMode>,
 )
