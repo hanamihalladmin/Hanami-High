@@ -73,11 +73,17 @@ alter table public.character_friend_groups enable row level security;
 alter table public.character_friend_group_members enable row level security;
 alter table public.social_post_styles enable row level security;
 
-create policy character_social_identity_self_read on public.character_social_identity_customization for select to authenticated using (exists(select 1 from public.characters c where c.id=character_id and c.account_id=(select auth.uid())) or exists(select 1 from public.published_character_profiles p where p.character_id=character_id and p.profile_visibility in ('hanami','friends')));
+create policy character_social_identity_visible on public.character_social_identity_customization for select to authenticated using (
+  exists(select 1 from public.characters c where c.id=character_id and c.account_id=(select auth.uid()))
+  or exists(select 1 from public.published_character_profiles p where p.character_id=character_id)
+);
 create policy character_social_identity_plus_insert on public.character_social_identity_customization for insert to authenticated with check (private.can_edit_character_plus_customization(character_id));
 create policy character_social_identity_plus_update on public.character_social_identity_customization for update to authenticated using (private.can_edit_character_plus_customization(character_id)) with check (private.can_edit_character_plus_customization(character_id));
 
-create policy character_profile_badges_visible on public.character_profile_badges for select to authenticated using (visible=true or exists(select 1 from public.characters c where c.id=character_id and c.account_id=(select auth.uid())));
+create policy character_profile_badges_visible on public.character_profile_badges for select to authenticated using (
+  exists(select 1 from public.characters c where c.id=character_id and c.account_id=(select auth.uid()))
+  or (visible=true and exists(select 1 from public.published_character_profiles p where p.character_id=character_id))
+);
 create policy character_profile_badges_plus_insert on public.character_profile_badges for insert to authenticated with check (private.can_edit_character_plus_customization(character_id));
 create policy character_profile_badges_plus_update on public.character_profile_badges for update to authenticated using (private.can_edit_character_plus_customization(character_id)) with check (private.can_edit_character_plus_customization(character_id));
 create policy character_profile_badges_plus_delete on public.character_profile_badges for delete to authenticated using (private.can_edit_character_plus_customization(character_id));
@@ -91,7 +97,10 @@ create policy character_friend_group_members_self_read on public.character_frien
 create policy character_friend_group_members_plus_insert on public.character_friend_group_members for insert to authenticated with check (exists(select 1 from public.character_friend_groups g where g.id=group_id and private.can_edit_character_plus_customization(g.character_id)) and exists(select 1 from public.friendships f join public.character_friend_groups g on g.id=group_id where f.status='accepted' and ((f.requester_character_id=g.character_id and f.addressee_character_id=friend_character_id) or (f.addressee_character_id=g.character_id and f.requester_character_id=friend_character_id))));
 create policy character_friend_group_members_plus_delete on public.character_friend_group_members for delete to authenticated using (exists(select 1 from public.character_friend_groups g where g.id=group_id and private.can_edit_character_plus_customization(g.character_id)));
 
-create policy social_post_styles_visible on public.social_post_styles for select to authenticated using (exists(select 1 from public.social_posts p where p.id=post_id and (p.author_character_id=author_character_id) and (p.visibility in ('hanami','friends') or exists(select 1 from public.characters c where c.id=author_character_id and c.account_id=(select auth.uid())))));
+create policy social_post_styles_visible on public.social_post_styles for select to authenticated using (
+  exists(select 1 from public.characters c where c.id=author_character_id and c.account_id=(select auth.uid()))
+  or exists(select 1 from public.social_posts p where p.id=post_id and p.author_character_id=author_character_id)
+);
 create policy social_post_styles_plus_insert on public.social_post_styles for insert to authenticated with check (private.can_edit_character_plus_customization(author_character_id) and exists(select 1 from public.social_posts p where p.id=post_id and p.author_character_id=author_character_id));
 create policy social_post_styles_plus_update on public.social_post_styles for update to authenticated using (private.can_edit_character_plus_customization(author_character_id)) with check (private.can_edit_character_plus_customization(author_character_id));
 create policy social_post_styles_plus_delete on public.social_post_styles for delete to authenticated using (private.can_edit_character_plus_customization(author_character_id));
