@@ -104,6 +104,18 @@ export const sections: SectionDefinition[] = [
     ],
   },
   {
+    id: 'hanami-plus', label: 'Hanami+', eyebrow: 'HANAMI+', title: 'Creative Membership', icon: '✦', group: 'rewards', defaultSubsection: 'overview',
+    subsections: [
+      { id: 'overview', label: 'Hanami+ Home', description: 'Your active benefits, creative level, monthly claim, drops, and Plus status.' },
+      { id: 'calendar', label: 'Plus Calendar', description: 'Drops, creative challenges, previews, quests, and seasonal rotations.' },
+      { id: 'inbox', label: 'Plus Inbox', description: 'Reward notices, claim activity, gifts, and Plus announcements.' },
+      { id: 'reward-history', label: 'Reward History', description: 'Your Hanami+ days, drops, claims, quests, and milestones.' },
+      { id: 'gift-history', label: 'Gift History', description: 'Hanami+ passes and cosmetic gifts sent or received.' },
+      { id: 'loyalty-shop', label: 'Loyalty Shop', description: 'Petal cosmetics unlocked by cumulative Hanami+ days.' },
+      { id: 'labs', label: 'Hanami+ Labs', description: 'Opt into experimental customization features before wider release.' },
+    ],
+  },
+  {
     id: 'achievements', label: 'Achievements', eyebrow: 'ACHIEVEMENTS', title: 'Milestones', icon: '★', group: 'rewards', defaultSubsection: 'my-achievements',
     subsections: [
       { id: 'my-achievements', label: 'My Achievements', description: 'Achievements earned by this character.' },
