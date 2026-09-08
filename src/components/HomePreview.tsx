@@ -84,7 +84,6 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
     async function loadHome() {
       setLoadingData(true)
       setDataError(null)
-
       const [enrollmentResult, staffResult, announcementResult, walletResult, plusResult] = await Promise.all([
         db.from('academic_enrollments').select('section_id').eq('student_character_id', characterId).eq('status', 'active'),
         db.from('academic_section_staff').select('section_id').eq('character_id', characterId),
@@ -95,10 +94,7 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
 
       const firstError = enrollmentResult.error || staffResult.error || announcementResult.error || walletResult.error || plusResult.error
       if (firstError) {
-        if (!cancelled) {
-          setDataError(firstError.message)
-          setLoadingData(false)
-        }
+        if (!cancelled) { setDataError(firstError.message); setLoadingData(false) }
         return
       }
 
@@ -116,26 +112,18 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
         ])
         const scheduleError = sectionResult.error || meetingResult.error
         if (scheduleError) {
-          if (!cancelled) {
-            setDataError(scheduleError.message)
-            setLoadingData(false)
-          }
+          if (!cancelled) { setDataError(scheduleError.message); setLoadingData(false) }
           return
         }
-
         const sections = sectionResult.data ?? []
         const courseIds = Array.from(new Set(sections.map((section) => section.course_id)))
         const courseResult = courseIds.length
           ? await db.from('academic_courses').select('*').in('id', courseIds)
           : { data: [] as AcademicCourse[], error: null }
         if (courseResult.error) {
-          if (!cancelled) {
-            setDataError(courseResult.error.message)
-            setLoadingData(false)
-          }
+          if (!cancelled) { setDataError(courseResult.error.message); setLoadingData(false) }
           return
         }
-
         const sectionById = new Map(sections.map((section) => [section.id, section]))
         const courseById = new Map((courseResult.data ?? []).map((course) => [course.id, course]))
         nextSchedule = (meetingResult.data ?? []).flatMap((meeting) => {
@@ -160,12 +148,8 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
 
   if (!activeCharacter) return null
 
-  const firstName = activeCharacter.first_name
-    || activeCharacter.display_name?.split(/\s+/)[0]
-    || (activeCharacter.character_kind === 'faculty' ? 'Teacher' : 'Student')
-  const fullName = activeCharacter.display_name
-    || [activeCharacter.first_name, activeCharacter.last_name].filter(Boolean).join(' ')
-    || firstName
+  const firstName = activeCharacter.first_name || activeCharacter.display_name?.split(/\s+/)[0] || (activeCharacter.character_kind === 'faculty' ? 'Teacher' : 'Student')
+  const fullName = activeCharacter.display_name || [activeCharacter.first_name, activeCharacter.last_name].filter(Boolean).join(' ') || firstName
   const plusActive = Boolean(plus && new Date(plus.ends_at).getTime() > Date.now())
 
   const scheduleStates = useMemo(() => {
@@ -179,96 +163,117 @@ export function HomePreview({ onSearch, onNotifications, unreadCount }: Props) {
     })
   }, [nowMinutes, schedule])
 
-  return (
-    <main className="content-area hanami-home-page discord-home-channel">
-      <ShellTopbar
-        eyebrow="HANAMI HOME"
-        title="home"
-        onSearch={onSearch}
-        onNotifications={onNotifications}
-        unreadCount={unreadCount}
-      />
+  const calendar = useMemo(() => {
+    const [year, month, day] = today.split('-').map(Number)
+    const firstDay = new Date(Date.UTC(year, month - 1, 1)).getUTCDay()
+    const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate()
+    return {
+      day,
+      label: new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(year, month - 1, 1))),
+      cells: [...Array.from({ length: firstDay }, () => null), ...Array.from({ length: daysInMonth }, (_, index) => index + 1)],
+    }
+  }, [today])
 
-      <section className="home-channel-welcome">
-        <div className="home-channel-icon">花</div>
-        <h1>Welcome to #home!</h1>
-        <p>This is your personal Hanami High campus channel. School notices, today’s classes, orientation, and account shortcuts collect here.</p>
-        <div className="home-channel-meta">
-          <span>{formatHanamiSchoolDate(today)}</span>
-          <span>Asia/Tokyo</span>
-          <span className="home-school-state"><i />{schoolStatus(weekday, nowMinutes)}</span>
+  return (
+    <main className="content-area hanami-home-page earlyweb-home-page">
+      <ShellTopbar eyebrow="HANAMI HIGH SCHOOL NETWORK" title="Home" onSearch={onSearch} onNotifications={onNotifications} unreadCount={unreadCount}/>
+
+      <section className="home-floral-banner">
+        <div className="home-floral-banner-copy">
+          <span className="eyebrow">❀ HANAMI HIGH · EST. 2006 ❀</span>
+          <h2>Welcome back, {firstName}!</h2>
+          <p>A little corner of the Hanami school network for classes, friends, campus news, flowers, and whatever is happening today.</p>
         </div>
+        <div className="home-floral-stamp"><span>✿</span><strong>HANAMI</strong><small>{formatHanamiSchoolDate(today)}</small></div>
       </section>
 
       {dataError && <div className="identity-notice error">{dataError}</div>}
-      <OrientationPanel />
 
-      <section className="home-message-feed" aria-label="Hanami Home activity">
-        <article className="home-channel-message system-message">
-          <div className="home-message-avatar hanami-avatar">花</div>
-          <div className="home-message-content">
-            <header><strong>Hanami High</strong><span className="home-system-badge">SYSTEM</span><time>{formatHanamiSchoolDate(today)}</time></header>
-            <p>Welcome back, {firstName}. Your current identity is <strong>{fullName}</strong> · {roleLabel(activeCharacter)}.</p>
-            <div className="home-message-embed identity-embed">
-              <div><span>Current role</span><strong>{roleLabel(activeCharacter)}</strong></div>
-              <div><span>Character slot</span><strong>{activeCharacter.slot_no} / 2</strong></div>
-              <div><span>Campus status</span><strong>{schoolStatus(weekday, nowMinutes)}</strong></div>
-              <a href="#/profile/view-profile">Open your profile →</a>
+      <div className="home-web-grid">
+        <aside className="home-web-left">
+          <section className="home-web-card home-id-card">
+            <div className="home-card-title">my school id</div>
+            <div className="home-id-avatar">{fullName.slice(0, 2).toUpperCase()}</div>
+            <strong>{fullName}</strong>
+            <span>{activeCharacter.handle ? `@${activeCharacter.handle}` : roleLabel(activeCharacter)}</span>
+            <div className="home-id-badges"><b>{roleLabel(activeCharacter)}</b><b>{schoolStatus(weekday, nowMinutes)}</b></div>
+            <a href="#/profile/view-profile">view my page →</a>
+          </section>
+
+          <section className="home-web-card home-counter-card">
+            <div className="home-card-title">today @ hanami</div>
+            <dl>
+              <div><dt>date</dt><dd>{formatHanamiSchoolDate(today)}</dd></div>
+              <div><dt>zone</dt><dd>Tokyo</dd></div>
+              <div><dt>classes</dt><dd>{schedule.length}</dd></div>
+              <div><dt>petals</dt><dd>❀ {wallet?.balance ?? 0}</dd></div>
+              <div><dt>plus</dt><dd>{plusActive ? 'active ✦' : 'standard'}</dd></div>
+            </dl>
+          </section>
+
+          <section className="home-web-card home-mini-note">
+            <div className="home-card-title">little note</div>
+            <p>“Through hardship, we find beauty.”</p>
+            <span>— Hanami High ✿</span>
+          </section>
+        </aside>
+
+        <section className="home-web-center">
+          <nav className="home-pixel-tabs" aria-label="Home shortcuts">
+            <a href="#/academics/classes">classes</a><a href="#/academics/homeroom">homeroom</a><a href="#/social/friends">friends</a><a href="#/campus/clubs">clubs</a><a href="#/profile/profile-studio">my page</a>
+          </nav>
+
+          <section className="home-welcome-box">
+            <div className="home-card-title">welcome.txt</div>
+            <div className="home-welcome-inner"><p>Hi {firstName}! You’re logged into the Hanami High School Network as <strong>{fullName}</strong>. Check what’s happening today, visit your classes, or wander around campus.</p><p className="home-handwritten">have a lovely school day ❀</p></div>
+          </section>
+
+          <div className="home-sticker-strip">
+            <a href="#/home/announcements">✿ news</a><a href="#/home/school-calendar">❀ calendar</a><a href="#/campus/events">✦ events</a><a href="#/boutique/featured">♡ boutique</a><a href="#/social/feed">☻ social</a>
+          </div>
+
+          <OrientationPanel />
+
+          <div className="home-dashboard-grid">
+            <section className="home-live-panel home-schedule-panel">
+              <header><div><span className="eyebrow">TODAY’S TIMETABLE</span><h2>{weekday ? 'School schedule' : 'Weekend'}</h2></div><a href="#/academics/my-schedule">full week →</a></header>
+              {loadingData ? <div className="home-live-empty">Loading today’s schedule…</div> : schedule.length === 0 ? <div className="home-live-empty">No classes are assigned for today.</div> : <div className="home-schedule-list">{schedule.map(({ meeting, section, course }, index) => <article className={`home-live-schedule-row ${scheduleStates[index] === 'Now' ? 'current' : ''}`} key={meeting.id}><time>{formatSchoolTime(meeting.starts_at)}</time><div><strong>{course?.name || section.section_code}</strong><span>{meeting.room || section.room || 'Room TBA'} · Period {meeting.period_no}</span></div><em>{scheduleStates[index]}</em></article>)}</div>}
+            </section>
+
+            <div className="home-dashboard-stack">
+              <section className="home-live-panel announcement-panel">
+                <header><span className="eyebrow">SCHOOL NOTICE</span><h2>{announcement?.title || 'Announcements'}</h2></header>
+                {loadingData ? <p>Loading the latest notice…</p> : announcement ? <><p>{announcement.body}</p><a className="home-inline-link" href={`#/home/announcements/${encodeURIComponent(announcement.id)}`}>read more →</a></> : <p>No school announcements are published right now.</p>}
+              </section>
+
+              <section className="home-live-panel home-wallet-panel">
+                <header><span className="eyebrow">MY HANAMI ACCOUNT</span><h2>Petals & Hanami+</h2></header>
+                <div className="home-wallet-stats"><div><span>petals</span><strong>❀ {wallet?.balance ?? 0}</strong></div><div><span>hanami+</span><strong>{plusActive ? 'active ✦' : 'inactive'}</strong></div>{plusActive && plus && <div><span>until</span><strong>{new Date(plus.ends_at).toLocaleDateString()}</strong></div>}</div>
+                <div className="wallet-actions"><a href="#/boutique/featured">visit boutique</a><a href="#/petals/rewards">rewards</a></div>
+              </section>
             </div>
           </div>
-        </article>
+        </section>
 
-        <article className="home-channel-message">
-          <div className="home-message-avatar schedule-avatar">▤</div>
-          <div className="home-message-content">
-            <header><strong>Schedule</strong><span className="home-system-badge utility">SCHOOL</span><time>Today</time></header>
-            <p>{weekday ? 'Here is what is on your Hanami timetable today.' : 'There are no weekday classes scheduled today.'}</p>
-            <div className="home-message-embed schedule-embed">
-              {loadingData ? <div className="home-live-empty">Loading today’s schedule…</div> : schedule.length === 0 ? <div className="home-live-empty">No classes are assigned for today. Check your full schedule for the rest of the week.</div> : schedule.map(({ meeting, section, course }, index) => (
-                <div className={`home-live-schedule-row ${scheduleStates[index] === 'Now' ? 'current' : ''}`} key={meeting.id}>
-                  <time>{formatSchoolTime(meeting.starts_at)}</time>
-                  <div><strong>{course?.name || section.section_code}</strong><span>{meeting.room || section.room || 'Room TBA'} · Period {meeting.period_no}</span></div>
-                  <em>{scheduleStates[index]}</em>
-                </div>
-              ))}
-              <a href="#/academics/my-schedule">Open full schedule →</a>
-            </div>
-          </div>
-        </article>
+        <aside className="home-web-right">
+          <section className="home-web-card home-navigation-card">
+            <div className="home-card-title">navigation</div>
+            <a href="#/academics/classes">my classes <span>❀</span></a><a href="#/academics/homeroom">homeroom <span>✿</span></a><a href="#/social/feed">social feed <span>♡</span></a><a href="#/campus/campus-overview">campus <span>✦</span></a><a href="#/discover/students">directory <span>☻</span></a><a href="#/settings/account">settings <span>⚙</span></a>
+          </section>
 
-        <article className="home-channel-message">
-          <div className="home-message-avatar announcement-avatar">✦</div>
-          <div className="home-message-content">
-            <header><strong>School Announcements</strong><span className="home-system-badge announcement">NOTICE</span><time>{announcement?.school_date ? formatHanamiSchoolDate(announcement.school_date) : 'Latest'}</time></header>
-            {loadingData ? <p>Loading the latest school notice…</p> : announcement ? <>
-              <p>{announcement.title}</p>
-              <div className="home-message-embed announcement-embed"><strong>{announcement.title}</strong><p>{announcement.body}</p><a href={`#/home/announcements/${encodeURIComponent(announcement.id)}`}>Open announcement →</a></div>
-            </> : <p>No school announcements are published right now.</p>}
-          </div>
-        </article>
+          <section className="home-web-card home-calendar-card">
+            <div className="home-card-title">{calendar.label.toLowerCase()}</div>
+            <div className="home-calendar-week"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+            <div className="home-calendar-days">{calendar.cells.map((value, index) => <span className={value === calendar.day ? 'today' : ''} key={`${value ?? 'blank'}-${index}`}>{value ?? ''}</span>)}</div>
+          </section>
 
-        <article className="home-channel-message">
-          <div className="home-message-avatar wallet-avatar">❀</div>
-          <div className="home-message-content">
-            <header><strong>Hanami Account</strong><span className="home-system-badge utility">ACCOUNT</span><time>Account-wide</time></header>
-            <p>Your Petals, Boutique collection, and Hanami+ entitlement belong to your real account and are shared by both character slots.</p>
-            <div className="home-message-embed wallet-embed">
-              <div><span>Petals</span><strong>❀ {wallet?.balance ?? 0}</strong></div>
-              <div><span>Hanami+</span><strong>{plusActive ? 'Active' : 'Inactive'}</strong></div>
-              {plusActive && plus && <div><span>Access ends</span><strong>{new Date(plus.ends_at).toLocaleDateString()}</strong></div>}
-              <div className="home-wallet-links"><a href="#/boutique/featured">Boutique</a><a href="#/petals/rewards">Rewards</a></div>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <nav className="home-channel-actions" aria-label="Hanami Home shortcuts">
-        <a href="#/academics/classes"><span>#</span>my-classes</a>
-        <a href="#/academics/homeroom"><span>#</span>homeroom</a>
-        <a href="#/social/friends"><span>#</span>friends</a>
-        <a href="#/campus/clubs"><span>#</span>clubs</a>
-        <a href="#/profile/profile-studio"><span>#</span>profile-studio</a>
-      </nav>
+          <section className="home-web-card home-link-card">
+            <div className="home-card-title">link hanami</div>
+            <div className="home-mini-button">✿ HANAMI HIGH ✿<br/>school network · 2006</div>
+            <code>hanami-high / campus network</code>
+          </section>
+        </aside>
+      </div>
     </main>
   )
 }
