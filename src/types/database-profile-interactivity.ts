@@ -37,7 +37,7 @@ type InteractiveProfileTables = {
   character_profile_interactivity: RowTable<
     CharacterProfileInteractivity,
     Pick<CharacterProfileInteractivity, 'character_id'> & Partial<Omit<CharacterProfileInteractivity, 'character_id' | 'created_at' | 'updated_at'>>,
-    Partial<Omit<CharacterProfileInteractivity, 'character_id' | 'created_at'>>
+    Partial<CharacterProfileInteractivity>
   >
   character_profile_interaction_counters: RowTable<
     CharacterProfileInteractionCounter,
