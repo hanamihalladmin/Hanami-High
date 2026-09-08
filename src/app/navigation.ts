@@ -1,174 +1,29 @@
 import type { SectionDefinition, ShellRoute, ShellSectionId } from '../types/navigation'
 
 export const sections: SectionDefinition[] = [
-  {
-    id: 'home', label: 'Hanami Home', eyebrow: 'HANAMI HIGH', title: 'Campus Network', icon: '⌂', group: 'primary', defaultSubsection: 'overview',
-    subsections: [
-      { id: 'overview', label: 'Overview', description: 'Your personal Hanami dashboard.' },
-      { id: 'announcements', label: 'Announcements', description: 'School notices and important updates.' },
-      { id: 'school-calendar', label: 'School Calendar', description: 'Academic dates and campus events.' },
-      { id: 'whos-online', label: "Who's Online", description: 'See who is currently around campus.' },
-      { id: 'my-schedule', label: 'My Schedule', description: 'Today’s classes and school-day timeline.' },
-      { id: 'my-homeroom', label: 'My Homeroom', description: 'Open your private homeroom conversation space.' },
-      { id: 'my-classes', label: 'My Classes', description: 'Your enrolled class spaces.' },
-      { id: 'my-clubs', label: 'My Clubs', description: 'Clubs and organizations you belong to.' },
-    ],
-  },
-  {
-    id: 'messages', label: 'Messages', eyebrow: 'MESSAGES', title: 'Inbox', icon: '✉', group: 'primary', defaultSubsection: 'friends',
-    subsections: [
-      { id: 'friends', label: 'Friends', description: 'Conversations with friends.' },
-      { id: 'message-requests', label: 'Message Requests', description: 'Messages from people outside your circle.' },
-      { id: 'direct-messages', label: 'Direct Messages', description: 'All direct conversations.' },
-      { id: 'groups', label: 'Groups', description: 'Group conversations and shared chats.' },
-    ],
-  },
-  {
-    id: 'social', label: 'Social', eyebrow: 'SOCIAL', title: 'Your Circle', icon: '♡', group: 'primary', defaultSubsection: 'feed',
-    subsections: [
-      { id: 'feed', label: 'Feed', description: 'Activity from your Hanami circle.' },
-      { id: 'friends', label: 'Friends', description: 'Your friend list and social connections.' },
-      { id: 'top-friends', label: 'Top Friends', description: 'Your featured profile connections.' },
-      { id: 'bulletins', label: 'Bulletins', description: 'Short community posts and notices.' },
-      { id: 'blogs', label: 'Blogs', description: 'Long-form character posts.' },
-      { id: 'guestbook-activity', label: 'Guestbook Activity', description: 'Recent guestbook interactions.' },
-    ],
-  },
-  {
-    id: 'academics', label: 'Academics', eyebrow: 'ACADEMICS', title: 'Schoolwork', icon: '▤', group: 'primary', defaultSubsection: 'overview',
-    subsections: [
-      { id: 'overview', label: 'Overview', description: 'Academic status and upcoming work.' },
-      { id: 'my-schedule', label: 'My Schedule', description: 'Your weekly class schedule.' },
-      { id: 'homeroom', label: 'Homeroom', description: 'Your private homeroom conversation room.' },
-      { id: 'classes', label: 'Classes', description: 'Course spaces, teachers, resources, and class chat.' },
-      { id: 'assignments', label: 'Assignments', description: 'Assigned work and submissions.' },
-      { id: 'grades', label: 'Grades', description: 'Grades and teacher feedback.' },
-      { id: 'attendance', label: 'Attendance', description: 'Attendance records and history.' },
-    ],
-  },
-  {
-    id: 'campus', label: 'Campus', eyebrow: 'CAMPUS', title: 'After School', icon: '✿', group: 'primary', defaultSubsection: 'campus-overview',
-    subsections: [
-      { id: 'campus-overview', label: 'Campus Overview', description: 'What is happening around Hanami.' },
-      { id: 'events', label: 'Events', description: 'School and community events.' },
-      { id: 'clubs', label: 'Clubs', description: 'Student clubs and club spaces.' },
-      { id: 'organizations', label: 'Organizations', description: 'School organizations and groups.' },
-      { id: 'opportunities', label: 'Opportunities', description: 'Jobs, internships, and campus opportunities.' },
-      { id: 'student-council', label: 'Student Council', description: 'Student government information.' },
-    ],
-  },
-  {
-    id: 'profile', label: 'My Profile', eyebrow: 'PROFILE', title: 'My Profile', icon: '☺', group: 'primary', defaultSubsection: 'view-profile',
-    subsections: [
-      { id: 'view-profile', label: 'View My Page', description: 'Open your published custom SpaceHey-style character page.' },
-      { id: 'scenes', label: 'Living Profile Scenes', description: 'Visit this character’s published alternate rooms and profile scenes.' },
-      { id: 'profile-studio', label: 'Profile Studio', description: 'Build your page with drag-and-resize widgets, backgrounds, layouts, name styles, cosmetics, and private draft preview.' },
-      { id: 'personal-spaces', label: 'Personal Spaces', description: 'Customize this character’s Hanami+ locker, desk, phone, and 2000s desktop.' },
-      { id: 'blog', label: 'Blog', description: 'Write and manage the blog entries connected to your profile.' },
-      { id: 'guestbook', label: 'Guestbook', description: 'Manage messages visitors leave on your profile.' },
-      { id: 'saved-themes', label: 'Saved Page Presets', description: 'Save and reuse complete page looks across your two characters.' },
-    ],
-  },
-  {
-    id: 'discover', label: 'Discover', eyebrow: 'DISCOVER', title: 'Search Hanami', icon: '⌕', group: 'primary', defaultSubsection: 'students',
-    subsections: [
-      { id: 'students', label: 'Students', description: 'Find student characters across campus.' },
-      { id: 'faculty', label: 'Teachers', description: 'Find Hanami High teachers.' },
-      { id: 'clubs', label: 'Clubs', description: 'Discover clubs and organizations.' },
-      { id: 'posts', label: 'Posts', description: 'Search bulletins, blogs, and posts.' },
-      { id: 'events', label: 'Events', description: 'Search school and campus events.' },
-    ],
-  },
-  {
-    id: 'petals', label: 'Petals', eyebrow: 'PETALS', title: 'Your Wallet', icon: '❀', group: 'rewards', defaultSubsection: 'balance',
-    subsections: [
-      { id: 'balance', label: 'Balance', description: 'Your current Petals balance.' },
-      { id: 'earning-history', label: 'Earning History', description: 'See how you earned Petals.' },
-      { id: 'rewards', label: 'Rewards', description: 'Rewards tied to your account and characters.' },
-      { id: 'ways-to-earn', label: 'Ways to Earn', description: 'Activities that award Petals.' },
-    ],
-  },
-  {
-    id: 'boutique', label: 'Boutique', eyebrow: 'BOUTIQUE', title: 'Hanami Boutique', icon: '◇', group: 'rewards', defaultSubsection: 'featured',
-    subsections: [
-      { id: 'featured', label: 'Featured', description: 'Featured collectible drops and cosmetics.' },
-      { id: 'new', label: 'New', description: 'Recently added boutique items.' },
-      { id: 'seasonal', label: 'Seasonal', description: 'Limited seasonal collections.' },
-      { id: 'avatar-decorations', label: 'Avatar Decorations', description: 'Decorations that frame or orbit your avatar.' },
-      { id: 'frames', label: 'Frames', description: 'Profile and avatar frames.' },
-      { id: 'effects', label: 'Effects', description: 'Decorative profile effects.' },
-      { id: 'nameplates', label: 'Nameplates', description: 'Character nameplate styles.' },
-      { id: 'profile-cards', label: 'Profile Cards', description: 'Collectible identity-card treatments.' },
-      { id: 'background-packs', label: 'Background Packs', description: 'Background scenes for profile customization.' },
-      { id: 'stickers', label: 'Stickers', description: 'Sticker sheets and decorative profile pieces.' },
-      { id: 'hanami-plus-passes', label: 'Hanami+ Passes', description: 'Hanami+ cosmetic access.' },
-      { id: 'my-inventory', label: 'My Inventory', description: 'Items owned by your account.' },
-    ],
-  },
-  {
-    id: 'hanami-plus', label: 'Hanami+', eyebrow: 'HANAMI+', title: 'Creative Membership', icon: '✦', group: 'rewards', defaultSubsection: 'overview',
-    subsections: [
-      { id: 'overview', label: 'Hanami+ Home', description: 'Your active benefits, creative level, monthly claim, drops, and Plus status.' },
-      { id: 'interface-studio', label: 'Interface Studio', description: 'Customize your dashboard, message appearance, inbox organization, and notification profiles.' },
-      { id: 'social-identity-studio', label: 'Social Identity Studio', description: 'Style display names, profile badges, friend groups, posts, reactions, stickers, and guestbooks.' },
-      { id: 'scene-studio', label: 'Scene Studio', description: 'Build and publish alternate living-profile rooms for this character.' },
-      { id: 'marketplace', label: 'Theme Marketplace', description: 'Browse community profile themes, ratings, creators, and favorites.' },
-      { id: 'creator-studio', label: 'Creator Studio', description: 'Publish versioned themes from your current Profile Studio design.' },
-      { id: 'creator-contests', label: 'Creative Contests', description: 'Enter Hanami design contests using your published themes.' },
-      { id: 'collections', label: 'Theme Collections', description: 'Organize marketplace themes into personal collections.' },
-      { id: 'calendar', label: 'Plus Calendar', description: 'Drops, creative challenges, previews, quests, and seasonal rotations.' },
-      { id: 'inbox', label: 'Plus Inbox', description: 'Reward notices, claim activity, gifts, and Plus announcements.' },
-      { id: 'reward-history', label: 'Reward History', description: 'Your Hanami+ days, drops, claims, quests, and milestones.' },
-      { id: 'gift-history', label: 'Gift History', description: 'Hanami+ passes and cosmetic gifts sent or received.' },
-      { id: 'loyalty-shop', label: 'Loyalty Shop', description: 'Petal cosmetics unlocked by cumulative Hanami+ days.' },
-      { id: 'labs', label: 'Hanami+ Labs', description: 'Opt into experimental customization features before wider release.' },
-    ],
-  },
-  {
-    id: 'achievements', label: 'Achievements', eyebrow: 'ACHIEVEMENTS', title: 'Milestones', icon: '★', group: 'rewards', defaultSubsection: 'my-achievements',
-    subsections: [
-      { id: 'my-achievements', label: 'My Achievements', description: 'Achievements earned by this character.' },
-      { id: 'collections', label: 'Collections', description: 'Achievement and reward collections.' },
-      { id: 'school-history', label: 'School History', description: 'Milestones from your time at Hanami.' },
-    ],
-  },
-  {
-    id: 'settings', label: 'Settings', eyebrow: 'SETTINGS', title: 'Hanami Settings', icon: '⚙', group: 'settings', defaultSubsection: 'account',
-    subsections: [
-      { id: 'account', label: 'Account', description: 'Discord-linked Hanami account settings.' },
-      { id: 'character', label: 'Character', description: 'Current character settings.' },
-      { id: 'privacy-safety', label: 'Privacy & Safety', description: 'Privacy and interaction controls.' },
-      { id: 'notifications', label: 'Notifications', description: 'Notification preferences and unread behavior.' },
-      { id: 'accessibility', label: 'Appearance & Accessibility', description: 'Personal color theme, motion, contrast, density, and text size.' },
-      { id: 'connections', label: 'Connections', description: 'Connected Hanami services.' },
-    ],
-  },
+  { id:'home',label:'Hanami Home',eyebrow:'HANAMI HIGH',title:'Campus Network',icon:'⌂',group:'primary',defaultSubsection:'overview',subsections:[
+    {id:'overview',label:'Overview',description:'Your personal Hanami dashboard.'},{id:'announcements',label:'Announcements',description:'School notices and important updates.'},{id:'school-calendar',label:'School Calendar',description:'Academic dates and campus events.'},{id:'whos-online',label:"Who's Online",description:'See who is currently around campus.'},{id:'my-schedule',label:'My Schedule',description:'Today’s classes and school-day timeline.'},{id:'my-homeroom',label:'My Homeroom',description:'Open your private homeroom conversation space.'},{id:'my-classes',label:'My Classes',description:'Your enrolled class spaces.'},{id:'my-clubs',label:'My Clubs',description:'Clubs and organizations you belong to.'},]},
+  { id:'messages',label:'Messages',eyebrow:'MESSAGES',title:'Inbox',icon:'✉',group:'primary',defaultSubsection:'friends',subsections:[{id:'friends',label:'Friends',description:'Conversations with friends.'},{id:'message-requests',label:'Message Requests',description:'Messages from people outside your circle.'},{id:'direct-messages',label:'Direct Messages',description:'All direct conversations.'},{id:'groups',label:'Groups',description:'Group conversations and shared chats.'}]},
+  { id:'social',label:'Social',eyebrow:'SOCIAL',title:'Your Circle',icon:'♡',group:'primary',defaultSubsection:'feed',subsections:[{id:'feed',label:'Feed',description:'Activity from your Hanami circle.'},{id:'friends',label:'Friends',description:'Your friend list and social connections.'},{id:'top-friends',label:'Top Friends',description:'Your featured profile connections.'},{id:'bulletins',label:'Bulletins',description:'Short community posts and notices.'},{id:'blogs',label:'Blogs',description:'Long-form character posts.'},{id:'guestbook-activity',label:'Guestbook Activity',description:'Recent guestbook interactions.'}]},
+  { id:'academics',label:'Academics',eyebrow:'ACADEMICS',title:'Schoolwork',icon:'▤',group:'primary',defaultSubsection:'overview',subsections:[{id:'overview',label:'Overview',description:'Academic status and upcoming work.'},{id:'my-schedule',label:'My Schedule',description:'Your weekly class schedule.'},{id:'homeroom',label:'Homeroom',description:'Your private homeroom conversation room.'},{id:'classes',label:'Classes',description:'Course spaces, teachers, resources, and class chat.'},{id:'assignments',label:'Assignments',description:'Assigned work and submissions.'},{id:'grades',label:'Grades',description:'Grades and teacher feedback.'},{id:'attendance',label:'Attendance',description:'Attendance records and history.'}]},
+  { id:'campus',label:'Campus',eyebrow:'CAMPUS',title:'After School',icon:'✿',group:'primary',defaultSubsection:'campus-overview',subsections:[{id:'campus-overview',label:'Campus Overview',description:'What is happening around Hanami.'},{id:'events',label:'Events',description:'School and community events.'},{id:'clubs',label:'Clubs',description:'Student clubs and club spaces.'},{id:'organizations',label:'Organizations',description:'School organizations and groups.'},{id:'opportunities',label:'Opportunities',description:'Jobs, internships, and campus opportunities.'},{id:'student-council',label:'Student Council',description:'Student government information.'}]},
+  { id:'profile',label:'My Profile',eyebrow:'PROFILE',title:'My Profile',icon:'☺',group:'primary',defaultSubsection:'view-profile',subsections:[{id:'view-profile',label:'View My Page',description:'Open your published custom SpaceHey-style character page.'},{id:'scenes',label:'Living Profile Scenes',description:'Visit this character’s published alternate rooms and profile scenes.'},{id:'profile-studio',label:'Profile Studio',description:'Build your page with drag-and-resize widgets, backgrounds, layouts, name styles, cosmetics, and private draft preview.'},{id:'personal-spaces',label:'Personal Spaces',description:'Customize this character’s Hanami+ locker, desk, phone, and 2000s desktop.'},{id:'blog',label:'Blog',description:'Write and manage the blog entries connected to your profile.'},{id:'guestbook',label:'Guestbook',description:'Manage messages visitors leave on your profile.'},{id:'saved-themes',label:'Saved Page Presets',description:'Save and reuse complete page looks across your two characters.'}]},
+  { id:'discover',label:'Discover',eyebrow:'DISCOVER',title:'Search Hanami',icon:'⌕',group:'primary',defaultSubsection:'students',subsections:[{id:'students',label:'Students',description:'Find student characters across campus.'},{id:'faculty',label:'Teachers',description:'Find Hanami High teachers.'},{id:'clubs',label:'Clubs',description:'Discover clubs and organizations.'},{id:'posts',label:'Posts',description:'Search bulletins, blogs, and posts.'},{id:'events',label:'Events',description:'Search school and campus events.'}]},
+  { id:'petals',label:'Petals',eyebrow:'PETALS',title:'Your Wallet',icon:'❀',group:'rewards',defaultSubsection:'balance',subsections:[{id:'balance',label:'Balance',description:'Your current Petals balance.'},{id:'earning-history',label:'Earning History',description:'See how you earned Petals.'},{id:'rewards',label:'Rewards',description:'Rewards tied to your account and characters.'},{id:'ways-to-earn',label:'Ways to Earn',description:'Activities that award Petals.'}]},
+  { id:'boutique',label:'Boutique',eyebrow:'BOUTIQUE',title:'Hanami Boutique',icon:'◇',group:'rewards',defaultSubsection:'featured',subsections:[{id:'featured',label:'Featured',description:'Featured collectible drops and cosmetics.'},{id:'new',label:'New',description:'Recently added boutique items.'},{id:'seasonal',label:'Seasonal',description:'Limited seasonal collections.'},{id:'avatar-decorations',label:'Avatar Decorations',description:'Decorations that frame or orbit your avatar.'},{id:'frames',label:'Frames',description:'Profile and avatar frames.'},{id:'effects',label:'Effects',description:'Decorative profile effects.'},{id:'nameplates',label:'Nameplates',description:'Character nameplate styles.'},{id:'profile-cards',label:'Profile Cards',description:'Collectible identity-card treatments.'},{id:'background-packs',label:'Background Packs',description:'Background scenes for profile customization.'},{id:'stickers',label:'Stickers',description:'Sticker sheets and decorative profile pieces.'},{id:'hanami-plus-passes',label:'Hanami+ Passes',description:'Hanami+ cosmetic access.'},{id:'my-inventory',label:'My Inventory',description:'Items owned by your account.'}]},
+  { id:'hanami-plus',label:'Hanami+',eyebrow:'HANAMI+',title:'Creative Membership',icon:'✦',group:'rewards',defaultSubsection:'overview',subsections:[
+    {id:'overview',label:'Hanami+ Home',description:'Your active benefits, creative level, monthly claim, drops, and Plus status.'},
+    {id:'interface-studio',label:'Interface Studio',description:'Customize your dashboard, message appearance, inbox organization, and notification profiles.'},
+    {id:'social-identity-studio',label:'Social Identity Studio',description:'Style display names, profile badges, friend groups, posts, reactions, stickers, and guestbooks.'},
+    {id:'scene-studio',label:'Scene Studio',description:'Build and publish alternate living-profile rooms for this character.'},
+    {id:'motion-studio',label:'Motion Studio',description:'Build reduced-motion-aware page, widget, scene, ambient, hover, and click animation presets.'},
+    {id:'marketplace',label:'Theme Marketplace',description:'Browse community profile themes, ratings, creators, and favorites.'},{id:'creator-studio',label:'Creator Studio',description:'Publish versioned themes from your current Profile Studio design.'},{id:'creator-contests',label:'Creative Contests',description:'Enter Hanami design contests using your published themes.'},{id:'collections',label:'Theme Collections',description:'Organize marketplace themes into personal collections.'},{id:'calendar',label:'Plus Calendar',description:'Drops, creative challenges, previews, quests, and seasonal rotations.'},{id:'inbox',label:'Plus Inbox',description:'Reward notices, claim activity, gifts, and Plus announcements.'},{id:'reward-history',label:'Reward History',description:'Your Hanami+ days, drops, claims, quests, and milestones.'},{id:'gift-history',label:'Gift History',description:'Hanami+ passes and cosmetic gifts sent or received.'},{id:'loyalty-shop',label:'Loyalty Shop',description:'Petal cosmetics unlocked by cumulative Hanami+ days.'},{id:'labs',label:'Hanami+ Labs',description:'Opt into experimental customization features before wider release.'}]},
+  { id:'achievements',label:'Achievements',eyebrow:'ACHIEVEMENTS',title:'Milestones',icon:'★',group:'rewards',defaultSubsection:'my-achievements',subsections:[{id:'my-achievements',label:'My Achievements',description:'Achievements earned by this character.'},{id:'collections',label:'Collections',description:'Achievement and reward collections.'},{id:'school-history',label:'School History',description:'Milestones from your time at Hanami.'}]},
+  { id:'settings',label:'Settings',eyebrow:'SETTINGS',title:'Hanami Settings',icon:'⚙',group:'settings',defaultSubsection:'account',subsections:[{id:'account',label:'Account',description:'Discord-linked Hanami account settings.'},{id:'character',label:'Character',description:'Current character settings.'},{id:'privacy-safety',label:'Privacy & Safety',description:'Privacy and interaction controls.'},{id:'notifications',label:'Notifications',description:'Notification preferences and unread behavior.'},{id:'accessibility',label:'Appearance & Accessibility',description:'Personal color theme, motion, contrast, density, and text size.'},{id:'connections',label:'Connections',description:'Connected Hanami services.'}]},
 ]
 
-export const sectionById = Object.fromEntries(sections.map((section) => [section.id, section])) as Record<ShellSectionId, SectionDefinition>
-
-export function routeHash(route: ShellRoute) {
-  const target = route.targetId ? `/${encodeURIComponent(route.targetId)}` : ''
-  return `#/${route.section}/${route.subsection}${target}`
-}
-
-export function defaultRoute(section: ShellSectionId): ShellRoute {
-  return { section, subsection: sectionById[section].defaultSubsection }
-}
-
-export function normalizeRoute(sectionInput?: string, subsectionInput?: string, targetInput?: string): ShellRoute {
-  const section = sections.some((item) => item.id === sectionInput)
-    ? sectionInput as ShellSectionId
-    : 'home'
-  const definition = sectionById[section]
-  const subsection = definition.subsections.some((item) => item.id === subsectionInput)
-    ? subsectionInput as string
-    : definition.defaultSubsection
-  const targetId = targetInput ? decodeURIComponent(targetInput) : undefined
-  return targetId ? { section, subsection, targetId } : { section, subsection }
-}
-
-export function routeFromHash(hash = window.location.hash): ShellRoute {
-  const [section, subsection, target] = hash.replace(/^#\/?/, '').split('/')
-  return normalizeRoute(section, subsection, target)
-}
+export const sectionById=Object.fromEntries(sections.map(section=>[section.id,section])) as Record<ShellSectionId,SectionDefinition>
+export function routeHash(route:ShellRoute){const target=route.targetId?`/${encodeURIComponent(route.targetId)}`:'';return `#/${route.section}/${route.subsection}${target}`}
+export function defaultRoute(section:ShellSectionId):ShellRoute{return {section,subsection:sectionById[section].defaultSubsection}}
+export function normalizeRoute(sectionInput?:string,subsectionInput?:string,targetInput?:string):ShellRoute{const section=sections.some(item=>item.id===sectionInput)?sectionInput as ShellSectionId:'home';const definition=sectionById[section];const subsection=definition.subsections.some(item=>item.id===subsectionInput)?subsectionInput as string:definition.defaultSubsection;const targetId=targetInput?decodeURIComponent(targetInput):undefined;return targetId?{section,subsection,targetId}:{section,subsection}}
+export function routeFromHash(hash=window.location.hash):ShellRoute{const [section,subsection,target]=hash.replace(/^#\/?/,'').split('/');return normalizeRoute(section,subsection,target)}
