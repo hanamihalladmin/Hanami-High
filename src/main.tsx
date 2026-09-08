@@ -12,6 +12,8 @@ import { ProfileScenePortal } from './components/ProfileScenePortal'
 import { ProfileDesignCredits } from './components/ProfileDesignCredits'
 import { AnimationPresetLayer } from './components/AnimationPresetLayer'
 import { UserTagDesignerPortal } from './components/UserTagDesignerPortal'
+import { PremiumFontLayer } from './components/PremiumFontLayer'
+import { PremiumFontStudioPortal } from './components/PremiumFontStudioPortal'
 import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
 import './styles/global.css'
@@ -84,11 +86,13 @@ import './styles/v2-page-proportions.css'
 import './styles/user-tag-designer.css'
 import './styles/mini-profile-reference.css'
 import './styles/messages-stacked-chat.css'
+import './styles/premium-font-studio.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <IdentityProvider>
       <AccountSigninRecorder />
+      <PremiumFontLayer />
       <RootApp />
       <MemberProfileNavigationBridge />
       <ProfileStudioTools />
@@ -100,6 +104,7 @@ createRoot(document.getElementById('root')!).render(
       <AnimationPresetLayer />
       <ProfileDraftPreviewLauncher />
       <UserTagDesignerPortal />
+      <PremiumFontStudioPortal />
     </IdentityProvider>
   </StrictMode>,
 )
