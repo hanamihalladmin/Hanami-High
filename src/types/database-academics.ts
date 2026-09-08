@@ -71,6 +71,28 @@ export type SchoolScheduleBlock = {
   updated_at: string
 }
 
+export type SchoolHomeroom = {
+  id: string
+  legacy_source_id: string | null
+  code: string
+  school_year: number
+  grade_level: number | null
+  room_label: string | null
+  description: string | null
+  advisor_character_id: string | null
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export type HomeroomMembership = {
+  homeroom_id: string
+  student_character_id: string
+  student_year: number
+  joined_at: string
+  updated_at: string
+}
+
 export type AcademicAssignment = {
   id: string
   section_id: string
@@ -151,6 +173,16 @@ type AcademicTables = {
     SchoolScheduleBlock,
     Pick<SchoolScheduleBlock, 'block_type' | 'title' | 'weekday' | 'starts_at' | 'ends_at'> & Partial<Omit<SchoolScheduleBlock, 'block_type' | 'title' | 'weekday' | 'starts_at' | 'ends_at'>>,
     Partial<SchoolScheduleBlock>
+  >
+  school_homerooms: RowTable<
+    SchoolHomeroom,
+    Pick<SchoolHomeroom, 'code'> & Partial<Omit<SchoolHomeroom, 'code'>>,
+    Partial<SchoolHomeroom>
+  >
+  homeroom_memberships: RowTable<
+    HomeroomMembership,
+    Pick<HomeroomMembership, 'homeroom_id' | 'student_character_id'> & Partial<Omit<HomeroomMembership, 'homeroom_id' | 'student_character_id'>>,
+    Partial<HomeroomMembership>
   >
   academic_assignments: RowTable<
     AcademicAssignment,
