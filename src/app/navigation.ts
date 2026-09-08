@@ -19,6 +19,7 @@ export const sections: SectionDefinition[] = [
     {id:'motion-studio',label:'Motion Studio',description:'Build reduced-motion-aware page, widget, scene, ambient, hover, and click animation presets.'},
     {id:'marketplace',label:'Theme Marketplace',description:'Browse community profile themes, ratings, creators, and favorites.'},
     {id:'creators',label:'Creators',description:'Browse public creator portfolios, themes, remixes, components, and collections.'},
+    {id:'following',label:'Following',description:'See public releases and updates from creators you follow.'},
     {id:'creator-studio',label:'Creator Studio',description:'Publish versioned themes from your current Profile Studio design.'},
     {id:'remix-lab',label:'Remix Lab',description:'Safely remix published community themes while preserving creator and version attribution.'},
     {id:'component-library',label:'Component Library',description:'Browse, install, and publish reusable attributed Profile Studio widget kits.'},
