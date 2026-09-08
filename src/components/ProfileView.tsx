@@ -3,7 +3,7 @@ import { getSignedProfileMediaUrl } from '../lib/profileMedia'
 import { profilePageBackgroundFrom, profilePageBackgroundStyle } from '../lib/profilePageTheme'
 import { supabase } from '../lib/supabase'
 import { useIdentity } from '../state/IdentityContext'
-import type { Json, PublishedProfileWidget, SocialPost } from '../types/database'
+import type { Friendship, Json, PublishedProfileWidget, SocialPost } from '../types/database'
 import type { PublishedCharacterProfileWithCosmetics } from '../types/database-customization'
 import { GuestbookPanel } from './GuestbookPanel'
 import { ShellTopbar } from './ShellTopbar'
@@ -60,6 +60,9 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
   const [widgets, setWidgets] = useState<PublishedProfileWidget[]>([])
   const [posts, setPosts] = useState<SocialPost[]>([])
   const [presence, setPresence] = useState<Presence>(null)
+  const [friendship, setFriendship] = useState<Friendship | null>(null)
+  const [friendWorking, setFriendWorking] = useState(false)
+  const [friendNotice, setFriendNotice] = useState<string | null>(null)
   const [media, setMedia] = useState<Record<string, string>>({})
   const [memberSince, setMemberSince] = useState<string | null>(null)
   const [note, setNote] = useState('')
@@ -78,29 +81,70 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
   const load = useCallback(async () => {
     const client = supabase
     const id = characterId
-    if (!client || !id) return
+    const selfId = activeCharacter?.id
+    if (!client || !id || !selfId) return
     setLoading(true)
     setError(null)
-    const [profileResult, characterResult, widgetResult, activityResult, presenceResult] = await Promise.all([
+    const friendshipQuery = id === selfId
+      ? Promise.resolve({ data: [] as Friendship[], error: null })
+      : client.from('friendships').select('*').or(`requester_character_id.eq.${selfId},addressee_character_id.eq.${selfId}`)
+    const [profileResult, characterResult, widgetResult, activityResult, presenceResult, friendshipResult] = await Promise.all([
       client.from('published_character_profiles').select('*').eq('character_id', id).maybeSingle(),
       client.from('characters').select('created_at').eq('id', id).maybeSingle(),
       client.from('published_profile_widgets').select('*').eq('character_id', id).order('y').order('x'),
       client.from('social_posts').select('*').eq('author_character_id', id).eq('state', 'published').order('published_at', { ascending: false }).limit(30),
       client.from('character_presence').select('status,last_seen_at').eq('character_id', id).maybeSingle(),
+      friendshipQuery,
     ])
     setLoading(false)
-    const first = profileResult.error || characterResult.error || widgetResult.error || activityResult.error || presenceResult.error
+    const first = profileResult.error || characterResult.error || widgetResult.error || activityResult.error || presenceResult.error || friendshipResult.error
     if (first) { setError(first.message); return }
     setProfile(profileResult.data)
     setWidgets(widgetResult.data ?? [])
     setPosts(activityResult.data ?? [])
     setPresence(presenceResult.data)
     setMemberSince(characterResult.data?.created_at ?? null)
+    setFriendship((friendshipResult.data ?? []).find((row) => (
+      (row.requester_character_id === selfId && row.addressee_character_id === id)
+      || (row.requester_character_id === id && row.addressee_character_id === selfId)
+    )) ?? null)
     void hydrate(profileResult.data, widgetResult.data ?? [])
-  }, [characterId, hydrate])
+  }, [activeCharacter?.id, characterId, hydrate])
 
   useEffect(() => { void load() }, [load])
   useEffect(() => { if (characterId) setNote(localStorage.getItem(noteKey(characterId)) || '') }, [characterId])
+
+  async function friendAction() {
+    const client = supabase
+    if (!client || !activeCharacter || !characterId || own) return
+    setFriendWorking(true)
+    setFriendNotice(null)
+    setError(null)
+    let actionError: { message: string } | null = null
+    let notice = ''
+
+    if (!friendship || friendship.status === 'declined') {
+      const result = await client.rpc('request_friendship', { p_target_character_id: characterId })
+      actionError = result.error
+      notice = 'Friend request sent.'
+    } else if (friendship.status === 'pending' && friendship.addressee_character_id === activeCharacter.id) {
+      const result = await client.rpc('respond_friendship', { p_friendship_id: friendship.id, p_accept: true })
+      actionError = result.error
+      notice = 'Friend request accepted.'
+    } else if (friendship.status === 'pending' && friendship.requester_character_id === activeCharacter.id) {
+      const result = await client.rpc('remove_friendship', { p_friendship_id: friendship.id })
+      actionError = result.error
+      notice = 'Friend request cancelled.'
+    }
+
+    setFriendWorking(false)
+    if (actionError) {
+      setError(actionError.message)
+      return
+    }
+    if (notice) setFriendNotice(notice)
+    await load()
+  }
 
   const theme = useMemo(() => themeFrom(profile?.theme ?? {}), [profile?.theme])
   const pageBackground = useMemo(() => profilePageBackgroundFrom(profile?.theme ?? {}), [profile?.theme])
@@ -114,6 +158,10 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
   const handle = profile?.handle ? `@${profile.handle}` : '@hanami-member'
   const backgroundUrl = pageBackground.imagePath ? media[pageBackground.imagePath] ?? null : null
   const memberDate = memberSince ? new Date(memberSince).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : profile ? new Date(profile.published_at).toLocaleDateString() : '—'
+  const incomingRequest = friendship?.status === 'pending' && friendship.addressee_character_id === activeCharacter.id
+  const outgoingRequest = friendship?.status === 'pending' && friendship.requester_character_id === activeCharacter.id
+  const acceptedFriend = friendship?.status === 'accepted'
+  const friendLabel = friendWorking ? 'Working…' : incomingRequest ? 'Accept Friend' : outgoingRequest ? 'Cancel Request' : acceptedFriend ? 'Friends' : 'Add Friend'
   const style = {
     ...profilePageBackgroundStyle(pageBackground, backgroundUrl, theme.accent),
     '--profile-bg': theme.background,
@@ -127,6 +175,7 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
   return <main className="content-area published-profile-page discord-profile-experience-page">
     <ShellTopbar eyebrow={own ? 'MY PROFILE' : 'HANAMI PROFILE'} title={name} onSearch={onSearch} onNotifications={onNotifications} unreadCount={unreadCount}/>
     {error && <div className="identity-notice error">{error}</div>}
+    {friendNotice && <div className="identity-notice success" aria-live="polite">{friendNotice}</div>}
     {loading ? <div className="studio-loading">Loading profile…</div> : !profile ? <section className="shell-module-card"><h2>{own ? 'Publish your profile first.' : 'Profile unavailable.'}</h2><p>{own ? 'Build your page in Profile Studio, then publish it.' : 'This member has not published a visible profile.'}</p></section> : <div className={`discord-profile-experience-shell ${theme.grid ? 'show-grid' : ''} cosmetic-frame-${safeClass(cosmetics.frame)} cosmetic-avatar-${safeClass(cosmetics.avatarDecoration)} cosmetic-effect-${safeClass(cosmetics.effect)} cosmetic-card-${safeClass(cosmetics.profileCard)} cosmetic-bg-${safeClass(cosmetics.backgroundPack)}`} style={style}>
       <div className="discord-profile-experience-grid">
         <section className="discord-profile-card">
@@ -148,6 +197,7 @@ export function ProfileView({ targetCharacterId, onSearch, onNotifications, unre
               <a className="discord-profile-icon-button" href="#/profile/display-name-style" aria-label="Edit display name style">Aa</a>
             </> : <>
               <a className="discord-profile-button primary" href="#/messages/friends">Message</a>
+              <button className={`discord-profile-button friend-action ${acceptedFriend ? 'accepted' : ''}`} type="button" disabled={friendWorking || acceptedFriend} onClick={() => void friendAction()}>{friendLabel}</button>
               <button className="discord-profile-icon-button" type="button" onClick={() => setTab('guestbook')} aria-label="Open guestbook">✎</button>
             </>}
           </div>
