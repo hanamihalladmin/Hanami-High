@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { getSignedProfileMediaUrl } from '../lib/profileMedia'
 import { supabase } from '../lib/supabase'
-import type { Json } from '../types/database'
+import { useIdentity } from '../state/IdentityContext'
+import type { Friendship, Json } from '../types/database'
 
 type Props = {
   characterId: string | null
@@ -64,14 +65,18 @@ function safeClass(value: string) {
 }
 
 export function MemberProfilePopover({ characterId, onClose }: Props) {
+  const { activeCharacter } = useIdentity()
   const closeRef = useRef<HTMLButtonElement>(null)
   const [profile, setProfile] = useState<MiniProfile | null>(null)
   const [identity, setIdentity] = useState<SearchIdentity | null>(null)
   const [presence, setPresence] = useState<Presence | null>(null)
+  const [friendship, setFriendship] = useState<Friendship | null>(null)
+  const [friendWorking, setFriendWorking] = useState(false)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [bannerUrl, setBannerUrl] = useState<string | null>(null)
   const [memberSince, setMemberSince] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!characterId) return
@@ -84,28 +89,45 @@ export function MemberProfilePopover({ characterId, onClose }: Props) {
   useEffect(() => {
     const client = supabase
     const id = characterId
+    const selfId = activeCharacter?.id
     if (!client || !id) {
-      setProfile(null); setIdentity(null); setPresence(null); setAvatarUrl(null); setBannerUrl(null); setMemberSince(null)
+      setProfile(null); setIdentity(null); setPresence(null); setFriendship(null); setAvatarUrl(null); setBannerUrl(null); setMemberSince(null); setError(null)
       return
     }
 
     let cancelled = false
     setLoading(true)
+    setError(null)
     setAvatarUrl(null)
     setBannerUrl(null)
+
+    const friendshipQuery = !selfId || selfId === id
+      ? Promise.resolve({ data: [] as Friendship[], error: null })
+      : client.from('friendships').select('*').or(`requester_character_id.eq.${selfId},addressee_character_id.eq.${selfId}`)
 
     void Promise.all([
       client.from('published_character_profiles').select('display_name,handle,pronouns,custom_status,bio,avatar_path,banner_path,school_role,published_at,theme').eq('character_id', id).maybeSingle(),
       client.from('search_documents').select('title,subtitle').eq('document_type', 'character').eq('entity_id', id).maybeSingle(),
       client.from('character_presence').select('status,last_seen_at').eq('character_id', id).maybeSingle(),
       client.from('characters').select('created_at').eq('id', id).maybeSingle(),
-    ]).then(async ([profileResult, identityResult, presenceResult, characterResult]) => {
+      friendshipQuery,
+    ]).then(async ([profileResult, identityResult, presenceResult, characterResult, friendshipResult]) => {
       if (cancelled) return
+      const first = profileResult.error || identityResult.error || presenceResult.error || characterResult.error || friendshipResult.error
+      if (first) {
+        setError(first.message)
+        setLoading(false)
+        return
+      }
       const nextProfile = profileResult.data as MiniProfile | null
       setProfile(nextProfile)
       setIdentity((identityResult.data as SearchIdentity | null) ?? null)
       setPresence((presenceResult.data as Presence | null) ?? null)
       setMemberSince(characterResult.data?.created_at ?? null)
+      setFriendship((friendshipResult.data ?? []).find((row) => selfId && (
+        (row.requester_character_id === selfId && row.addressee_character_id === id)
+        || (row.requester_character_id === id && row.addressee_character_id === selfId)
+      )) ?? null)
 
       const paths = [nextProfile?.avatar_path, nextProfile?.banner_path].filter((value): value is string => Boolean(value))
       const urls = await Promise.all(paths.map(async (path) => {
@@ -117,10 +139,48 @@ export function MemberProfilePopover({ characterId, onClose }: Props) {
         if (nextProfile?.banner_path) setBannerUrl(media[nextProfile.banner_path] ?? null)
         setLoading(false)
       }
-    }).catch(() => { if (!cancelled) setLoading(false) })
+    }).catch((nextError: unknown) => {
+      if (!cancelled) {
+        setError(nextError instanceof Error ? nextError.message : 'Member profile could not be loaded.')
+        setLoading(false)
+      }
+    })
 
     return () => { cancelled = true }
-  }, [characterId])
+  }, [activeCharacter?.id, characterId])
+
+  async function friendAction() {
+    const client = supabase
+    const id = characterId
+    if (!client || !activeCharacter || !id || id === activeCharacter.id) return
+    setFriendWorking(true)
+    setError(null)
+    let actionError: { message: string } | null = null
+
+    if (!friendship || friendship.status === 'declined') {
+      const result = await client.rpc('request_friendship', { p_target_character_id: id })
+      actionError = result.error
+      if (!actionError) setFriendship({
+        id: friendship?.id ?? `pending-${id}`,
+        requester_character_id: activeCharacter.id,
+        addressee_character_id: id,
+        status: 'pending',
+        created_at: friendship?.created_at ?? new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+    } else if (friendship.status === 'pending' && friendship.addressee_character_id === activeCharacter.id) {
+      const result = await client.rpc('respond_friendship', { p_friendship_id: friendship.id, p_accept: true })
+      actionError = result.error
+      if (!actionError) setFriendship({ ...friendship, status: 'accepted', updated_at: new Date().toISOString() })
+    } else if (friendship.status === 'pending' && friendship.requester_character_id === activeCharacter.id) {
+      const result = await client.rpc('remove_friendship', { p_friendship_id: friendship.id })
+      actionError = result.error
+      if (!actionError) setFriendship(null)
+    }
+
+    setFriendWorking(false)
+    if (actionError) setError(actionError.message)
+  }
 
   const accent = useMemo(() => themeValue(profile?.theme ?? {}, 'accent', '#d86f8b'), [profile?.theme])
   const displayFont = useMemo(() => safeClass(themeValue(profile?.theme ?? {}, 'displayFont', 'classic')), [profile?.theme])
@@ -135,6 +195,11 @@ export function MemberProfilePopover({ characterId, onClose }: Props) {
   const role = roleLabel(profile?.school_role || identity?.subtitle)
   const status = presenceLabel(presence)
   const statusClass = status === 'Do Not Disturb' ? 'dnd' : status.toLowerCase()
+  const isSelf = activeCharacter?.id === characterId
+  const incomingRequest = friendship?.status === 'pending' && friendship.addressee_character_id === activeCharacter?.id
+  const outgoingRequest = friendship?.status === 'pending' && friendship.requester_character_id === activeCharacter?.id
+  const acceptedFriend = friendship?.status === 'accepted'
+  const friendLabel = friendWorking ? 'Working…' : incomingRequest ? 'Accept' : outgoingRequest ? 'Cancel Request' : acceptedFriend ? 'Friends' : 'Add Friend'
   const style = { '--member-accent': accent, '--display-color': displayColor, '--display-color-2': displayColor2 } as CSSProperties
 
   return (
@@ -151,11 +216,13 @@ export function MemberProfilePopover({ characterId, onClose }: Props) {
         </div>
 
         <div className="member-popover-quick-actions">
-          <a href="#/messages/friends" onClick={onClose}>Message</a>
-          <a data-member-full-profile="true" href={`#/profile/view-profile/${encodeURIComponent(characterId)}`} onClick={onClose}>View Profile</a>
+          {!isSelf && <a href="#/messages/friends" onClick={onClose}>Message</a>}
+          {!isSelf && <button className={acceptedFriend ? 'accepted' : ''} type="button" disabled={friendWorking || acceptedFriend} onClick={() => void friendAction()}>{friendLabel}</button>}
+          <a data-member-full-profile="true" href={`#/profile/view-profile/${encodeURIComponent(characterId)}`} onClick={onClose}>{isSelf ? 'View My Profile' : 'View Profile'}</a>
         </div>
 
         <div className="member-popover-body">
+          {error && <div className="member-popover-error">{error}</div>}
           {loading ? <div className="member-popover-loading">Loading member…</div> : <>
             <div className="member-popover-identity">
               <h2 className={`profile-display-name profile-font-${displayFont} profile-effect-${displayEffect}`}>{name}</h2>
