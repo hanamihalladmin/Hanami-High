@@ -12,7 +12,7 @@ function tokyoClock(date:Date){
 }
 
 export function AccountLockGate({children}:PropsWithChildren){
-  const {account,signOut}=useIdentity()
+  const {account,session,signOut}=useIdentity()
   const [status,setStatus]=useState<MyLockscreenStatus|null>(null)
   const [wallpaperUrl,setWallpaperUrl]=useState<string|null>(null)
   const [loading,setLoading]=useState(true)
@@ -21,7 +21,7 @@ export function AccountLockGate({children}:PropsWithChildren){
   const [error,setError]=useState<string|null>(null)
   const [now,setNow]=useState(()=>new Date())
 
-  const locallyUnlocked=Boolean(account&&isLockscreenUnlocked(account.id))
+  const locallyUnlocked=Boolean(account&&session&&isLockscreenUnlocked(account.id,session.access_token))
 
   useEffect(()=>{const timer=window.setInterval(()=>setNow(new Date()),30000);return()=>window.clearInterval(timer)},[])
   useEffect(()=>{
@@ -44,13 +44,13 @@ export function AccountLockGate({children}:PropsWithChildren){
   const clock=useMemo(()=>tokyoClock(now),[now])
 
   async function unlock(event:FormEvent){
-    event.preventDefault();const client=supabase;if(!client||!account||pin.length!==6)return
+    event.preventDefault();const client=supabase;if(!client||!account||!session||pin.length!==6)return
     setWorking(true);setError(null)
     const {data,error:verifyError}=await client.rpc('verify_my_lockscreen_pin',{p_pin:pin})
     setWorking(false)
     if(verifyError){setPin('');setError(verifyError.message);return}
     if(!data){setPin('');setError('That PIN was not accepted. Please try again.');return}
-    markLockscreenUnlocked(account.id);setPin('')
+    markLockscreenUnlocked(account.id,session.access_token);setPin('')
   }
 
   if(loading)return <main className="account-lockscreen account-lockscreen-loading"><div><strong>Opening your Hanami lock screen…</strong><span>Checking this account’s device-style privacy settings.</span></div></main>
