@@ -88,10 +88,13 @@ import './styles/user-tag-designer.css'
 import './styles/mini-profile-reference.css'
 import './styles/messages-stacked-chat.css'
 import './styles/premium-font-studio.css'
+import './styles/custom-font-uploads.css'
 import './styles/decoration-asset-library.css'
 import './styles/messages-hanami-unified.css'
 import './styles/messages-shell-reset.css'
 import './styles/profile-reference-modern.css'
+import './styles/connected-shell-scroll.css'
+import './styles/font-runtime-fix.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
