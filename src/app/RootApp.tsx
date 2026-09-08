@@ -1,3 +1,4 @@
+import { AccountLockGate } from '../components/AccountLockGate'
 import { AdministratorAccessPreview } from '../components/AdministratorAccessPreview'
 import { useIdentity } from '../state/IdentityContext'
 import { App } from './App'
@@ -5,9 +6,9 @@ import { App } from './App'
 export function RootApp() {
   const { adminMode, isPlatformAdmin, loading } = useIdentity()
 
-  if (!loading && adminMode && isPlatformAdmin) {
-    return <AdministratorAccessPreview />
-  }
+  const content = !loading && adminMode && isPlatformAdmin
+    ? <AdministratorAccessPreview />
+    : <App />
 
-  return <App />
+  return <AccountLockGate>{content}</AccountLockGate>
 }
