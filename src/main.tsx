@@ -8,6 +8,7 @@ import { ProfileInteractiveLayer } from './components/ProfileInteractiveLayer'
 import { InterfaceCustomizationLayer } from './components/InterfaceCustomizationLayer'
 import { SocialIdentityLayer } from './components/SocialIdentityLayer'
 import { ProfileScenePortal } from './components/ProfileScenePortal'
+import { AnimationPresetLayer } from './components/AnimationPresetLayer'
 import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
 import './styles/global.css'
@@ -34,6 +35,7 @@ import './styles/saved-themes.css'
 import './styles/personal-spaces.css'
 import './styles/profile-interactive-layer.css'
 import './styles/profile-scenes.css'
+import './styles/animation-presets.css'
 import './styles/friends.css'
 import './styles/top-friends.css'
 import './styles/social-posts.css'
@@ -75,6 +77,7 @@ createRoot(document.getElementById('root')!).render(
       <InterfaceCustomizationLayer />
       <SocialIdentityLayer />
       <ProfileScenePortal />
+      <AnimationPresetLayer />
       <ProfileDraftPreviewLauncher />
     </IdentityProvider>
   </StrictMode>,
