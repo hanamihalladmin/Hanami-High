@@ -76,6 +76,9 @@ import './styles/communication-shell.css'
 import './styles/v2-reference-polish.css'
 import './styles/home-proportions-wide.css'
 import './styles/interface-boutique-repair.css'
+import './styles/v2-layout-system.css'
+import './styles/boutique-v3.css'
+import './styles/theme-builder-v2.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
