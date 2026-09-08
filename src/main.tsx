@@ -74,7 +74,6 @@ import './styles/school-administration.css'
 import './styles/access-modes.css'
 import './styles/early-web-site.css'
 import './styles/shell-mode-boundary.css'
-import './styles/messages-discord.css'
 import './styles/academic-rooms.css'
 import './styles/communication-shell.css'
 import './styles/v2-reference-polish.css'
@@ -89,6 +88,9 @@ import './styles/mini-profile-reference.css'
 import './styles/messages-stacked-chat.css'
 import './styles/premium-font-studio.css'
 import './styles/decoration-asset-library.css'
+import './styles/messages-hanami-unified.css'
+import './styles/messages-shell-reset.css'
+import './styles/profile-reference-modern.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
