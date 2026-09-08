@@ -6,6 +6,7 @@ import { ProfileDraftPreviewLauncher } from './components/ProfileDraftPreviewLau
 import { ProfileStudioTools } from './components/ProfileStudioTools'
 import { ProfileInteractiveLayer } from './components/ProfileInteractiveLayer'
 import { InterfaceCustomizationLayer } from './components/InterfaceCustomizationLayer'
+import { SocialIdentityLayer } from './components/SocialIdentityLayer'
 import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
 import './styles/global.css'
@@ -49,6 +50,7 @@ import './styles/boutique-ownership.css'
 import './styles/hanami-plus-hub.css'
 import './styles/creator-marketplace.css'
 import './styles/interface-customization.css'
+import './styles/social-identity-studio.css'
 import './styles/settings.css'
 import './styles/owner-operations.css'
 import './styles/school-administration.css'
@@ -69,6 +71,7 @@ createRoot(document.getElementById('root')!).render(
       <ProfileStudioTools />
       <ProfileInteractiveLayer />
       <InterfaceCustomizationLayer />
+      <SocialIdentityLayer />
       <ProfileDraftPreviewLauncher />
     </IdentityProvider>
   </StrictMode>,
