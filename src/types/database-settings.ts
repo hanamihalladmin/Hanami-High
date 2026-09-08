@@ -20,6 +20,11 @@ export type AccountPreferences = {
   friend_request_policy: string
   show_online_status: boolean
   site_theme: string
+  custom_theme_enabled: boolean
+  custom_theme_ink: string | null
+  custom_theme_soft: string | null
+  custom_theme_paper: string | null
+  custom_theme_accent: string | null
   created_at: string
   updated_at: string
 }
@@ -41,9 +46,13 @@ type SettingsTables = {
   character_preferences: RowTable<CharacterPreferences, Pick<CharacterPreferences, 'character_id' | 'account_id'> & Partial<Omit<CharacterPreferences, 'character_id' | 'account_id'>>, Partial<CharacterPreferences>>
 }
 
+type SettingsFunctions = {
+  set_my_custom_site_theme: { Args: { p_enabled: boolean; p_ink?: string | null; p_soft?: string | null; p_paper?: string | null; p_accent?: string | null }; Returns: boolean }
+}
+
 export type HanamiCompleteDatabase = Omit<HanamiRewardsDatabase, 'public'> & {
-  public: Omit<HanamiRewardsDatabase['public'], 'Tables'> & {
+  public: Omit<HanamiRewardsDatabase['public'], 'Tables' | 'Functions'> & {
     Tables: HanamiRewardsDatabase['public']['Tables'] & SettingsTables
-    Functions: HanamiRewardsDatabase['public']['Functions']
+    Functions: HanamiRewardsDatabase['public']['Functions'] & SettingsFunctions
   }
 }
