@@ -1,0 +1,48 @@
+/* Loaded after route-specific styles so Hanami+ typography actually wins the cascade. */
+html[data-hanami-font-mode="custom"] body,
+html[data-hanami-font-mode="custom"] button,
+html[data-hanami-font-mode="custom"] input,
+html[data-hanami-font-mode="custom"] select,
+html[data-hanami-font-mode="custom"] textarea,
+html[data-hanami-font-mode="custom"] p,
+html[data-hanami-font-mode="custom"] span,
+html[data-hanami-font-mode="custom"] small,
+html[data-hanami-font-mode="custom"] label,
+html[data-hanami-font-mode="custom"] a,
+html[data-hanami-font-mode="custom"] li,
+html[data-hanami-font-mode="custom"] td,
+html[data-hanami-font-mode="custom"] th,
+html[data-hanami-font-mode="custom"] dt,
+html[data-hanami-font-mode="custom"] dd{font-family:var(--hanami-font-body)!important}
+html[data-hanami-font-mode="custom"] h1,
+html[data-hanami-font-mode="custom"] h2,
+html[data-hanami-font-mode="custom"] h3,
+html[data-hanami-font-mode="custom"] h4,
+html[data-hanami-font-mode="custom"] h5,
+html[data-hanami-font-mode="custom"] h6,
+html[data-hanami-font-mode="custom"] .section-header strong,
+html[data-hanami-font-mode="custom"] .page-channel-title strong,
+html[data-hanami-font-mode="custom"] .panel h2,
+html[data-hanami-font-mode="custom"] .card-title,
+html[data-hanami-font-mode="custom"] .section-title{font-family:var(--hanami-font-heading)!important}
+html[data-hanami-font-mode="custom"] .shell-brand,
+html[data-hanami-font-mode="custom"] .hero-title{font-family:var(--hanami-font-display)!important}
+
+/* Character typography remains more specific than the account-wide website font. */
+.profile-display-name{font-family:var(--hanami-character-display-font,inherit)!important}
+.user-tag-render,.user-tag-preview,.decorative-tag-chip{font-family:var(--hanami-character-tag-font,inherit)!important}
+.profile-page h1,.profile-page h2,.profile-page h3,.published-profile h1,.published-profile h2,.published-profile h3{font-family:var(--hanami-character-heading-font,inherit)!important}
+.profile-page .profile-body,.published-profile .profile-body,.profile-page .profile-widget-content{font-family:var(--hanami-character-body-font,inherit)!important}
+.profile-blog-page,.profile-blog-post{font-family:var(--hanami-character-blog-font,inherit)!important}
+
+/* Security and official administrative surfaces intentionally stay on a stable system font. */
+html[data-hanami-font-mode="custom"] .owner-operations-page,
+html[data-hanami-font-mode="custom"] .owner-operations-page *,
+html[data-hanami-font-mode="custom"] .school-administration-page,
+html[data-hanami-font-mode="custom"] .school-administration-page *,
+html[data-hanami-font-mode="custom"] .account-lock-gate,
+html[data-hanami-font-mode="custom"] .account-lock-gate *,
+html[data-hanami-font-mode="custom"] .identity-screen,
+html[data-hanami-font-mode="custom"] .identity-screen *,
+html[data-hanami-font-mode="custom"] code,
+html[data-hanami-font-mode="custom"] pre{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
