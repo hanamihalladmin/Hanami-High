@@ -40,8 +40,14 @@ export function useInterfacePreferences() {
         data.custom_theme_link || data.custom_theme_accent,
       ]
       customVars.forEach((name,index)=>root.style.setProperty(name,values[index]))
+      root.dataset.glossMode = data.custom_theme_gloss_mode || 'soft'
+      root.style.setProperty('--hanami-custom-gloss-color', data.custom_theme_gloss_color || '#ffffff')
+      root.style.setProperty('--hanami-custom-gloss-strength', `${Math.max(0,Math.min(100,data.custom_theme_gloss_strength ?? 55))}%`)
     } else {
       customVars.forEach((name) => root.style.removeProperty(name))
+      delete root.dataset.glossMode
+      root.style.removeProperty('--hanami-custom-gloss-color')
+      root.style.removeProperty('--hanami-custom-gloss-strength')
     }
   }, [account])
 
