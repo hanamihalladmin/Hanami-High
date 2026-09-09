@@ -16,6 +16,7 @@ import { PremiumFontLayer } from './components/PremiumFontLayer'
 import { PremiumFontStudioPortal } from './components/PremiumFontStudioPortal'
 import { DecorationAssetLibraryPortal } from './components/DecorationAssetLibraryPortal'
 import { SchoolScheduleTimelinePortal } from './components/SchoolScheduleTimelinePortal'
+import { PortalExpansionLayer } from './components/PortalExpansionLayer'
 import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
 import './styles/global.css'
@@ -98,6 +99,7 @@ import './styles/connected-shell-scroll.css'
 import './styles/font-runtime-fix.css'
 import './styles/theme-gloss-controls.css'
 import './styles/shared-school-schedule.css'
+import './styles/portal-expansion.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -105,6 +107,7 @@ createRoot(document.getElementById('root')!).render(
       <AccountSigninRecorder />
       <PremiumFontLayer />
       <RootApp />
+      <PortalExpansionLayer />
       <MemberProfileNavigationBridge />
       <ProfileStudioTools />
       <ProfileInteractiveLayer />
