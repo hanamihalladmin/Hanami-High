@@ -1,0 +1,75 @@
+/* Hanami+ editable surface/gloss finish. Loaded late so custom themes can replace the fixed white Web 2.0 sheen. */
+:root[data-site-theme='custom']{
+  --hanami-custom-gloss-color:#ffffff;
+  --hanami-custom-gloss-strength:55%;
+  --hanami-gloss-highlight:color-mix(in srgb,var(--hanami-custom-gloss-color) var(--hanami-custom-gloss-strength),var(--hanami-custom-surface));
+  --hanami-gloss-accent-highlight:color-mix(in srgb,var(--hanami-custom-gloss-color) var(--hanami-custom-gloss-strength),var(--hanami-custom-accent));
+  --hanami-gloss-soft-highlight:color-mix(in srgb,var(--hanami-custom-gloss-color) var(--hanami-custom-gloss-strength),var(--hanami-custom-soft));
+  --retro-inset:inset 0 1px 0 color-mix(in srgb,var(--hanami-custom-gloss-color) 22%,transparent),inset 0 -1px 0 color-mix(in srgb,var(--hanami-custom-ink) 12%,transparent);
+}
+
+:root[data-site-theme='custom'][data-gloss-mode='none']{
+  --retro-gloss:linear-gradient(var(--hanami-custom-surface),var(--hanami-custom-surface));
+  --retro-pink-gloss:linear-gradient(var(--hanami-custom-accent),var(--hanami-custom-accent));
+  --retro-sage-gloss:linear-gradient(var(--hanami-custom-soft),var(--hanami-custom-soft));
+  --retro-inset:inset 0 0 0 1px color-mix(in srgb,var(--hanami-custom-border) 32%,transparent);
+}
+:root[data-site-theme='custom'][data-gloss-mode='soft']{
+  --retro-gloss:linear-gradient(180deg,var(--hanami-gloss-highlight) 0%,var(--hanami-custom-surface) 48%,color-mix(in srgb,var(--hanami-custom-soft) 12%,var(--hanami-custom-surface)) 100%);
+  --retro-pink-gloss:linear-gradient(180deg,var(--hanami-gloss-accent-highlight) 0%,var(--hanami-custom-accent) 58%,color-mix(in srgb,var(--hanami-custom-ink) 12%,var(--hanami-custom-accent)) 100%);
+  --retro-sage-gloss:linear-gradient(180deg,var(--hanami-gloss-soft-highlight) 0%,var(--hanami-custom-soft) 58%,color-mix(in srgb,var(--hanami-custom-ink) 10%,var(--hanami-custom-soft)) 100%);
+}
+:root[data-site-theme='custom'][data-gloss-mode='glass']{
+  --retro-gloss:linear-gradient(180deg,var(--hanami-gloss-highlight) 0%,color-mix(in srgb,var(--hanami-custom-gloss-color) calc(var(--hanami-custom-gloss-strength) * .6),var(--hanami-custom-surface)) 38%,var(--hanami-custom-surface) 39%,var(--hanami-custom-surface) 64%,color-mix(in srgb,var(--hanami-custom-ink) 10%,var(--hanami-custom-surface)) 100%);
+  --retro-pink-gloss:linear-gradient(180deg,var(--hanami-gloss-accent-highlight) 0%,color-mix(in srgb,var(--hanami-custom-gloss-color) calc(var(--hanami-custom-gloss-strength) * .55),var(--hanami-custom-accent)) 38%,var(--hanami-custom-accent) 39%,var(--hanami-custom-accent) 66%,color-mix(in srgb,var(--hanami-custom-ink) 15%,var(--hanami-custom-accent)) 100%);
+  --retro-sage-gloss:linear-gradient(180deg,var(--hanami-gloss-soft-highlight) 0%,color-mix(in srgb,var(--hanami-custom-gloss-color) calc(var(--hanami-custom-gloss-strength) * .55),var(--hanami-custom-soft)) 38%,var(--hanami-custom-soft) 39%,var(--hanami-custom-soft) 66%,color-mix(in srgb,var(--hanami-custom-ink) 13%,var(--hanami-custom-soft)) 100%);
+}
+:root[data-site-theme='custom'][data-gloss-mode='metallic']{
+  --retro-gloss:linear-gradient(180deg,color-mix(in srgb,var(--hanami-custom-gloss-color) var(--hanami-custom-gloss-strength),var(--hanami-custom-surface)) 0%,var(--hanami-custom-surface) 22%,color-mix(in srgb,var(--hanami-custom-ink) 12%,var(--hanami-custom-surface)) 47%,color-mix(in srgb,var(--hanami-custom-gloss-color) calc(var(--hanami-custom-gloss-strength) * .45),var(--hanami-custom-surface)) 49%,var(--hanami-custom-surface) 74%,color-mix(in srgb,var(--hanami-custom-ink) 18%,var(--hanami-custom-surface)) 100%);
+  --retro-pink-gloss:linear-gradient(180deg,var(--hanami-gloss-accent-highlight) 0%,var(--hanami-custom-accent) 22%,color-mix(in srgb,var(--hanami-custom-ink) 20%,var(--hanami-custom-accent)) 47%,color-mix(in srgb,var(--hanami-custom-gloss-color) calc(var(--hanami-custom-gloss-strength) * .4),var(--hanami-custom-accent)) 49%,var(--hanami-custom-accent) 74%,color-mix(in srgb,var(--hanami-custom-ink) 24%,var(--hanami-custom-accent)) 100%);
+  --retro-sage-gloss:linear-gradient(180deg,var(--hanami-gloss-soft-highlight) 0%,var(--hanami-custom-soft) 22%,color-mix(in srgb,var(--hanami-custom-ink) 18%,var(--hanami-custom-soft)) 47%,color-mix(in srgb,var(--hanami-custom-gloss-color) calc(var(--hanami-custom-gloss-strength) * .4),var(--hanami-custom-soft)) 49%,var(--hanami-custom-soft) 74%,color-mix(in srgb,var(--hanami-custom-ink) 22%,var(--hanami-custom-soft)) 100%);
+}
+
+/* Replace remaining hard-coded white/sage header gradients when a custom theme is active. */
+:root[data-site-theme='custom'] .sidebar-column{background:linear-gradient(180deg,color-mix(in srgb,var(--hanami-custom-paper) 78%,var(--hanami-custom-surface)),var(--hanami-custom-paper))!important}
+:root[data-site-theme='custom'] .section-header,
+:root[data-site-theme='custom'] .section-links button,
+:root[data-site-theme='custom'] .user-panel,
+:root[data-site-theme='custom'] .rail-brand,
+:root[data-site-theme='custom'] .rail-button,
+:root[data-site-theme='custom'] .panel,
+:root[data-site-theme='custom'] .shell-module-card,
+:root[data-site-theme='custom'] .settings-intro,
+:root[data-site-theme='custom'] .settings-panel,
+:root[data-site-theme='custom'] .campus-panel,
+:root[data-site-theme='custom'] .rewards-panel{background:var(--retro-gloss)!important}
+:root[data-site-theme='custom'] .rail-brand,
+:root[data-site-theme='custom'] .rail-button:hover,
+:root[data-site-theme='custom'] .rail-button.is-active,
+:root[data-site-theme='custom'] .section-links button.selected,
+:root[data-site-theme='custom'] .sidebar-nav-label,
+:root[data-site-theme='custom'] .notification-button,
+:root[data-site-theme='custom'] .primary-action{background:var(--retro-pink-gloss)!important}
+:root[data-site-theme='custom'] .section-links button:hover,
+:root[data-site-theme='custom'] .secondary-action{background:var(--retro-sage-gloss)!important}
+:root[data-site-theme='custom'] .panel>header,
+:root[data-site-theme='custom'] .settings-panel>header,
+:root[data-site-theme='custom'] .campus-panel>header,
+:root[data-site-theme='custom'] .rewards-panel>header{background:var(--retro-sage-gloss)!important}
+
+/* Theme Builder gloss editor */
+.theme-gloss-editor{margin:0 18px 18px;border:1px solid var(--line);background:var(--paper)}
+.theme-gloss-editor>header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;padding:14px;border-bottom:1px solid var(--line);background:var(--cream)}
+.theme-gloss-editor>header>div{max-width:760px}.theme-gloss-editor h3{margin:3px 0 4px;font:700 18px/1.1 var(--font-display);color:var(--navy-900)}.theme-gloss-editor p{margin:0;color:var(--muted);font-size:10px;line-height:1.5}.theme-gloss-editor>header>span{padding:5px 8px;border:1px solid var(--line);background:var(--paper);font:800 8px/1 var(--font-ui);letter-spacing:.08em}
+.theme-gloss-mode-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px 14px}.theme-gloss-mode-grid button{min-height:78px;padding:10px!important;text-align:left!important;border:1px solid var(--line-dark)!important;background:var(--paper)!important;color:var(--ink)!important}.theme-gloss-mode-grid button.selected{border-color:var(--pink-500)!important;box-shadow:inset 3px 0 0 var(--pink-500);background:var(--retro-pink-gloss)!important}.theme-gloss-mode-grid strong{display:block;font-size:11px}.theme-gloss-mode-grid small{display:block;margin-top:5px;color:var(--muted);font-size:8px;line-height:1.35}
+.theme-gloss-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 14px}.theme-gloss-controls>label{display:flex;flex-direction:column;gap:10px;padding:12px;border:1px solid var(--line);background:var(--cream)}.theme-gloss-controls>label>span:first-child{display:flex;flex-direction:column;gap:3px}.theme-gloss-controls strong{font-size:10px}.theme-gloss-controls small{color:var(--muted);font-size:8px;line-height:1.4}.theme-gloss-controls input[type='range']{width:100%;accent-color:var(--pink-500)}
+
+/* Live preview uses the same finish choices before a member saves. */
+.theme-builder-preview{--preview-gloss-layer:linear-gradient(180deg,var(--preview-surface),var(--preview-surface))}
+.theme-builder-preview[data-preview-gloss='soft']{--preview-gloss-layer:linear-gradient(180deg,color-mix(in srgb,var(--preview-gloss-color) var(--preview-gloss-strength),var(--preview-surface)),var(--preview-surface) 52%,color-mix(in srgb,var(--preview-soft) 12%,var(--preview-surface)))}
+.theme-builder-preview[data-preview-gloss='glass']{--preview-gloss-layer:linear-gradient(180deg,color-mix(in srgb,var(--preview-gloss-color) var(--preview-gloss-strength),var(--preview-surface)) 0%,var(--preview-surface) 40%,color-mix(in srgb,var(--preview-ink) 9%,var(--preview-surface)) 100%)}
+.theme-builder-preview[data-preview-gloss='metallic']{--preview-gloss-layer:linear-gradient(180deg,color-mix(in srgb,var(--preview-gloss-color) var(--preview-gloss-strength),var(--preview-surface)) 0%,var(--preview-surface) 24%,color-mix(in srgb,var(--preview-ink) 14%,var(--preview-surface)) 48%,color-mix(in srgb,var(--preview-gloss-color) 28%,var(--preview-surface)) 50%,var(--preview-surface) 75%,color-mix(in srgb,var(--preview-ink) 17%,var(--preview-surface)) 100%)}
+.theme-builder-preview .theme-builder-mini-hero,.theme-builder-preview .theme-builder-mini-grid article{background:var(--preview-gloss-layer)!important}
+
+@media(max-width:820px){.theme-gloss-mode-grid{grid-template-columns:1fr 1fr}.theme-gloss-controls{grid-template-columns:1fr}}
+@media(max-width:520px){.theme-gloss-editor{margin-inline:12px}.theme-gloss-mode-grid{grid-template-columns:1fr}}
