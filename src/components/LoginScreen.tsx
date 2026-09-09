@@ -22,6 +22,10 @@ export function LoginScreen() {
     }
   }
 
+  function openGuestView() {
+    window.location.hash = '#/guest/home'
+  }
+
   return (
     <main className="identity-screen">
       <section className="identity-window login-window">
@@ -31,21 +35,33 @@ export function LoginScreen() {
         </header>
         <div className="identity-body login-body">
           <div className="login-mark">花</div>
-          <span className="eyebrow">PRIVATE CAMPUS NETWORK</span>
+          <span className="eyebrow">HANAMI HIGH SCHOOL NETWORK</span>
           <h1>Welcome to Hanami High.</h1>
           <p>
-            Choose how you are entering Hanami High. Every option authenticates through Discord; Owner and
-            Administrator access are granted only to Discord accounts with the matching platform role.
+            Browse the public school network as a Guest without signing in, or authenticate through Discord for
+            Member, Owner, or Administrator access. Account-level access is granted only to Discord accounts with
+            the matching platform role.
           </p>
 
           {!configured && (
             <div className="identity-notice warning">
-              This build does not have its Supabase environment variables configured yet.
+              Member sign-in is unavailable because this build does not have its Supabase environment variables configured yet.
+              Guest View can still open the public shell, but live public data also requires the configured production backend.
             </div>
           )}
           {localError && <div className="identity-notice error">{localError}</div>}
 
           <div className="login-choice-stack">
+            <button
+              className="discord-login-button guest-login-button"
+              type="button"
+              disabled={Boolean(signingIn)}
+              onClick={openGuestView}
+            >
+              <span>✿</span>
+              Guest View
+            </button>
+
             <button
               className="discord-login-button member-login-button"
               type="button"
@@ -78,6 +94,7 @@ export function LoginScreen() {
           </div>
 
           <div className="login-access-note">
+            <span><strong>Guest</strong> sees only the public school network and public Search.</span>
             <span><strong>Member</strong> uses your character slots.</span>
             <span><strong>Owner</strong> is account-level and requires no character.</span>
             <span><strong>Administrator</strong> opens platform administration with assigned admin permissions.</span>
