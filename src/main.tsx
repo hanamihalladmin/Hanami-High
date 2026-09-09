@@ -15,6 +15,7 @@ import { UserTagDesignerPortal } from './components/UserTagDesignerPortal'
 import { PremiumFontLayer } from './components/PremiumFontLayer'
 import { PremiumFontStudioPortal } from './components/PremiumFontStudioPortal'
 import { DecorationAssetLibraryPortal } from './components/DecorationAssetLibraryPortal'
+import { SchoolScheduleTimelinePortal } from './components/SchoolScheduleTimelinePortal'
 import { IdentityProvider } from './state/IdentityContext'
 import './styles/tokens.css'
 import './styles/global.css'
@@ -95,6 +96,8 @@ import './styles/messages-shell-reset.css'
 import './styles/profile-reference-modern.css'
 import './styles/connected-shell-scroll.css'
 import './styles/font-runtime-fix.css'
+import './styles/theme-gloss-controls.css'
+import './styles/shared-school-schedule.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -114,6 +117,7 @@ createRoot(document.getElementById('root')!).render(
       <UserTagDesignerPortal />
       <PremiumFontStudioPortal />
       <DecorationAssetLibraryPortal />
+      <SchoolScheduleTimelinePortal />
     </IdentityProvider>
   </StrictMode>,
 )
